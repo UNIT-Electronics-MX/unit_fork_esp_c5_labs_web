@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "ESP32-S3 Bench Guide",
+    "title": "Pulsar C5 Labs",
     "loading": "Loading the bench guide…",
     "loadingSettings": "Loading settings…"
   },
@@ -13,7 +13,7 @@
   "layout": {
     "skip": "Skip to content",
     "loading": "Loading",
-    "brand": "ESP32-S3 <part>bench guide</part>",
+    "brand": "Pulsar <part>C5 Labs</part>",
     "sections": "Sections",
     "nav": {
       "labs": "Labs",
@@ -21,18 +21,20 @@
       "bench": "Bench",
       "settings": "Settings"
     },
-    "footnote": "Pin layout follows the Espressif DevKitC-1 v1.0. Clones are nearly identical, but the labels printed on your board always win. Your ticks are saved in this browser only.",
+    "footnote": "The existing lessons and their pinouts use the ESP32-S3 DevKitC-1, not the Pulsar C5. Check the labels on your board. Your ticks are saved in this browser only.",
     "partsLink": "The parts library",
+    "credit": "Based on the original project by Abderrehmen Gharsallah: <project>ESP32 Labs</project>.",
+    "legacyNotice": "Legacy ESP32-S3 content: the wiring and firmware in these lessons have not yet been adapted for Pulsar C5.",
     "new": "New"
   },
   "titles": {
-    "labs": "Labs · ESP32-S3 Bench Guide",
-    "lesson": "{{id}} · {{title}} · ESP32-S3 Bench Guide",
-    "code": "{{id}} code · {{title}} · ESP32-S3 Bench Guide",
-    "log": "Bench log · ESP32-S3 Bench Guide",
-    "parts": "Parts library · ESP32-S3 Bench Guide",
-    "settings": "Settings · ESP32-S3 Bench Guide",
-    "chip": "{{page}} · Datasheet · ESP32-S3 Bench Guide"
+    "labs": "Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "code": "{{id}} code · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "log": "Bench log · ESP32-S3 · Pulsar C5 Labs",
+    "parts": "Parts library · Pulsar C5 Labs",
+    "settings": "Settings · Pulsar C5 Labs",
+    "chip": "{{page}} · Datasheet · ESP32-S3 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "Error",

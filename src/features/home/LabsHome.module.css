@@ -87,6 +87,16 @@
   margin: 0 10px;
   color: var(--copper);
 }
+.legacyNote {
+  max-width: 62ch;
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border-inline-start: 3px solid var(--copper);
+  border-radius: var(--radius-s);
+  background: var(--surface);
+  color: var(--muted);
+  font: 500 13px/1.45 var(--font-body);
+}
 
 /* The progress readout: one tick per lab, grouped by theme. */
 .hud {

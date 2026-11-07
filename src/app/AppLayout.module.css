@@ -156,6 +156,16 @@
 .main:focus {
   outline: none;
 }
+.legacyNotice {
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--copper);
+  border-radius: var(--radius-s);
+  background: var(--surface);
+  color: var(--muted);
+  font: 500 13px/1.45 var(--font-body);
+}
 @media (min-width: 720px) {
   .main {
     gap: 20px;
@@ -166,6 +176,14 @@
   font-size: 12px;
   color: var(--muted);
   margin: 0;
+}
+.credit {
+  margin: 0;
+  color: var(--muted);
+  font: 11px var(--font-mono);
+}
+.credit a {
+  color: var(--copper);
 }
 
 /* "New" next to a section that just shipped; a dot when the bar shows icons only. */

@@ -1,7 +1,8 @@
 {
   "hero": {
-    "kicker": "ESP32-S3 · N16R8 · 工作台指南",
-    "title": "ESP32 <part>实验室</part>",
+    "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
+    "title": "Pulsar <part>C5 Labs</part>",
+    "legacyNotice": "旧版 ESP32-S3 内容：这些课程的接线和固件尚未适配 Pulsar C5。",
     "motto": {
       "wire": "接线",
       "flash": "烧录",

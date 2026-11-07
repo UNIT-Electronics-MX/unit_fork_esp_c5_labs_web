@@ -1,7 +1,8 @@
 {
   "hero": {
-    "kicker": "ESP32-S3 · N16R8 · دليل الطاولة",
-    "title": "مختبرات ESP32 <part>Labs</part>",
+    "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
+    "title": "Pulsar <part>C5 Labs</part>",
+    "legacyNotice": "محتوى ESP32-S3 السابق: لم تُكيَّف توصيلات هذه الدروس وبرمجياتها الثابتة بعد للوحة Pulsar C5.",
     "motto": {
       "wire": "وصّل",
       "flash": "ارفع",

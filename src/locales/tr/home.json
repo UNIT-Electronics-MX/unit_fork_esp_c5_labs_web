@@ -1,7 +1,8 @@
 {
   "hero": {
-    "kicker": "ESP32-S3 · N16R8 · tezgâh rehberi",
-    "title": "ESP32 <part>Labs</part>",
+    "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
+    "title": "Pulsar <part>C5 Labs</part>",
+    "legacyNotice": "Eski ESP32-S3 içeriği: bu derslerdeki bağlantılar ve aygıt yazılımı henüz Pulsar C5 için uyarlanmadı.",
     "motto": {
       "wire": "Bağla",
       "flash": "Yükle",

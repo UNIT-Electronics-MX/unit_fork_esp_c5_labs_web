@@ -1,7 +1,8 @@
 {
   "hero": {
-    "kicker": "ESP32-S3 · N16R8 · bench guide",
-    "title": "ESP32 <part>Labs</part>",
+    "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
+    "title": "Pulsar <part>C5 Labs</part>",
+    "legacyNotice": "Legacy ESP32-S3 content: the wiring and firmware in these lessons have not yet been adapted for Pulsar C5.",
     "motto": {
       "wire": "Wire",
       "flash": "Flash",

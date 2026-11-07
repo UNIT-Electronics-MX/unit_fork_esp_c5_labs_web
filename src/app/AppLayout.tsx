@@ -1,4 +1,4 @@
-/* eslint-disable i18next/no-literal-string -- literal text here is the repository name, not interface text. */
+/* eslint-disable i18next/no-literal-string -- hardware and repository names stay the same in every locale. */
 import { Trans, useTranslation } from "react-i18next";
 import { Link, Outlet, ScrollRestoration, useLocation, useNavigation } from "react-router";
 import { BenchPill } from "@/features/bench/BenchPill";
@@ -50,7 +50,7 @@ export function AppLayout() {
             <Icon name="chip" size={20} />
           </span>
           <span>
-            <span className={styles.eyebrow}>esp-labs</span>
+            <span className={styles.eyebrow}>UNIT DevLab · ESP32-C5HR8</span>
             <span className={styles.name}>
               <Trans
                 t={t}
@@ -84,10 +84,22 @@ export function AppLayout() {
         <LanguageMenu />
       </header>
       <main id="main" tabIndex={-1} className={styles.main}>
+        {pathname.startsWith("/lessons/") ? (
+          <p className={styles.legacyNotice}>{t("layout.legacyNotice")}</p>
+        ) : null}
         <Outlet />
       </main>
       <p className={styles.foot}>
         {t("layout.footnote")} <Link to="/parts">{t("layout.partsLink")}</Link>
+      </p>
+      <p className={styles.credit}>
+        <Trans
+          t={t}
+          i18nKey="layout.credit"
+          components={{
+            project: <a href="https://github.com/agharsallah/esp-labs-web" target="_blank" rel="noreferrer" />,
+          }}
+        />
       </p>
       <BackToTop />
       <ScrollRestoration />

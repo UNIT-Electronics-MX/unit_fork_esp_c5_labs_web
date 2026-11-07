@@ -1,9 +1,9 @@
 {
-  "name": "esp-labs-web",
+  "name": "pulsar-c5-labs-web",
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "description": "The ESP32-S3 bench guide as a React app: pinout, lessons, simulators and the bench log.",
+  "description": "Pulsar C5 Labs: an interactive board guide for the UNIT PULSAR ESP32-C5HR8.",
   "type": "module",
   "packageManager": "pnpm@11.10.0",
   "engines": {

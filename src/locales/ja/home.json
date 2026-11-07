@@ -1,7 +1,8 @@
 {
   "hero": {
-    "kicker": "ESP32-S3 · N16R8 · ベンチガイド",
-    "title": "ESP32 <part>Labs</part>",
+    "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
+    "title": "Pulsar <part>C5 Labs</part>",
+    "legacyNotice": "従来の ESP32-S3 用コンテンツ：これらのレッスンの配線とファームウェアは、まだ Pulsar C5 向けに更新されていません。",
     "motto": {
       "wire": "配線",
       "flash": "書き込み",

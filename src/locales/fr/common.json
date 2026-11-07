@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Guide d'établi ESP32-S3",
+    "title": "Pulsar C5 Labs",
     "loading": "Chargement du guide d'établi…",
     "loadingSettings": "Chargement des réglages…"
   },
@@ -13,7 +13,7 @@
   "layout": {
     "skip": "Aller au contenu",
     "loading": "Chargement",
-    "brand": "<part>Guide d'établi</part> ESP32-S3",
+    "brand": "Pulsar <part>C5 Labs</part>",
     "sections": "Sections",
     "nav": {
       "labs": "Labos",
@@ -21,18 +21,20 @@
       "bench": "Établi",
       "settings": "Réglages"
     },
-    "footnote": "Le brochage suit l'Espressif DevKitC-1 v1.0. Les clones sont presque identiques, mais les étiquettes imprimées sur ta carte font toujours foi. Tes coches sont enregistrées dans ce navigateur uniquement.",
+    "footnote": "Les leçons existantes et leurs brochages utilisent l’ESP32-S3 DevKitC-1, pas la Pulsar C5. Vérifie les étiquettes de ta carte. Tes coches sont enregistrées uniquement dans ce navigateur.",
     "partsLink": "La bibliothèque de pièces",
+    "credit": "Basé sur le projet original d’Abderrehmen Gharsallah : <project>ESP32 Labs</project>.",
+    "legacyNotice": "Contenu hérité de l’ESP32-S3 : le câblage et le firmware de ces leçons ne sont pas encore adaptés à la Pulsar C5.",
     "new": "Nouveau"
   },
   "titles": {
-    "labs": "Labos · Guide d'établi ESP32-S3",
-    "lesson": "{{id}} · {{title}} · Guide d'établi ESP32-S3",
-    "code": "Code {{id}} · {{title}} · Guide d'établi ESP32-S3",
-    "log": "Journal de l'établi · Guide d'établi ESP32-S3",
-    "parts": "Bibliothèque de pièces · Guide d'établi ESP32-S3",
-    "settings": "Réglages · Guide d'établi ESP32-S3",
-    "chip": "{{page}} · Fiche technique · Guide d'établi ESP32-S3"
+    "labs": "Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "code": "Code {{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "log": "Journal de l'établi · ESP32-S3 · Pulsar C5 Labs",
+    "parts": "Bibliothèque de pièces · Pulsar C5 Labs",
+    "settings": "Réglages · Pulsar C5 Labs",
+    "chip": "{{page}} · Fiche technique · ESP32-S3 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "Erreur",

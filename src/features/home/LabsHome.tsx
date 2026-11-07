@@ -47,6 +47,7 @@ export function LabsHome() {
             <span>{t("hero.motto.watch")}</span>
             <span>{t("hero.motto.read")}</span>
           </p>
+          <p className={styles.legacyNote}>{t("hero.legacyNotice")}</p>
         </div>
 
         <section className={styles.hud} aria-labelledby="hud-title">

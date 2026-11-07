@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Przewodnik stanowiskowy ESP32-S3",
+    "title": "Pulsar C5 Labs",
     "loading": "Ładowanie przewodnika stanowiskowego…",
     "loadingSettings": "Ładowanie ustawień…"
   },
@@ -13,7 +13,7 @@
   "layout": {
     "skip": "Przejdź do treści",
     "loading": "Ładowanie",
-    "brand": "ESP32-S3 <part>przewodnik stanowiskowy</part>",
+    "brand": "Pulsar <part>C5 Labs</part>",
     "sections": "Sekcje",
     "nav": {
       "labs": "Ćwiczenia",
@@ -21,18 +21,20 @@
       "bench": "Stanowisko",
       "settings": "Ustawienia"
     },
-    "footnote": "Układ pinów odpowiada płytce Espressif DevKitC-1 v1.0. Klony są niemal identyczne, ale napisy nadrukowane na twojej płytce mają zawsze pierwszeństwo. Twoje odhaczenia zapisują się tylko w tej przeglądarce.",
+    "footnote": "Istniejące lekcje i ich schematy pinów dotyczą ESP32-S3 DevKitC-1, a nie Pulsar C5. Sprawdź oznaczenia na płytce. Twoje odhaczenia zapisują się tylko w tej przeglądarce.",
     "partsLink": "Biblioteka części",
+    "credit": "Na podstawie oryginalnego projektu Abderrehmen Gharsallah: <project>ESP32 Labs</project>.",
+    "legacyNotice": "Starsze materiały ESP32-S3: połączenia i firmware tych lekcji nie zostały jeszcze dostosowane do Pulsar C5.",
     "new": "Nowe"
   },
   "titles": {
-    "labs": "Ćwiczenia · Przewodnik stanowiskowy ESP32-S3",
-    "lesson": "{{id}} · {{title}} · Przewodnik stanowiskowy ESP32-S3",
-    "code": "{{id}} kod · {{title}} · Przewodnik stanowiskowy ESP32-S3",
-    "log": "Dziennik stanowiska · Przewodnik stanowiskowy ESP32-S3",
-    "parts": "Biblioteka części · Przewodnik stanowiskowy ESP32-S3",
-    "settings": "Ustawienia · Przewodnik stanowiskowy ESP32-S3",
-    "chip": "{{page}} · Nota katalogowa · Przewodnik stanowiskowy ESP32-S3"
+    "labs": "Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "code": "{{id}} kod · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "log": "Dziennik stanowiska · ESP32-S3 · Pulsar C5 Labs",
+    "parts": "Biblioteka części · Pulsar C5 Labs",
+    "settings": "Ustawienia · Pulsar C5 Labs",
+    "chip": "{{page}} · Nota katalogowa · ESP32-S3 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "Błąd",

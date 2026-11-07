@@ -1,7 +1,8 @@
 {
   "hero": {
-    "kicker": "ESP32-S3 · N16R8 · guide d'établi",
-    "title": "ESP32 <part>Labs</part>",
+    "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
+    "title": "Pulsar <part>C5 Labs</part>",
+    "legacyNotice": "Contenu hérité de l’ESP32-S3 : le câblage et le firmware de ces leçons ne sont pas encore adaptés à la Pulsar C5.",
     "motto": {
       "wire": "Câble",
       "flash": "Flashe",

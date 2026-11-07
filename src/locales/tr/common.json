@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "ESP32-S3 Tezgâh Rehberi",
+    "title": "Pulsar C5 Labs",
     "loading": "Tezgâh rehberi yükleniyor…",
     "loadingSettings": "Ayarlar yükleniyor…"
   },
@@ -13,7 +13,7 @@
   "layout": {
     "skip": "İçeriğe geç",
     "loading": "Yükleniyor",
-    "brand": "ESP32-S3 <part>tezgâh rehberi</part>",
+    "brand": "Pulsar <part>C5 Labs</part>",
     "sections": "Bölümler",
     "nav": {
       "labs": "Deneyler",
@@ -21,18 +21,20 @@
       "bench": "Tezgâh",
       "settings": "Ayarlar"
     },
-    "footnote": "Pin düzeni Espressif DevKitC-1 v1.0'a göre. Klonlar neredeyse aynıdır, ama kartının üstündeki yazılar her zaman geçerlidir. İşaretlerin yalnızca bu tarayıcıda kaydedilir.",
+    "footnote": "Mevcut dersler ve pin şemaları Pulsar C5 yerine ESP32-S3 DevKitC-1 kullanır. Kartındaki etiketleri kontrol et. İşaretlerin yalnızca bu tarayıcıda saklanır.",
     "partsLink": "Parça kütüphanesi",
+    "credit": "Abderrehmen Gharsallah'ın özgün projesi temel alınmıştır: <project>ESP32 Labs</project>.",
+    "legacyNotice": "Eski ESP32-S3 içeriği: bu derslerdeki bağlantılar ve aygıt yazılımı henüz Pulsar C5 için uyarlanmadı.",
     "new": "Yeni"
   },
   "titles": {
-    "labs": "Deneyler · ESP32-S3 Tezgâh Rehberi",
-    "lesson": "{{id}} · {{title}} · ESP32-S3 Tezgâh Rehberi",
-    "code": "{{id}} kodu · {{title}} · ESP32-S3 Tezgâh Rehberi",
-    "log": "Tezgâh günlüğü · ESP32-S3 Tezgâh Rehberi",
-    "parts": "Parça kütüphanesi · ESP32-S3 Tezgâh Rehberi",
-    "settings": "Ayarlar · ESP32-S3 Tezgâh Rehberi",
-    "chip": "{{page}} · Veri sayfası · ESP32-S3 Tezgâh Rehberi"
+    "labs": "Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "code": "{{id}} kodu · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "log": "Tezgâh günlüğü · ESP32-S3 · Pulsar C5 Labs",
+    "parts": "Parça kütüphanesi · Pulsar C5 Labs",
+    "settings": "Ayarlar · Pulsar C5 Labs",
+    "chip": "{{page}} · Veri sayfası · ESP32-S3 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "Hata",

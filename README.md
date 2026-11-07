@@ -1,9 +1,9 @@
 <div align="center">
 
-# ESP32 Labs: the bench guide
+# Pulsar C5 Labs
 
-**Wire it, flash it, watch it, then read the code.**<br>
-An interactive guide to the ESP32-S3: 32 hands-on labs with live simulators, a 3D board, a pinout, a reader that explains the firmware line by line, and the chip's datasheet made readable.
+**Explore the UNIT PULSAR ESP32-C5HR8 board.**<br>
+An interactive guide with a 3D Pulsar C5 model, its documented Nano-format pinout and component descriptions. The existing hands-on lessons, simulators, firmware reader and chip reference are retained as ESP32-S3 material while C5 examples are being developed.
 
 [![Open the live guide](https://img.shields.io/badge/open_the_live_guide-GitHub_Pages-1f7a55?style=for-the-badge)](https://unit-electronics-mx.github.io/unit_fork_esp_c5_labs_web/)
 
@@ -16,15 +16,19 @@ An interactive guide to the ESP32-S3: 32 hands-on labs with live simulators, a 3
 [![MIT License](https://img.shields.io/badge/license-MIT-1f7a55)](LICENSE)
 
 [Live guide](https://unit-electronics-mx.github.io/unit_fork_esp_c5_labs_web/) ·
-[Firmware (esp-labs)](https://github.com/agharsallah/esp-labs) ·
+[Pulsar C5 hardware](https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_c5) ·
+[Legacy ESP32-S3 firmware](https://github.com/agharsallah/esp-labs) ·
 [Architecture](docs/ARCHITECTURE.md) ·
 [Contributing](CONTRIBUTING.md) ·
 [Report a bug](https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/issues/new?template=bug-report.yml) ·
 [Propose a lab](https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/issues/new?template=new-lab.yml)
 
-<img src="docs/media/labs-map.gif" alt="The labs map: a progress readout, the 3D ESP32-S3 DevKitC-1 with its parts lighting up one by one, then every lab grouped by theme" width="800">
+<img src="docs/media/labs-map.gif" alt="Archive screenshot of the original ESP32-S3 labs map and 3D DevKitC-1" width="800">
 
 </div>
+
+> [!IMPORTANT]
+> **Migration status:** The home page presents the Pulsar C5 hardware. Lessons, wiring tables, firmware, the bench log and the ESP32-S3 datasheet still describe the original ESP32-S3 setup. Do not use their pin assignments or flash commands on the Pulsar C5. The [Pulsar C5 hardware repository](https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_c5) does not yet publish the C++ examples needed to port these labs. The firmware reader and GitHub Pages build therefore continue to use the [original ESP32-S3 firmware](https://github.com/agharsallah/esp-labs).
 
 ## Contents
 
@@ -77,7 +81,7 @@ The guide is in English, French, Spanish, Italian, German, Polish, Turkish, Chin
 
 ### Also inside
 
-- **Meet the board**: the DevKitC-1 in 3D (three.js) with six callouts. Each one lights up its part and lists the labs that use it.
+- **Meet the board**: the Pulsar C5 in 3D with component descriptions and a Nano-format GPIO reference.
 - **The bench log**: what is flashed on the board right now and every command recorded. It is plain JSON in `public/data/`, so you can update it without a rebuild.
 - **Progress**: your ticks, the last lesson you opened and the variants you picked stay in your browser, with no account.
 - **The parts library** at [`#/parts`](https://unit-electronics-mx.github.io/unit_fork_esp_c5_labs_web/#/parts): 42 isometric drawings of every component on the bench, coloured from design tokens only.
@@ -103,7 +107,7 @@ You need **Node 24.14+** and **pnpm 11** (`corepack enable` gives you the pinned
 ```sh
 git clone https://github.com/agharsallah/esp-labs.git
 git clone https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web.git
-cd esp-labs-web
+cd unit_fork_esp_c5_labs_web
 pnpm install
 pnpm dev              # http://localhost:5180
 ```

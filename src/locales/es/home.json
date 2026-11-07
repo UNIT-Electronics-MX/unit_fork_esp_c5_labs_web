@@ -1,7 +1,8 @@
 {
   "hero": {
-    "kicker": "ESP32-S3 · N16R8 · guía de banco",
-    "title": "ESP32 <part>Labs</part>",
+    "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
+    "title": "Pulsar <part>C5 Labs</part>",
+    "legacyNotice": "Contenido heredado del ESP32-S3: las conexiones y el firmware de estas lecciones aún no están adaptados a la Pulsar C5.",
     "motto": {
       "wire": "Cablea",
       "flash": "Flashea",

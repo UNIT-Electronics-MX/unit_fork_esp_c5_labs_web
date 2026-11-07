@@ -1,7 +1,8 @@
 {
   "hero": {
-    "kicker": "ESP32-S3 · N16R8 · Bench-Guide",
-    "title": "ESP32 <part>Labs</part>",
+    "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
+    "title": "Pulsar <part>C5 Labs</part>",
+    "legacyNotice": "Bisherige ESP32-S3-Inhalte: Verdrahtung und Firmware dieser Lektionen sind noch nicht für die Pulsar C5 angepasst.",
     "motto": {
       "wire": "Verkabeln",
       "flash": "Flashen",

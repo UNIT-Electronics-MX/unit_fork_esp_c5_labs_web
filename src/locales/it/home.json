@@ -1,7 +1,8 @@
 {
   "hero": {
-    "kicker": "ESP32-S3 · N16R8 · guida da banco",
-    "title": "ESP32 <part>Labs</part>",
+    "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
+    "title": "Pulsar <part>C5 Labs</part>",
+    "legacyNotice": "Contenuti ESP32-S3 precedenti: collegamenti e firmware di queste lezioni non sono ancora adattati alla Pulsar C5.",
     "motto": {
       "wire": "Collega",
       "flash": "Flasha",

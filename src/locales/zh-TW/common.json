@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "ESP32-S3 工作臺指南",
+    "title": "Pulsar C5 Labs",
     "loading": "正在載入工作臺指南…",
     "loadingSettings": "正在載入設定…"
   },
@@ -13,7 +13,7 @@
   "layout": {
     "skip": "跳到正文",
     "loading": "載入中",
-    "brand": "ESP32-S3 <part>工作臺指南</part>",
+    "brand": "Pulsar <part>C5 Labs</part>",
     "sections": "章節",
     "nav": {
       "labs": "實驗",
@@ -21,18 +21,20 @@
       "bench": "工作臺",
       "settings": "設定"
     },
-    "footnote": "腳位配置遵循樂鑫 DevKitC-1 v1.0。相容板幾乎一樣，但以你開發板上印的標註為準。你的勾選只儲存在這個瀏覽器裡。",
+    "footnote": "現有課程及其腳位圖適用於 ESP32-S3 DevKitC-1，不適用於 Pulsar C5。請核對開發板上的標註。勾選僅儲存在此瀏覽器中。",
     "partsLink": "元件函式庫",
+    "credit": "基於 Abderrehmen Gharsallah 的原始專案：<project>ESP32 Labs</project>。",
+    "legacyNotice": "舊版 ESP32-S3 內容：這些課程的接線與韌體尚未適配 Pulsar C5。",
     "new": "新"
   },
   "titles": {
-    "labs": "實驗 · ESP32-S3 工作臺指南",
-    "lesson": "{{id}} · {{title}} · ESP32-S3 工作臺指南",
-    "code": "{{id}} 程式碼 · {{title}} · ESP32-S3 工作臺指南",
-    "log": "工作臺日誌 · ESP32-S3 工作臺指南",
-    "parts": "元件函式庫 · ESP32-S3 工作臺指南",
-    "settings": "設定 · ESP32-S3 工作臺指南",
-    "chip": "{{page}} · 晶片 · ESP32-S3 工作臺指南"
+    "labs": "Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "code": "{{id}} 程式碼 · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "log": "工作臺日誌 · ESP32-S3 · Pulsar C5 Labs",
+    "parts": "元件函式庫 · Pulsar C5 Labs",
+    "settings": "設定 · Pulsar C5 Labs",
+    "chip": "{{page}} · 晶片 · ESP32-S3 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "錯誤",

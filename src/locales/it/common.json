@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Guida da banco ESP32-S3",
+    "title": "Pulsar C5 Labs",
     "loading": "Caricamento della guida da banco…",
     "loadingSettings": "Caricamento delle impostazioni…"
   },
@@ -13,7 +13,7 @@
   "layout": {
     "skip": "Vai al contenuto",
     "loading": "Caricamento",
-    "brand": "ESP32-S3 <part>guida da banco</part>",
+    "brand": "Pulsar <part>C5 Labs</part>",
     "sections": "Sezioni",
     "nav": {
       "labs": "Lab",
@@ -21,18 +21,20 @@
       "bench": "Banco",
       "settings": "Impostazioni"
     },
-    "footnote": "La disposizione dei pin segue l'Espressif DevKitC-1 v1.0. I cloni sono quasi identici, ma contano sempre le etichette stampate sulla tua scheda. Le tue spunte sono salvate solo in questo browser.",
+    "footnote": "Le lezioni esistenti e i loro pinout usano la ESP32-S3 DevKitC-1, non la Pulsar C5. Controlla le etichette sulla scheda. Le tue spunte sono salvate solo in questo browser.",
     "partsLink": "La libreria dei componenti",
+    "credit": "Basato sul progetto originale di Abderrehmen Gharsallah: <project>ESP32 Labs</project>.",
+    "legacyNotice": "Contenuti ESP32-S3 precedenti: collegamenti e firmware di queste lezioni non sono ancora adattati alla Pulsar C5.",
     "new": "Nuovo"
   },
   "titles": {
-    "labs": "Lab · Guida da banco ESP32-S3",
-    "lesson": "{{id}} · {{title}} · Guida da banco ESP32-S3",
-    "code": "Codice {{id}} · {{title}} · Guida da banco ESP32-S3",
-    "log": "Registro del banco · Guida da banco ESP32-S3",
-    "parts": "Libreria dei componenti · Guida da banco ESP32-S3",
-    "settings": "Impostazioni · Guida da banco ESP32-S3",
-    "chip": "{{page}} · Scheda tecnica · Guida da banco ESP32-S3"
+    "labs": "Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "code": "Codice {{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "log": "Registro del banco · ESP32-S3 · Pulsar C5 Labs",
+    "parts": "Libreria dei componenti · Pulsar C5 Labs",
+    "settings": "Impostazioni · Pulsar C5 Labs",
+    "chip": "{{page}} · Scheda tecnica · ESP32-S3 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "Errore",

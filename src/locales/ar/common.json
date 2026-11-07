@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "دليل طاولة ESP32-S3",
+    "title": "Pulsar C5 Labs",
     "loading": "جارٍ تحميل دليل الطاولة…",
     "loadingSettings": "جارٍ تحميل الإعدادات…"
   },
@@ -13,7 +13,7 @@
   "layout": {
     "skip": "تخطَّ إلى المحتوى",
     "loading": "جارٍ التحميل",
-    "brand": "ESP32-S3 <part>دليل الطاولة</part>",
+    "brand": "Pulsar <part>C5 Labs</part>",
     "sections": "الأقسام",
     "nav": {
       "labs": "المختبرات",
@@ -21,18 +21,20 @@
       "bench": "الطاولة",
       "settings": "الإعدادات"
     },
-    "footnote": "يتبع ترتيب الأطراف لوحة Espressif DevKitC-1 v1.0. النسخ المقلّدة شبه مطابقة، لكن ما هو مطبوع على لوحتك هو المرجع دائمًا. تُحفظ علاماتك في هذا المتصفح فقط.",
+    "footnote": "تستخدم الدروس الحالية ومخططات أطرافها لوحة ESP32-S3 DevKitC-1، وليس Pulsar C5. تحقّق من التسميات على لوحتك. تُحفظ علاماتك في هذا المتصفح فقط.",
     "partsLink": "مكتبة القطع",
+    "credit": "استنادًا إلى المشروع الأصلي لـ Abderrehmen Gharsallah: <project>ESP32 Labs</project>.",
+    "legacyNotice": "محتوى ESP32-S3 السابق: لم تُكيَّف توصيلات هذه الدروس وبرمجياتها الثابتة بعد للوحة Pulsar C5.",
     "new": "جديد"
   },
   "titles": {
-    "labs": "المختبرات · دليل طاولة ESP32-S3",
-    "lesson": "{{id}} · {{title}} · دليل طاولة ESP32-S3",
-    "code": "شيفرة {{id}} · {{title}} · دليل طاولة ESP32-S3",
-    "log": "سجل الطاولة · دليل طاولة ESP32-S3",
-    "parts": "مكتبة القطع · دليل طاولة ESP32-S3",
-    "settings": "الإعدادات · دليل طاولة ESP32-S3",
-    "chip": "{{page}} · ورقة البيانات · دليل طاولة ESP32-S3"
+    "labs": "Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "code": "شيفرة {{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
+    "log": "سجل الطاولة · ESP32-S3 · Pulsar C5 Labs",
+    "parts": "مكتبة القطع · Pulsar C5 Labs",
+    "settings": "الإعدادات · Pulsar C5 Labs",
+    "chip": "{{page}} · ورقة البيانات · ESP32-S3 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "خطأ",
