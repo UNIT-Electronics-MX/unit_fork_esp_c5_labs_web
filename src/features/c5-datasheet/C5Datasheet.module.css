@@ -105,6 +105,10 @@
   gap: 12px;
 }
 
+.metrics {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
 .metric,
 .card,
 .callout {
@@ -237,5 +241,20 @@
 @media (max-width: 650px) {
   .twoColumns {
     grid-template-columns: 1fr;
+  }
+
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metric {
+    min-height: 138px;
+    padding: 14px;
+  }
+}
+
+@media (min-width: 651px) and (max-width: 1050px) {
+  .metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

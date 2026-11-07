@@ -40,6 +40,17 @@ export function C5Datasheet() {
 
       {section === "overview" && (
         <div className={styles.content}>
+          <section aria-labelledby="c5-board">
+            <div className={styles.sectionHead}>
+              <div>
+                <h2 id="c5-board">{t("overview.boardTitle")}</h2>
+                <p>{t("overview.boardText")}</p>
+              </div>
+              <a href={C5_HARDWARE_URL} target="_blank" rel="noreferrer">{t("source.hardware")}</a>
+            </div>
+            <BoardExplorer />
+          </section>
+
           <section aria-labelledby="c5-at-glance">
             <div className={styles.sectionHead}>
               <h2 id="c5-at-glance">{t("overview.atGlance")}</h2>
@@ -54,17 +65,6 @@ export function C5Datasheet() {
                 </div>
               ))}
             </div>
-          </section>
-
-          <section aria-labelledby="c5-board">
-            <div className={styles.sectionHead}>
-              <div>
-                <h2 id="c5-board">{t("overview.boardTitle")}</h2>
-                <p>{t("overview.boardText")}</p>
-              </div>
-              <a href={C5_HARDWARE_URL} target="_blank" rel="noreferrer">{t("source.hardware")}</a>
-            </div>
-            <BoardExplorer />
           </section>
 
           <section className={styles.callout} aria-labelledby="c5-chip-board">

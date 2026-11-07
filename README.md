@@ -161,8 +161,6 @@ Copy `.env.example` to `.env` to override:
 | `VITE_LABS_SOURCE_URL` | `https://github.com/agharsallah/esp-labs/tree/main/labs/` | Where each lesson's "code on GitHub" link points          |
 | `VITE_LOG_LEVEL`       | `info`                                                | `debug`, `info`, `warn`, `error` or `silent`                  |
 | `FIRMWARE_DIR`         | `../esp-labs`                                         | Build time only: the firmware checkout the code reader shows  |
-| `REFERENCE_FILE`       | `docs-llm/esp32-s3/ESP32-S3_REFERENCE.md`             | Legacy S3 reference build input; the visible C5 datasheet uses the bundled PDF |
-| `VITE_REFERENCE_URL`   | `./reference/`                                        | Legacy S3 reference asset path |
 
 ## Deploy to GitHub Pages
 
@@ -198,8 +196,8 @@ The workflow uses GitHub's built-in token; no Vercel account, token or project v
 | `src/labs/shared/`          | `Simulation` and the lab-screen engine (screen + buttons + serial)                                                   |
 | `src/features/`             | App screens: labs map, lesson sheet and dock, navigation, board pinout, code reader, bench log, settings, progress   |
 | `src/features/c5-datasheet/` | The visible C5 datasheet pages, source links and board viewer                                            |
-| `src/features/chip/`, `src/content/chip/` | Legacy S3 reference source, no longer routed into the visible datasheet                         |
-| `src/features/reference/`   | Legacy S3 reference reader source                                                                                    |
+| `src/features/chip/`, `src/content/chip/` | Legacy S3 reference source, no longer routed or bundled into the visible datasheet              |
+| `src/features/reference/`   | Legacy S3 reference reader source, no longer bundled                                                                 |
 | `src/ui/`                   | Design-system pieces: Panel, Button, Terminal, SequenceDiagram, RichText…                                            |
 | `src/ui/parts/`             | The parts library: isometric illustrations of every component (`<PartIcon name="led" />`), gallery at `#/parts`      |
 | `src/ui/stage3d/`           | The shared 3D stage (three.js): orbit camera, toolbar, leaders, ink outlines, toon materials                         |
@@ -207,7 +205,7 @@ The workflow uses GitHub's built-in token; no Vercel account, token or project v
 | `src/lib/`                  | Logger, storage, theme, palette, animation loop, http, clipboard                                                     |
 | `src/styles/tokens.css`     | Every colour, font and radius; light and dark themes                                                                 |
 | `tools/firmware/`           | Reads `esp-labs` (or an old `test-esp`) and ships each env's code as JSON (Vite plugin)                              |
-| `tools/reference/`          | Splits the reference into typed sections and emits them as JSON (Vite plugin, only when `REFERENCE_FILE` exists)     |
+| `tools/reference/`          | Legacy S3 reference tooling, retained in source but not used by the C5 build                                         |
 | `public/data/`              | Bench status and log (validated with zod when fetched)                                                               |
 | `docs-llm/`                 | Offline React, React Router and TanStack Query docs used to build this (fetched, git-ignored)                        |
 

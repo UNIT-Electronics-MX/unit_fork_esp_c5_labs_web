@@ -4,7 +4,6 @@ import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import { loadEnv } from "vite";
 import { defineConfig } from "vitest/config";
 import { firmwarePlugin } from "./tools/firmware/vite-plugin.ts";
-import { referencePlugin } from "./tools/reference/vite-plugin.ts";
 
 // React Compiler memoizes components and hooks at build time, so the code stays free of
 // hand-written useMemo/useCallback. `base: "./"` keeps every asset URL relative: the build
@@ -20,15 +19,6 @@ export default defineConfig(({ mode }) => ({
       required: process.env.FIRMWARE_REQUIRED === "1",
       root: fileURLToPath(
         new URL(loadEnv(mode, process.cwd(), "").FIRMWARE_DIR || "../esp-labs", import.meta.url),
-      ),
-    }),
-    // REFERENCE_FILE: Espressif's reference for the citation reader; optional, committed for the deploy.
-    referencePlugin({
-      file: fileURLToPath(
-        new URL(
-          loadEnv(mode, process.cwd(), "").REFERENCE_FILE || "docs-llm/esp32-s3/ESP32-S3_REFERENCE.md",
-          import.meta.url,
-        ),
       ),
     }),
   ],
