@@ -97,7 +97,11 @@ export function AppLayout() {
           t={t}
           i18nKey="layout.credit"
           components={{
-            project: <a href="https://github.com/agharsallah/esp-labs-web" target="_blank" rel="noreferrer" />,
+            project: (
+              <a href="https://github.com/agharsallah/esp-labs-web" target="_blank" rel="noreferrer">
+                ESP32 Labs
+              </a>
+            ),
           }}
         />
       </p>
