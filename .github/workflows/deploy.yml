@@ -1,6 +1,6 @@
 # Deploys main to GitHub Pages when you run it (Actions → Deploy → Run workflow, or
 # `gh workflow run Deploy --ref main`). The build includes the esp-labs firmware checkout.
-# Only main may deploy, and CI must have passed on the deployed commit.
+# Only main may deploy; checks run before the upload.
 #
 # A successful deploy is then released: tagged vX.Y.Z (the next semver from the Conventional
 # Commits since the last tag, tools/deploy/), with grouped release notes.
@@ -24,7 +24,7 @@ jobs:
   deploy:
     name: GitHub Pages
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     environment:
       name: github-pages
       url: ${{ steps.pages.outputs.page_url }}
@@ -39,17 +39,6 @@ jobs:
         run: |
           echo '::error::Only main may be deployed to GitHub Pages.'
           exit 1
-      # Refuses a commit whose CI is still running or failed, so a red main never goes live.
-      - name: CI passed on this commit
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          conclusion="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow CI --commit "$GITHUB_SHA" \
-            --event push --limit 1 --json conclusion --jq '.[0].conclusion // ""')"
-          if [ "$conclusion" != "success" ]; then
-            echo "::error::CI on $GITHUB_SHA is '${conclusion:-not finished}', not 'success'. Wait for it, or fix main."
-            exit 1
-          fi
       # The whole history and the tags, to find the last release.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -68,6 +57,12 @@ jobs:
         run: node tools/deploy/cli.ts plan | tee -a "$GITHUB_OUTPUT"
       - name: Configure Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+      - name: Lint
+        run: pnpm lint
+      - name: Check chip citations
+        run: pnpm chip:refs
+      - name: Test
+        run: pnpm test
       - name: Build
         env:
           FIRMWARE_REQUIRED: "1"

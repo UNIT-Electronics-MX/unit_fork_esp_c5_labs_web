@@ -172,9 +172,9 @@ Copy `.env.example` to `.env` to override:
 
 <br>
 
-The app uses relative asset paths and a hash router, so it works under the repository's Pages path without rewrite rules. The [Deploy](.github/workflows/deploy.yml) workflow checks out the guide and the sibling `esp-labs` firmware, builds with `pnpm build`, uploads `dist/` to GitHub Pages and publishes a GitHub release with the deployed URL. It refuses any branch other than `main` and requires CI to have passed on that commit. Merging to `main` does not deploy.
+The app uses relative asset paths and a hash router, so it works under the repository's Pages path without rewrite rules. The [Deploy](.github/workflows/deploy.yml) workflow checks out the guide and the sibling `esp-labs` firmware, runs lint, citation checks and tests, builds with `pnpm build`, uploads `dist/` to GitHub Pages and publishes a GitHub release with the deployed URL. It refuses any branch other than `main`. Merging to `main` does not deploy.
 
-In repository **Settings → Pages**, choose **GitHub Actions** as the build and deployment source once. Then run **Actions → Deploy → Run workflow** on `main`, or:
+If GitHub asks you to enable Actions in this fork, do that on the **Actions** tab. In repository **Settings → Pages**, choose **GitHub Actions** as the build and deployment source once. Then run **Actions → Deploy → Run workflow** on `main`, or:
 
 ```sh
 gh workflow run Deploy --ref main
