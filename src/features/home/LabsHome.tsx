@@ -8,6 +8,7 @@ import { progress, useTicks } from "@/features/progress/progress-store";
 import { useStore } from "@/lib/storage";
 import { Icon } from "@/ui/Icon";
 import { BoardExplorer } from "./board3d/BoardExplorer";
+import { PulsarPinout } from "./board3d/PulsarPinout";
 import { ContinueCard } from "./ContinueCard";
 import { KitFinder } from "./kit/KitFinder";
 import styles from "./LabsHome.module.css";
@@ -16,8 +17,8 @@ import { TrackCard } from "./TrackCard";
 
 /**
  * The labs at a glance, on drafting paper: where you are, the lesson to pick up, the parts on
- * your bench and the labs they unlock, the board itself in 3D (each part with the labs that use
- * it), then every theme as a row of lesson tiles.
+ * your bench and the labs they unlock, the Pulsar C5 in 3D, then every theme as a row of lesson
+ * tiles.
  */
 export function LabsHome() {
   const ticks = useTicks();
@@ -105,9 +106,10 @@ export function LabsHome() {
       <section className={styles.board} aria-labelledby="board-title">
         <div className={styles.sectionHead}>
           <h2 id="board-title">{t("board.title")}</h2>
-          <p>{t("board.intro")}</p>
+          <p>{t("board.c5Intro")}</p>
         </div>
-        <BoardExplorer lessons={all} />
+        <BoardExplorer />
+        <PulsarPinout />
       </section>
 
       <section className={styles.map} aria-labelledby="map-title">

@@ -1,0 +1,56 @@
+.pinout {
+  overflow: hidden;
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+}
+
+.pinout summary {
+  padding: 14px 18px;
+  color: var(--ink);
+  font: 700 15px var(--font-display);
+  cursor: pointer;
+}
+
+.note,
+.source {
+  margin: 0;
+  padding: 0 18px 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.scroll {
+  max-height: 420px;
+  overflow: auto;
+  margin: 0 18px 12px;
+}
+
+.scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font: 12px var(--font-mono);
+  text-align: left;
+}
+
+.scroll th,
+.scroll td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.scroll thead {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+}
+
+.scroll tbody tr:nth-child(even) {
+  background: var(--bg);
+}
+
+.source a {
+  color: var(--copper);
+}

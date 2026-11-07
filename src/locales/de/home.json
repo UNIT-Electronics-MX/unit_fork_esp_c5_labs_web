@@ -63,6 +63,7 @@
   "board": {
     "title": "Lern das Board kennen",
     "intro": "Sechs Teile, die du Lab für Lab brauchst. Zieh am Board, um es zu drehen; wähl ein Teil, um es leuchten zu lassen und zu sehen, welche Labs es nutzen.",
+    "c5Intro": "Erkunde die Pulsar C5 in 3D: drehen, zoomen, Bauteile ansehen und Schichten trennen. Die Lektionen unten verwenden noch die ESP32-S3-Verdrahtung.",
     "model": "3D-Modell des ESP32-S3 DevKitC-1: das Modul mit Antenne, zwei USB-C-Ports, BOOT- und RST-Taster, die RGB-LED und zwei Reihen Header-Pins. Zieh, um es zu drehen.",
     "fallback": "Jedes Teil ist in den Karten beschrieben.",
     "usedIn": "Genutzt in ",

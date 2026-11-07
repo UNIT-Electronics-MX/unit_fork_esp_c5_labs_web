@@ -67,6 +67,7 @@
   "board": {
     "title": "Conoce la placa",
     "intro": "Seis piezas que usarás laboratorio tras laboratorio. Arrastra la placa para girarla; elige una pieza para iluminarla y ver qué laboratorios la usan.",
+    "c5Intro": "Explora la Pulsar C5 en 3D: gírala, acércala, inspecciona sus componentes y separa sus capas. Las lecciones de abajo aún usan conexiones del ESP32-S3.",
     "model": "Modelo 3D de la ESP32-S3 DevKitC-1: el módulo con su antena, dos puertos USB-C, los botones BOOT y RST, el LED RGB y dos filas de pines. Arrastra para girarlo.",
     "fallback": "Cada pieza se describe en las tarjetas.",
     "usedIn": "Se usa en ",

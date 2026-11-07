@@ -63,6 +63,7 @@
   "board": {
     "title": "Kartla tanış",
     "intro": "Deney deney kullanacağın altı parça. Kartı çevirmek için sürükle; bir parça seçince ışıklanır ve hangi deneylerde kullanıldığını gösterir.",
+    "c5Intro": "Pulsar C5 modelini 3D olarak inceleyin: döndürün, yakınlaştırın, bileşenleri görün ve katmanları ayırın. Aşağıdaki dersler hâlâ ESP32-S3 bağlantılarını kullanıyor.",
     "model": "ESP32-S3 DevKitC-1'in 3B modeli: anteni olan modül, iki USB-C portu, BOOT ve RST düğmeleri, RGB LED ve iki sıra başlık pini. Çevirmek için sürükle.",
     "fallback": "Her parça kartlarda anlatılıyor.",
     "usedIn": "Kullanıldığı yerler: ",

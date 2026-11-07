@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulsar C5 3D</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<script>
+const params = new URLSearchParams(location.search);
+if (params.has('embed')) document.documentElement.dataset.embed = 'true';
+if (params.get('lang') === 'en') document.documentElement.lang = 'en';
+</script>
+<style>
+/* Layout: product header, then a large 3D stage beside a narrow spec rail; stacks on phones. */
+:root{
+  --bg:#eceee7; --panel:#f7f8f3; --fg:#1b1d16; --muted:#5d6152; --line:#d3d6c8;
+  --accent:#f2b705; --accent-ink:#7c5d00; --stage-a:#f9faf5; --stage-b:#d9ddcd;
+  --chip:#e2e5d8;
+  --f-display:"Chakra Petch", "Rajdhani", "Segoe UI", sans-serif;
+  --f-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12130f; --panel:#1a1b16; --fg:#ecebdf; --muted:#9a9b88; --line:#2d2e26;
+  --accent:#f2b705; --accent-ink:#f2c94c; --stage-a:#26271f; --stage-b:#0c0d0a; --chip:#24251e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12130f; --panel:#1a1b16; --fg:#ecebdf; --muted:#9a9b88; --line:#2d2e26;
+  --accent:#f2b705; --accent-ink:#f2c94c; --stage-a:#26271f; --stage-b:#0c0d0a; --chip:#24251e; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:28px 40px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:22px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(40px,7vw,68px);line-height:.95;margin:6px 0 0;letter-spacing:-.01em;text-wrap:balance}
+h1 b{color:var(--accent);font-weight:700}
+.lede{color:var(--muted);max-width:52ch;margin:10px 0 0}
+.dims{font-family:var(--f-mono);font-size:13px;display:flex;gap:8px;flex-wrap:wrap}
+.dims span{background:var(--chip);border:1px solid var(--line);padding:4px 9px;border-radius:4px;font-variant-numeric:tabular-nums}
+
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px;align-items:start}
+@media (max-width:880px){.main{grid-template-columns:minmax(0,1fr)}}
+
+.viewer{display:grid;gap:10px;min-width:0}
+#stage{position:relative;height:clamp(440px,72vh,760px);border-radius:10px;overflow:hidden;cursor:grab;touch-action:none;user-select:none;
+  background:radial-gradient(120% 90% at 50% 35%, var(--stage-a), var(--stage-b));border:1px solid var(--line);perspective:2000px}
+#stage.drag{cursor:grabbing}
+#stage::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:24px 24px;opacity:.25;mask-image:radial-gradient(closest-side,transparent 55%,#000)}
+#zoom{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+#board{position:absolute;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+#board.live{transition:none}
+.pl{position:absolute;left:0;top:0;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.2,.7,.2,1), opacity .5s}
+.pl img{display:block;width:100%;height:100%;max-width:none;pointer-events:none;-webkit-user-drag:none}
+.inner{opacity:0;background:rgba(58,46,14,.82);border-radius:12px}
+.inner img{opacity:.95}
+.edge{position:absolute;background-color:#6f5d22;transition:opacity .4s}
+.tag{position:absolute;opacity:0;transition:opacity .4s, transform .9s cubic-bezier(.2,.7,.2,1);font-family:var(--f-mono);font-size:13px;white-space:nowrap;
+  color:var(--fg);background:var(--panel);border:1px solid var(--line);padding:3px 8px;border-radius:4px;transform-style:preserve-3d}
+.tag::before{content:"";position:absolute;right:100%;top:50%;width:26px;border-top:1px dashed var(--muted)}
+.legend{position:absolute;right:max(12px, env(safe-area-inset-right, 0px));top:12px;margin:0;padding:10px 12px;list-style:none;display:grid;gap:6px;font-family:var(--f-mono);font-size:12px;background:var(--panel);border:1px solid var(--line);border-radius:6px;opacity:0;transform:translateY(-4px);transition:opacity .4s, transform .4s;pointer-events:none}
+.legend li{display:flex;align-items:center;gap:8px}.legend i{width:10px;height:10px;border-radius:2px}
+.exploded .legend{opacity:1;transform:none}
+.exploded .inner{opacity:1}
+.exploded .edge{opacity:0}
+.nocomp .comps{display:none}
+
+/* components */
+.comps{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.cub{position:absolute;transform-style:preserve-3d;--c:#222;--t:#2a2a2a}
+.cub>i{position:absolute;display:block;background:var(--c)}
+.cub>i.ft{inset:0;background:var(--t)}
+.cub>i.sx{filter:brightness(.72)} .cub>i.sy{filter:brightness(.55)}
+.cub:hover>i.ft,.cub.hl>i.ft{outline:1.5px solid var(--accent);outline-offset:1px}
+.k-cap{--c:#9c7f55;--t:linear-gradient(90deg,#c9ccd0 0 22%,#b89466 22% 78%,#c9ccd0 78%)}
+.k-res{--c:#151515;--t:linear-gradient(90deg,#c9ccd0 0 20%,#141414 20% 80%,#c9ccd0 80%)}
+.k-ind{--c:#3c3c3c;--t:linear-gradient(90deg,#c9ccd0 0 20%,#4a4a48 20% 80%,#c9ccd0 80%)}
+.k-led{--c:#e8d36a;--t:linear-gradient(90deg,#c9ccd0 0 20%,#f6e27a 20% 80%,#c9ccd0 80%)}
+.k-dio{--c:#161616;--t:linear-gradient(90deg,#c9ccd0 0 18%,#1b1b1b 18% 82%,#c9ccd0 82%)}
+.k-ic{--c:#18181a;--t:linear-gradient(135deg,#2a2b2e,#141416)}
+.k-lid{--c:#9aa1a8;--t:linear-gradient(135deg,#e1e5e9,#9da4ab)}
+.k-cer{--c:#d9d6cc;--t:linear-gradient(90deg,#c9ccd0 0 15%,#ece8dc 15% 85%,#c9ccd0 85%)}
+.k-opt{--c:#141414;--t:radial-gradient(circle at 28% 50%,#4b5563 0 14%,transparent 15%),radial-gradient(circle at 72% 50%,#5b4b63 0 14%,transparent 15%),#121212}
+.k-rgb{--c:#e9e9e4;--t:radial-gradient(circle,#ffe9a8 0 18%,#f4f3ee 22%)}
+.k-jst{--c:#d8cf9c;--t:linear-gradient(#efe7bb,#ddd3a0)}
+.k-ipex{--c:#b9a35a;--t:radial-gradient(circle,#e8e3cf 0 14%,#c7a645 16% 30%,#e7e2d2 32% 46%,#c2c6ca 48%)}
+.k-btn{--c:#9aa1a8;--t:radial-gradient(ellipse 40% 50%,#1d1d1d 0 95%,transparent),linear-gradient(#cfd4d8,#a3aab0)}
+.k-sd{--c:#1b1b1d;--t:linear-gradient(135deg,#2c2d31,#18181a 60%,#26272b)}
+.k-usb{--c:#a7adb4;--t:linear-gradient(90deg,#b8bec5,#eef1f4 45%,#c3c8ce 60%,#a2a8af)}
+.lbl{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-mono);font-size:9px;color:#c9c9c4;letter-spacing:.04em;transform-style:preserve-3d}
+
+#tip{position:absolute;pointer-events:none;z-index:5;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 9px;
+  font-size:13px;line-height:1.3;max-width:240px;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+#tip b{font-family:var(--f-mono);font-weight:500;color:var(--accent-ink);margin-right:6px}
+.hint{position:absolute;left:12px;bottom:10px;font-family:var(--f-mono);font-size:12px;color:var(--muted);pointer-events:none}
+
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.seg{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--panel)}
+.seg button,.tog{font:500 13px/1 var(--f-body);color:var(--fg);background:transparent;border:0;padding:10px 14px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.toggles{display:flex;gap:8px;flex-wrap:wrap}
+.tog{border:1px solid var(--line);border-radius:7px;background:var(--panel);display:inline-flex;gap:8px;align-items:center}
+.tog::before{content:"";width:9px;height:9px;border-radius:2px;border:1.5px solid var(--muted)}
+.tog[aria-pressed="true"]::before{background:var(--accent);border-color:var(--accent)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+aside{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:16px;min-width:0}
+aside h2{font-family:var(--f-display);font-size:18px;font-weight:600;margin:0;letter-spacing:.01em}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:7px 14px;font-size:13.5px}
+dt{color:var(--muted);font-family:var(--f-mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding-top:2px}
+dd{margin:0;font-variant-numeric:tabular-nums;min-width:0}
+.parts{list-style:none;margin:0;padding:0;display:grid;gap:2px;font-size:13.5px}
+.parts li{display:flex;justify-content:space-between;gap:10px;padding:5px 6px;border-radius:5px;cursor:default}
+.parts li:hover,.parts li.on{background:var(--chip)}
+.parts code{font-family:var(--f-mono);font-size:12px;color:var(--accent-ink)}
+.src{font-size:12.5px;color:var(--muted);margin:0}
+@media (prefers-reduced-motion: reduce){#board,.pl,.comps,.tag{transition:none}}
+:root[data-embed="true"] body{margin:0;padding:0}
+:root[data-embed="true"] .wrap{max-width:none;gap:0}
+:root[data-embed="true"] .wrap>header,:root[data-embed="true"] aside{display:none}
+:root[data-embed="true"] .main{display:block}
+:root[data-embed="true"] #stage{height:calc(100vh - 64px);min-height:380px}
+:root[data-embed="true"] .viewer{gap:12px}
+:root[data-embed="true"] .bar{padding:0 4px 4px}
+@media (max-width:700px){:root[data-embed="true"] #stage{height:calc(100vh - 116px);min-height:360px}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">UNIT Electronics · DevLab · UE0134 v1.2.3</div>
+      <h1>Pulsar <b>C5</b></h1>
+      <p class="lede">ESP32-C5 con Wi-Fi 6 en 2.4 y 5 GHz, Bluetooth 5 LE y 802.15.4 para Thread, Zigbee y Matter, en formato Nano con sensores integrados.</p>
+    </div>
+    <div class="dims"><span>17.78 × 43.18 mm</span><span>4 capas</span><span>1.6 mm</span><span>paso 2.54 mm</span></div>
+  </header>
+
+  <div class="main">
+    <section class="viewer">
+      <div id="stage" aria-label="Vista 3D de la tarjeta Pulsar C5. Arrastra para girar, rueda para acercar.">
+        <div id="zoom"><div id="board"></div></div>
+        <div id="tip" hidden></div>
+        <ol class="legend" aria-label="Capas de cobre"><li><i style="background:#f2b705"></i>L1 · Top</li><li><i style="background:#c9a227"></i>L2 · interna</li><li><i style="background:#a8871d"></i>L3 · interna</li><li><i style="background:#f2b705"></i>L4 · Bottom</li></ol>
+        <div class="hint">Arrastra para girar · rueda para zoom</div>
+      </div>
+      <div class="bar">
+        <div class="seg" role="group" aria-label="Vista">
+          <button id="v-iso" aria-pressed="true">Isométrica</button>
+          <button id="v-top" aria-pressed="false">Top</button>
+          <button id="v-bot" aria-pressed="false">Bottom</button>
+          <button id="v-exp" aria-pressed="false">Capas</button>
+        </div>
+        <div class="toggles">
+          <button class="tog" id="t-comp" aria-pressed="true">Componentes</button>
+          <button class="tog" id="t-spin" aria-pressed="false">Girar</button>
+        </div>
+      </div>
+    </section>
+
+    <aside>
+      <h2>Especificaciones</h2>
+      <dl>
+        <dt>MCU</dt><dd>ESP32-C5 (RISC-V)</dd>
+        <dt>Radio</dt><dd>Wi-Fi 6 2.4/5 GHz, BLE 5, IEEE 802.15.4</dd>
+        <dt>Flash</dt><dd>64 Mbit externa</dd>
+        <dt>Antena</dt><dd>Chip + conector U.FL</dd>
+        <dt>Batería</dt><dd>Li-Po 1S, cargador y fuel gauge</dd>
+        <dt>Conectores</dt><dd>USB-C, Qwiic, JST SH 6, microSD</dd>
+      </dl>
+      <h2>Sensores y partes clave</h2>
+      <ul class="parts" id="parts"></ul>
+      <p class="src">Vista generada desde los Gerbers de fabricación v1.2.3 y el archivo pick and place. Pasa el cursor sobre una pieza para identificarla.</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+if (document.documentElement.dataset.embed === 'true' && document.documentElement.lang === 'en') {
+  const labels = {
+    '.hint': 'Drag to rotate · wheel to zoom',
+    '#v-iso': 'Isometric', '#v-top': 'Top', '#v-bot': 'Bottom', '#v-exp': 'Layers',
+    '#t-comp': 'Components', '#t-spin': 'Spin',
+  };
+  for (const [selector, label] of Object.entries(labels)) document.querySelector(selector).textContent = label;
+  document.getElementById('stage').setAttribute('aria-label', '3D view of the Pulsar C5 board. Drag to rotate, scroll to zoom.');
+  document.querySelector('.seg').setAttribute('aria-label', 'View');
+  document.querySelector('.legend').setAttribute('aria-label', 'Copper layers');
+}
+const COMPS = [{"ref":"A2","x":7.79,"y":13.39,"r":0.0,"side":"t","w":2,"h":2,"d":0.75,"k":"lid","name":"LPS22DF \u00b7 presi\u00f3n barom\u00e9trica"},{"ref":"BUILTIN2","x":9.14,"y":11.370000000000001,"r":270.0,"w":1.0,"h":0.5,"d":0.4,"k":"led","name":"LED YELLOW","side":"t"},{"ref":"C1","x":11.78,"y":36.34,"r":90.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 12pF","side":"t"},{"ref":"C10","x":13.75,"y":13.68,"r":180.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 4.7uF","side":"t"},{"ref":"C11","x":14.52,"y":16.09,"r":270.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 100nF","side":"t"},{"ref":"C12","x":3.57,"y":16.919999999999998,"r":270.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 2.2uF","side":"t"},{"ref":"C13","x":5.26,"y":13.879999999999999,"r":180.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 100nF","side":"t"},{"ref":"C17","x":10.4,"y":9.409999999999997,"r":90.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 1uF","side":"t"},{"ref":"C19","x":15.07,"y":13.2,"r":90.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 4.7uF","side":"t"},{"ref":"C2","x":8.79,"y":37.269999999999996,"r":90.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 12pF","side":"t"},{"ref":"C22","x":7.68,"y":34.21,"r":180.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 10uF","side":"t"},{"ref":"C23","x":5.9,"y":29.79,"r":270.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 2.6pF","side":"t"},{"ref":"C3","x":14.41,"y":6.659999999999997,"r":90.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 100nF","side":"t"},{"ref":"C30","x":4.15,"y":29.78,"r":90.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 0.1uF","side":"t"},{"ref":"C31","x":3.31,"y":29.78,"r":90.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 10uF","side":"t"},{"ref":"C32","x":3.31,"y":32.12,"r":270.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 3pF","side":"t"},{"ref":"C33","x":5.35,"y":31.58,"r":180.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 0.1uF","side":"t"},{"ref":"C34","x":5.35,"y":32.55,"r":180.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 10uF","side":"t"},{"ref":"C35","x":6.71,"y":32.1,"r":270.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 1uF","side":"t"},{"ref":"C36","x":12.84,"y":36.36,"r":270.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 1uF","side":"t"},{"ref":"C37","x":14.27,"y":34.58,"r":0.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 1uF","side":"t"},{"ref":"C38","x":13.67,"y":24.5,"r":180.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 100nF","side":"t"},{"ref":"C39","x":8.39,"y":24.509999999999998,"r":0.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 100nF","side":"t"},{"ref":"C40","x":11.58,"y":24.509999999999998,"r":0.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 1uF","side":"t"},{"ref":"C5","x":7.3,"y":35.5,"r":270.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 0.8pF","side":"t"},{"ref":"C6","x":8.19,"y":35.5,"r":270.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 0.3pF","side":"t"},{"ref":"C8","x":7.63,"y":11.82,"r":0.0,"w":1.0,"h":0.5,"d":0.4,"k":"cap","name":"Capacitor 4.7uF","side":"t"},{"ref":"CHG","x":14.52,"y":1.2800000000000011,"r":90.0,"w":1.0,"h":0.5,"d":0.4,"k":"led","name":"LED ORANGE","side":"t"},{"ref":"D1","x":8.87,"y":8.659999999999997,"r":180.0,"w":1.6,"h":0.8,"d":0.5,"k":"dio","name":"Diodo SDM2U30CSP-7B","side":"t"},{"ref":"D4","x":8.86,"y":9.86,"r":180.0,"w":1.6,"h":0.8,"d":0.5,"k":"dio","name":"Diodo SDM2U30CSP-7B","side":"t"},{"ref":"IC1","x":10.57,"y":30.23,"r":90.0,"side":"t","w":6,"h":6,"d":0.85,"k":"ic","lbl":"ESP32-C5","name":"ESP32-C5 \u00b7 Microcontrolador"},{"ref":"IC2","x":12.9,"y":11.259999999999998,"r":90.0,"side":"t","w":3,"h":3,"d":0.9,"k":"ic","name":"BQ24074 \u00b7 cargador Li-Po"},{"ref":"IC3","x":4.77,"y":25.8,"r":0.0,"side":"t","w":3,"h":4,"d":0.55,"k":"ic","name":"BY25Q64 \u00b7 flash 64 Mbit"},{"ref":"IC4","x":12.66,"y":16.09,"r":270.0,"side":"t","w":2,"h":2,"d":0.75,"k":"ic","name":"MAX17048 \u00b7 fuel gauge"},{"ref":"J1","x":11.56,"y":40.34,"r":0.0,"side":"t","w":6,"h":4.6,"d":2.9,"k":"jst","name":"JST SH 4P \u00b7 Conector Qwiic"},{"ref":"J2","x":5.33,"y":40.88,"r":180.0,"side":"t","w":2.6,"h":2.6,"d":1.25,"k":"ipex","name":"U.FL \u00b7 Antena externa"},{"ref":"L2","x":3.67,"y":12.79,"r":270.0,"w":1.6,"h":0.8,"d":0.6,"k":"ind","name":"Inductor 0.47uH","side":"t"},{"ref":"L4","x":10.97,"y":34.97,"r":0.0,"w":1.0,"h":0.5,"d":0.4,"k":"ind","name":"Inductor 24nH","side":"t"},{"ref":"L6","x":5.06,"y":29.79,"r":90.0,"w":1.0,"h":0.5,"d":0.4,"k":"ind","name":"Inductor 2nH","side":"t"},{"ref":"LED1","x":14.56,"y":37.1,"r":180.0,"side":"t","w":1,"h":1,"d":0.6,"k":"rgb","name":"WS2812B 1010 \u00b7 LED RGB"},{"ref":"MICRO_SD-HOLDER","x":8.93,"y":20.7,"r":0.0,"side":"t","w":11.2,"h":5.5,"d":1.4,"k":"sd","name":"microSD \u00b7 Ranura para tarjeta"},{"ref":"PWR","x":3.27,"y":1.2800000000000011,"r":90.0,"w":1.0,"h":0.5,"d":0.4,"k":"led","name":"LED RED","side":"t"},{"ref":"R1","x":13.04,"y":7.240000000000002,"r":180.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 10K","side":"t"},{"ref":"R10","x":6.88,"y":7.229999999999997,"r":0.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 22","side":"t"},{"ref":"R11","x":11.98,"y":13.68,"r":180.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 10K","side":"t"},{"ref":"R12","x":11.67,"y":8.64,"r":0.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 1.1K","side":"t"},{"ref":"R13","x":10.46,"y":13.2,"r":90.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 3.57K","side":"t"},{"ref":"R14","x":6.39,"y":10.189999999999998,"r":180.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 249K","side":"t"},{"ref":"R15","x":9.51,"y":16.19,"r":90.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 4.7K","side":"t"},{"ref":"R16","x":10.64,"y":16.18,"r":90.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 4.7K","side":"t"},{"ref":"R17","x":3.52,"y":15.14,"r":90.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 22R","side":"t"},{"ref":"R2","x":14.39,"y":8.520000000000003,"r":270.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 1.5K","side":"t"},{"ref":"R24","x":9.4,"y":13.2,"r":270.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 10K","side":"t"},{"ref":"R3","x":14.5,"y":35.61,"r":0.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 500","side":"t"},{"ref":"R4","x":3.39,"y":6.729999999999997,"r":270.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 10K","side":"t"},{"ref":"R5","x":10.92,"y":7.240000000000002,"r":0.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 5.1K","side":"t"},{"ref":"R6","x":4.88,"y":7.229999999999997,"r":180.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 5.1K","side":"t"},{"ref":"R7","x":10.43,"y":11.370000000000001,"r":90.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia NC","side":"t"},{"ref":"R8","x":6.39,"y":9.240000000000002,"r":0.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 10K","side":"t"},{"ref":"R9","x":8.94,"y":7.229999999999997,"r":180.0,"w":1.0,"h":0.5,"d":0.35,"k":"res","name":"Resistencia 22","side":"t"},{"ref":"S1","x":3.18,"y":3.9399999999999977,"r":90.0,"side":"t","w":2.6,"h":1.6,"d":0.55,"k":"btn","name":"Bot\u00f3n BOOT"},{"ref":"S2","x":14.66,"y":3.9399999999999977,"r":90.0,"side":"t","w":2.6,"h":1.6,"d":0.55,"k":"btn","name":"Bot\u00f3n RESET"},{"ref":"U$36","x":4.06,"y":8.950000000000003,"r":180.0,"side":"t","w":1.5,"h":1.5,"d":0.5,"k":"ic","name":"SHT40 \u00b7 temperatura y humedad"},{"ref":"U1","x":3.91,"y":36.76,"r":180.0,"side":"t","w":1.6,"h":0.8,"d":0.5,"k":"cer","name":"LFD182G45 \u00b7 filtro RF"},{"ref":"U2","x":5.71,"y":12.27,"r":180.0,"side":"t","w":0.7,"h":1.1,"d":0.4,"k":"ic","name":"SGM6029 \u00b7 regulador"},{"ref":"U3","x":6.46,"y":16.41,"r":270.0,"side":"t","w":4,"h":2,"d":1.1,"k":"opt","name":"VCNL4040 \u00b7 proximidad y luz"},{"ref":"U4","x":4.39,"y":10.659999999999997,"r":0.0,"side":"t","w":0.8,"h":0.8,"d":0.4,"k":"ic","name":"MMC5603 \u00b7 magnet\u00f3metro"},{"ref":"XTAL1","x":10.31,"y":36.36,"r":180.0,"side":"t","w":1.6,"h":1.2,"d":0.45,"k":"lid","name":"Cristal 48 MHz"},{"ref":"J3","x":8.89,"y":2.25,"r":0,"w":8.94,"h":7.5,"d":3.16,"k":"usb","side":"t","name":"USB-C"},{"ref":"J20","x":10.54,"y":40.29,"r":0,"w":8.0,"h":4.25,"d":2.9,"k":"jst","side":"b","name":"JST SH 6 pines"}];
+const S = 12, W = 17.78*S, H = 43.18*S, T = 1.602*S;
+const board = document.getElementById('board'), stage = document.getElementById('stage'), zoomEl = document.getElementById('zoom');
+const tip = document.getElementById('tip');
+board.style.width = W+'px'; board.style.height = H+'px';
+board.style.left = (-W/2)+'px'; board.style.top = (-H/2)+'px';
+
+function el(tag, cls, css, parent){const e=document.createElement(tag); if(cls) e.className=cls; if(css) Object.assign(e.style, css); if(parent) parent.appendChild(e); return e;}
+function plane(src, cls){const p=el('div','pl '+cls,{width:W+'px',height:H+'px'},board); if(src){const i=el('img','',null,p); i.src=src; i.alt='';} return p;}
+
+const topF = plane('pulsar_c5_top.svg','face');
+const l2 = plane('pulsar_c5_l2.svg','inner');
+const l3 = plane('pulsar_c5_l3.svg','inner');
+const bot = plane('pulsar_c5_bottom.svg','face');
+
+// board edges with castellated half-holes on the long sides (15 pins, 2.54 mm pitch, first at 3.81 mm)
+const P = 2.54*S;
+const castel = {backgroundImage:`repeating-linear-gradient(to bottom, #e3b21c 0 ${1.1*S}px, transparent ${1.1*S}px ${P}px)`,
+  backgroundSize:`100% ${15*P}px`, backgroundRepeat:'no-repeat', backgroundPosition:`0 ${(3.81-0.55)*S}px`};
+el('i','edge',Object.assign({left:(-T/2)+'px',top:0,width:T+'px',height:H+'px',transform:'rotateY(90deg)'},castel),board);
+el('i','edge',Object.assign({left:(W-T/2)+'px',top:0,width:T+'px',height:H+'px',transform:'rotateY(90deg)'},castel),board);
+el('i','edge',{left:0,top:(-T/2)+'px',width:W+'px',height:T+'px',transform:'rotateX(90deg)'},board);
+el('i','edge',{left:0,top:(H-T/2)+'px',width:W+'px',height:T+'px',transform:'rotateX(90deg)'},board);
+
+const ct = el('div','comps',null,board), cb = el('div','comps',null,board);
+const tags=[];
+
+const byRef = {};
+for(const c of COMPS){
+  const dir = c.side==='b' ? -1 : 1, w=c.w*S, h=c.h*S, d=c.d*S;
+  const cub = el('div','cub k-'+c.k,{left:(c.x*S-w/2)+'px',top:(c.y*S-h/2)+'px',width:w+'px',height:h+'px',transform:`rotateZ(${-c.r}deg)`}, dir>0?ct:cb);
+  cub.dataset.ref=c.ref;
+  el('i','ft',{transform:`translateZ(${dir*d}px)`},cub);
+  el('i','sy',{left:0,top:h+'px',width:w+'px',height:d+'px',transformOrigin:'0 0',transform:`rotateX(${dir*90}deg)`},cub);
+  el('i','sy',{left:0,top:0,width:w+'px',height:d+'px',transformOrigin:'0 0',transform:`rotateX(${dir*90}deg)`},cub);
+  el('i','sx',{left:0,top:0,width:d+'px',height:h+'px',transformOrigin:'0 0',transform:`rotateY(${-dir*90}deg)`},cub);
+  el('i','sx',{left:w+'px',top:0,width:d+'px',height:h+'px',transformOrigin:'0 0',transform:`rotateY(${-dir*90}deg)`},cub);
+  if(c.lbl){const l=el('span','lbl',{transform:`translateZ(${dir*d+0.3}px)`},cub); l.textContent=c.lbl;}
+  byRef[c.ref]={c,cub};
+}
+
+// key parts list
+const keyRefs=['IC1','U$36','A2','U3','U4','IC4','IC2','IC3','LED1','J2','J1','MICRO_SD-HOLDER'];
+const ul=document.getElementById('parts');
+for(const r of keyRefs){const o=byRef[r]; if(!o) continue; const [n]=o.c.name.split(' · ');
+  const li=el('li','',null,ul); li.innerHTML=`<span></span><code></code>`; li.firstChild.textContent=o.c.name.includes(' · ')?o.c.name.split(' · ')[1]:n; li.lastChild.textContent=n;
+  li.addEventListener('pointerenter',()=>o.cub.classList.add('hl')); li.addEventListener('pointerleave',()=>o.cub.classList.remove('hl'));
+  li.firstChild.textContent = li.firstChild.textContent.charAt(0).toUpperCase()+li.firstChild.textContent.slice(1);
+}
+
+// layer stack positions
+let exploded=false;
+function layout(){
+  const E = exploded ? 1 : 0;
+  const z = exploded ? [120, 40, -40, -120] : [T/2, T*.17, -T*.17, -T/2];
+  topF.style.transform=`translateZ(${z[0]}px)`; l2.style.transform=`translateZ(${z[1]}px)`;
+  l3.style.transform=`translateZ(${z[2]}px)`; bot.style.transform=`rotateY(180deg) translateZ(${-z[3]}px)`;
+  ct.style.transform=`translateZ(${z[0]}px)`; cb.style.transform=`translateZ(${z[3]}px)`;
+  stage.classList.toggle('exploded',exploded);
+}
+
+// orientation
+let rx=58, ry=0, rz=-32, zoom=1, base=1;
+function apply(){board.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg)`;}
+function fit(){const r=stage.getBoundingClientRect(); base=Math.min(r.width/(H*0.95), r.height/(H*1.2)); if(document.documentElement.dataset.embed==='true') base*=1.1; zoomEl.style.transform=`scale(${base*zoom})`;}
+function near(cur,t){return cur+((((t-cur)%360)+540)%360-180);}
+const views={iso:[58,0,-32,false],top:[0,0,0,false],bot:[0,180,0,false],exp:[62,0,-38,true]};
+const btns={iso:'v-iso',top:'v-top',bot:'v-bot',exp:'v-exp'};
+function setView(k){
+  setSpin(false); board.classList.remove('live');
+  const v=views[k]; rx=v[0]; ry=near(ry,v[1]); rz=near(rz,v[2]); exploded=v[3];
+  for(const [n,id] of Object.entries(btns)) document.getElementById(id).setAttribute('aria-pressed', n===k);
+  apply(); layout();
+}
+for(const [n,id] of Object.entries(btns)) document.getElementById(id).addEventListener('click',()=>setView(n));
+function clearPressed(){for(const id of Object.values(btns)) document.getElementById(id).setAttribute('aria-pressed', false);}
+
+document.getElementById('t-comp').addEventListener('click',e=>{const on=e.currentTarget.getAttribute('aria-pressed')!=='true'; e.currentTarget.setAttribute('aria-pressed',on); stage.classList.toggle('nocomp',!on);});
+let spinning=false, raf=0, last=0;
+function tick(t){ if(!spinning) return; const dt=last?Math.min(50,t-last):16; last=t; rz+=dt*0.018; apply(); raf=requestAnimationFrame(tick);}
+function setSpin(on){spinning=on; document.getElementById('t-spin').setAttribute('aria-pressed',on); cancelAnimationFrame(raf); last=0; if(on){board.classList.add('live'); raf=requestAnimationFrame(tick);} }
+document.getElementById('t-spin').addEventListener('click',()=>setSpin(!spinning));
+
+// drag
+let drag=null;
+stage.addEventListener('pointerdown',e=>{ if(e.button!==0) return; drag={x:e.clientX,y:e.clientY,moved:false}; stage.setPointerCapture(e.pointerId); stage.classList.add('drag'); board.classList.add('live'); setSpin(false); board.classList.add('live'); tip.hidden=true;});
+stage.addEventListener('pointermove',e=>{
+  if(drag){const dx=e.clientX-drag.x, dy=e.clientY-drag.y; drag.x=e.clientX; drag.y=e.clientY;
+    if(Math.abs(dx)+Math.abs(dy)>0){drag.moved=true; clearPressed();}
+    const flip = Math.cos(ry*Math.PI/180)<0 ? -1 : 1;
+    rz += dx*0.45*flip; rx = Math.max(-89, Math.min(89, rx - dy*0.35)); apply(); return;}
+  const c=e.target.closest && e.target.closest('.cub');
+  if(c){const o=byRef[c.dataset.ref]; const r=stage.getBoundingClientRect();
+    tip.innerHTML='<b></b><span></span>'; tip.firstChild.textContent=o.c.ref.replace('MICRO_SD-HOLDER','microSD'); tip.lastChild.textContent=o.c.name;
+    tip.hidden=false; const x=Math.min(e.clientX-r.left+14, r.width-250); tip.style.left=x+'px'; tip.style.top=(e.clientY-r.top+14)+'px';}
+  else tip.hidden=true;
+});
+function end(){ if(!drag) return; drag=null; stage.classList.remove('drag'); board.classList.remove('live'); }
+stage.addEventListener('pointerup',end); stage.addEventListener('pointercancel',end);
+stage.addEventListener('pointerleave',()=>{ if(!drag) tip.hidden=true; });
+stage.addEventListener('wheel',e=>{e.preventDefault(); zoom=Math.max(.5,Math.min(3,zoom*Math.exp(-e.deltaY*0.0015))); fit();},{passive:false});
+addEventListener('resize',fit);
+
+apply(); layout(); fit();
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!reduce) setSpin(true);
+</script>
+</body>
+</html>

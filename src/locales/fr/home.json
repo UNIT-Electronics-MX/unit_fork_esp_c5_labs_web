@@ -67,6 +67,7 @@
   "board": {
     "title": "Découvre la carte",
     "intro": "Six pièces que tu retrouveras labo après labo. Fais glisser la carte pour la tourner ; choisis une pièce pour l'allumer et voir quels labos l'utilisent.",
+    "c5Intro": "Explorez la Pulsar C5 en 3D : faites-la tourner, zoomez, inspectez ses composants et séparez ses couches. Les leçons ci-dessous utilisent encore le câblage ESP32-S3.",
     "model": "Modèle 3D de l'ESP32-S3 DevKitC-1 : le module avec son antenne, deux ports USB-C, les boutons BOOT et RST, la LED RGB et deux rangées de broches. Fais glisser pour la tourner.",
     "fallback": "Chaque pièce est décrite dans les cartes.",
     "usedIn": "Utilisée dans ",

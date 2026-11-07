@@ -63,6 +63,7 @@
   "board": {
     "title": "Meet the board",
     "intro": "Six parts you will use lab after lab. Drag the board to turn it; pick a part to light it up and see which labs use it.",
+    "c5Intro": "Explore the Pulsar C5 in 3D: rotate, zoom, inspect components and separate its layers. The lessons below still use ESP32-S3 wiring.",
     "model": "3D model of the ESP32-S3 DevKitC-1: the module with its antenna, two USB-C ports, BOOT and RST buttons, the RGB LED and two rows of header pins. Drag to turn it.",
     "fallback": "Every part is described in the cards.",
     "usedIn": "Used in ",
