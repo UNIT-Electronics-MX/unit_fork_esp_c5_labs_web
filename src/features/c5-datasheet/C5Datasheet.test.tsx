@@ -34,8 +34,19 @@ describe("ESP32-C5 datasheet routes", () => {
     await openApp("#/datasheet/pins?lang=en");
     expect(await screen.findByRole("heading", { level: 1, name: "Pulsar C5 pins and power" }, LOAD)).toBeTruthy();
     expect(screen.getByText("D2 / RGB")).toBeTruthy();
-    expect(screen.getByText(/schematic maps D2\/RGB to GPIO0/)).toBeTruthy();
+    expect(screen.getByText(/shows D2\/RGB as GPIO0 according to the schematic/)).toBeTruthy();
+    expect(screen.getByRole("img", { name: /Top view of the Pulsar C5 pinout/ }).getAttribute("src"))
+      .toContain("pulsar-c5-pinout/pulsar_c5_pinout.svg");
     expect(screen.getByText(/GPIO26, GPIO27 and GPIO28 are strapping pins/)).toBeTruthy();
+  });
+
+  it.each(["00", "01", "02"])("shows the C5 pinout in introduction lesson %s", async (lessonId) => {
+    await openApp(`#/lessons/${lessonId}?lang=en`);
+    const summary = await screen.findByText("Pulsar C5 pinout · 30 positions", {}, LOAD);
+    expect((summary.closest("details") as HTMLDetailsElement).open).toBe(true);
+    expect(screen.getByRole("img", { name: /Top view of the Pulsar C5 pinout/ })).toBeTruthy();
+    expect(screen.getAllByText(/wiring and firmware in these lessons have not yet been adapted/).length)
+      .toBeGreaterThan(0);
   });
 
   it("links C5 peripherals to the bundled official PDF", async () => {

@@ -13,6 +13,7 @@ import { isActive, resolveLesson } from "@/domain/lesson";
 import { lessonSections } from "@/domain/lesson-sections";
 import { entryLesson, stepsTicked } from "@/domain/progress";
 import { BoardSignalsProvider } from "@/features/board/board-signals";
+import { PulsarPinout } from "@/features/home/board3d/PulsarPinout";
 import { LessonPage } from "@/features/lesson/LessonPage";
 import { LessonTabs } from "@/features/lesson/LessonTabs";
 import { SectionNav } from "@/features/lesson/SectionNav";
@@ -95,6 +96,7 @@ export function LessonRoute() {
     <BoardSignalsProvider>
       <title>{t("titles.lesson", { id: lesson.id, title: lesson.title })}</title>
       <TrackNav activeTrack={trackId} />
+      {trackId === "intro" ? <PulsarPinout defaultOpen legacyNotice /> : null}
       <LessonStepper lessons={lessons} currentId={lesson.id} color={track?.color ?? "--copper"} />
       <LessonTabs lesson={lesson} current="lab">
         <SectionNav

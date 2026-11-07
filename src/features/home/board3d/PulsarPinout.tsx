@@ -15,8 +15,8 @@ const PINS = [
   ["SDA / D18", "2", "Sensor I²C SDA"],
   ["SCL / D19", "3", "Sensor I²C SCL"],
   ["A6 / D21", "6", "QWIIC SCL"],
-  ["NEOPIXEL DOUT", "—", "RGB chain output"],
-  ["VBUS", "—", "USB power"],
+  ["RGB / NEOPIXEL DOUT", "—", "RGB chain output"],
+  ["VUSB", "—", "USB power"],
   ["GND", "—", "Ground"],
   ["GND", "—", "Ground"],
   ["VIN", "—", "Power input"],
@@ -67,40 +67,60 @@ const USE_ES: Record<string, string> = {
 };
 
 const SOURCE = "https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_c5/blob/main/tools/product-reference/chapters/04-connectors-pinouts.md";
+const DIAGRAM = `${import.meta.env.BASE_URL}pulsar-c5-pinout/pulsar_c5_pinout.svg`;
 
-export function PulsarPinout({ defaultOpen = false }: { defaultOpen?: boolean }) {
-  const { i18n } = useTranslation();
+export function PulsarPinout({ defaultOpen = false, legacyNotice = false }: { defaultOpen?: boolean; legacyNotice?: boolean }) {
+  const { i18n, t } = useTranslation();
   const es = i18n.resolvedLanguage?.startsWith("es");
 
   return (
     <details className={styles.pinout} open={defaultOpen}>
       <summary>{es ? "Pinout de Pulsar C5 · 30 posiciones" : "Pulsar C5 pinout · 30 positions"}</summary>
+      {legacyNotice ? <p className={styles.legacyNote}>{t("layout.legacyNotice")}</p> : null}
       <p className={styles.note}>
         {es
-          ? "Mapa documentado para la revisión V1.2.3. *D2/RGB figura como GPIO0 en el esquema, pero como GPIO8 en la ilustración del pinout; comprueba la placa antes de usarlo."
-          : "Documented map for revision V1.2.3. *The schematic maps D2/RGB to GPIO0, but the pinout artwork labels it GPIO8; verify the board before using it."}
+          ? "Mapa documentado para la revisión V1.2.3. El diagrama muestra D2/RGB como GPIO0 según el esquema; la ilustración de referencia de UNIT indica GPIO8. Comprueba la placa antes de usar ese pin."
+          : "Documented map for revision V1.2.3. This diagram shows D2/RGB as GPIO0 according to the schematic; UNIT's reference artwork labels it GPIO8. Verify the board before using that pin."}
       </p>
-      <div className={styles.scroll}>
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">{es ? "Posición" : "Position"}</th>
-              <th scope="col">{es ? "Etiqueta" : "Label"}</th>
-              <th scope="col">GPIO</th>
-              <th scope="col">{es ? "Uso principal" : "Main use"}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {PINS.map(([label, gpio, use], i) => (
-              <tr key={i}>
-                <th scope="row">{i + 1}</th>
-                <td>{label}</td>
-                <td>{gpio}</td>
-                <td>{es ? USE_ES[use] : use}</td>
+      <div className={styles.content}>
+        <figure className={styles.diagram}>
+          <div className={styles.diagramScroll}>
+            <img
+              src={DIAGRAM}
+              alt={es ? "Pinout de Pulsar C5 visto desde arriba, con pines GPIO y conector Qwiic" : "Top view of the Pulsar C5 pinout with GPIO pins and Qwiic connector"}
+              width="498"
+              height="455"
+              loading="lazy"
+            />
+          </div>
+          <figcaption>
+            <a href={DIAGRAM} target="_blank" rel="noreferrer">
+              {es ? "Abrir diagrama en tamaño completo" : "Open full-size diagram"}
+            </a>
+          </figcaption>
+        </figure>
+        <div className={styles.scroll}>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">{es ? "Posición" : "Position"}</th>
+                <th scope="col">{es ? "Etiqueta" : "Label"}</th>
+                <th scope="col">GPIO</th>
+                <th scope="col">{es ? "Uso principal" : "Main use"}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {PINS.map(([label, gpio, use], i) => (
+                <tr key={i}>
+                  <th scope="row">{i + 1}</th>
+                  <td>{label}</td>
+                  <td>{gpio}</td>
+                  <td>{es ? USE_ES[use] : use}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
       <p className={styles.source}>
         <a href={SOURCE} target="_blank" rel="noreferrer">
