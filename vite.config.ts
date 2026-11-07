@@ -16,8 +16,8 @@ export default defineConfig(({ mode }) => ({
     react(),
     babel({ presets: [reactCompilerPreset()] }),
     firmwarePlugin({
-      // VERCEL is set on Vercel's servers and by `vercel build`: a deployed guide must have its code.
-      required: Boolean(process.env.VERCEL),
+      // Published builds must include the code reader's firmware; local builds may omit it.
+      required: process.env.FIRMWARE_REQUIRED === "1",
       root: fileURLToPath(
         new URL(loadEnv(mode, process.cwd(), "").FIRMWARE_DIR || "../esp-labs", import.meta.url),
       ),
@@ -32,9 +32,6 @@ export default defineConfig(({ mode }) => ({
       ),
     }),
   ],
-  // Web Analytics and Speed Insights only work on a Vercel deployment (it serves their scripts);
-  // `vercel build` and Vercel's own builds set VERCEL, a plain `pnpm build` does not.
-  define: { "import.meta.env.VITE_ON_VERCEL": JSON.stringify(process.env.VERCEL ? "1" : "") },
   resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
   build: {
     target: "es2023",

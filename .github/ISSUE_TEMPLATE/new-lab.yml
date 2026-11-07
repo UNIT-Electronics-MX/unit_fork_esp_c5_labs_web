@@ -75,7 +75,7 @@ body:
     id: help
     attributes:
       label: Can you help build it?
-      description: Not required. See [CONTRIBUTING.md](https://github.com/agharsallah/esp-labs-web/blob/main/CONTRIBUTING.md#add-a-lab) for how a lab comes together.
+      description: Not required. See [CONTRIBUTING.md](https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/blob/main/CONTRIBUTING.md#add-a-lab) for how a lab comes together.
       options:
         - label: I can write or test the firmware
         - label: I can write the lesson text

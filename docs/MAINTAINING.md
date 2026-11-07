@@ -7,7 +7,7 @@ What runs on every pull request, what protects `main`, and the repository settin
 | Workflow                                                     | When                              | What it does                                                                                       |
 | ------------------------------------------------------------ | --------------------------------- | -------------------------------------------------------------------------------------------------- |
 | [CI](../.github/workflows/ci.yml)                            | every PR, push to `main`, merge queue | `pnpm typecheck`, `pnpm lint`, `pnpm test` (a stale translator catalogue fails), `pnpm chip:refs` (every chip citation names a section of the committed reference), `pnpm build` with the esp-labs firmware, actionlint on the workflows |
-| [Deploy](../.github/workflows/deploy.yml)                    | by hand (Run workflow, `gh workflow run Deploy`) | once CI passed on `main`'s latest commit, builds it with the esp-labs firmware and the reference (`vercel build --prod`), deploys it to Vercel production, tags it `vX.Y.Z` with a GitHub release and its notes, and removes previews older than 30 days. Never runs a PR's code |
+| [Deploy](../.github/workflows/deploy.yml)                    | by hand (Run workflow, `gh workflow run Deploy --ref main`) | once CI passed on the `main` commit, builds it with the esp-labs firmware and the reference (`pnpm build`), deploys `dist/` to GitHub Pages, and tags it `vX.Y.Z` with a GitHub release and its notes. Never runs a PR's code |
 | [CodeQL](../.github/workflows/codeql.yml)                    | every PR, push to `main`, weekly  | security analysis of the TypeScript and of the workflows                                          |
 | [Dependency review](../.github/workflows/dependency-review.yml) | PRs that touch dependencies or `.github/` | fails when a PR adds a dependency with a known moderate-or-worse vulnerability          |
 | [PR title](../.github/workflows/pr-title.yml)                | PR opened or edited               | the title (the squash commit) follows Conventional Commits, lower-case subject                    |
@@ -24,8 +24,8 @@ Every third-party action is pinned to a full commit SHA (Dependabot keeps the pi
 Apply it once, and again after you edit the file (replace `<id>` with the id the first command printed):
 
 ```sh
-gh api -X POST repos/agharsallah/esp-labs-web/rulesets --input .github/rulesets/main.json --jq .id
-gh api -X PUT repos/agharsallah/esp-labs-web/rulesets/<id> --input .github/rulesets/main.json
+gh api -X POST repos/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/rulesets --input .github/rulesets/main.json --jq .id
+gh api -X PUT repos/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/rulesets/<id> --input .github/rulesets/main.json
 ```
 
 ## Repository settings
@@ -33,7 +33,7 @@ gh api -X PUT repos/agharsallah/esp-labs-web/rulesets/<id> --input .github/rules
 These live on GitHub, not in the repo. Apply them once with `gh`:
 
 ```sh
-R=repos/agharsallah/esp-labs-web
+R=repos/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web
 
 # Fork PRs from anyone outside the repo wait for your approval before any workflow runs.
 gh api -X PUT $R/actions/permissions/fork-pr-contributor-approval -f approval_policy=all_external_contributors
@@ -60,36 +60,25 @@ JSON
 
 ## Production deploys
 
-[Deploy](../.github/workflows/deploy.yml) puts `main` on Vercel production when you run it (merging does not deploy), and refuses a commit whose CI has not passed. After a successful deploy:
+[Deploy](../.github/workflows/deploy.yml) puts `main` on GitHub Pages when you run it (merging does not deploy), and refuses a branch other than `main` or a commit whose CI has not passed. The build fails if the firmware checkout is missing. After a successful deploy:
 
 - **Release.** `tools/deploy/` picks the next version from the Conventional Commits since the last `v*` tag (breaking: major, or minor below 1.0.0; `feat`: minor; anything else: patch; the first release is `package.json`'s version), tags the deployed commit and publishes a GitHub release marked latest. The notes group the changes (breaking first, then features, fixes, performance, docs, maintenance) with their PRs, and link the live URL, the commit, the run and the comparison with the previous tag. Redeploying a commit that is already tagged makes no new release. Tags are the version; `package.json`'s stays the starting point.
-- **Metadata.** The Vercel deployment carries the commit, branch, message and release tag (`--meta`), so the dashboard shows what each deployment is; GitHub's `production` environment lists each deploy with its URL.
-- **Cleanup.** Preview deployments (`pnpm deploy:preview`) older than 30 days are removed. Production deployments are kept: they are Vercel's instant rollbacks. A cleanup failure does not fail the deploy.
+- **Deployment history.** GitHub's `github-pages` environment lists each deployment with its URL and workflow run. GitHub Pages serves the latest successful deployment.
 
-Undo a bad release by promoting the previous production deployment in Vercel (Instant Rollback), then fix forward; the next Deploy releases the fix.
+To undo a bad release, revert the change on `main`, wait for CI, then run Deploy again. The next deployment and release contain the revert.
 
-It reads, once:
+Before the first run, set **Settings → Pages → Build and deployment → Source** to **GitHub Actions**. The workflow uses `GITHUB_TOKEN`, so it needs no deployment secrets or variables. Protect the automatically created `github-pages` environment in **Settings → Environments** so only `main` can deploy.
+
+To run it:
 
 ```sh
-R=agharsallah/esp-labs-web
-# The production environment, deployable from main only. It holds the token.
-gh api -X PUT repos/$R/environments/production --input - <<'JSON'
-{ "deployment_branch_policy": { "protected_branches": false, "custom_branch_policies": true } }
-JSON
-gh api -X POST repos/$R/environments/production/deployment-branch-policies -f name=main -f type=branch
-# The ids from .vercel/project.json (after `vercel link`); not secret.
-gh variable set VERCEL_ORG_ID --repo $R --body "$(jq -r .orgId .vercel/project.json)"
-gh variable set VERCEL_PROJECT_ID --repo $R --body "$(jq -r .projectId .vercel/project.json)"
-# A token from https://vercel.com/account/tokens, scoped to the project's team. Pasted at the prompt.
-gh secret set VERCEL_TOKEN --repo $R --env production
+gh workflow run Deploy --ref main
 ```
-
-A secret set on the environment, rather than on the repository, is readable only by jobs that name that environment, so only Deploy sees the token. `pnpm deploy:prod` still works from your machine.
 
 [`.github/rulesets/release-tags.json`](../.github/rulesets/release-tags.json) keeps released `v*` tags from being moved or deleted (admins can bypass). Apply it once, as for `main`:
 
 ```sh
-gh api -X POST repos/agharsallah/esp-labs-web/rulesets --input .github/rulesets/release-tags.json --jq .id
+gh api -X POST repos/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/rulesets --input .github/rulesets/release-tags.json --jq .id
 ```
 
 ## When it gets noisy
@@ -97,7 +86,7 @@ gh api -X POST repos/agharsallah/esp-labs-web/rulesets --input .github/rulesets/
 - **A wave of spam PRs or comments**: Settings → Moderation options → Interaction limits restricts issues, PRs and comments to prior contributors or collaborators for 24 hours up to 6 months:
 
   ```sh
-  gh api -X PUT repos/agharsallah/esp-labs-web/interaction-limits -f limit=existing_users -f expiry=one_week
+  gh api -X PUT repos/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/interaction-limits -f limit=existing_users -f expiry=one_week
   ```
 
 - **One account**: block it from your profile (Settings → Moderation → Blocked users), or report it to GitHub from the ⋯ menu on its comment.

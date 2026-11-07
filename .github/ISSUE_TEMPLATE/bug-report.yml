@@ -12,7 +12,7 @@ body:
     attributes:
       label: Link
       description: Copy the address bar. It carries the lesson, the tab and the language.
-      placeholder: https://esp-labs-web.vercel.app/#/lessons/R3?lang=en
+      placeholder: https://unit-electronics-mx.github.io/unit_fork_esp_c5_labs_web/#/lessons/R3?lang=en
     validations:
       required: true
   - type: dropdown
@@ -84,5 +84,5 @@ body:
     attributes:
       label: Before you send
       options:
-        - label: I searched the [open issues](https://github.com/agharsallah/esp-labs-web/issues) and this is not already there.
+        - label: I searched the [open issues](https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/issues) and this is not already there.
           required: true

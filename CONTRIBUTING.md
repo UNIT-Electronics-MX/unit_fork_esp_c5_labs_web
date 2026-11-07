@@ -15,11 +15,11 @@ Thanks for helping. This guide covers everything from a one-word typo fix to a b
 
 | What                                                 | How                                                                                         |
 | ---------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Something is broken or looks wrong                   | Open a [bug report](https://github.com/agharsallah/esp-labs-web/issues/new?template=bug-report.yml) with the link (it carries the lesson and language) and a screenshot |
-| You have an idea for a lab or a whole theme          | Open a [lab proposal](https://github.com/agharsallah/esp-labs-web/issues/new?template=new-lab.yml): the parts, what the learner builds, what they learn |
-| A translation reads badly                            | Open a [translation issue](https://github.com/agharsallah/esp-labs-web/issues/new?template=translation.yml), or edit `src/locales/<lang>/` directly |
+| Something is broken or looks wrong                   | Open a [bug report](https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/issues/new?template=bug-report.yml) with the link (it carries the lesson and language) and a screenshot |
+| You have an idea for a lab or a whole theme          | Open a [lab proposal](https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/issues/new?template=new-lab.yml): the parts, what the learner builds, what they learn |
+| A translation reads badly                            | Open a [translation issue](https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/issues/new?template=translation.yml), or edit `src/locales/<lang>/` directly |
 | A step is confusing or a fact is wrong               | Edit the lesson in `src/content/lessons/<track>.ts` and open a PR                           |
-| You want to build something                          | Pick an issue labelled [`good first issue`](https://github.com/agharsallah/esp-labs-web/labels/good%20first%20issue) or [`help wanted`](https://github.com/agharsallah/esp-labs-web/labels/help%20wanted), and say so in a comment |
+| You want to build something                          | Pick an issue labelled [`good first issue`](https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/labels/good%20first%20issue) or [`help wanted`](https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/labels/help%20wanted), and say so in a comment |
 
 The firmware lives in its own repo, [esp-labs](https://github.com/agharsallah/esp-labs). A problem with what the board itself does (a crash, a wrong pin, a library) belongs there. A problem with the guide (text, simulator, layout, code reader) belongs here.
 
@@ -29,7 +29,7 @@ You need Node 24.14+ and pnpm 11 (`corepack enable` picks the version pinned in 
 
 ```sh
 git clone https://github.com/agharsallah/esp-labs.git
-git clone https://github.com/agharsallah/esp-labs-web.git
+git clone https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web.git
 cd esp-labs-web
 pnpm install
 pnpm dev        # http://localhost:5180
@@ -91,7 +91,7 @@ Follow [esp-labs: Adding a lab](https://github.com/agharsallah/esp-labs#adding-a
 6. **Optional**: a hand-written code tour in `src/content/code/tours.ts` (stops anchored by text in the firmware; the content test checks the anchors). Without one, the reader builds an automatic tour from the code's own comments.
 7. **Check it** ([below](#before-you-open-a-pull-request)), open the lesson at `#/lessons/S9` at desktop and phone width, and open its **Read the code** tab.
 
-A new **track** also needs an entry in `TRACKS`, a lessons file, a loader in `src/content/queries.ts`, a `src/labs/<track>/widgets.ts` spread into `src/widgets/registry.ts`, a colour token in `tokens.css` and a `TRACK_PART`. Open a [lab proposal](https://github.com/agharsallah/esp-labs-web/issues/new?template=new-lab.yml) first so we can agree on the theme.
+A new **track** also needs an entry in `TRACKS`, a lessons file, a loader in `src/content/queries.ts`, a `src/labs/<track>/widgets.ts` spread into `src/widgets/registry.ts`, a colour token in `tokens.css` and a `TRACK_PART`. Open a [lab proposal](https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web/issues/new?template=new-lab.yml) first so we can agree on the theme.
 
 ## Add a simulator or explainer
 
