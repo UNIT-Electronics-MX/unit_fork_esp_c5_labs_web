@@ -72,6 +72,7 @@
   "board": {
     "title": "Poznaj płytkę",
     "intro": "Sześć części, których będziesz używać w kolejnych ćwiczeniach. Przeciągnij płytkę, by ją obrócić; wybierz część, by ją podświetlić i zobaczyć, które ćwiczenia jej używają.",
+    "c5Menu": "Elementy płytki",
     "c5Intro": "Poznaj Pulsar C5 w 3D: obracaj, przybliżaj, oglądaj elementy i rozdzielaj warstwy. Poniższe lekcje nadal korzystają z połączeń ESP32-S3.",
     "model": "Model 3D ESP32-S3 DevKitC-1: moduł z anteną, dwa porty USB-C, przyciski BOOT i RST, dioda RGB i dwa rzędy pinów listwy. Przeciągnij, by obrócić.",
     "fallback": "Każda część jest opisana w kartach.",

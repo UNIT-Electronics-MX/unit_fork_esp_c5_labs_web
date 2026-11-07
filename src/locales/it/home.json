@@ -68,6 +68,7 @@
   "board": {
     "title": "Conosci la scheda",
     "intro": "Sei componenti che userai lab dopo lab. Trascina la scheda per girarla; scegli un componente per illuminarlo e vedere quali lab lo usano.",
+    "c5Menu": "Componenti della scheda",
     "c5Intro": "Esplora la Pulsar C5 in 3D: ruotala, ingrandiscila, esamina i componenti e separa gli strati. Le lezioni qui sotto usano ancora i collegamenti ESP32-S3.",
     "model": "Modello 3D dell'ESP32-S3 DevKitC-1: il modulo con la sua antenna, due porte USB-C, i pulsanti BOOT e RST, il LED RGB e due file di pin. Trascina per girarlo.",
     "fallback": "Ogni componente è descritto nelle schede.",

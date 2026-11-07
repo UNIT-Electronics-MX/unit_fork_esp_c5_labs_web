@@ -48,9 +48,6 @@ h1 b{color:var(--accent);font-weight:700}
 #stage{position:relative;height:clamp(440px,72vh,760px);border-radius:10px;overflow:hidden;cursor:grab;touch-action:none;user-select:none;
   background:radial-gradient(120% 90% at 50% 35%, var(--stage-a), var(--stage-b));border:1px solid var(--line);perspective:2000px}
 #stage.drag{cursor:grabbing}
-#stage::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
-  background-size:24px 24px;opacity:.25;mask-image:radial-gradient(closest-side,transparent 55%,#000)}
 #zoom{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
 #board{position:absolute;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
 #board.live{transition:none}
@@ -269,7 +266,7 @@ function layout(){
 // orientation
 let rx=58, ry=0, rz=-32, zoom=1, base=1;
 function apply(){board.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg)`;}
-function fit(){const r=stage.getBoundingClientRect(); base=Math.min(r.width/(H*0.95), r.height/(H*1.2)); if(document.documentElement.dataset.embed==='true') base*=1.1; zoomEl.style.transform=`scale(${base*zoom})`;}
+function fit(){const r=stage.getBoundingClientRect(); base=Math.min(r.width/(H*0.95), r.height/(H*1.2)); if(document.documentElement.dataset.embed==='true') base*=r.width>=800?1.3:1.1; zoomEl.style.transform=`scale(${base*zoom})`;}
 function near(cur,t){return cur+((((t-cur)%360)+540)%360-180);}
 const views={iso:[58,0,-32,false],top:[0,0,0,false],bot:[0,180,0,false],exp:[62,0,-38,true]};
 const btns={iso:'v-iso',top:'v-top',bot:'v-bot',exp:'v-exp'};

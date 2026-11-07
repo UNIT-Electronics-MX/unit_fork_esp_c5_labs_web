@@ -64,7 +64,8 @@
   "board": {
     "title": "Meet the board",
     "intro": "Six parts you will use lab after lab. Drag the board to turn it; pick a part to light it up and see which labs use it.",
-    "c5Intro": "Explore the Pulsar C5 in 3D: rotate, zoom and select a card to locate each component. The lessons below still use ESP32-S3 wiring.",
+    "c5Menu": "Board components",
+    "c5Intro": "Explore the Pulsar C5 in 3D: rotate, zoom and open the component menu to locate each part. The lessons below still use ESP32-S3 wiring.",
     "c5Parts": {
       "usb": { "title": "USB-C and controls", "text": "One port for power, programming and serial console. BOOT uses GPIO28; RESET restarts the board." },
       "mcu": { "title": "ESP32-C5HR8", "text": "RISC-V processor with 8 MiB of in-package PSRAM and 8 MiB of external QSPI flash." },

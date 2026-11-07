@@ -9,16 +9,15 @@ const PARTS: readonly {
   id: PartId;
   icon: IconName;
   refs: readonly string[];
-  side: "left" | "right";
 }[] = [
-  { id: "usb", icon: "wire", refs: ["J3", "S1", "S2"], side: "left" },
-  { id: "mcu", icon: "chip", refs: ["IC1", "IC3"], side: "left" },
-  { id: "sensors", icon: "fam-analog", refs: ["A2", "U$36", "U3", "U4"], side: "left" },
-  { id: "rgb", icon: "bulb", refs: ["LED1", "BUILTIN2", "CHG"], side: "left" },
-  { id: "power", icon: "power", refs: ["IC2", "IC4", "U2"], side: "right" },
-  { id: "storage", icon: "fam-memory", refs: ["MICRO_SD-HOLDER", "J20"], side: "right" },
-  { id: "radio", icon: "fam-radio", refs: ["U1", "J2"], side: "right" },
-  { id: "headers", icon: "pin", refs: ["J1"], side: "right" },
+  { id: "usb", icon: "wire", refs: ["J3", "S1", "S2"] },
+  { id: "mcu", icon: "chip", refs: ["IC1", "IC3"] },
+  { id: "sensors", icon: "fam-analog", refs: ["A2", "U$36", "U3", "U4"] },
+  { id: "rgb", icon: "bulb", refs: ["LED1", "BUILTIN2", "CHG"] },
+  { id: "power", icon: "power", refs: ["IC2", "IC4", "U2"] },
+  { id: "storage", icon: "fam-memory", refs: ["MICRO_SD-HOLDER", "J20"] },
+  { id: "radio", icon: "fam-radio", refs: ["U1", "J2"] },
+  { id: "headers", icon: "pin", refs: ["J1"] },
 ];
 
 function illuminate(frame: HTMLIFrameElement | null, part: PartId | null) {
@@ -49,35 +48,44 @@ export function BoardExplorer() {
         loading="lazy"
         onLoad={() => illuminate(frame.current, lit)}
       />
-      <ol className={styles.cards}>
-        {PARTS.map((part, i) => (
-          <li
-            key={part.id}
-            className={styles.card}
-            data-side={part.side}
-            data-on={lit === part.id || undefined}
-            style={{ gridRow: (i % 4) + 1 }}
-            onPointerEnter={() => setHover(part.id)}
-            onPointerLeave={() => setHover(null)}
-          >
-            <button
-              type="button"
-              className={styles.head}
-              aria-pressed={picked === part.id}
-              onClick={() => setPicked((current) => (current === part.id ? null : part.id))}
-              onFocus={() => setHover(part.id)}
-              onBlur={() => setHover(null)}
+      <details className={styles.menu}>
+        <summary className={styles.menuToggle}>
+          <span className={styles.menuIcon} aria-hidden="true"><i /><i /><i /></span>
+          {t("board.c5Menu")}
+          <span className={styles.count} aria-hidden="true">{PARTS.length}</span>
+        </summary>
+        <ol className={styles.cards}>
+          {PARTS.map((part, i) => (
+            <li
+              key={part.id}
+              className={styles.card}
+              data-on={lit === part.id || undefined}
+              data-picked={picked === part.id || undefined}
+              onPointerEnter={() => setHover(part.id)}
+              onPointerLeave={() => setHover(null)}
             >
-              <span className={styles.icon}><Icon name={part.icon} size={28} /></span>
-              <span className={styles.title}>
-                <span className={styles.num} aria-hidden="true">{i + 1}</span>
-                {t(`board.c5Parts.${part.id}.title`)}
-              </span>
-            </button>
-            <p className={styles.text}>{t(`board.c5Parts.${part.id}.text`)}</p>
-          </li>
-        ))}
-      </ol>
+              <button
+                type="button"
+                className={styles.head}
+                aria-expanded={picked === part.id}
+                aria-controls={`c5-part-${part.id}`}
+                onClick={() => setPicked((current) => (current === part.id ? null : part.id))}
+                onFocus={() => setHover(part.id)}
+                onBlur={() => setHover(null)}
+              >
+                <span className={styles.icon}><Icon name={part.icon} size={20} /></span>
+                <span className={styles.title}>
+                  <span className={styles.num} aria-hidden="true">{i + 1}</span>
+                  {t(`board.c5Parts.${part.id}.title`)}
+                </span>
+              </button>
+              <p id={`c5-part-${part.id}`} className={styles.text} hidden={picked !== part.id}>
+                {t(`board.c5Parts.${part.id}.text`)}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </details>
     </div>
   );
 }

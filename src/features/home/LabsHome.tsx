@@ -12,7 +12,6 @@ import { PulsarPinout } from "./board3d/PulsarPinout";
 import { ContinueCard } from "./ContinueCard";
 import { KitFinder } from "./kit/KitFinder";
 import styles from "./LabsHome.module.css";
-import { TraceDecor } from "./TraceDecor";
 import { TrackCard } from "./TrackCard";
 
 /**
@@ -34,7 +33,6 @@ export function LabsHome() {
 
   return (
     <div className={styles.home}>
-      <TraceDecor />
       <header className={styles.top} aria-labelledby="home-title">
         <div className={styles.brand}>
           <p className={styles.kicker}>{t("hero.kicker")}</p>
