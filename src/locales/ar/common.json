@@ -34,7 +34,7 @@
     "log": "سجل الطاولة · ESP32-S3 · Pulsar C5 Labs",
     "parts": "مكتبة القطع · Pulsar C5 Labs",
     "settings": "الإعدادات · Pulsar C5 Labs",
-    "chip": "{{page}} · ورقة البيانات · ESP32-S3 · Pulsar C5 Labs"
+    "chip": "{{page}} · ورقة البيانات · ESP32-C5HR8 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "خطأ",

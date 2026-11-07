@@ -1,0 +1,122 @@
+{
+  "title": "{{page}} · ESP32-C5HR8 · Pulsar C5 Labs",
+  "kicker": "Pulsar C5 · ESP32-C5HR8 · RISC-V",
+  "nav": {
+    "label": "Secciones de la hoja de datos del ESP32-C5",
+    "overview": "Resumen",
+    "inside": "Arquitectura",
+    "pins": "Pines y alimentación",
+    "blocks": "Periféricos",
+    "read": "Leer PDF"
+  },
+  "headings": {
+    "overview": "Por dentro del ESP32-C5HR8",
+    "inside": "RISC-V, memoria y relojes",
+    "pins": "Pines y alimentación de Pulsar C5",
+    "blocks": "Atlas de periféricos del ESP32-C5",
+    "read": "Hoja de datos del ESP32-C5"
+  },
+  "intros": {
+    "overview": "Explora el chip y el modelo isométrico completo de la placa UNIT PULSAR. Cada especificación del chip enlaza a la hoja de datos ESP32-C5 Series v1.5.",
+    "inside": "Una CPU RISC-V principal de 240 MHz trabaja junto a una CPU RISC-V de bajo consumo de 48 MHz. Conoce la memoria y los relojes que las acompañan.",
+    "pins": "Las etiquetas de la placa en formato Nano y los números GPIO del ESP32-C5 son mapas distintos. Consulta ambos antes de conectar un circuito.",
+    "blocks": "Encuentra las interfaces, funciones analógicas, radios y funciones de seguridad del ESP32-C5, con enlaces directos a sus páginas.",
+    "read": "Lee la hoja de datos ESP32-C5 Series v1.5 de 96 páginas incluida en el sitio, o abre el PDF en línea de Espressif."
+  },
+  "source": {
+    "page": "PDF p. {{page}}",
+    "hardware": "Fuente de hardware UNIT"
+  },
+  "overview": {
+    "atGlance": "El chip de un vistazo",
+    "boardTitle": "Conoce la Pulsar C5 completa",
+    "boardText": "Gira e inspecciona las cuatro capas de fabricación. Abre el menú de componentes para resaltar el MCU, sensores, alimentación y conectores.",
+    "chipBoardTitle": "El chip y la placa tienen funciones distintas",
+    "chipBoardText": "El ESP32-C5HR8 aporta las CPU RISC-V, radios y 8 MiB de PSRAM dentro del encapsulado. UNIT añade en la placa Pulsar la flash QSPI externa de 8 MiB, sensores, microSD, circuito de batería y conectores.",
+    "exploreInside": "Explorar la arquitectura",
+    "explorePins": "Ver los pines de la placa"
+  },
+  "metrics": {
+    "hp": "CPU RISC-V principal",
+    "lp": "CPU RISC-V de bajo consumo",
+    "psram": "PSRAM en el encapsulado (HR8)",
+    "gpio": "GPIO programables",
+    "adc": "Canales ADC de 12 bits, hasta",
+    "radio": "Wi-Fi 6 de doble banda"
+  },
+  "inside": {
+    "coresLabel": "Procesadores RISC-V",
+    "hpEyebrow": "Dominio de alto rendimiento",
+    "hpTitle": "CPU RISC-V principal · hasta 240 MHz",
+    "hpText": "La CPU principal de 32 bits ejecuta las aplicaciones y atiende los periféricos de alto rendimiento y la comunicación inalámbrica.",
+    "lpEyebrow": "Dominio de bajo consumo",
+    "lpTitle": "CPU RISC-V de bajo consumo · hasta 48 MHz",
+    "lpText": "Un controlador independiente de 32 bits puede mantener tareas de bajo consumo mientras duerme el dominio principal.",
+    "memoryTitle": "Mapa de memoria de un vistazo",
+    "flashTitle": "La placa también tiene memoria flash externa",
+    "flashText": "La Pulsar C5 usa una flash NOR QSPI BY25Q64ES de 8 MiB para almacenar programas. Es distinta de los 8 MiB de PSRAM incluidos en el encapsulado del ESP32-C5HR8."
+  },
+  "memory": {
+    "rom": { "title": "ROM interna", "text": "Código de arranque y del sistema almacenado en el chip." },
+    "hpSram": { "title": "SRAM principal", "text": "Memoria de trabajo integrada para el dominio de alto rendimiento." },
+    "lpSram": { "title": "SRAM de bajo consumo", "text": "Memoria integrada para el dominio de bajo consumo." },
+    "psram": { "title": "PSRAM en el encapsulado", "text": "Memoria de trabajo adicional incluida en la variante ESP32-C5HR8." }
+  },
+  "pins": {
+    "twoMapsTitle": "Etiquetas de la placa y GPIO del chip",
+    "twoMapsText": "El mapa de la placa sigue la referencia de hardware Pulsar C5 de UNIT, revisión V1.2.3. La hoja de datos del chip describe las funciones GPIO y la configuración de arranque. La ilustración de la placa contradice al esquema en D2/RGB, así que esa señal se marca como no verificada.",
+    "bootNote": "GPIO26, GPIO27 y GPIO28 son pines de configuración de arranque. La etiqueta D3/BOOT de la placa corresponde a GPIO28; consulta los estados de arranque antes de conectar un circuito."
+  },
+  "groups": {
+    "system": "Procesadores y sistema",
+    "interfaces": "Interfaces digitales",
+    "analog": "Señales analógicas y sensores",
+    "wireless": "Comunicación inalámbrica",
+    "security": "Seguridad"
+  },
+  "blocks": {
+    "hpCpu": { "title": "CPU RISC-V principal", "text": "Procesador de aplicaciones de 32 bits, hasta 240 MHz." },
+    "lpCpu": { "title": "CPU RISC-V de bajo consumo", "text": "Procesador de 32 bits de bajo consumo, hasta 48 MHz." },
+    "gdma": { "title": "GDMA", "text": "Transfiere datos entre memoria y periféricos sin copiarlos con la CPU." },
+    "cache": { "title": "Caché", "text": "Almacena instrucciones y datos para acceder a memoria externa." },
+    "etm": { "title": "Matriz de eventos y tareas", "text": "Conecta eventos del hardware con tareas sin consultas del software." },
+    "timers": { "title": "Temporizadores y watchdogs", "text": "Miden tiempos, generan alarmas y ayudan a recuperar el sistema." },
+    "uart": { "title": "UART", "text": "Comunicación serie para consolas y dispositivos externos." },
+    "spi": { "title": "SPI", "text": "Bus serie síncrono para periféricos rápidos." },
+    "i2c": { "title": "I²C", "text": "Bus de dos hilos para sensores y accesorios QWIIC." },
+    "i2s": { "title": "I²S", "text": "Interfaz de audio digital para transmitir muestras." },
+    "usb": { "title": "USB Serial/JTAG", "text": "Conexión USB para programación, salida serie y depuración." },
+    "can": { "title": "CAN FD", "text": "Controlador para comunicar dispositivos en redes robustas." },
+    "ledPwm": { "title": "LED PWM", "text": "Modulación por ancho de pulso para luces y otras salidas." },
+    "pcnt": { "title": "Contador de pulsos", "text": "Cuenta los flancos de una señal con hardware." },
+    "mcpwm": { "title": "PWM para motores", "text": "Temporización PWM para controlar motores y potencia." },
+    "rmt": { "title": "RMT", "text": "Temporización precisa para protocolos digitales de pulsos." },
+    "parlio": { "title": "E/S paralela", "text": "Transferencias de datos en paralelo a dispositivos externos." },
+    "sdio": { "title": "SDIO esclavo", "text": "Interfaz SDIO para transferencias controladas por un host." },
+    "temperature": { "title": "Sensor de temperatura", "text": "Mide la temperatura dentro del chip." },
+    "adc": { "title": "ADC de 12 bits", "text": "Muestrea voltajes analógicos en hasta seis canales." },
+    "comparator": { "title": "Comparador analógico", "text": "Compara señales analógicas con un umbral." },
+    "wifi": { "title": "Wi-Fi 6 de 2,4/5 GHz", "text": "Conexión inalámbrica de doble banda." },
+    "ble": { "title": "Bluetooth LE", "text": "Conectividad Bluetooth de bajo consumo." },
+    "ieee802154": { "title": "IEEE 802.15.4", "text": "Radio que sirve de base para Zigbee y Thread." },
+    "crypto": { "title": "Aceleradores criptográficos", "text": "Hardware de apoyo para operaciones criptográficas." },
+    "secureBoot": { "title": "Arranque seguro y cifrado de flash", "text": "Funciones de hardware para autenticar el arranque y proteger la flash." }
+  },
+  "read": {
+    "openLocal": "Abrir PDF incluido",
+    "openOfficial": "Abrir PDF de Espressif",
+    "contents": "Ir a un capítulo",
+    "viewer": "Visor del PDF ESP32-C5 Series Datasheet"
+  },
+  "chapters": {
+    "overview": "Resumen y características",
+    "variants": "Variantes del chip",
+    "pins": "Definición de pines",
+    "boot": "Pines de arranque",
+    "system": "Sistema y memoria",
+    "peripherals": "Periféricos",
+    "radio": "Comunicación inalámbrica",
+    "electrical": "Características eléctricas",
+    "rf": "Características de RF"
+  }
+}

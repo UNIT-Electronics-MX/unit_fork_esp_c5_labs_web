@@ -34,7 +34,7 @@
     "log": "Dziennik stanowiska · ESP32-S3 · Pulsar C5 Labs",
     "parts": "Biblioteka części · Pulsar C5 Labs",
     "settings": "Ustawienia · Pulsar C5 Labs",
-    "chip": "{{page}} · Nota katalogowa · ESP32-S3 · Pulsar C5 Labs"
+    "chip": "{{page}} · Nota katalogowa · ESP32-C5HR8 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "Błąd",

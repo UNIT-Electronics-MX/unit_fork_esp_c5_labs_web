@@ -68,12 +68,12 @@ const USE_ES: Record<string, string> = {
 
 const SOURCE = "https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_c5/blob/main/tools/product-reference/chapters/04-connectors-pinouts.md";
 
-export function PulsarPinout() {
+export function PulsarPinout({ defaultOpen = false }: { defaultOpen?: boolean }) {
   const { i18n } = useTranslation();
   const es = i18n.resolvedLanguage?.startsWith("es");
 
   return (
-    <details className={styles.pinout}>
+    <details className={styles.pinout} open={defaultOpen}>
       <summary>{es ? "Pinout de Pulsar C5 · 30 posiciones" : "Pulsar C5 pinout · 30 positions"}</summary>
       <p className={styles.note}>
         {es

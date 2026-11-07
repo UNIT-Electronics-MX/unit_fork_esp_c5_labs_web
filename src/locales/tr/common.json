@@ -34,7 +34,7 @@
     "log": "Tezgâh günlüğü · ESP32-S3 · Pulsar C5 Labs",
     "parts": "Parça kütüphanesi · Pulsar C5 Labs",
     "settings": "Ayarlar · Pulsar C5 Labs",
-    "chip": "{{page}} · Veri sayfası · ESP32-S3 · Pulsar C5 Labs"
+    "chip": "{{page}} · Veri sayfası · ESP32-C5HR8 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "Hata",

@@ -34,7 +34,7 @@
     "log": "ベンチログ · ESP32-S3 · Pulsar C5 Labs",
     "parts": "パーツライブラリ · Pulsar C5 Labs",
     "settings": "設定 · Pulsar C5 Labs",
-    "chip": "{{page}} · データシート · ESP32-S3 · Pulsar C5 Labs"
+    "chip": "{{page}} · データシート · ESP32-C5HR8 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "エラー",

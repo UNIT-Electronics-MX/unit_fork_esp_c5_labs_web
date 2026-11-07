@@ -1,0 +1,122 @@
+{
+  "title": "{{page}} · ESP32-C5HR8 · Pulsar C5 Labs",
+  "kicker": "Pulsar C5 · ESP32-C5HR8 · RISC-V",
+  "nav": {
+    "label": "ESP32-C5 datasheet pages",
+    "overview": "Overview",
+    "inside": "Architecture",
+    "pins": "Pins & power",
+    "blocks": "Peripherals",
+    "read": "Read PDF"
+  },
+  "headings": {
+    "overview": "Inside the ESP32-C5HR8",
+    "inside": "RISC-V, memory and clocks",
+    "pins": "Pulsar C5 pins and power",
+    "blocks": "ESP32-C5 peripheral atlas",
+    "read": "ESP32-C5 datasheet"
+  },
+  "intros": {
+    "overview": "Explore the chip and the complete isometric model of the UNIT PULSAR board. Every chip specification links to the ESP32-C5 Series Datasheet v1.5.",
+    "inside": "A 240 MHz high-performance RISC-V CPU works alongside a 48 MHz low-power RISC-V CPU. Follow the memory and clock resources that support them.",
+    "pins": "The board's Nano-style labels and the ESP32-C5's GPIO numbers are different maps. Check both before wiring a circuit.",
+    "blocks": "Find the ESP32-C5's on-chip interfaces, analog functions, radios and security features, with direct links to the source pages.",
+    "read": "Read the bundled 96-page ESP32-C5 Series Datasheet v1.5, or open Espressif's online PDF."
+  },
+  "source": {
+    "page": "PDF p. {{page}}",
+    "hardware": "UNIT hardware source"
+  },
+  "overview": {
+    "atGlance": "The chip at a glance",
+    "boardTitle": "Meet the complete Pulsar C5",
+    "boardText": "Rotate and inspect all four manufacturing layers. Open the component menu to highlight the MCU, sensors, power system and connectors.",
+    "chipBoardTitle": "Chip and board are different layers",
+    "chipBoardText": "The ESP32-C5HR8 provides the RISC-V CPUs, radios and 8 MiB in-package PSRAM. UNIT adds the external 8 MiB QSPI flash, sensors, microSD, battery circuit and connectors on the Pulsar board.",
+    "exploreInside": "Explore the architecture",
+    "explorePins": "See the board pinout"
+  },
+  "metrics": {
+    "hp": "High-performance RISC-V CPU",
+    "lp": "Low-power RISC-V CPU",
+    "psram": "In-package PSRAM (HR8)",
+    "gpio": "Programmable GPIOs",
+    "adc": "12-bit ADC channels, up to",
+    "radio": "Dual-band Wi-Fi 6"
+  },
+  "inside": {
+    "coresLabel": "RISC-V processors",
+    "hpEyebrow": "High-performance domain",
+    "hpTitle": "Main RISC-V CPU · up to 240 MHz",
+    "hpText": "The 32-bit main CPU runs applications and handles the chip's high-performance peripherals and wireless work.",
+    "lpEyebrow": "Low-power domain",
+    "lpTitle": "Low-power RISC-V CPU · up to 48 MHz",
+    "lpText": "A separate 32-bit controller can keep low-power tasks running while the main domain sleeps.",
+    "memoryTitle": "Memory map at a glance",
+    "flashTitle": "The board also has external flash",
+    "flashText": "The Pulsar C5 board uses an 8 MiB BY25Q64ES QSPI NOR flash for program storage. This is separate from the ESP32-C5HR8's 8 MiB in-package PSRAM."
+  },
+  "memory": {
+    "rom": { "title": "On-chip ROM", "text": "Boot and system code stored in the chip." },
+    "hpSram": { "title": "HP SRAM", "text": "On-chip working memory for the high-performance domain." },
+    "lpSram": { "title": "LP SRAM", "text": "On-chip memory for the low-power domain." },
+    "psram": { "title": "In-package PSRAM", "text": "Extra working memory included in the ESP32-C5HR8 variant." }
+  },
+  "pins": {
+    "twoMapsTitle": "Board labels and chip GPIOs",
+    "twoMapsText": "The board map below follows UNIT's Pulsar C5 hardware reference, revision V1.2.3. The chip datasheet describes GPIO capabilities and boot strapping. Some board artwork conflicts with the schematic at D2/RGB, so that signal remains marked as unverified.",
+    "bootNote": "GPIO26, GPIO27 and GPIO28 are strapping pins. The board's D3/BOOT label maps to GPIO28; check the boot-state requirements before attaching a circuit."
+  },
+  "groups": {
+    "system": "Processors and system",
+    "interfaces": "Digital interfaces",
+    "analog": "Analog and sensing",
+    "wireless": "Wireless",
+    "security": "Security"
+  },
+  "blocks": {
+    "hpCpu": { "title": "HP RISC-V CPU", "text": "32-bit application processor running at up to 240 MHz." },
+    "lpCpu": { "title": "LP RISC-V CPU", "text": "32-bit low-power processor running at up to 48 MHz." },
+    "gdma": { "title": "GDMA", "text": "Moves data between memory and peripherals without CPU copies." },
+    "cache": { "title": "Cache", "text": "Instruction and data caching for external memory access." },
+    "etm": { "title": "Event Task Matrix", "text": "Connects hardware events to tasks without software polling." },
+    "timers": { "title": "Timers and watchdogs", "text": "Timing, alarms and recovery when software stops responding." },
+    "uart": { "title": "UART", "text": "Serial communication for consoles and external devices." },
+    "spi": { "title": "SPI", "text": "Synchronous serial buses for fast external peripherals." },
+    "i2c": { "title": "I²C", "text": "Two-wire bus used by sensors and QWIIC accessories." },
+    "i2s": { "title": "I²S", "text": "Digital audio interface for streaming samples." },
+    "usb": { "title": "USB Serial/JTAG", "text": "USB connection for programming, serial output and debugging." },
+    "can": { "title": "CAN FD", "text": "Controller for robust networked device communication." },
+    "ledPwm": { "title": "LED PWM", "text": "Hardware pulse-width modulation for light and other outputs." },
+    "pcnt": { "title": "Pulse counter", "text": "Counts incoming signal edges in hardware." },
+    "mcpwm": { "title": "Motor PWM", "text": "PWM timing for motor and power control." },
+    "rmt": { "title": "RMT", "text": "Precise timing of pulse-based digital protocols." },
+    "parlio": { "title": "Parallel IO", "text": "Parallel data transfers to external devices." },
+    "sdio": { "title": "SDIO Slave", "text": "SDIO interface for host-controlled transfers." },
+    "temperature": { "title": "Temperature sensor", "text": "On-chip temperature measurement." },
+    "adc": { "title": "12-bit ADC", "text": "Samples analog voltages on up to six channels." },
+    "comparator": { "title": "Analog comparator", "text": "Compares analog signals against a threshold." },
+    "wifi": { "title": "2.4/5 GHz Wi-Fi 6", "text": "Dual-band wireless networking." },
+    "ble": { "title": "Bluetooth LE", "text": "Low-energy Bluetooth connectivity." },
+    "ieee802154": { "title": "IEEE 802.15.4", "text": "Radio foundation for Zigbee and Thread." },
+    "crypto": { "title": "Cryptographic accelerators", "text": "Hardware support for cryptographic operations." },
+    "secureBoot": { "title": "Secure boot and flash encryption", "text": "Hardware features for authentic boot and protected flash contents." }
+  },
+  "read": {
+    "openLocal": "Open bundled PDF",
+    "openOfficial": "Open Espressif PDF",
+    "contents": "Jump to a chapter",
+    "viewer": "ESP32-C5 Series Datasheet PDF viewer"
+  },
+  "chapters": {
+    "overview": "Overview and features",
+    "variants": "Chip variants",
+    "pins": "Pin definitions",
+    "boot": "Strapping pins and boot",
+    "system": "System and memory",
+    "peripherals": "Peripherals",
+    "radio": "Wireless",
+    "electrical": "Electrical characteristics",
+    "rf": "RF characteristics"
+  }
+}

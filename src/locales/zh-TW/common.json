@@ -34,7 +34,7 @@
     "log": "工作臺日誌 · ESP32-S3 · Pulsar C5 Labs",
     "parts": "元件函式庫 · Pulsar C5 Labs",
     "settings": "設定 · Pulsar C5 Labs",
-    "chip": "{{page}} · 晶片 · ESP32-S3 · Pulsar C5 Labs"
+    "chip": "{{page}} · 晶片 · ESP32-C5HR8 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "錯誤",

@@ -34,7 +34,7 @@
     "log": "Journal de l'établi · ESP32-S3 · Pulsar C5 Labs",
     "parts": "Bibliothèque de pièces · Pulsar C5 Labs",
     "settings": "Réglages · Pulsar C5 Labs",
-    "chip": "{{page}} · Fiche technique · ESP32-S3 · Pulsar C5 Labs"
+    "chip": "{{page}} · Fiche technique · ESP32-C5HR8 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "Erreur",

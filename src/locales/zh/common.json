@@ -34,7 +34,7 @@
     "log": "工作台日志 · ESP32-S3 · Pulsar C5 Labs",
     "parts": "元件库 · Pulsar C5 Labs",
     "settings": "设置 · Pulsar C5 Labs",
-    "chip": "{{page}} · 数据手册 · ESP32-S3 · Pulsar C5 Labs"
+    "chip": "{{page}} · 数据手册 · ESP32-C5HR8 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "错误",

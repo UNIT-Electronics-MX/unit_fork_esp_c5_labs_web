@@ -34,7 +34,7 @@
     "log": "Bench log · ESP32-S3 · Pulsar C5 Labs",
     "parts": "Parts library · Pulsar C5 Labs",
     "settings": "Settings · Pulsar C5 Labs",
-    "chip": "{{page}} · Datasheet · ESP32-S3 · Pulsar C5 Labs"
+    "chip": "{{page}} · Datasheet · ESP32-C5HR8 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "Error",

@@ -25,7 +25,7 @@ export const LAB_NAMESPACES = [
 ] as const;
 
 /** Loaded on demand, with the lazily loaded pages that use them. */
-export const PAGE_NAMESPACES = ["chip"] as const;
+export const PAGE_NAMESPACES = ["chip", "c5"] as const;
 
 export const NAMESPACES = [...CORE_NAMESPACES, ...LAB_NAMESPACES, ...PAGE_NAMESPACES] as const;
 export type Namespace = (typeof NAMESPACES)[number];

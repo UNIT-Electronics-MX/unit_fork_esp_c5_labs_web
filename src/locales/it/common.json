@@ -34,7 +34,7 @@
     "log": "Registro del banco · ESP32-S3 · Pulsar C5 Labs",
     "parts": "Libreria dei componenti · Pulsar C5 Labs",
     "settings": "Impostazioni · Pulsar C5 Labs",
-    "chip": "{{page}} · Scheda tecnica · ESP32-S3 · Pulsar C5 Labs"
+    "chip": "{{page}} · Scheda tecnica · ESP32-C5HR8 · Pulsar C5 Labs"
   },
   "routeError": {
     "code": "Errore",

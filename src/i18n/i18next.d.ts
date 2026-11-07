@@ -16,6 +16,7 @@ import type labsRfid from "@/locales/en/labs-rfid.json";
 import type labsBle from "@/locales/en/labs-ble.json";
 import type labsSound from "@/locales/en/labs-sound.json";
 import type chip from "@/locales/en/chip.json";
+import type c5 from "@/locales/en/c5.json";
 
 declare module "i18next" {
   interface CustomTypeOptions {
@@ -37,6 +38,7 @@ declare module "i18next" {
       "labs-ble": typeof labsBle;
       "labs-sound": typeof labsSound;
       chip: typeof chip;
+      c5: typeof c5;
     };
   }
 }

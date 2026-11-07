@@ -3,7 +3,7 @@
 # Pulsar C5 Labs
 
 **Explore the UNIT PULSAR ESP32-C5HR8 board.**<br>
-An interactive guide with a 3D Pulsar C5 model, its documented Nano-format pinout and component descriptions. The existing hands-on lessons, simulators, firmware reader and chip reference are retained as ESP32-S3 material while C5 examples are being developed.
+An interactive guide to the ESP32-C5HR8 and the UNIT PULSAR board, with a complete isometric model, a documented Nano-format pinout and a PDF-linked chip reference. Existing hands-on lessons, simulators and firmware reader remain labeled as ESP32-S3 material while C5 examples are being developed.
 
 [![Open the live guide](https://img.shields.io/badge/open_the_live_guide-GitHub_Pages-1f7a55?style=for-the-badge)](https://unit-electronics-mx.github.io/unit_fork_esp_c5_labs_web/)
 
@@ -28,7 +28,7 @@ An interactive guide with a 3D Pulsar C5 model, its documented Nano-format pinou
 </div>
 
 > [!IMPORTANT]
-> **Migration status:** The home page presents the Pulsar C5 hardware. Lessons, wiring tables, firmware, the bench log and the ESP32-S3 datasheet still describe the original ESP32-S3 setup. Do not use their pin assignments or flash commands on the Pulsar C5. The [Pulsar C5 hardware repository](https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_c5) does not yet publish the C++ examples needed to port these labs. The firmware reader and GitHub Pages build therefore continue to use the [original ESP32-S3 firmware](https://github.com/agharsallah/esp-labs).
+> **Migration status:** The home page and Datasheet section now present the Pulsar C5 and ESP32-C5HR8. Lessons, wiring tables, firmware and the bench log still describe the original ESP32-S3 setup. Do not use their pin assignments or flash commands on the Pulsar C5. The [Pulsar C5 hardware repository](https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_c5) does not yet publish the C++ examples needed to port these labs. The firmware reader and GitHub Pages build therefore continue to use the [original ESP32-S3 firmware](https://github.com/agharsallah/esp-labs).
 
 ## Contents
 
@@ -59,14 +59,9 @@ Each lesson is one sheet: the goal, the pins it uses on a live pinout, the wirin
 
 ### The datasheet, made for makers
 
-The new **Datasheet** section ([`#/datasheet`](https://unit-electronics-mx.github.io/unit_fork_esp_c5_labs_web/#/datasheet)) is about the ESP32-S3 itself. **Explore** keeps the 10% of Espressif's documents a maker needs: the chip at a glance with a 3D dive from the board down to the die, every pin and its jobs, an atlas of all 32 peripheral blocks with a page each, and memory, clocks and power modes. Each fact cites its section of the reference, the "things that bite" are called out, and the blocks your labs have used light up as you tick steps.
+The **Datasheet** section ([`#/datasheet`](https://unit-electronics-mx.github.io/unit_fork_esp_c5_labs_web/#/datasheet)) now covers the ESP32-C5HR8. It starts with the complete isometric Pulsar C5 model, then explains the two RISC-V CPUs, memory, board pins and on-chip peripherals. Each chip fact links directly to a page of the bundled [ESP32-C5 Series Datasheet v1.5](public/esp32-c5_datasheet_en.pdf). **Read PDF** offers chapter shortcuts, an embedded viewer and a link to Espressif's current publication. The new reference text is available in English and Spanish; other interface languages fall back to English for this section.
 
-A citation opens that section of the reference in a side reader, and **Read** turns the board guide, module datasheet, chip datasheet and technical reference into one book you can read cover to cover, with section ticks and "Continue at". Titles follow your language; the text stays Espressif's English.
-
-<p align="center"><img src="docs/media/datasheet.gif" alt="The Datasheet section: the chip at a glance, picking GPIO0 on the pin page, the peripheral atlas, the ADC block page, a citation opening the reference reader, then the Read mode's contents" width="800"></p>
-
-> [!NOTE]
-> Espressif's reference (`docs-llm/esp32-s3/ESP32-S3_REFERENCE.md` and its `images/`) is in the repo, so a clone and the deploy get the reader and the book. Its text stays Espressif's and is never bundled into the JS: the build emits it as static files under `reference/`. Without the file (see `REFERENCE_FILE` under [Configuration](#configuration)) the curated pages work as usual and citations link to Espressif's official PDFs.
+The board pinout follows UNIT's [Pulsar C5 hardware reference](https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_c5). D2/RGB is marked as unverified because the pinout artwork and schematic disagree about its GPIO.
 
 ### In your language, on your phone
 
@@ -166,8 +161,8 @@ Copy `.env.example` to `.env` to override:
 | `VITE_LABS_SOURCE_URL` | `https://github.com/agharsallah/esp-labs/tree/main/labs/` | Where each lesson's "code on GitHub" link points          |
 | `VITE_LOG_LEVEL`       | `info`                                                | `debug`, `info`, `warn`, `error` or `silent`                  |
 | `FIRMWARE_DIR`         | `../esp-labs`                                         | Build time only: the firmware checkout the code reader shows  |
-| `REFERENCE_FILE`       | `docs-llm/esp32-s3/ESP32-S3_REFERENCE.md`             | Build time only: Espressif's reference (with its `images/`) for the datasheet reader and book; absent, they are off |
-| `VITE_REFERENCE_URL`   | `./reference/`                                        | Where the reference sections are read (set to `""` when there is no reference) |
+| `REFERENCE_FILE`       | `docs-llm/esp32-s3/ESP32-S3_REFERENCE.md`             | Legacy S3 reference build input; the visible C5 datasheet uses the bundled PDF |
+| `VITE_REFERENCE_URL`   | `./reference/`                                        | Legacy S3 reference asset path |
 
 ## Deploy to GitHub Pages
 
@@ -202,8 +197,9 @@ The workflow uses GitHub's built-in token; no Vercel account, token or project v
 | `src/labs/<track>/`         | That track's simulators and explainers, registered in `widgets.ts`                                                   |
 | `src/labs/shared/`          | `Simulation` and the lab-screen engine (screen + buttons + serial)                                                   |
 | `src/features/`             | App screens: labs map, lesson sheet and dock, navigation, board pinout, code reader, bench log, settings, progress   |
-| `src/features/chip/`, `src/content/chip/` | The Datasheet section's pages and their curated, cited chip data                                        |
-| `src/features/reference/`   | The reference reader (side sheet) and the book (`#/datasheet/read`)                                                 |
+| `src/features/c5-datasheet/` | The visible C5 datasheet pages, source links and board viewer                                            |
+| `src/features/chip/`, `src/content/chip/` | Legacy S3 reference source, no longer routed into the visible datasheet                         |
+| `src/features/reference/`   | Legacy S3 reference reader source                                                                                    |
 | `src/ui/`                   | Design-system pieces: Panel, Button, Terminal, SequenceDiagram, RichText…                                            |
 | `src/ui/parts/`             | The parts library: isometric illustrations of every component (`<PartIcon name="led" />`), gallery at `#/parts`      |
 | `src/ui/stage3d/`           | The shared 3D stage (three.js): orbit camera, toolbar, leaders, ink outlines, toon materials                         |
@@ -255,4 +251,4 @@ This summary is a plain-language guide; the [LICENSE](LICENSE) file is the legal
 
 ---
 
-<sub>A learning project, not affiliated with Espressif. Pin layout follows the Espressif ESP32-S3-DevKitC-1 v1.0; the labels printed on your board always win.</sub>
+<sub>A learning project, not affiliated with Espressif. The Pulsar C5 pin layout follows UNIT's hardware reference V1.2.3; verify the labels and connections on your board.</sub>

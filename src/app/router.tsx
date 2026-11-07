@@ -44,23 +44,12 @@ export const router = createHashRouter([
               redirect(`/datasheet/${params["*"] ?? ""}${new URL(request.url).search}`),
           },
           {
-            // The chip pages: one lazily loaded module per page, sharing the chip section nav.
             path: "datasheet",
-            lazy: async () => ({ Component: (await import("./routes/chip/chip-layout-route")).Component }),
-            children: [
-              { index: true, lazy: async () => ({ Component: (await import("./routes/chip/chip-home-route")).Component }) },
-              { path: "pins", lazy: async () => ({ Component: (await import("./routes/chip/chip-pins-route")).Component }) },
-              { path: "blocks", lazy: async () => ({ Component: (await import("./routes/chip/chip-atlas-route")).Component }) },
-              {
-                path: "blocks/:blockId",
-                lazy: async () => {
-                  const route = await import("./routes/chip/chip-block-route");
-                  return { loader: route.blockLoader(queryClient), Component: route.Component };
-                },
-              },
-              { path: "read", lazy: async () => ({ Component: (await import("./routes/chip/chip-read-route")).Component }) },
-              { path: "inside", lazy: async () => ({ Component: (await import("./routes/chip/chip-inside-route")).Component }) },
-            ],
+            lazy: async () => ({ Component: (await import("./routes/c5-datasheet-route")).Component }),
+          },
+          {
+            path: "datasheet/*",
+            lazy: async () => ({ Component: (await import("./routes/c5-datasheet-route")).Component }),
           },
           {
             path: "settings",
