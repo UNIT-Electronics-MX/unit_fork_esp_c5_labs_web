@@ -1,4 +1,10 @@
 .explorer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+
+.view {
   display: block;
   width: 100%;
   height: clamp(540px, 72vh, 720px);
@@ -7,8 +13,120 @@
   background: var(--surface);
 }
 
+.cards {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  margin: 0 calc(var(--gutter) * -1);
+  padding: 4px var(--gutter) 10px;
+  list-style: none;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.cards::-webkit-scrollbar {
+  display: none;
+}
+
+.card {
+  min-width: 0;
+  flex: 0 0 min(78%, 250px);
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  scroll-snap-align: start;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: color-mix(in oklab, var(--surface) 94%, transparent);
+  box-shadow: 0 10px 22px -18px var(--ink);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.card[data-on] {
+  border-color: var(--hotspot);
+  box-shadow: 0 0 0 1px var(--hotspot), 0 14px 28px -18px var(--hotspot);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  text-align: start;
+  cursor: pointer;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--copper);
+}
+
+.card[data-on] .icon {
+  background: color-mix(in oklab, var(--hotspot) 20%, var(--surface));
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font: 700 13px/1.25 var(--font-display);
+  font-stretch: 75%;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.num {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--hotspot);
+  color: var(--surface);
+  font: 700 10px var(--font-mono);
+  letter-spacing: 0;
+}
+
+.text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
 @media (max-width: 600px) {
+  .view { height: 560px; }
+}
+
+@media (min-width: 1100px) {
   .explorer {
-    height: 560px;
+    grid-template-columns: 230px minmax(0, 1fr) 230px;
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
   }
+
+  .view {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    height: 100%;
+    min-height: 660px;
+  }
+
+  .cards { display: contents; }
+  .card { flex: initial; }
+  .card[data-side="left"] { grid-column: 1; }
+  .card[data-side="right"] { grid-column: 3; }
 }

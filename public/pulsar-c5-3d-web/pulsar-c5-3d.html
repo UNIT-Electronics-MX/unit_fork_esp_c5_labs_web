@@ -234,12 +234,24 @@ for(const c of COMPS){
   byRef[c.ref]={c,cub};
 }
 
+let selectedRefs = new Set(), hoveredRef = null;
+function syncHighlight(){
+  for(const [ref,part] of Object.entries(byRef)) part.cub.classList.toggle('hl',selectedRefs.has(ref) || hoveredRef===ref);
+}
+addEventListener('message',event=>{
+  if(event.source!==parent || event.origin!==location.origin) return;
+  if(event.data?.type!=='pulsar-highlight' || !Array.isArray(event.data.refs)) return;
+  selectedRefs=new Set(event.data.refs.filter(ref=>typeof ref==='string' && byRef[ref]).slice(0,20));
+  syncHighlight();
+});
+
 // key parts list
 const keyRefs=['IC1','U$36','A2','U3','U4','IC4','IC2','IC3','LED1','J2','J1','MICRO_SD-HOLDER'];
 const ul=document.getElementById('parts');
 for(const r of keyRefs){const o=byRef[r]; if(!o) continue; const [n]=o.c.name.split(' · ');
   const li=el('li','',null,ul); li.innerHTML=`<span></span><code></code>`; li.firstChild.textContent=o.c.name.includes(' · ')?o.c.name.split(' · ')[1]:n; li.lastChild.textContent=n;
-  li.addEventListener('pointerenter',()=>o.cub.classList.add('hl')); li.addEventListener('pointerleave',()=>o.cub.classList.remove('hl'));
+  li.addEventListener('pointerenter',()=>{hoveredRef=r; syncHighlight();});
+  li.addEventListener('pointerleave',()=>{hoveredRef=null; syncHighlight();});
   li.firstChild.textContent = li.firstChild.textContent.charAt(0).toUpperCase()+li.firstChild.textContent.slice(1);
 }
 

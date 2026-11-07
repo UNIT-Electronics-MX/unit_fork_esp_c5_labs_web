@@ -63,7 +63,17 @@
   "board": {
     "title": "Meet the board",
     "intro": "Six parts you will use lab after lab. Drag the board to turn it; pick a part to light it up and see which labs use it.",
-    "c5Intro": "Explore the Pulsar C5 in 3D: rotate, zoom, inspect components and separate its layers. The lessons below still use ESP32-S3 wiring.",
+    "c5Intro": "Explore the Pulsar C5 in 3D: rotate, zoom and select a card to locate each component. The lessons below still use ESP32-S3 wiring.",
+    "c5Parts": {
+      "usb": { "title": "USB-C and controls", "text": "One port for power, programming and serial console. BOOT uses GPIO28; RESET restarts the board." },
+      "mcu": { "title": "ESP32-C5HR8", "text": "RISC-V processor with 8 MiB of in-package PSRAM and 8 MiB of external QSPI flash." },
+      "sensors": { "title": "Sensors", "text": "Onboard pressure, temperature and humidity, proximity and light, and magnetic sensing over I²C." },
+      "rgb": { "title": "Indicators", "text": "A WS2812 1010 RGB LED, plus user, power and charge LEDs." },
+      "power": { "title": "Battery and power", "text": "BQ24074 charges the Li-ion battery; MAX17048 monitors it and SGM6029 regulates 3.3 V." },
+      "storage": { "title": "microSD and SPI", "text": "A microSD slot and six-pin J20 connector share the SPI bus." },
+      "radio": { "title": "Radio and antenna", "text": "2.4/5 GHz Wi-Fi 6, Bluetooth LE 5 and 802.15.4 through a coaxial RF antenna connector." },
+      "headers": { "title": "Pins and QWIIC", "text": "30 Nano-style positions. QWIIC uses GPIO1/GPIO6; onboard sensors use GPIO2/GPIO3." }
+    },
     "model": "3D model of the ESP32-S3 DevKitC-1: the module with its antenna, two USB-C ports, BOOT and RST buttons, the RGB LED and two rows of header pins. Drag to turn it.",
     "fallback": "Every part is described in the cards.",
     "usedIn": "Used in ",
