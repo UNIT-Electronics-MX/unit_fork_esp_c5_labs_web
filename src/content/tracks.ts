@@ -15,7 +15,7 @@ export const TRACKS: readonly Track[] = [
   {
     id: "pulsar",
     title: "On-board hardware",
-    blurb: "Arduino experiments with BOOT, RGB controls, ADC, I²C sensors, microSD and UART",
+    blurb: "Arduino and MicroPython experiments with BOOT, RGB, ADC, I²C sensors, microSD and UART",
     color: "--fam-system",
     lessonIds: ["P1", "P2", "P3", "P4", "P5", "P6"],
     board: "pulsar-c5",
@@ -23,9 +23,9 @@ export const TRACKS: readonly Track[] = [
   {
     id: "display",
     title: "Display & input",
-    blurb: "The 1.9″ screen and buttons",
+    blurb: "Pulsar C5 OLED, the 1.9″ screen and buttons",
     color: "--copper",
-    lessonIds: ["03", "03b"],
+    lessonIds: ["O1", "03", "03b"],
   },
   {
     id: "wifi",
@@ -87,7 +87,7 @@ export const findTrack = (id: string) => TRACKS.find((t) => t.id === id);
 
 /** The board a lesson is wired on; tracks without one still use the original ESP32-S3. */
 export const boardOfLesson = (lessonId: string): BoardId =>
-  TRACKS.find((t) => t.lessonIds.includes(lessonId))?.board ?? "devkitc-s3";
+  lessonId === "O1" ? "pulsar-c5" : TRACKS.find((t) => t.lessonIds.includes(lessonId))?.board ?? "devkitc-s3";
 
 /** The track a lesson id belongs to, or undefined for an unknown id. */
 export const trackOfLesson = (lessonId: string): TrackId | undefined =>

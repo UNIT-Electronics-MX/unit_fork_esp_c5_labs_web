@@ -15,7 +15,29 @@
       "Ejecuta el comando. El LED parpadea dos veces por segundo.",
       "Mantén <b>BOOT</b>: el LED parpadea rápido y el monitor imprime <code>button pressed</code>."
     ],
-    "note": "GPIO27 y GPIO28 son pines de arranque: el chip los lee al reiniciar para elegir el modo de arranque. Usarlos después del arranque no da problemas; mantener BOOT <i>durante</i> el reinicio entra en modo de descarga."
+    "note": "GPIO27 y GPIO28 son pines de arranque: el chip los lee al reiniciar para elegir el modo de arranque. Usarlos después del arranque no da problemas; mantener BOOT <i>durante</i> el reinicio entra en modo de descarga.",
+    "variants": {
+      "arduino": {
+        "short": "Sketch y monitor serie"
+      },
+      "micropython": {
+        "short": "Script GPIO y REPL serie",
+        "goal": "Haz parpadear el LED integrado en GPIO27 y lee BOOT en GPIO28 con MicroPython. Mantén BOOT para cambiar la velocidad.",
+        "learn": [
+          "machine.Pin",
+          "entrada digital",
+          "entrada con pull-up",
+          "bucles de Python",
+          "pines de arranque"
+        ],
+        "steps": [
+          "Instala MicroPython en la lección 00 si hace falta. No hay nada que cablear: el LED y BOOT están en la placa.",
+          "Abre <b>Código</b>, conecta el REPL serie y ejecuta <code>gpio.py</code>.",
+          "Mantén <b>BOOT</b>: el LED parpadea más rápido y la consola indica el estado del botón. Pulsa <b>Detener</b> antes de cambiar el script."
+        ],
+        "note": "GPIO27 y GPIO28 son pines de arranque. Puedes pulsar BOOT después del inicio; mantenerlo durante el reinicio entra en modo de descarga."
+      }
+    }
   },
   "P2": {
     "title": "Mezclador RGB",
@@ -32,7 +54,28 @@
       "Envía <code>rgb 255 0 0</code>, <code>rgb 0 255 0</code> y <code>rgb 0 0 255</code> para comparar los colores primarios.",
       "Envía <code>rgb 255 80 0</code>, luego <code>level 20</code> y <code>level 100</code>. Compara color y brillo; envía <code>off</code> al terminar."
     ],
-    "note": "¿No hay color? El esquema conecta la línea de datos del LED a GPIO0, pero la ilustración de UNIT la marca como GPIO8. Prueba <code>RGB_PIN = 8</code> y cuéntanos cuál usa tu placa."
+    "note": "¿No hay color? El esquema conecta la línea de datos del LED a GPIO0, pero la ilustración de UNIT la marca como GPIO8. Prueba <code>RGB_PIN = 8</code> y cuéntanos cuál usa tu placa.",
+    "variants": {
+      "arduino": {
+        "short": "Sketch y comandos serie"
+      },
+      "micropython": {
+        "short": "Mezclador NeoPixel y REPL serie",
+        "goal": "Mezcla colores en el WS2812 integrado desde el REPL de MicroPython sin cambiar ni volver a cargar el script para cada color.",
+        "learn": [
+          "NeoPixel",
+          "canales RGB",
+          "escalado de brillo",
+          "entrada serie"
+        ],
+        "steps": [
+          "No hay nada que cablear. Abre <b>Código</b>, conecta el REPL serie y ejecuta <code>rgb_mixer.py</code>.",
+          "En el terminal, envía <code>rgb 255 0 0</code>, <code>rgb 0 255 0</code> y <code>rgb 0 0 255</code> para comparar los colores primarios.",
+          "Envía <code>rgb 255 80 0</code>, luego <code>level 20</code> y <code>level 100</code>. Envía <code>off</code> y pulsa <b>Detener</b> al terminar."
+        ],
+        "note": "El esquema usa GPIO0 para la línea de datos RGB; algunas ilustraciones indican GPIO8. Cambia <code>RGB_PIN</code> a 8 si el LED no se enciende."
+      }
+    }
   },
   "P3": {
     "title": "Entrada analógica",
@@ -75,12 +118,33 @@
       ]
     },
     "steps": [
-      "Desconecta el USB y cablea el potenciómetro como en la tabla.",
+      "Desconecta el USB y cablea el potenciómetro como se muestra en el diagrama.",
       "Conecta y ejecuta el comando.",
       "Gira el mando de extremo a extremo: el valor crudo va de unos 0 a 4095 y los milivoltios de unos 0 a 3100.",
       "Abre <b>Herramientas → Serial Plotter</b> para ver moverse las dos líneas."
     ],
-    "note": "Los pines de la cabecera con ADC son A1 (GPIO1), A2 (GPIO4), A3 (GPIO5) y A6 (GPIO6). Nunca les metas más de 3,3 V."
+    "note": "Los pines de la cabecera con ADC son A1 (GPIO1), A2 (GPIO4), A3 (GPIO5) y A6 (GPIO6). Nunca les metas más de 3,3 V.",
+    "variants": {
+      "arduino": {
+        "short": "Sketch ADC de 12 bits"
+      },
+      "micropython": {
+        "short": "Script ADC y REPL serie",
+        "goal": "Gira un potenciómetro en A2 y lee su valor escalado a 16 bits y su voltaje aproximado con MicroPython.",
+        "learn": [
+          "machine.ADC",
+          "read_u16()",
+          "read_uv()",
+          "divisores de voltaje"
+        ],
+        "steps": [
+          "Desconecta el USB y cablea el potenciómetro exactamente como se muestra en el diagrama.",
+          "Vuelve a conectar el USB, abre <b>Código</b>, conecta el REPL serie y ejecuta <code>adc.py</code>.",
+          "Gira el mando de extremo a extremo. Compara la lectura escalada de 0 a 65535 con los milivoltios en el terminal; pulsa <b>Detener</b> al terminar."
+        ],
+        "note": "La lectura en milivoltios es aproximada y puede saturarse cerca de 3,3 V. Nunca apliques más de 3,3 V a A2."
+      }
+    }
   },
   "P4": {
     "title": "Sensores de la placa",
@@ -132,7 +196,28 @@
       "Ejecuta el comando. Cada cinco segundos el monitor lista los dispositivos encontrados.",
       "Compara la lista con la tabla."
     ],
-    "note": "Este bus es independiente del conector QWIIC (GPIO1 y GPIO6), que usan las lecciones de Sensores para placas externas."
+    "note": "Este bus es independiente del conector QWIIC (GPIO1 y GPIO6), que usan las lecciones de Sensores para placas externas.",
+    "variants": {
+      "arduino": {
+        "short": "Escáner de bus Wire"
+      },
+      "micropython": {
+        "short": "Escáner de bus I²C",
+        "goal": "Usa MicroPython para escanear el bus de sensores integrado de la Pulsar C5 e identificar los dispositivos I²C que responden.",
+        "learn": [
+          "machine.I2C",
+          "scan()",
+          "direcciones I²C",
+          "resistencias pull-up"
+        ],
+        "steps": [
+          "No hay nada que cablear: los cinco sensores y las resistencias pull-up están en la placa.",
+          "Abre <b>Código</b>, conecta el REPL serie y ejecuta <code>i2c_scan.py</code>.",
+          "Compara las direcciones que aparecen cada cinco segundos con la tabla. Pulsa <b>Detener</b> al terminar."
+        ],
+        "note": "Este bus integrado usa GPIO2/GPIO3. El conector QWIIC usa otro bus en GPIO1/GPIO6."
+      }
+    }
   },
   "P5": {
     "title": "microSD",
@@ -149,7 +234,29 @@
       "Ejecuta el comando. El monitor imprime el tamaño de la tarjeta y el archivo.",
       "Pulsa <b>RST</b> varias veces: cada vez aparece otra línea <code>boot at … ms</code>."
     ],
-    "note": "SCK comparte GPIO27 con el LED de usuario, así que el LED parpadea mientras la tarjeta trabaja. Es lo esperado."
+    "note": "SCK comparte GPIO27 con el LED de usuario, así que el LED parpadea mientras la tarjeta trabaja. Es lo esperado.",
+    "variants": {
+      "arduino": {
+        "short": "Sketch con biblioteca SD"
+      },
+      "micropython": {
+        "short": "Script de tarjeta SPI y archivo",
+        "goal": "Monta la microSD integrada con MicroPython, agrega una línea a un archivo y vuelve a leerlo.",
+        "learn": [
+          "controlador SPI",
+          "machine.SPI",
+          "sistema de archivos FAT",
+          "agregar al archivo"
+        ],
+        "steps": [
+          "Formatea una tarjeta microSD como <b>FAT32</b> e insértala por completo en la ranura de la placa.",
+          "Abre <b>Código</b>, conecta el puerto serie y pulsa <b>Instalar sdcard.py</b>. Esto guarda el controlador SPI de UNIT en la placa.",
+          "Ejecuta <code>microsd.py</code>. El script usa SPI en GPIO27/7/26/23 y monta la tarjeta en <code>/sd</code>.",
+          "Ejecuta el script otra vez: <code>/sd/pulsar.txt</code> debe conservar la primera línea y agregar otra."
+        ],
+        "note": "Este ejemplo MicroPython importa <code>sdcard.py</code> de la memoria de la placa. Instálalo una vez desde el workspace de código antes de ejecutar. GPIO27 se comparte con el LED de usuario, que puede parpadear al acceder a la tarjeta."
+      }
+    }
   },
   "P6": {
     "title": "UART",
@@ -176,6 +283,28 @@
       "Escribe una línea y pulsa Enter: vuelve como <code>loopback: …</code>.",
       "Quita el cable: no vuelve nada."
     ],
-    "note": "Para hablar con otra placa, cruza los cables (TX → RX, RX → TX) y une las tierras."
+    "note": "Para hablar con otra placa, cruza los cables (TX → RX, RX → TX) y une las tierras.",
+    "variants": {
+      "arduino": {
+        "short": "Sketch de retorno Serial1"
+      },
+      "micropython": {
+        "short": "Script de retorno UART",
+        "goal": "Envía una línea desde el REPL USB por UART1 en GPIO11 y recíbela en GPIO12 mediante un solo puente.",
+        "learn": [
+          "machine.UART",
+          "TX y RX",
+          "baudios",
+          "prueba de retorno"
+        ],
+        "steps": [
+          "Desconecta el USB y une TX0 (GPIO11) con RX0 (GPIO12) mediante un puente; después vuelve a conectar el USB.",
+          "Abre <b>Código</b>, conecta el REPL serie y ejecuta <code>uart_loopback.py</code>.",
+          "Escribe <code>hello UART</code> en el terminal y envíalo. El script muestra <code>loopback: hello UART</code>.",
+          "Quita el puente y envía otra línea: el script indica que no recibió respuesta. Pulsa <b>Detener</b> al terminar."
+        ],
+        "note": "El REPL USB permanece separado de UART1. Para comunicarte con otra placa, cruza TX y RX y conecta las tierras."
+      }
+    }
   }
 }

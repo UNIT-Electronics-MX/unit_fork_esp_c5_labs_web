@@ -38,14 +38,14 @@
     "successManualReset": "Firmware escrito. Pulsa RESET en la placa para iniciarlo.",
     "log": "Registro de conexión",
     "logEmpty": "Aquí aparecerá el registro de conexión.",
-    "phase": { "ready": "Listo para conectar.", "connecting": "Conectando y comprobando el chip…", "erasing": "Borrando toda la flash…", "writing": "Escribiendo firmware…", "done": "Terminado.", "error": "Revisa el mensaje y vuelve a intentarlo." },
+    "phase": {"ready": "Listo para conectar.", "connecting": "Conectando y comprobando el chip…", "erasing": "Borrando toda la flash…", "writing": "Escribiendo firmware…", "done": "Terminado.", "error": "Revisa el mensaje y vuelve a intentarlo."},
     "serial": {
       "title": "Editor y monitor serial",
       "intro": "Lee la salida de la placa y envía comandos después de cargar el firmware.",
       "dockedTitle": "TERMINAL / REPL",
       "baudRate": "Baudios",
       "lineEnding": "Fin de línea",
-      "ending": { "none": "Ninguno", "lf": "LF (\\n)", "cr": "CR (\\r)", "crlf": "CRLF (\\r\\n)" },
+      "ending": {"none": "Ninguno", "lf": "LF (\n)", "cr": "CR (\r)", "crlf": "CRLF (\r\n)"},
       "connect": "Conectar serial",
       "disconnect": "Desconectar",
       "clear": "Limpiar salida",
@@ -62,7 +62,7 @@
       "noReadable": "El puerto seleccionado no tiene un flujo de lectura serial.",
       "notWritable": "El puerto seleccionado no puede recibir datos seriales.",
       "replInterruptFailed": "No se pudo detener el programa: la placa no respondió con >>> tras Ctrl+C. Revisa que tenga MicroPython y pulsa RESET antes de volver a conectar.",
-      "state": { "ready": "Listo", "connecting": "Conectando…", "connected": "Conectado", "disconnecting": "Desconectando…", "disconnected": "Desconectado", "error": "Error" }
+      "state": {"ready": "Listo", "connecting": "Conectando…", "connected": "Conectado", "disconnecting": "Desconectando…", "disconnected": "Desconectado", "error": "Error"}
     },
     "examples": {
       "title": "Editor de código MicroPython",
@@ -92,6 +92,10 @@
       "run": "Ejecutar en la placa",
       "connect": "Conectar consola serie",
       "save": "Guardar en la placa",
+      "installLibrary": "Instalar {{file}}",
+      "libraryHint": "Instala {{file}} en la placa una vez antes de ejecutar este ejemplo. Si lo instalas de nuevo, reemplaza ese archivo.",
+      "librarySource": "Fuente UNIT · {{license}}",
+      "libraryInstalled": "{{file}} guardado en la placa. Ya puedes ejecutar el ejemplo.",
       "stop": "Detener",
       "connectFirst": "Conecta la consola serie para ejecutar o guardar el script en la placa.",
       "saveHint": "Guardar en la placa reemplaza un archivo existente con el mismo nombre.",
@@ -129,6 +133,7 @@
     "loading": "Cargando",
     "brand": "Pulsar <part>C5 Labs</part>",
     "sections": "Secciones",
+    "codePlatform": "Ejemplos de código: Arduino o MicroPython",
     "nav": {
       "labs": "Laboratorios",
       "flasher": "Cargar firmware",
@@ -217,6 +222,16 @@
           "title": "Prueba el lazo UART",
           "try": "Une TX0 con RX0, carga el sketch y envía hello UART. Retira el cable y vuelve a enviarlo.",
           "expect": "El primer mensaje vuelve como loopback: hello UART; el segundo ya no vuelve."
+        },
+        "D2": {
+          "title": "Observa cómo se crea la gráfica de luz",
+          "try": "Busca DevLabDDP::Master en el sketch y sigue la lectura ADC hasta drawGraph().",
+          "expect": "La OLED grafica las últimas 126 muestras y el monitor serie imprime los valores."
+        },
+        "O1": {
+          "title": "Enciende la OLED",
+          "try": "Carga o1-oled.ino con solo la SSD1306 conectada a QWIIC.",
+          "expect": "La pantalla muestra Pulsar C5 y OLED ready."
         }
       },
       "micropython": {
@@ -234,6 +249,46 @@
           "title": "Cambia el tiempo del LED",
           "try": "Cambia sleep_ms(12) por sleep_ms(30) y vuelve a ejecutar el archivo.",
           "expect": "El LED externo sube y baja de brillo más despacio."
+        },
+        "P1": {
+          "title": "Prueba la entrada BOOT",
+          "try": "Ejecuta gpio.py, cambia el intervalo pulsado de 100 a 50 ms y mantén BOOT.",
+          "expect": "El LED parpadea más rápido mientras mantienes BOOT; el REPL muestra su estado."
+        },
+        "P2": {
+          "title": "Mezcla un color y baja el brillo",
+          "try": "Ejecuta rgb_mixer.py y envía rgb 255 80 0, level 20 y level 100 desde el terminal.",
+          "expect": "El LED sigue naranja mientras cambia el brillo; off lo apaga."
+        },
+        "P3": {
+          "title": "Compara el ADC y el voltaje",
+          "try": "Ejecuta adc.py y gira el potenciómetro mientras comparas read_u16() con read_uv().",
+          "expect": "El valor escalado a 16 bits y los milivoltios aproximados siguen el giro."
+        },
+        "P4": {
+          "title": "Encuentra los sensores integrados",
+          "try": "Ejecuta i2c_scan.py y compara las direcciones con los cinco dispositivos de la guía.",
+          "expect": "El REPL muestra los dispositivos que responden en GPIO2/GPIO3."
+        },
+        "P5": {
+          "title": "Comprueba que el archivo conserva los datos",
+          "try": "Instala sdcard.py en la placa, inserta una tarjeta FAT32 y ejecuta microsd.py dos veces para leer /sd/pulsar.txt.",
+          "expect": "Cada ejecución agrega una línea sin borrar las anteriores."
+        },
+        "P6": {
+          "title": "Prueba el retorno UART",
+          "try": "Une GPIO11 con GPIO12, ejecuta uart_loopback.py y envía hello UART desde el terminal.",
+          "expect": "El script muestra loopback: hello UART; sin el puente indica que no hubo respuesta."
+        },
+        "D2": {
+          "title": "Grafica la luz en la OLED",
+          "try": "Instala ssd1306.py, ejecuta oled_light.py y cubre e ilumina el TEMT6000.",
+          "expect": "El terminal identifica el dispositivo 0x0102 y la gráfica OLED sigue la luz."
+        },
+        "O1": {
+          "title": "Enciende la OLED",
+          "try": "Instala ssd1306.py y ejecuta oled.py con solo la pantalla conectada.",
+          "expect": "La pantalla muestra Pulsar C5 y MicroPython."
         }
       }
     },
@@ -271,7 +326,7 @@
     },
     "display": {
       "title": "Pantalla y entrada",
-      "blurb": "La pantalla de 1,9″ y los botones"
+      "blurb": "OLED de Pulsar C5, pantalla de 1,9″ y botones"
     },
     "wifi": {
       "title": "Wi-Fi",

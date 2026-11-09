@@ -71,7 +71,7 @@ export function LessonHeader({
         <StateBadge state={state} />
       </div>
 
-      {lesson.variants ? (
+      {lesson.variants && lesson.track !== "intro" && lesson.track !== "pulsar" ? (
         <VariantSwitch
           variants={lesson.variants}
           current={lesson.variantKey}

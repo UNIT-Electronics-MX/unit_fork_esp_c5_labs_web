@@ -8,6 +8,10 @@
       "short": "Cómo funciona",
       "shortNumbered": "Cómo {{number}}"
     },
+    "connections": {
+      "title": "Conexiones",
+      "short": "Conexiones"
+    },
     "wiring": {
       "title": "Cableado",
       "short": "Cablear"
@@ -92,7 +96,61 @@
   "wiring": {
     "from": "Desde",
     "to": "Hasta",
-    "notes": "Notas"
+    "notes": "Notas",
+    "openPinout": "Abrir el pinout interactivo de C5",
+    "fritzingCredit": "Arte del potenciómetro: Fritzing"
+  },
+  "connections": {
+    "controls": "Controles del recorrido de conexiones",
+    "prev": "Anterior",
+    "play": "Reproducir",
+    "pause": "Pausar",
+    "next": "Siguiente",
+    "showAll": "Mostrar todas",
+    "count": "{{step}} de {{total}} conexiones",
+    "pathList": "Conexiones de la C5 con el componente",
+    "chip": "ESP32-C5",
+    "pulsarHeader": "Conector de la Pulsar C5",
+    "internal": "En el PCB · sin cable",
+    "external": "Cableado externo",
+    "startTitle": "Comienza por la primera conexión",
+    "startInternal": "Estas conexiones ya están en la Pulsar C5. Avanza para ver qué hace cada señal.",
+    "startExternal": "Desconecta el USB antes de colocar cables. Avanza para ver cada conexión en orden.",
+    "stepTitle": "{{step}} · {{from}} → {{to}}",
+    "doneTitle": "Todas las conexiones visibles",
+    "doneInternal": "Estas rutas ya están integradas en la placa; no necesitas añadir cables.",
+    "doneExternal": "Comprueba los cables físicos con este diagrama antes de reconectar el USB.",
+    "part": {
+      "P1": "LED y botón BOOT",
+      "P2": "LED RGB WS2812",
+      "P3": "Potenciómetro",
+      "P4": "Sensores integrados",
+      "P5": "Ranura microSD",
+      "P6": "Pin RX0 del conector"
+    },
+    "target": {
+      "userLed": "LED de usuario",
+      "boot": "Botón BOOT",
+      "rgb": "Entrada de datos WS2812",
+      "sensorBus": "Bus I²C de sensores",
+      "sdClock": "CLK de microSD",
+      "sdMosi": "DI de microSD",
+      "sdMiso": "DO de microSD",
+      "sdSelect": "CS de microSD"
+    },
+    "note": {
+      "userLed": "GPIO27 controla el LED de usuario soldado en la placa. También sirve de reloj para la microSD cuando se usa la tarjeta.",
+      "boot": "El botón BOOT lleva GPIO28 a nivel bajo al presionarlo. No lo mantengas presionado durante el reinicio salvo que quieras entrar en modo de descarga.",
+      "rgb": "El esquema asigna los datos RGB a GPIO0. Algunos dibujos de la placa indican GPIO8; comprueba qué pin funciona en tu placa.",
+      "potGround": "Conecta la pata exterior restante del potenciómetro a GND.",
+      "sda": "GPIO2 lleva los datos a los sensores I²C integrados. El conector QWIIC usa otro bus.",
+      "scl": "GPIO3 proporciona el reloj del bus de sensores. Las resistencias pull-up ya están montadas.",
+      "sdClock": "GPIO27 genera el reloj de la tarjeta y se comparte con el LED de usuario, que puede parpadear durante el acceso.",
+      "sdMosi": "GPIO7 lleva datos del ESP32-C5 a la tarjeta.",
+      "sdMiso": "GPIO26 devuelve datos de la tarjeta al ESP32-C5.",
+      "sdSelect": "GPIO23 selecciona la tarjeta microSD para cada transferencia SPI.",
+      "uart": "Con el USB desconectado, coloca un puente de TX0 (GPIO11) a RX0 (GPIO12). La consola USB permanece separada."
+    }
   },
   "variants": {
     "label": "Variaciones"

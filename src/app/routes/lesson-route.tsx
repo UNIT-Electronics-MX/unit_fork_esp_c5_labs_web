@@ -21,7 +21,7 @@ import { TrackNav } from "@/features/navigation/TrackNav";
 import { currentLocale } from "@/i18n/i18n";
 import { useLocale } from "@/i18n/use-locale";
 import { useTranslation } from "react-i18next";
-import { progress, useTicks, useVariants } from "@/features/progress/progress-store";
+import { isCodePlatform, progress, useCodePlatform, useTicks, useVariants } from "@/features/progress/progress-store";
 import { useActiveSection } from "@/lib/active-section";
 import type { RouteErrorReason } from "../route-errors";
 
@@ -39,13 +39,18 @@ export const trackLoader =
     const lessons = await queryClient.query(trackLessonsQuery(track.id, currentLocale()));
     const entry = entryLesson(lessons, progress.ticks.get());
     const code = new URL(request.url).searchParams.get("view") === "code";
-    return redirect(`/lessons/${entry?.id ?? DEFAULT_LESSON_ID}${code ? "/code" : ""}`);
+    // These themes mix C5 workspaces with earlier guide-only lessons.
+    const featuredCodeId = track.id === "display" ? "O1" : track.id === "sensors" ? "D2" : undefined;
+    const target = code && featuredCodeId
+      ? lessons.find((lesson) => lesson.id === featuredCodeId && isActive(lesson)) ?? entry
+      : entry;
+    return redirect(`/lessons/${target?.id ?? DEFAULT_LESSON_ID}${code ? "/code" : ""}`);
   };
 
 /** "/lessons/:lessonId" */
 export const lessonLoader =
   (queryClient: QueryClient) =>
-  async ({ params }: LoaderFunctionArgs) => {
+  async ({ params, request }: LoaderFunctionArgs) => {
     const lessonId = params.lessonId ?? "";
     const trackId = trackOfLesson(lessonId);
     if (!trackId) throw data({ reason: "noLesson", id: lessonId } satisfies RouteErrorReason, { status: 404 });
@@ -55,8 +60,32 @@ export const lessonLoader =
       throw data({ reason: "plannedLesson", id: lessonId } satisfies RouteErrorReason, {
         status: 404,
       });
+    const requestedPlatform = new URL(request.url).searchParams.get("variant");
+    if ((trackId === "intro" || trackId === "pulsar" || lessonId === "D2" || lessonId === "O1") && isCodePlatform(requestedPlatform)
+      && progress.codePlatform.get() !== requestedPlatform) {
+      progress.setCodePlatform(requestedPlatform);
+    }
     progress.lastLesson.set(lessonId);
     return { lessonId, trackId };
+  };
+
+/** Arduino's setup lesson has no sketch; its Code tab opens the first sketch in lesson 01. */
+export const codeLoader =
+  (queryClient: QueryClient) =>
+  (args: LoaderFunctionArgs) => {
+    if (args.params.lessonId === "00") {
+      const search = new URL(args.request.url).searchParams;
+      const requestedPlatform = search.get("variant");
+      const savedPlatform = progress.codePlatform.get();
+      const platform = isCodePlatform(requestedPlatform)
+        ? requestedPlatform
+        : isCodePlatform(savedPlatform) ? savedPlatform : "arduino";
+      if (platform === "arduino") {
+        search.set("variant", "arduino");
+        return redirect(`/lessons/01/code?${search}`);
+      }
+    }
+    return lessonLoader(queryClient)(args);
   };
 
 /** The lesson of the current route, with its variant applied (URL first, then your last choice). */
@@ -65,13 +94,18 @@ export function useRouteLesson() {
     useLoaderData<Awaited<ReturnType<ReturnType<typeof lessonLoader>>>>();
   const { data: lessons } = useSuspenseQuery(trackLessonsQuery(trackId, useLocale()));
   const variants = useVariants();
+  const codePlatform = useCodePlatform();
   const [params, setParams] = useSearchParams();
   const base = lessons.find((l) => l.id === lessonId);
   if (!base || !isActive(base)) throw new Error(`Lesson ${lessonId} vanished from the cache`);
-  const lesson = resolveLesson(base, params.get("variant") ?? variants[lessonId]);
+  const requestedVariant = params.get("variant");
+  const lesson = resolveLesson(base, trackId === "intro" || trackId === "pulsar" || lessonId === "D2" || lessonId === "O1"
+    ? (isCodePlatform(requestedVariant) ? requestedVariant : codePlatform)
+    : requestedVariant ?? variants[lessonId]);
 
   function chooseVariant(key: string) {
-    progress.setVariant(lessonId, key);
+    if ((trackId === "intro" || trackId === "pulsar" || lessonId === "D2" || lessonId === "O1") && isCodePlatform(key)) progress.setCodePlatform(key);
+    else progress.setVariant(lessonId, key);
     setParams(
       (p) => {
         p.set("variant", key);

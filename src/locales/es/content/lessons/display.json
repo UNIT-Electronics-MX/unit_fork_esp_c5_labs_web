@@ -1,4 +1,84 @@
 {
+  "O1": {
+    "title": "OLED por QWIIC",
+    "heading": "Enciende la pantalla OLED SSD1306",
+    "goal": "Conecta una OLED SSD1306 a la Pulsar C5 y muestra un mensaje. Este primer experimento de pantalla solo usa la OLED.",
+    "learn": [
+      "conector QWIIC",
+      "dirección I²C 0x3C",
+      "128 × 64 píxeles",
+      "texto en pantalla"
+    ],
+    "pins": {
+      "0": {
+        "role": "VCC"
+      },
+      "1": {
+        "role": "SDA"
+      },
+      "2": {
+        "role": "SCL"
+      },
+      "3": {
+        "role": "GND"
+      }
+    },
+    "wiring": {
+      "head": [
+        "Pulsar C5",
+        "OLED SSD1306",
+        "Función"
+      ],
+      "rows": [
+        [
+          "3V3",
+          "VCC",
+          "alimentación de 3,3 V"
+        ],
+        [
+          "GND",
+          "GND",
+          "tierra común"
+        ],
+        [
+          "QWIIC SDA (GPIO1)",
+          "SDA",
+          "datos I²C"
+        ],
+        [
+          "QWIIC SCL (GPIO6)",
+          "SCL",
+          "reloj I²C"
+        ]
+      ]
+    },
+    "steps": [
+      "Desconecta el USB y conecta la OLED SSD1306 a QWIIC, o cablea solo sus cuatro pines como se muestra.",
+      "Instala <code>Adafruit SSD1306</code> y <code>Adafruit GFX Library</code> en Arduino IDE.",
+      "Abre <b>Código</b> para leer <code>o1-oled.ino</code> y cárgalo. La pantalla muestra <code>Pulsar C5</code> y <code>OLED ready</code>."
+    ],
+    "note": "Este ejemplo espera una OLED de 128 × 64 en la dirección I²C 0x3C. Cambia las dimensiones o la dirección en el código si tu módulo es distinto. El conector QWIIC de la Pulsar C5 no tiene resistencias pull-up integradas; la mayoría de módulos OLED sí las incluyen.",
+    "variants": {
+      "arduino": {
+        "short": "Muestra texto en la OLED"
+      },
+      "micropython": {
+        "short": "Muestra texto por QWIIC",
+        "learn": [
+          "machine.I2C",
+          "SSD1306_I2C",
+          "dirección I²C 0x3C",
+          "texto en pantalla"
+        ],
+        "steps": [
+          "Desconecta el USB y conecta solo la OLED SSD1306 a QWIIC, o cablea sus cuatro pines como se muestra.",
+          "Abre <b>Código</b>, conecta el REPL serie y pulsa <b>Instalar ssd1306.py</b>. Esto guarda el controlador OLED en la placa.",
+          "Ejecuta <code>oled.py</code>. La OLED muestra <code>Pulsar C5</code> y <code>MicroPython</code>."
+        ],
+        "note": "No necesitas un sensor de luz. Este ejemplo espera una SSD1306 de 128 × 64 en 0x3C. Si tienes una pantalla de 128 × 32, cambia HEIGHT a 32 en oled.py."
+      }
+    }
+  },
   "03": {
     "title": "Pantalla",
     "heading": "La pantalla IPS de 1,9″",

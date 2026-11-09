@@ -14,7 +14,6 @@
   },
   "log": {
     "title": "Bench-Log",
-    "intro": "Jeder Befehl, der Software installiert, mit dem Board gesprochen oder es geflasht hat, samt Antwort. Claude kündigt jeden Befehl vorher an. Alles, was das Board anfasst oder etwas installiert, wartet auf dein Go.",
     "filter": "Nach Typ filtern",
     "timeline": "Log-Zeitleiste",
     "entryLabel": "{{n}} · {{types}} · {{title}}",

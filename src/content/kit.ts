@@ -45,6 +45,7 @@ export const LESSON_KIT: Readonly<Record<string, LessonKit<KitItemId>>> = {
   P4: { need: [] },
   P5: { need: [["microsd"]] },
   P6: { need: [] },
+  O1: { need: [["oled"]] },
   D1: { need: [["bmi270"]] },
   D2: { need: [["oled"], ["temt6000"]] },
   D3: { need: [["tmp235"]] },

@@ -81,7 +81,30 @@
       "Ejecuta el comando. El monitor confirma un TEMT6000 con ID <code>0x0102</code> en <code>0x20</code>.",
       "Tapa el sensor y luego ilumínalo: la gráfica baja y sube."
     ],
-    "note": "La lectura es un nivel relativo de 12 bits, no lux: calíbrala con un luxómetro antes de dar unidades."
+    "note": "La lectura es un nivel relativo de 12 bits, no lux: calíbrala con un luxómetro antes de dar unidades.",
+    "variants": {
+      "arduino": {
+        "short": "Sketch SSD1306 y DevLabDDP"
+      },
+      "micropython": {
+        "short": "Gráfica OLED por I²C",
+        "goal": "Lee el TEMT6000 DDP por QWIIC y grafica sus lecturas recientes de luz en una OLED SSD1306 con MicroPython.",
+        "learn": [
+          "bus I²C compartido",
+          "comandos DDP",
+          "búfer de pantalla",
+          "búfer circular",
+          "muestreo constante"
+        ],
+        "steps": [
+          "Desconecta el USB y conecta la OLED y el TEMT6000 DDP al bus QWIIC. Usa 3V3 y GND como se muestra.",
+          "Abre <b>Código</b>, conecta el REPL serie y pulsa <b>Instalar ssd1306.py</b>. Esto guarda el controlador de pantalla en la placa.",
+          "Ejecuta <code>oled_light.py</code>. El terminal identifica el TEMT6000 como <code>0x0102</code> y la OLED dibuja sus lecturas.",
+          "Cubre el sensor y luego ilumínalo. La gráfica debe cambiar; pulsa <b>Detener</b> al terminar."
+        ],
+        "note": "La gráfica D2 necesita un sensor TEMT6000 DDP. Para encender solo la OLED, usa la lección O1 de Pantalla y entrada. El sensor entrega un valor relativo de 12 bits, no lux. Instala <code>ssd1306.py</code> una vez desde el workspace de código."
+      }
+    }
   },
   "D3": {
     "title": "Temperatura analógica",

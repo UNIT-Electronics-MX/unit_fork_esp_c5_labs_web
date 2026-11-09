@@ -62,6 +62,32 @@
   text-decoration: none;
   margin-inline-end: auto;
 }
+.benchSlot {
+  min-width: 0;
+}
+.platform {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 42px;
+  padding-inline: 10px 6px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+}
+.platform select {
+  max-width: 120px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: 700 12px var(--font-mono);
+  cursor: pointer;
+}
+.platform:focus-within {
+  outline: 2px solid var(--copper);
+  outline-offset: 2px;
+}
 .mark {
   display: grid;
   place-items: center;
@@ -144,10 +170,21 @@
     width: 100%;
     min-width: 0;
   }
-  .top > :nth-child(2) {
+  .benchSlot {
     grid-column: 1 / -1;
     grid-row: 3;
     width: 100%;
+  }
+  .top[data-platform] .benchSlot {
+    grid-column: 1;
+  }
+  .platform {
+    grid-column: 2;
+    grid-row: 3;
+    min-width: 0;
+  }
+  .platform select {
+    max-width: 102px;
   }
   /* Icons only, but the label stays for screen readers. */
   .navLabel {

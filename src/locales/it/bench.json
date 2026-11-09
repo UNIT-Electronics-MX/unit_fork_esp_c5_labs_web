@@ -14,7 +14,6 @@
   },
   "log": {
     "title": "Registro del banco",
-    "intro": "Ogni comando che ha installato software, parlato con la scheda o l'ha flashata, con la sua risposta. Claude annuncia ogni comando prima. Tutto ciò che tocca la scheda o installa aspetta il tuo via libera.",
     "filter": "Filtra per tipo",
     "timeline": "Cronologia del registro",
     "entryLabel": "{{n}} · {{types}} · {{title}}",

@@ -8,6 +8,14 @@ import styles from "./MicroPythonWorkbench.module.css";
 const FIRST_EXAMPLE: Readonly<Record<string, string>> = {
   "01": "neopixel",
   "02": "external-led",
+  P1: "gpio",
+  P2: "rgb-mixer",
+  P3: "adc",
+  P4: "i2c-scan",
+  P5: "microsd",
+  P6: "uart-loopback",
+  D2: "oled-light",
+  O1: "oled",
 };
 
 /** One Web Serial connection shared by the Python editor and its live REPL. */
@@ -18,7 +26,7 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
   const [serialOperation, setSerialOperation] = useState(false);
   const [flashWorking, setFlashWorking] = useState(false);
   const [serialError, setSerialError] = useState("");
-  const intro = ["00", "01", "02"].includes(lessonId);
+  const focusedExampleId = FIRST_EXAMPLE[lessonId];
   return (
     <div className={styles.workbench}>
       {lessonId === "00" ? <FirmwareFlasher
@@ -30,7 +38,7 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
         microPythonSetup
         embedded
       /> : null}
-      {intro ? <LessonCodeGuide
+      {focusedExampleId || lessonId === "00" ? <LessonCodeGuide
         lessonId={lessonId}
         variant="micropython"
         connected={connected && !flashWorking}
@@ -38,7 +46,7 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
       /> : null}
       {lessonId !== "00" ? <MicroPythonEditor
         initialId={FIRST_EXAMPLE[lessonId] ?? "gpio"}
-        focusedExampleId={intro ? FIRST_EXAMPLE[lessonId] : undefined}
+        focusedExampleId={focusedExampleId}
         terminalRef={terminalRef}
         connected={connected}
         connectionError={serialError}

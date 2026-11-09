@@ -1,8 +1,56 @@
 // Lessons of the "display" track. Strings may carry the inline markup RichText understands:
 // <b>, <i>, <code> and <span class="snd-parts|need|opt">.
 import type { LessonEntry } from "@/domain/lesson";
+import { arduinoCmd, PULSAR_STATUS } from "./arduino";
 
 export const displayLessons = [
+  {
+    kind: "lesson",
+    id: "O1",
+    track: "display",
+    title: "OLED on QWIIC",
+    status: PULSAR_STATUS,
+    heading: "Turn on the SSD1306 OLED",
+    goal: "Connect an SSD1306 OLED to the Pulsar C5 and show a message. This first screen experiment uses only the OLED.",
+    learn: ["QWIIC connector", "I²C address 0x3C", "128 × 64 pixels", "display text"],
+    pins: [
+      { pin: "3V3", idx: 1, role: "VCC", side: "L", kind: "power" },
+      { pin: "1", idx: 4, role: "SDA", side: "L" },
+      { pin: "6", idx: 9, role: "SCL", side: "L" },
+      { pin: "GND", idx: 12, role: "GND", side: "L", kind: "gnd" },
+    ],
+    cmd: arduinoCmd("o1-oled"),
+    wiring: {
+      head: ["Pulsar C5", "SSD1306 OLED", "Purpose"],
+      rows: [
+        ["3V3", "VCC", "3.3 V power"],
+        ["GND", "GND", "common ground"],
+        ["QWIIC SDA (GPIO1)", "SDA", "I²C data"],
+        ["QWIIC SCL (GPIO6)", "SCL", "I²C clock"],
+      ],
+    },
+    steps: [
+      "Unplug USB and connect the SSD1306 OLED to QWIIC, or wire only its four pins as shown.",
+      "Install <code>Adafruit SSD1306</code> and <code>Adafruit GFX Library</code> in Arduino IDE.",
+      "Open <b>Code</b> to read <code>o1-oled.ino</code>, then upload it. The display shows <code>Pulsar C5</code> and <code>OLED ready</code>.",
+    ],
+    note: "This example expects a 128 × 64 OLED at I²C address 0x3C. Change the dimensions or address in the code if your module differs. The Pulsar C5 QWIIC connector has no on-board pull-ups; most OLED modules include them.",
+    variants: [
+      { key: "arduino", label: "Arduino", short: "Show text on the OLED" },
+      {
+        key: "micropython", label: "MicroPython", short: "Show text over QWIIC",
+        learn: ["machine.I2C", "SSD1306_I2C", "I²C address 0x3C", "display text"],
+        cmd: "",
+        steps: [
+          "Unplug USB and connect only the SSD1306 OLED to QWIIC, or wire its four pins as shown.",
+          "Open <b>Code</b>, connect the serial REPL and select <b>Install ssd1306.py</b>. This saves the OLED driver on the board.",
+          "Run <code>oled.py</code>. The OLED shows <code>Pulsar C5</code> and <code>MicroPython</code>.",
+        ],
+        note: "No light sensor is needed. This example expects a 128 × 64 SSD1306 at 0x3C. If you have a 128 × 32 display, set HEIGHT to 32 in oled.py.",
+      },
+    ],
+    panels: [],
+  },
   {
     kind: "lesson",
     id: "03",

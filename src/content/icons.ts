@@ -28,6 +28,7 @@ export const LESSON_PART: Readonly<Record<string, PartName>> = {
   P4: "sensor",
   P5: "memory",
   P6: "chat",
+  O1: "tft",
   D1: "radar",
   D2: "tft",
   D3: "meter",

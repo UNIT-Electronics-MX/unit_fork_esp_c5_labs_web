@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useImperativeHandle, useRef, useState, type FormEvent, type Ref } from "react";
 import { useTranslation } from "react-i18next";
+import { recordBrowserBenchAction } from "@/features/bench/browser-log";
 import { REPL_INTERRUPT_FAILED, SerialSession, type LineEnding, type TerminalPort } from "./serial-session";
 import styles from "./SerialTerminal.module.css";
 
@@ -178,6 +179,10 @@ export function SerialTerminal({
       if (sessionRef.current === session && mountedRef.current) {
         setState("connected");
         onConnectedChange(true);
+        recordBrowserBenchAction({
+          types: ["observe"], title: "Serial console connected", where: "Browser serial",
+          why: "Opened the board's serial port.", result: `Connected at ${baudRate} baud.`,
+        });
       }
     } catch (cause) {
       if (sessionRef.current) await sessionRef.current.close();
@@ -193,6 +198,10 @@ export function SerialTerminal({
         const detail = describeError(cause);
         setError(detail);
         onErrorChange?.(detail);
+        recordBrowserBenchAction({
+          types: ["failed"], title: "Serial connection failed", where: "Browser serial",
+          why: "The board's serial port could not be opened.", result: "Check the terminal for details.",
+        });
       }
     }
   }
@@ -205,6 +214,16 @@ export function SerialTerminal({
     try {
       await session.send(text, lineEnding);
       appendOutput(`\n› ${text}\n`);
+      recordBrowserBenchAction({
+        types: ["read"], title: "Serial command sent", where: "Browser serial",
+        why: "Sent a command to the connected board.", result: "Command sent; its text and output were not saved here.",
+      });
+    } catch (cause) {
+      recordBrowserBenchAction({
+        types: ["failed"], title: "Serial command failed", where: "Browser serial",
+        why: "A command could not be sent to the board.", result: "Check the terminal for details.",
+      });
+      throw cause;
     } finally {
       setSending(false);
     }

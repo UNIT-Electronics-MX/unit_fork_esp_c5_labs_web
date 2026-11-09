@@ -25,6 +25,21 @@ export const pulsarLessons = [
       "Hold <b>BOOT</b>: the LED blinks fast and the monitor prints <code>button pressed</code>.",
     ],
     note: "GPIO27 and GPIO28 are strapping pins: the chip reads them at reset to pick its boot mode. Using them after boot is fine; holding BOOT <i>during</i> reset enters download mode.",
+    variants: [
+      { key: "arduino", label: "Arduino", short: "Sketch and serial monitor" },
+      {
+        key: "micropython", label: "MicroPython", short: "GPIO script and serial REPL",
+        goal: "Blink the on-board LED on GPIO27 and read BOOT on GPIO28 with a MicroPython script. Hold BOOT to change the blink rate.",
+        learn: ["machine.Pin", "digital input", "pull-up input", "Python loops", "strapping pins"],
+        cmd: "",
+        steps: [
+          "Install MicroPython in lesson 00 if needed. Nothing to wire: the LED and BOOT button are on the board.",
+          "Open <b>Code</b>, connect the serial REPL and run <code>gpio.py</code>.",
+          "Hold <b>BOOT</b>: the LED blinks faster and the console reports the button state. Press <b>Stop</b> before changing the script.",
+        ],
+        note: "GPIO27 and GPIO28 are strapping pins. Pressing BOOT after startup is fine; holding it during reset enters download mode.",
+      },
+    ],
     panels: [],
   },
   {
@@ -32,7 +47,7 @@ export const pulsarLessons = [
     id: "P2",
     track: "pulsar",
     title: "RGB mixer",
-    status: "Arduino sketch compiles for Pulsar C5; not flashed yet",
+    status: PULSAR_STATUS,
     heading: "Mix colours from the serial console",
     goal: "Send RGB values to the on-board WS2812, compare the primary colours and adjust brightness without uploading another sketch.",
     learn: ["additive RGB mixing", "serial commands", "rgbLedWrite()", "brightness scaling"],
@@ -44,6 +59,21 @@ export const pulsarLessons = [
       "Send <code>rgb 255 80 0</code>, then <code>level 20</code> and <code>level 100</code>. Compare colour and brightness; send <code>off</code> when done.",
     ],
     note: "No colour? The schematic wires the LED's data line to GPIO0, but UNIT's board artwork labels it GPIO8. Try <code>RGB_PIN = 8</code> and tell us which one your board uses.",
+    variants: [
+      { key: "arduino", label: "Arduino", short: "Sketch and serial commands" },
+      {
+        key: "micropython", label: "MicroPython", short: "NeoPixel mixer and serial REPL",
+        goal: "Mix colours on the on-board WS2812 from the MicroPython REPL without changing or uploading the script for every colour.",
+        learn: ["NeoPixel", "RGB channels", "brightness scaling", "serial input"],
+        cmd: "",
+        steps: [
+          "Nothing to wire. Open <b>Code</b>, connect the serial REPL and run <code>rgb_mixer.py</code>.",
+          "In the terminal, send <code>rgb 255 0 0</code>, <code>rgb 0 255 0</code> and <code>rgb 0 0 255</code> to compare the primary colours.",
+          "Send <code>rgb 255 80 0</code>, then <code>level 20</code> and <code>level 100</code>. Send <code>off</code> and press <b>Stop</b> when finished.",
+        ],
+        note: "The schematic uses GPIO0 for the RGB data line; some board artwork says GPIO8. Change <code>RGB_PIN</code> to 8 if your LED stays dark.",
+      },
+    ],
     panels: [],
   },
   {
@@ -69,12 +99,27 @@ export const pulsarLessons = [
       ],
     },
     steps: [
-      "Unplug USB, then wire the potentiometer as in the table.",
+      "Unplug USB, then wire the potentiometer as shown in the diagram.",
       "Plug in and run the command.",
       "Turn the knob end to end: raw goes from about 0 to 4095, millivolts from about 0 to 3100.",
       "Open <b>Tools → Serial Plotter</b> to see both lines move.",
     ],
     note: "Analog-capable header pins are A1 (GPIO1), A2 (GPIO4), A3 (GPIO5) and A6 (GPIO6). Never feed more than 3.3 V into them.",
+    variants: [
+      { key: "arduino", label: "Arduino", short: "12-bit ADC sketch" },
+      {
+        key: "micropython", label: "MicroPython", short: "ADC script and serial REPL",
+        goal: "Turn a potentiometer on A2 and read its scaled 16-bit value and approximate voltage with MicroPython.",
+        learn: ["machine.ADC", "read_u16()", "read_uv()", "voltage dividers"],
+        cmd: "",
+        steps: [
+          "Disconnect USB, then wire the potentiometer exactly as shown in the diagram.",
+          "Reconnect USB, open <b>Code</b>, connect the serial REPL and run <code>adc.py</code>.",
+          "Turn the knob end to end. Compare the 0–65535 scaled reading with the millivolt value in the terminal; press <b>Stop</b> when done.",
+        ],
+        note: "The millivolt reading is approximate and can saturate near 3.3 V. Never apply more than 3.3 V to A2.",
+      },
+    ],
     panels: [],
   },
   {
@@ -108,6 +153,21 @@ export const pulsarLessons = [
       "Compare the list with the table.",
     ],
     note: "This bus is separate from the QWIIC connector (GPIO1 and GPIO6), which the Sensors lessons use for external boards.",
+    variants: [
+      { key: "arduino", label: "Arduino", short: "Wire bus scanner" },
+      {
+        key: "micropython", label: "MicroPython", short: "I²C bus scanner",
+        goal: "Use MicroPython to scan the Pulsar C5's on-board sensor bus and identify which I²C devices answer.",
+        learn: ["machine.I2C", "scan()", "I²C addresses", "pull-up resistors"],
+        cmd: "",
+        steps: [
+          "Nothing to wire: the five sensors and pull-up resistors are on the board.",
+          "Open <b>Code</b>, connect the serial REPL and run <code>i2c_scan.py</code>.",
+          "Compare the addresses listed every five seconds with the table. Press <b>Stop</b> when finished.",
+        ],
+        note: "This on-board bus uses GPIO2/GPIO3. The QWIIC connector uses a separate bus on GPIO1/GPIO6.",
+      },
+    ],
     panels: [],
   },
   {
@@ -132,6 +192,22 @@ export const pulsarLessons = [
       "Press <b>RST</b> a few times: one more <code>boot at … ms</code> line each time.",
     ],
     note: "SCK shares GPIO27 with the user LED, so the LED flickers while the card is busy. That is expected.",
+    variants: [
+      { key: "arduino", label: "Arduino", short: "SD library sketch" },
+      {
+        key: "micropython", label: "MicroPython", short: "SPI card and file script",
+        goal: "Mount the on-board microSD card with MicroPython, append a line to a file and read it back.",
+        learn: ["SPI driver", "machine.SPI", "FAT file system", "file append"],
+        cmd: "",
+        steps: [
+          "Format a microSD card as <b>FAT32</b> and insert it fully into the on-board slot.",
+          "Open <b>Code</b>, connect serial and select <b>Install sdcard.py</b>. This saves UNIT's SPI driver on the board.",
+          "Run <code>microsd.py</code>. The script uses SPI on GPIO27/7/26/23 and mounts the card at <code>/sd</code>.",
+          "Run the script again: <code>/sd/pulsar.txt</code> should contain one more line while retaining the first.",
+        ],
+        note: "This MicroPython example imports UNIT's <code>sdcard.py</code> from the board filesystem. Install it once from the code workspace before running. GPIO27 is shared with the user LED, which may flicker during card access.",
+      },
+    ],
     panels: [],
   },
   {
@@ -158,6 +234,22 @@ export const pulsarLessons = [
       "Pull the jumper: nothing comes back.",
     ],
     note: "To talk to another board instead, cross the wires (TX → RX, RX → TX) and join the grounds.",
+    variants: [
+      { key: "arduino", label: "Arduino", short: "Serial1 loopback sketch" },
+      {
+        key: "micropython", label: "MicroPython", short: "UART loopback script",
+        goal: "Send a line from the USB REPL through UART1 on GPIO11 and read it back on GPIO12 with one jumper.",
+        learn: ["machine.UART", "TX and RX", "baud rate", "loopback testing"],
+        cmd: "",
+        steps: [
+          "Disconnect USB and bridge TX0 (GPIO11) to RX0 (GPIO12) with one jumper, then reconnect USB.",
+          "Open <b>Code</b>, connect the serial REPL and run <code>uart_loopback.py</code>.",
+          "Type <code>hello UART</code> in the terminal and send it. The script prints <code>loopback: hello UART</code>.",
+          "Remove the jumper and send another line: the script reports no response. Press <b>Stop</b> when done.",
+        ],
+        note: "The USB REPL stays separate from UART1. For another board, cross TX and RX and connect grounds.",
+      },
+    ],
     panels: [],
   },
 ] as const satisfies readonly LessonEntry[];

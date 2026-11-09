@@ -68,7 +68,7 @@ export function LessonStepper({
               ) : (
                 <Link
                   ref={l.id === currentId ? currentRef : undefined}
-                  to={`/lessons/${l.id}${view === "code" ? "/code" : ""}${variantKey && (l.id === "00" || l.id === "01" || l.id === "02") ? `?variant=${encodeURIComponent(variantKey)}` : ""}`}
+                  to={`/lessons/${l.id}${view === "code" ? "/code" : ""}${variantKey && l.variants?.some((variant) => variant.key === variantKey) ? `?variant=${encodeURIComponent(variantKey)}` : ""}`}
                   preventScrollReset
                   className={styles.step}
                   aria-current={l.id === currentId ? "page" : undefined}

@@ -14,8 +14,10 @@
   },
   "log": {
     "title": "Registro del banco",
-    "intro": "Cada comando que instaló software, habló con la placa o la flasheó, con su respuesta. Claude anuncia cada comando antes. Todo lo que toca la placa o instala espera tu visto bueno.",
+    "intro": "Acciones realizadas en este navegador y registros publicados del banco. Los comandos, el código y la salida serial no se guardan en el registro del navegador.",
     "filter": "Filtrar por tipo",
+    "empty": "Todavía no hay actividad en este navegador. Conecta la consola serial, ejecuta un script o carga firmware para iniciar el registro.",
+    "noMatches": "No hay actividad del tipo {{type}}. Elige otro filtro o Todo.",
     "timeline": "Cronología del registro",
     "entryLabel": "{{n}} · {{types}} · {{title}}",
     "key": "<flash></flash> flasheo <failed></failed> fallo <other></other> instalar, compilar, leer, reiniciar",

@@ -5,6 +5,7 @@ import type { IconName } from "@/ui/Icon";
 export const SECTION_ICON: Record<SectionKind | "board", IconName> = {
   goal: "flag",
   explain: "bulb",
+  connections: "wire",
   wiring: "wire",
   commands: "terminal",
   steps: "steps",

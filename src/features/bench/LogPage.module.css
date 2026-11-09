@@ -47,6 +47,14 @@
 .filters button[aria-pressed="true"] span {
   color: inherit;
 }
+.empty {
+  margin: 0;
+  padding: 18px;
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-l);
+  color: var(--muted);
+  background: var(--surface);
+}
 
 .timeline {
   background: var(--surface);
@@ -80,9 +88,6 @@
 }
 .timeline [data-kind="failed"] button {
   background: var(--danger);
-}
-.timeline [data-dim="true"] button {
-  opacity: 0.25;
 }
 .timelineKey {
   display: flex;

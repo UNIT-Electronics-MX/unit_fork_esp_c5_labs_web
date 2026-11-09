@@ -14,7 +14,6 @@
   },
   "log": {
     "title": "Journal de l'établi",
-    "intro": "Chaque commande qui a installé un logiciel, parlé à la carte ou l'a flashée, avec sa réponse. Claude annonce chaque commande avant de la lancer. Tout ce qui touche à la carte ou installe quelque chose attend ton feu vert.",
     "filter": "Filtrer par type",
     "timeline": "Chronologie du journal",
     "entryLabel": "{{n}} · {{types}} · {{title}}",

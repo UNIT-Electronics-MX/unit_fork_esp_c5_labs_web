@@ -16,6 +16,16 @@ export interface MicroPythonExample {
 export interface MicroPythonExamples {
   readonly board: string;
   readonly examples: readonly MicroPythonExample[];
+  readonly libraries: readonly MicroPythonLibrary[];
+}
+
+export interface MicroPythonLibrary {
+  readonly id: string;
+  readonly file: string;
+  readonly source: string;
+  readonly license: string;
+  readonly examples: readonly string[];
+  readonly code: string;
 }
 
 /** Read the editable C5 examples from the sibling firmware checkout. */
@@ -57,5 +67,31 @@ export function collectMicroPython(root: string): MicroPythonExamples | null {
       code: readFileSync(join(dir, item.file), "utf8"),
     };
   });
-  return { board: manifest.board, examples };
+  const seenLibraries = new Set<string>();
+  const libraries = ("libraries" in manifest && Array.isArray(manifest.libraries) ? manifest.libraries : []).map((item: unknown) => {
+    if (!item || typeof item !== "object" || !("id" in item) || typeof item.id !== "string"
+      || !("file" in item) || typeof item.file !== "string"
+      || !("source" in item) || typeof item.source !== "string"
+      || !("license" in item) || typeof item.license !== "string"
+      || !("examples" in item) || !Array.isArray(item.examples)
+      || !item.examples.length || !item.examples.every((id: unknown) => typeof id === "string" && seen.has(id))
+      || !/^[a-z][a-z0-9-]*$/.test(item.id)
+      || !/^[a-z][a-z0-9_]*\.py$/.test(item.file)
+      || !/^https:\/\/github\.com\/.+/.test(item.source)
+      || item.license !== "MIT"
+      || seenLibraries.has(item.id)
+      || !existsSync(join(dir, "libraries", item.file))) {
+      throw new Error(`${index} has an invalid MicroPython library`);
+    }
+    seenLibraries.add(item.id);
+    return {
+      id: item.id,
+      file: item.file,
+      source: item.source,
+      license: item.license,
+      examples: item.examples as string[],
+      code: readFileSync(join(dir, "libraries", item.file), "utf8"),
+    };
+  });
+  return { board: manifest.board, examples, libraries };
 }

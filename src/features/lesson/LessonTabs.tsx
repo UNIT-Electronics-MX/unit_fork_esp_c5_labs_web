@@ -56,14 +56,20 @@ export function LessonTabs({
   const env = envOfCommand(lesson.cmd);
   const { data: index } = useQuery({ ...firmwareIndexQuery(), enabled: !!env });
   const progress = useAllProgress();
-  if (!env && lesson.track !== "intro" && lesson.track !== "pulsar") return null;
+  if (!env && lesson.track !== "intro" && lesson.track !== "pulsar" && lesson.id !== "D2" && lesson.id !== "O1") return null;
   const files = env ? index?.envs.find((e) => e.env === env)?.files ?? [] : [];
   const own = files.filter((f) => f.role === "lab");
   const lines = own.reduce((n, f) => n + f.lines, 0);
   const read = env ? progress[env]?.stops.length ?? 0 : 0;
   const variant = params.get("variant");
   const consoleSetup = lesson.id === "00" && lesson.variantKey === "micropython";
+  const arduinoSetup = lesson.id === "00" && lesson.variantKey === "arduino";
   const search = variant ? `?variant=${encodeURIComponent(variant)}` : "";
+  const firstSketchSearch = new URLSearchParams(params);
+  firstSketchSearch.set("variant", "arduino");
+  const codeHref = arduinoSetup
+    ? `/lessons/01/code?${firstSketchSearch}`
+    : `/lessons/${lesson.id}/code${search}`;
   const track = findTrack(lesson.track);
   const style = { "--track": `var(${track?.color ?? "--copper"})` } as CSSProperties;
 
@@ -92,7 +98,7 @@ export function LessonTabs({
           <span className={styles.sub}>{t("tabs.labSub")}</span>
         </Link>
         <Link
-          to={`/lessons/${lesson.id}/code${search}`}
+          to={codeHref}
           viewTransition
           preventScrollReset
           aria-current={current === "code" ? "page" : undefined}
@@ -115,7 +121,13 @@ export function LessonTabs({
                 ? t("tabs.codeSubArduino")
                 : lesson.track === "intro" && lesson.variantKey === "micropython"
                 ? t("tabs.codeSubMicroPython")
+                : lesson.track === "pulsar" && lesson.variantKey === "micropython"
+                ? t("tabs.codeSubMicroPython")
+                : (lesson.id === "D2" || lesson.id === "O1") && lesson.variantKey === "micropython"
+                ? t("tabs.codeSubMicroPython")
                 : lesson.track === "pulsar"
+                ? t("tabs.codeSubArduino")
+                : lesson.id === "D2" || lesson.id === "O1"
                 ? t("tabs.codeSubArduino")
                 : t("tabs.codeSubEmpty")}
           </span>

@@ -1,7 +1,7 @@
 import type { ResolvedLesson } from "./lesson";
 
 /** The parts of a lesson page, in reading order. Each has its own icon and colour cue. */
-export type SectionKind = "goal" | "explain" | "wiring" | "commands" | "steps" | "preview";
+export type SectionKind = "goal" | "explain" | "connections" | "wiring" | "commands" | "steps" | "preview";
 
 export interface LessonSection {
   /** DOM id of the section, also its key in the section nav. */
@@ -33,7 +33,9 @@ export function lessonSections(lesson: ResolvedLesson): LessonSection[] {
       panel: i,
     }),
   );
-  if (lesson.wiring)
+  if (lesson.track === "pulsar" && /^P[1-6]$/.test(lesson.id))
+    sections.push({ id: "sec-connections", kind: "connections" });
+  else if (lesson.wiring)
     sections.push({
       id: "sec-wiring",
       kind: "wiring",

@@ -25,6 +25,8 @@ import analogSource from "../../../sketches/pulsar-c5/p3-analog/p3-analog.ino?ra
 import sensorsSource from "../../../sketches/pulsar-c5/p4-i2c-scan/p4-i2c-scan.ino?raw";
 import microsdSource from "../../../sketches/pulsar-c5/p5-microsd/p5-microsd.ino?raw";
 import uartSource from "../../../sketches/pulsar-c5/p6-uart/p6-uart.ino?raw";
+import oledLightSource from "../../../sketches/pulsar-c5/d2-oled-light/d2-oled-light.ino?raw";
+import oledOnlySource from "../../../sketches/pulsar-c5/o1-oled/o1-oled.ino?raw";
 
 // "/lessons/:lessonId/code": an editable workspace for C5 sketches and a guided reader for older labs.
 // The code screen loads only when a lesson opens it.
@@ -44,6 +46,8 @@ const ARDUINO_SKETCHES: Readonly<Record<string, { filename: string; source: stri
   P4: { filename: "p4-i2c-scan.ino", source: sensorsSource },
   P5: { filename: "p5-microsd.ino", source: microsdSource },
   P6: { filename: "p6-uart.ino", source: uartSource },
+  D2: { filename: "d2-oled-light.ino", source: oledLightSource },
+  O1: { filename: "o1-oled.ino", source: oledOnlySource },
 };
 
 function ArduinoLessonWorkspace({ lessonId, filename, source }: { lessonId: string; filename: string; source: string }) {
@@ -74,7 +78,7 @@ export function Component() {
   const { lesson, lessons, trackId, chooseVariant } = useRouteLesson();
   const env = envOfCommand(lesson.cmd);
   const isIntro = lesson.track === "intro";
-  const hasWorkspace = isIntro || lesson.track === "pulsar";
+  const hasWorkspace = isIntro || lesson.track === "pulsar" || lesson.id === "D2" || lesson.id === "O1";
   const arduinoSketch = ARDUINO_SKETCHES[lesson.id];
   const nextId = lessons[lessons.findIndex((entry) => entry.id === lesson.id) + 1]?.id ?? (lesson.id === "02" ? "P1" : undefined);
   const { t } = useTranslation();
@@ -97,7 +101,7 @@ export function Component() {
           <span className={styles.id}>{lesson.id}</span> {lesson.heading}
         </p>
         <div className={styles.actions}>
-          {lesson.variants ? (
+          {lesson.variants && !hasWorkspace ? (
             <VariantSwitch
               variants={lesson.variants}
               current={lesson.variantKey}
@@ -112,11 +116,6 @@ export function Component() {
         <section className={styles.setup} aria-label={t("codeRoute.setup.title")}>
           {lesson.variantKey === "micropython" ? (
             <MicroPythonWorkbench key={lesson.id} lessonId={lesson.id} />
-          ) : lesson.id === "00" ? (
-            <div className={styles.emptySetup}>
-              <p>{t("codeRoute.setup.noSketch")}</p>
-              <Link to="/lessons/01/code?variant=arduino">{t("codeRoute.setup.firstSketch")}</Link>
-            </div>
           ) : arduinoSketch ? (
             <ArduinoLessonWorkspace key={lesson.id} lessonId={lesson.id} {...arduinoSketch} />
           ) : (
@@ -125,7 +124,7 @@ export function Component() {
           <nav className={styles.footer} aria-label={t("codeRoute.setup.actions")}>
             <Link to={lessonHref}>{t("codeRoute.setup.back")}</Link>
             {lesson.variantKey === "micropython" && lesson.id !== "00" ? <Link to="/flash?profile=micropython">{t("codeRoute.setup.flashFirmware")}</Link> : null}
-            {nextId ? <Link to={`/lessons/${nextId}${isIntro && nextId !== "P1" && lesson.variantKey ? `?variant=${encodeURIComponent(lesson.variantKey)}` : ""}`}>{t("codeRoute.setup.nextLesson", { id: nextId })}</Link> : null}
+            {nextId ? <Link to={`/lessons/${nextId}${hasWorkspace && lesson.variantKey ? `?variant=${encodeURIComponent(lesson.variantKey)}` : ""}`}>{t("codeRoute.setup.nextLesson", { id: nextId })}</Link> : null}
           </nav>
         </section>
       ) : env ? (

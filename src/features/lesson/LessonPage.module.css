@@ -89,6 +89,8 @@
 .setupLinks a:last-child { border-color: var(--ink); color: var(--surface); background: var(--ink); }
 .setupLinks a:hover { border-color: var(--copper); }
 .setupLinks a:focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
+.connectionTable { margin-top: 18px; }
+.connectionTable h4 { margin: 0 0 8px; font: 700 14px var(--font-display); }
 @media (max-width: 559px) {
   .stage {
     padding: 8px;

@@ -109,7 +109,30 @@
       "Run the command. The monitor confirms a TEMT6000 with ID <code>0x0102</code> at <code>0x20</code>.",
       "Cover the sensor, then shine a light on it: the graph drops and climbs."
     ],
-    "note": "The reading is a relative 12-bit level, not lux: calibrate against a light meter before quoting units."
+    "note": "The reading is a relative 12-bit level, not lux: calibrate against a light meter before quoting units.",
+    "variants": {
+      "arduino": {
+        "short": "SSD1306 and DevLabDDP sketch"
+      },
+      "micropython": {
+        "short": "OLED graph over I²C",
+        "goal": "Read the TEMT6000 DDP over QWIIC and plot its recent light readings on an SSD1306 OLED with MicroPython.",
+        "learn": [
+          "shared I²C bus",
+          "DDP commands",
+          "frame buffers",
+          "ring buffers",
+          "steady sampling"
+        ],
+        "steps": [
+          "Unplug USB and connect the OLED and TEMT6000 DDP to the QWIIC bus. Use 3V3 and GND as shown.",
+          "Open <b>Code</b>, connect the serial REPL and select <b>Install ssd1306.py</b>. This saves the display driver on the board.",
+          "Run <code>oled_light.py</code>. The terminal identifies the TEMT6000 as <code>0x0102</code>, and the OLED draws its readings.",
+          "Cover the sensor, then shine a light on it. The graph should change; press <b>Stop</b> when finished."
+        ],
+        "note": "This D2 graph needs a TEMT6000 DDP sensor. To turn on the OLED alone, use Display lesson O1. The sensor reports a relative 12-bit value, not lux. Install <code>ssd1306.py</code> once from the code workspace before running."
+      }
+    }
   },
   "D3": {
     "title": "Analog temperature",

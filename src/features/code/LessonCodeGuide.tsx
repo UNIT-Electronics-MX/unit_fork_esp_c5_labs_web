@@ -13,8 +13,18 @@ const FOCUS: Record<string, string> = {
   "arduino:P4": "Wire.begin(SDA_PIN",
   "arduino:P5": "SD.begin(CS_PIN",
   "arduino:P6": "Serial1.begin(115200",
+  "arduino:D2": "DevLabDDP::Master temt6000",
+  "arduino:O1": "display.begin(",
   "micropython:01": "BRIGHTNESS = 40",
   "micropython:02": "sleep_ms(12)",
+  "micropython:P1": "BOOT_PIN = 28",
+  "micropython:P2": "LEVEL = 40",
+  "micropython:P3": "adc.read_uv()",
+  "micropython:P4": "i2c.scan()",
+  "micropython:P5": "SDCard(spi,",
+  "micropython:P6": "UART(1,",
+  "micropython:D2": "ddp_read(0x60, 2)",
+  "micropython:O1": "SSD1306_I2C(WIDTH",
 };
 const COMMANDS: Record<string, readonly string[]> = {
   "arduino:02": ["blink 200", "blink 800"],
@@ -31,9 +41,19 @@ const GUIDE_KEYS = {
   "arduino:P4": ["codeRoute.guide.arduino.P4.title", "codeRoute.guide.arduino.P4.try", "codeRoute.guide.arduino.P4.expect"],
   "arduino:P5": ["codeRoute.guide.arduino.P5.title", "codeRoute.guide.arduino.P5.try", "codeRoute.guide.arduino.P5.expect"],
   "arduino:P6": ["codeRoute.guide.arduino.P6.title", "codeRoute.guide.arduino.P6.try", "codeRoute.guide.arduino.P6.expect"],
+  "arduino:D2": ["codeRoute.guide.arduino.D2.title", "codeRoute.guide.arduino.D2.try", "codeRoute.guide.arduino.D2.expect"],
+  "arduino:O1": ["codeRoute.guide.arduino.O1.title", "codeRoute.guide.arduino.O1.try", "codeRoute.guide.arduino.O1.expect"],
   "micropython:00": ["codeRoute.guide.micropython.00.title", "codeRoute.guide.micropython.00.try", "codeRoute.guide.micropython.00.expect"],
   "micropython:01": ["codeRoute.guide.micropython.01.title", "codeRoute.guide.micropython.01.try", "codeRoute.guide.micropython.01.expect"],
   "micropython:02": ["codeRoute.guide.micropython.02.title", "codeRoute.guide.micropython.02.try", "codeRoute.guide.micropython.02.expect"],
+  "micropython:P1": ["codeRoute.guide.micropython.P1.title", "codeRoute.guide.micropython.P1.try", "codeRoute.guide.micropython.P1.expect"],
+  "micropython:P2": ["codeRoute.guide.micropython.P2.title", "codeRoute.guide.micropython.P2.try", "codeRoute.guide.micropython.P2.expect"],
+  "micropython:P3": ["codeRoute.guide.micropython.P3.title", "codeRoute.guide.micropython.P3.try", "codeRoute.guide.micropython.P3.expect"],
+  "micropython:P4": ["codeRoute.guide.micropython.P4.title", "codeRoute.guide.micropython.P4.try", "codeRoute.guide.micropython.P4.expect"],
+  "micropython:P5": ["codeRoute.guide.micropython.P5.title", "codeRoute.guide.micropython.P5.try", "codeRoute.guide.micropython.P5.expect"],
+  "micropython:P6": ["codeRoute.guide.micropython.P6.title", "codeRoute.guide.micropython.P6.try", "codeRoute.guide.micropython.P6.expect"],
+  "micropython:D2": ["codeRoute.guide.micropython.D2.title", "codeRoute.guide.micropython.D2.try", "codeRoute.guide.micropython.D2.expect"],
+  "micropython:O1": ["codeRoute.guide.micropython.O1.title", "codeRoute.guide.micropython.O1.try", "codeRoute.guide.micropython.O1.expect"],
 } as const;
 
 /** A single experiment next to the editable source, separate from the wiring guide. */

@@ -3,6 +3,20 @@
     "title": "Biblioteca de piezas",
     "intro": "Todas las piezas que usan los laboratorios, dibujadas una vez y reutilizadas en todas partes: <code>{{example}}</code>."
   },
+  "references": {
+    "title": "Piezas de referencia para cableado",
+    "intro": "Dibujos de protoboard para identificar las terminales reales. Sigue siempre las etiquetas de la lección.",
+    "potTitle": "Potenciómetro de tres terminales",
+    "potDescription": "La lección P3 conecta las patas exteriores a 3V3 y GND, y el cursor central a A2 / GPIO4.",
+    "potImageAlt": "Dibujo Fritzing de un potenciómetro giratorio de tres terminales",
+    "potLesson": "Ver el diagrama de conexiones P3",
+    "fritzingSource": "SVG original de Fritzing",
+    "displayTitle": "Pantalla Adafruit ST7789 de 1,9 pulgadas",
+    "displayDescription": "Referencia visual de una TFT de 320 × 170. Este módulo tiene 11 pines, así que su pinout difiere del módulo de ocho cables de la lección 03.",
+    "displayImageAlt": "Dibujo Fritzing de Adafruit de una pantalla TFT ST7789 de 1,9 pulgadas",
+    "adafruitSource": "Pieza original de Adafruit",
+    "license": "Estas dos imágenes de referencia se atribuyen a Fritzing y Adafruit y se distribuyen bajo"
+  },
   "names": {
     "devkit": "placa UNIT Pulsar C5",
     "module": "módulo ESP32 WROOM",

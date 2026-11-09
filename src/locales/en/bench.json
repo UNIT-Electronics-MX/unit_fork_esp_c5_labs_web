@@ -14,8 +14,10 @@
   },
   "log": {
     "title": "Bench log",
-    "intro": "Every command that installed software, talked to the board or flashed it, with its response. Claude announces each command first. Anything that touches the board or installs waits for your go.",
+    "intro": "Actions performed in this browser and published bench records. Serial commands, script text and output are not saved in the browser log.",
     "filter": "Filter by type",
+    "empty": "No browser activity has been recorded yet. Connect the serial console, run a script or flash firmware to start the log.",
+    "noMatches": "No activity matches {{type}}. Choose another filter or All.",
     "timeline": "Log timeline",
     "entryLabel": "{{n}} · {{types}} · {{title}}",
     "key": "<flash></flash> flash <failed></failed> failed <other></other> install, build, read, reset",

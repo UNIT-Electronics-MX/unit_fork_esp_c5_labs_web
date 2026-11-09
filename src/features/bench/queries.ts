@@ -5,8 +5,8 @@ import { BenchLogSchema, BenchStatusSchema } from "./schema";
 
 const url = (file: string) => new URL(`${env.benchDataUrl}${file}`, document.baseURI).href;
 
-// Server state: changes when Claude records a new command, so it is refetched when you come
-// back to the tab, and considered fresh for a minute in between.
+// Published bench data can change without a rebuild. Refresh it when the tab is revisited;
+// browser actions are read separately from local storage.
 const FRESH_MS = 60_000;
 
 export const benchLogQuery = () =>

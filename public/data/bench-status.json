@@ -2,8 +2,8 @@
   "overview": [
     {
       "label": "On the board now",
-      "value": "nothing logged yet",
-      "detail": "No Pulsar C5 session has been logged. Start with P0 (setup); each command that installs, builds or flashes is added to the bench log.",
+      "value": "firmware not verified",
+      "detail": "The board's current firmware has not been verified. Actions performed in this browser appear in the bench log below.",
       "highlight": true
     },
     {

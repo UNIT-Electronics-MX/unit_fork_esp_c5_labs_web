@@ -1,6 +1,7 @@
 import { useRef, useState, type RefObject } from "react";
 import { useTranslation } from "react-i18next";
 import type { SerialPortLike, Transport } from "@/vendor/esptool-js/bundle.js";
+import { recordBrowserBenchAction } from "@/features/bench/browser-log";
 import { makeFlashPlan, requireEsp32C5, type FlashImage } from "./flash-plan";
 import { bundledFirmware, bundledFirmwareUrl, loadBundledFirmware, type BundledFirmwareKey } from "./bundled-firmware";
 import type { SerialTerminalHandle } from "./SerialTerminal";
@@ -63,6 +64,10 @@ export function FirmwareFlasher({
         : error instanceof Error && error.message === "missingImage" ? "missingImage" : "invalidFile";
       setMessage(t(`flasher.errors.${key}`));
       setPhase("error");
+      recordBrowserBenchAction({
+        types: ["failed"], title: "Firmware selection failed", where: "Browser flasher",
+        why: "The selected image or flash offset could not be used.", result: "Check the form for details.",
+      });
       return;
     }
     if (!serial || window.isSecureContext === false) {
@@ -132,13 +137,22 @@ export function FirmwareFlasher({
         },
       });
       setProgress(100);
+      let resetCompleted = false;
       try {
         await loader.after("hard_reset");
+        resetCompleted = true;
         setMessage(t("flasher.success"));
       } catch {
         setMessage(t("flasher.successManualReset"));
       }
       setPhase("done");
+      recordBrowserBenchAction({
+        types: resetCompleted ? ["install", "flash", "reset"] : ["install", "flash"],
+        title: microPythonSetup ? "MicroPython firmware flashed" : "Firmware flashed",
+        where: "Browser flasher",
+        why: "Wrote firmware to the ESP32-C5 over Web Serial.",
+        result: resetCompleted ? "Flash completed and board reset." : "Flash completed; reset the board manually.",
+      });
     } catch (error) {
       if (error instanceof Error && error.name === "NotFoundError") {
         setMessage(t("flasher.cancelled"));
@@ -157,6 +171,13 @@ export function FirmwareFlasher({
         setMessage(t("flasher.errors.connection", { detail }));
         setPhase("error");
         appendLog(`${detail}\n`);
+      }
+      if (!(error instanceof Error && error.name === "NotFoundError")) {
+        recordBrowserBenchAction({
+          types: ["failed"], title: "Firmware flash failed", where: "Browser flasher",
+          why: "An attempted ESP32-C5 firmware upload did not complete.",
+          result: "Check the connection log for details.",
+        });
       }
     } finally {
       try {

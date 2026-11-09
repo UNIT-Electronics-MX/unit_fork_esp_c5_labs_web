@@ -77,6 +77,7 @@
 .underbar p { max-width: 100%; }
 .underbar .description { color: var(--ink); }
 .underbar .requirements { color: var(--muted); }
+.underbar .libraryHint { flex-basis: 100%; color: var(--muted); }
 .underbar .error, .editor > .error { color: var(--danger); }
 .underbar a { color: var(--copper); font-weight: 650; }
 .underbar button { padding: 5px 9px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--surface); cursor: pointer; font: 650 12px var(--font-display); }

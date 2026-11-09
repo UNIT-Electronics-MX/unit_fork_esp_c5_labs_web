@@ -13,6 +13,7 @@ import { LessonHeader } from "./LessonHeader";
 import styles from "./LessonPage.module.css";
 import { LessonSection } from "./LessonSection";
 import { NextUp } from "./NextUp";
+import { PulsarConnections } from "./PulsarConnections";
 import { sectionTitle } from "./section-labels";
 import { StepsChecklist } from "./StepsChecklist";
 import { WidgetSlot } from "./WidgetSlot";
@@ -63,6 +64,16 @@ export function LessonPage({
           </div>
         ) : null;
       }
+      case "connections":
+        return <>
+          <PulsarConnections key={`${lesson.id}.${lesson.variantKey ?? ""}`} lesson={lesson} />
+          {lesson.id === "P4" && lesson.wiring ? (
+            <div className={styles.connectionTable}>
+              <h4>{lesson.wiring.title}</h4>
+              <WiringTable wiring={lesson.wiring} />
+            </div>
+          ) : null}
+        </>;
       case "wiring":
         return lesson.wiring ? <WiringTable wiring={lesson.wiring} /> : null;
       case "commands":

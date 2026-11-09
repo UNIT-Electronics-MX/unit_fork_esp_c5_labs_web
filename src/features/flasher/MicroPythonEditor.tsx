@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type RefObject, type UIEvent } from "react";
 import { useTranslation } from "react-i18next";
 import * as z from "zod/mini";
+import { recordBrowserBenchAction } from "@/features/bench/browser-log";
 import { env } from "@/config/env";
 import { fetchJson } from "@/lib/http";
 import type { SerialTerminalHandle } from "./SerialTerminal";
@@ -11,6 +12,14 @@ import styles from "./MicroPythonEditor.module.css";
 
 const ExamplesSchema = z.object({
   board: z.string(),
+  libraries: z.optional(z.array(z.object({
+    id: z.string(),
+    file: z.string(),
+    source: z.string(),
+    license: z.string(),
+    examples: z.array(z.string()),
+    code: z.string(),
+  }))),
   examples: z.array(z.object({
     id: z.string(),
     title: z.string(),
@@ -103,6 +112,7 @@ export function MicroPythonEditor({
 
   const visibleExamples = focusedExampleId ? data?.examples.filter((example) => example.id === focusedExampleId) : data?.examples;
   const selected = visibleExamples?.find((example) => example.id === selectedId) ?? visibleExamples?.[0];
+  const requiredLibraries = selected ? data?.libraries?.filter((library) => library.examples.includes(selected.id)) ?? [] : [];
   const code = selected ? drafts[selected.id] ?? selected.code : "";
   const edited = selected ? code !== selected.code : false;
   const outputName = selected ? filenames[selected.id] || selected.file : "script.py";
@@ -218,8 +228,16 @@ export function MicroPythonEditor({
       try {
         await terminalRef.current.stopPython();
         setNotice(t("flasher.examples.stopDone"));
+        recordBrowserBenchAction({
+          types: ["observe"], title: "MicroPython script interrupted", where: "Browser editor",
+          why: "Sent Ctrl-C to the board's REPL.", result: "Interrupt sent.",
+        });
       } catch (cause) {
         setNotice(t("flasher.examples.serialError", { detail: describeSerialError(cause) }));
+        recordBrowserBenchAction({
+          types: ["failed"], title: "MicroPython interrupt failed", where: "Browser editor",
+          why: "The running script could not be interrupted.", result: "Check the terminal for details.",
+        });
       }
       return;
     }
@@ -234,6 +252,35 @@ export function MicroPythonEditor({
       if (action === "run") await terminalRef.current.runPython(code);
       else await terminalRef.current.savePython(outputName, code);
       setNotice(t(`flasher.examples.${action}Done`, { file: outputName }));
+      recordBrowserBenchAction(action === "run" ? {
+        types: ["observe"], title: "MicroPython script run", where: "Browser editor",
+        why: "Sent a script to the board's REPL.", result: "Script sent; its source and output were not saved here.",
+      } : {
+        types: ["install"], title: "MicroPython script saved", where: "Browser editor",
+        why: "Saved a script on the board over serial.", result: "File saved; its source was not saved in the bench log.",
+      });
+    } catch (cause) {
+      setNotice(t("flasher.examples.serialError", { detail: describeSerialError(cause) }));
+      recordBrowserBenchAction({
+        types: ["failed"], title: "MicroPython action failed", where: "Browser editor",
+        why: "A script action did not complete.", result: "Check the editor and terminal for details.",
+      });
+    } finally {
+      setOperation("");
+    }
+  }
+
+  async function installLibrary(library: NonNullable<Examples["libraries"]>[number]) {
+    if (!terminalRef?.current || !connected || operation || blocked) return;
+    setOperation("library");
+    setNotice("");
+    try {
+      await terminalRef.current.savePython(library.file, library.code);
+      setNotice(t("flasher.examples.libraryInstalled", { file: library.file }));
+      recordBrowserBenchAction({
+        types: ["install"], title: "MicroPython library installed", where: "Browser editor",
+        why: "Saved a UNIT driver on the board.", result: `${library.file} saved on the board.`,
+      });
     } catch (cause) {
       setNotice(t("flasher.examples.serialError", { detail: describeSerialError(cause) }));
     } finally {
@@ -255,6 +302,7 @@ export function MicroPythonEditor({
             <button className={styles.run} type="button" disabled={!connected || !!operation || blocked} title="Ctrl+Enter" onClick={() => void boardAction("run")}><EditorActionIcon name="play" />{t("flasher.examples.run")}</button>
             <button className={styles.stop} type="button" disabled={!connected || blocked} onClick={() => void boardAction("stop")}><EditorActionIcon name="stop" />{t("flasher.examples.stop")}</button>
             <button type="button" disabled={!connected || !!operation || blocked} title="Ctrl+S" onClick={() => void boardAction("save")}><EditorActionIcon name="save" />{t("flasher.examples.save")}</button>
+            {requiredLibraries.map((library) => <button key={library.id} type="button" disabled={!connected || !!operation || blocked} onClick={() => void installLibrary(library)}><EditorActionIcon name="save" />{t("flasher.examples.installLibrary", { file: library.file })}</button>)}
           </>
         ) : null}
       </div>
@@ -307,6 +355,7 @@ export function MicroPythonEditor({
             {!customLoaded && (spanish ? selected.requires : selected.requiresEn).length ? (
               <p className={styles.requirements}>{t("flasher.examples.requires", { items: (spanish ? selected.requires : selected.requiresEn).join(" · ") })}</p>
             ) : null}
+            {requiredLibraries.map((library) => <p key={library.id} className={styles.libraryHint}>{t("flasher.examples.libraryHint", { file: library.file })} <a href={library.source} target="_blank" rel="noreferrer">{t("flasher.examples.librarySource", { license: library.license })}</a></p>)}
             {terminalRef && !connected ? <p>{t("flasher.examples.connectFirst")}</p> : null}
             {terminalRef && !serialSupported ? <p className={styles.error}>{t("flasher.unsupported")}</p> : null}
             {!toolbarAtTop && (operation || notice) ? <p role="status">{operation ? t("flasher.examples.working") : notice}</p> : null}

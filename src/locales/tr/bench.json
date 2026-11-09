@@ -14,7 +14,6 @@
   },
   "log": {
     "title": "Tezgâh günlüğü",
-    "intro": "Yazılım kuran, karta bağlanan ya da karta yükleyen her komut, yanıtıyla birlikte. Claude her komutu önce duyurur. Karta dokunan ya da bir şey kuran her işlem senin onayını bekler.",
     "filter": "Türe göre filtrele",
     "timeline": "Günlük zaman çizelgesi",
     "entryLabel": "{{n}} · {{types}} · {{title}}",

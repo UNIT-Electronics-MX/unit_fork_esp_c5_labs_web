@@ -3,6 +3,20 @@
     "title": "Parts library",
     "intro": "Every part the labs use, drawn once and reused everywhere: <code>{{example}}</code>."
   },
+  "references": {
+    "title": "Wiring reference parts",
+    "intro": "Breadboard artwork for identifying real component terminals. Always follow the pin labels in the lesson.",
+    "potTitle": "Three-terminal potentiometer",
+    "potDescription": "Lesson P3 connects the two outer legs to 3V3 and GND, and the center wiper to A2 / GPIO4.",
+    "potImageAlt": "Fritzing drawing of a three-terminal rotary potentiometer",
+    "potLesson": "See the P3 wiring diagram",
+    "fritzingSource": "Fritzing source SVG",
+    "displayTitle": "Adafruit 1.9-inch ST7789 display",
+    "displayDescription": "A visual reference for a 320 × 170 TFT. This breakout has 11 connector pins, so its pinout is different from the eight-wire module in lesson 03.",
+    "displayImageAlt": "Adafruit Fritzing drawing of a 1.9-inch ST7789 TFT breakout",
+    "adafruitSource": "Adafruit source part",
+    "license": "These two reference graphics are credited to Fritzing and Adafruit and licensed under"
+  },
   "names": {
     "devkit": "UNIT Pulsar C5 board",
     "module": "ESP32 WROOM module",

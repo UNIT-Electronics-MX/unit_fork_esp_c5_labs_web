@@ -1,9 +1,10 @@
 /* eslint-disable i18next/no-literal-string -- hardware and repository names stay the same in every locale. */
 import { Trans, useTranslation } from "react-i18next";
-import { Link, Outlet, ScrollRestoration, useLocation, useNavigation } from "react-router";
+import { Link, Outlet, ScrollRestoration, useLocation, useNavigation, useSearchParams } from "react-router";
 import { boardOfLesson } from "@/content/tracks";
 import { BenchPill } from "@/features/bench/BenchPill";
 import { LanguageMenu } from "@/features/language/LanguageMenu";
+import { isCodePlatform, progress, useCodePlatform } from "@/features/progress/progress-store";
 import { BackToTop } from "@/ui/BackToTop";
 import { Icon, type IconName } from "@/ui/Icon";
 import styles from "./AppLayout.module.css";
@@ -29,7 +30,13 @@ const SECTIONS = [
 export function AppLayout() {
   const navigation = useNavigation();
   const { pathname } = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const codePlatform = useCodePlatform();
   const { t } = useTranslation();
+  const platformRoute = /^\/lessons\/(?:00|01|02|P[1-6]|D2|O1)(?:\/code)?$/.test(pathname);
+  const showCodePlatform = pathname === "/" || pathname === "/lessons" || platformRoute;
+  const requestedPlatform = searchParams.get("variant");
+  const selectedPlatform = platformRoute && isCodePlatform(requestedPlatform) ? requestedPlatform : codePlatform;
   // S3-era lessons carry a notice until they are ported; the Pulsar C5 tracks do not.
   const lessonId = /^\/lessons\/([^/]+)/.exec(pathname)?.[1];
   const legacyLesson = lessonId !== undefined && boardOfLesson(lessonId) === "devkitc-s3";
@@ -52,7 +59,7 @@ export function AppLayout() {
       {navigation.state !== "idle" ? (
         <div className={styles.progress} role="progressbar" aria-label={t("layout.loading")} />
       ) : null}
-      <header className={styles.top}>
+      <header className={styles.top} data-platform={showCodePlatform || undefined}>
         <Link to="/" className={styles.brand}>
           <span className={styles.mark} aria-hidden="true">
             <Icon name="chip" size={20} />
@@ -68,7 +75,7 @@ export function AppLayout() {
             </span>
           </span>
         </Link>
-        <BenchPill />
+        <div className={styles.benchSlot}><BenchPill /></div>
         <nav aria-label={t("layout.sections")} className={styles.sections}>
           {SECTIONS.map((s) => {
             const here = s.match.test(pathname);
@@ -89,6 +96,30 @@ export function AppLayout() {
             );
           })}
         </nav>
+        {showCodePlatform ? (
+          <label className={styles.platform}>
+            <Icon name="code" size={16} />
+            <span className="visually-hidden">{t("layout.codePlatform")}</span>
+            <select
+              value={selectedPlatform}
+              onChange={(event) => {
+                const next = event.target.value;
+                if (!isCodePlatform(next)) return;
+                progress.setCodePlatform(next);
+                if (platformRoute) {
+                  setSearchParams((current) => {
+                    const updated = new URLSearchParams(current);
+                    updated.set("variant", next);
+                    return updated;
+                  }, { replace: true, preventScrollReset: true });
+                }
+              }}
+            >
+              <option value="arduino">Arduino</option>
+              <option value="micropython">MicroPython</option>
+            </select>
+          </label>
+        ) : null}
         <LanguageMenu />
       </header>
       <main id="main" tabIndex={-1} className={styles.main}>

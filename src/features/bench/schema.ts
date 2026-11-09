@@ -1,7 +1,7 @@
 import * as z from "zod/mini";
 
-// The bench data files in public/data/. Claude appends a log entry after every command that
-// installs software, talks to the board or flashes it; the guide picks it up without a rebuild.
+// Published bench data lives in public/data/ and can be refreshed without a rebuild.
+// Browser actions use the same entry shape and are stored locally.
 
 export const LOG_TYPES = [
   "install",

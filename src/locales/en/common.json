@@ -38,14 +38,14 @@
     "successManualReset": "Firmware written. Press RESET on the board to start it.",
     "log": "Connection log",
     "logEmpty": "The connection log will appear here.",
-    "phase": { "ready": "Ready to connect.", "connecting": "Connecting and checking the chip…", "erasing": "Erasing the entire flash…", "writing": "Writing firmware…", "done": "Complete.", "error": "Check the message and try again." },
+    "phase": {"ready": "Ready to connect.", "connecting": "Connecting and checking the chip…", "erasing": "Erasing the entire flash…", "writing": "Writing firmware…", "done": "Complete.", "error": "Check the message and try again."},
     "serial": {
       "title": "Serial editor and monitor",
       "intro": "Read your board's output and send commands after flashing.",
       "dockedTitle": "TERMINAL / REPL",
       "baudRate": "Baud rate",
       "lineEnding": "Line ending",
-      "ending": { "none": "None", "lf": "LF (\\n)", "cr": "CR (\\r)", "crlf": "CRLF (\\r\\n)" },
+      "ending": {"none": "None", "lf": "LF (\n)", "cr": "CR (\r)", "crlf": "CRLF (\r\n)"},
       "connect": "Connect serial",
       "disconnect": "Disconnect",
       "clear": "Clear output",
@@ -62,7 +62,7 @@
       "noReadable": "The selected port has no readable serial stream.",
       "notWritable": "The selected port cannot receive serial data.",
       "replInterruptFailed": "Could not stop the program: the board did not return to >>> after Ctrl+C. Check that MicroPython is installed and press RESET before reconnecting.",
-      "state": { "ready": "Ready", "connecting": "Connecting…", "connected": "Connected", "disconnecting": "Disconnecting…", "disconnected": "Disconnected", "error": "Error" }
+      "state": {"ready": "Ready", "connecting": "Connecting…", "connected": "Connected", "disconnecting": "Disconnecting…", "disconnected": "Disconnected", "error": "Error"}
     },
     "examples": {
       "title": "MicroPython code editor",
@@ -92,6 +92,10 @@
       "run": "Run on board",
       "connect": "Connect serial console",
       "save": "Save to board",
+      "installLibrary": "Install {{file}}",
+      "libraryHint": "Install {{file}} on the board once before running this example. Installing it again replaces that file.",
+      "librarySource": "UNIT source · {{license}}",
+      "libraryInstalled": "{{file}} saved on the board. You can run the example now.",
       "stop": "Stop",
       "connectFirst": "Connect the serial console to run or save the script on the board.",
       "saveHint": "Save to board replaces an existing file with the same name.",
@@ -129,6 +133,7 @@
     "loading": "Loading",
     "brand": "Pulsar <part>C5 Labs</part>",
     "sections": "Sections",
+    "codePlatform": "Code examples: Arduino or MicroPython",
     "nav": {
       "labs": "Labs",
       "flasher": "Flash",
@@ -217,6 +222,16 @@
           "title": "Test the UART loopback",
           "try": "Join TX0 to RX0, upload the sketch and send hello UART. Then remove the jumper and send it again.",
           "expect": "The first message returns as loopback: hello UART; the second no longer returns."
+        },
+        "D2": {
+          "title": "See how the light graph is built",
+          "try": "Find DevLabDDP::Master in the sketch, then follow the ADC reading into drawGraph().",
+          "expect": "The OLED plots the last 126 samples while the serial monitor prints raw values."
+        },
+        "O1": {
+          "title": "Turn on the OLED",
+          "try": "Upload o1-oled.ino with only the SSD1306 connected to QWIIC.",
+          "expect": "The screen shows Pulsar C5 and OLED ready."
         }
       },
       "micropython": {
@@ -234,6 +249,46 @@
           "title": "Change the LED timing",
           "try": "Change sleep_ms(12) to sleep_ms(30) and run the file again.",
           "expect": "The external LED fades up and down more slowly."
+        },
+        "P1": {
+          "title": "Test the BOOT input",
+          "try": "Run gpio.py, then change the pressed interval from 100 to 50 ms and hold BOOT.",
+          "expect": "The user LED blinks faster while BOOT is held; the REPL reports its state."
+        },
+        "P2": {
+          "title": "Mix a colour, then dim it",
+          "try": "Run rgb_mixer.py, then send rgb 255 80 0, level 20 and level 100 in the terminal.",
+          "expect": "The LED stays orange while its brightness changes; off turns it dark."
+        },
+        "P3": {
+          "title": "Compare ADC and voltage",
+          "try": "Run adc.py and turn the potentiometer while comparing read_u16() with read_uv().",
+          "expect": "The 16-bit scaled value and approximate millivolts follow the knob."
+        },
+        "P4": {
+          "title": "Find the on-board sensors",
+          "try": "Run i2c_scan.py and compare the reported addresses with the five devices in the guide.",
+          "expect": "The REPL lists the devices that answered on GPIO2/GPIO3."
+        },
+        "P5": {
+          "title": "Check that the file keeps its data",
+          "try": "Install sdcard.py on the board, insert a FAT32 card, then run microsd.py twice and read /sd/pulsar.txt after each run.",
+          "expect": "Each run appends a line without deleting the earlier one."
+        },
+        "P6": {
+          "title": "Test the UART loopback",
+          "try": "Bridge GPIO11 to GPIO12, run uart_loopback.py and send hello UART in the terminal.",
+          "expect": "The script prints loopback: hello UART; without the jumper it reports no response."
+        },
+        "D2": {
+          "title": "Plot light on the OLED",
+          "try": "Install ssd1306.py, run oled_light.py, then cover and illuminate the TEMT6000.",
+          "expect": "The terminal identifies device 0x0102 and the OLED graph follows the light."
+        },
+        "O1": {
+          "title": "Turn on the OLED",
+          "try": "Install ssd1306.py, then run oled.py with only the display connected.",
+          "expect": "The screen shows Pulsar C5 and MicroPython."
         }
       }
     },
@@ -271,7 +326,7 @@
     },
     "display": {
       "title": "Display & input",
-      "blurb": "The 1.9″ screen and buttons"
+      "blurb": "Pulsar C5 OLED, the 1.9″ screen and buttons"
     },
     "wifi": {
       "title": "Wi-Fi",

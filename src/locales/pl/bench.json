@@ -14,7 +14,6 @@
   },
   "log": {
     "title": "Dziennik stanowiska",
-    "intro": "Każde polecenie, które instalowało oprogramowanie, rozmawiało z płytką albo ją wgrywało, wraz z odpowiedzią. Claude zapowiada każde polecenie przed wykonaniem. Wszystko, co dotyka płytki lub instaluje, czeka na twoje zielone światło.",
     "filter": "Filtruj według typu",
     "timeline": "Oś dziennika",
     "entryLabel": "{{n}} · {{types}} · {{title}}",

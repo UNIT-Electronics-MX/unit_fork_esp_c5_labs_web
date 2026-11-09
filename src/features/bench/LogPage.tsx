@@ -1,15 +1,16 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router";
 import { useLocaleInfo } from "@/i18n/use-locale";
 import { CopyCommand } from "@/ui/CopyCommand";
 import { Panel } from "@/ui/Panel";
 import { BenchOverview } from "./BenchOverview";
+import { useBrowserBenchEntries } from "./browser-log";
 import { benchLogQuery, benchStatusQuery } from "./queries";
-import { LOG_TYPES, type LogEntry, type LogType } from "./schema";
+import { LOG_TYPES, type LogEntry } from "./schema";
 import styles from "./LogPage.module.css";
 
-const FILTERS = ["all", ...LOG_TYPES.filter((t) => t !== "observe")] as const;
+const FILTERS = ["all", ...LOG_TYPES] as const;
 type Filter = (typeof FILTERS)[number];
 const isFilter = (v: string | null): v is Filter => FILTERS.includes(v as Filter);
 
@@ -20,14 +21,20 @@ function useEntryNumber() {
   return (n: number) => format.format(n);
 }
 
-/** The bench log: every command that installed software, talked to the board or flashed it. */
+/** Published records and actions performed in this browser, filterable by type. */
 export function LogPage() {
-  const { data: entries } = useSuspenseQuery(benchLogQuery());
+  const { data: publishedEntries } = useSuspenseQuery(benchLogQuery());
   const { data: status } = useSuspenseQuery(benchStatusQuery());
+  const browserEntries = useBrowserBenchEntries();
   const [params, setParams] = useSearchParams();
   const { t } = useTranslation("bench");
   const raw = params.get("type");
   const filter: Filter = isFilter(raw) ? raw : "all";
+  const nextNumber = publishedEntries.reduce((max, entry) => Math.max(max, entry.n), 0);
+  const entries: LogEntry[] = [
+    ...publishedEntries,
+    ...browserEntries.map((entry, index) => ({ ...entry, n: nextNumber + index + 1 })),
+  ];
   const shown = filter === "all" ? entries : entries.filter((e) => e.types.includes(filter));
 
   return (
@@ -45,12 +52,12 @@ export function LogPage() {
                 key={f}
                 type="button"
                 aria-pressed={filter === f}
-                onClick={() =>
-                  setParams(f === "all" ? {} : { type: f }, {
-                    preventScrollReset: true,
-                    replace: true,
-                  })
-                }
+                onClick={() => setParams((current) => {
+                  const next = new URLSearchParams(current);
+                  if (f === "all") next.delete("type");
+                  else next.set("type", f);
+                  return next;
+                }, { preventScrollReset: true, replace: true })}
               >
                 {t(`types.${f}`)}{" "}
                 <span>
@@ -61,7 +68,11 @@ export function LogPage() {
           </div>
         </div>
 
-        <Timeline entries={entries} filter={filter} />
+        {shown.length ? <Timeline entries={shown} /> : (
+          <p className={styles.empty} role="status">
+            {entries.length ? t("log.noMatches", { type: t(`types.${filter}`) }) : t("log.empty")}
+          </p>
+        )}
 
         <ol className={styles.entries}>
           {shown.map((e) => (
@@ -112,24 +123,24 @@ const primaryType = (e: LogEntry): "flash" | "failed" | "other" =>
  * The whole log at a glance, oldest first: one cell per entry. Only two things stand out:
  * flashes (copper) and failures (red, also marked ✕), so it reads without a colour key.
  */
-function Timeline({ entries, filter }: { entries: readonly LogEntry[]; filter: Filter }) {
+function Timeline({ entries }: { entries: readonly LogEntry[] }) {
   const { t } = useTranslation("bench");
   const { tag } = useLocaleInfo();
   const number = useEntryNumber();
   const list = new Intl.ListFormat(tag, { type: "unit" });
+  const other = list.format((["install", "build", "read", "reset", "observe"] as const).map((type) => t(`types.${type}`)));
   return (
     <nav className={styles.timeline} aria-label={t("log.timeline")}>
       <ol>
         {entries.map((e) => {
           const kind = primaryType(e);
-          const dim = filter !== "all" && !e.types.includes(filter as LogType);
           const label = t("log.entryLabel", {
             n: number(e.n),
             types: list.format(e.types.map((type) => t(`types.${type}`))),
             title: e.title,
           });
           return (
-            <li key={e.n} data-kind={kind} data-dim={dim}>
+            <li key={e.n} data-kind={kind}>
               <button
                 type="button"
                 onClick={() =>
@@ -145,15 +156,9 @@ function Timeline({ entries, filter }: { entries: readonly LogEntry[]; filter: F
         })}
       </ol>
       <p className={styles.timelineKey}>
-        <Trans
-          t={t}
-          i18nKey="log.key"
-          components={{
-            flash: <span data-kind="flash" />,
-            failed: <span data-kind="failed" />,
-            other: <span data-kind="other" />,
-          }}
-        />
+        <span data-kind="flash" aria-hidden="true" /> {t("types.flash")}
+        <span data-kind="failed" aria-hidden="true" /> {t("types.failed")}
+        <span data-kind="other" aria-hidden="true" /> {other}
       </p>
     </nav>
   );

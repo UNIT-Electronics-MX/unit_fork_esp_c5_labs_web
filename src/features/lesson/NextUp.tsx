@@ -26,7 +26,8 @@ export function NextUp({
   const { t } = useTranslation("lesson");
   const trackText = useTrackText();
   const { prev, next } = neighbours(lessons, currentId);
-  const variantSearch = variantKey && (currentId === "00" || currentId === "01" || currentId === "02")
+  const variantSearch = (target: LessonEntry | undefined) => variantKey && target?.kind === "lesson"
+    && target.variants?.some((variant) => variant.key === variantKey)
     ? `?variant=${encodeURIComponent(variantKey)}` : "";
   const at = TRACKS.findIndex((t) => t.id === trackId);
   const nextTrack = TRACKS.slice(at + 1).find((t) => !t.planned);
@@ -34,7 +35,7 @@ export function NextUp({
   return (
     <nav className={styles.next} aria-label={t("next.label")}>
       {next ? (
-        <Link to={`/lessons/${next.id}${variantSearch}`} className={styles.primary}>
+        <Link to={`/lessons/${next.id}${variantSearch(next)}`} className={styles.primary}>
           <PartIcon name={lessonPart(next.id, next.track)} size={64} className={styles.part} />
           <span className={styles.kicker}>{t("next.lesson")}</span>
           <span className={styles.title}>
@@ -62,7 +63,7 @@ export function NextUp({
       )}
       <div className={styles.minor}>
         {prev ? (
-          <Link to={`/lessons/${prev.id}${variantSearch}`}>
+          <Link to={`/lessons/${prev.id}${variantSearch(prev)}`}>
             <Icon name="back" size={15} /> {prev.id} {prev.title}
           </Link>
         ) : (

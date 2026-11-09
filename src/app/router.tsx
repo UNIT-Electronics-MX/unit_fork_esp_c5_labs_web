@@ -6,7 +6,7 @@ import { queryClient } from "./query-client";
 import { RouteError } from "./RouteError";
 import type { RouteErrorReason } from "./route-errors";
 import { HomeRoute, homeLoader } from "./routes/home-route";
-import { LessonRoute, lessonLoader, trackLoader } from "./routes/lesson-route";
+import { LessonRoute, codeLoader, lessonLoader, trackLoader } from "./routes/lesson-route";
 
 // A hash router: the guide is a static bundle that must work on any static host (any subfolder) and a
 // claude.ai artifact, none of which can rewrite deep paths to index.html. URLs look like
@@ -43,9 +43,9 @@ export const router = createHashRouter([
             lazy: async () => ({ Component: (await import("./routes/flasher-route")).Component }),
           },
           {
-            // Reading a lab's code: same loader, its own lazily loaded screen.
+            // Reading a lab's code, with setup's Arduino tab opening lesson 01 directly.
             path: "lessons/:lessonId/code",
-            loader: lessonLoader(queryClient),
+            loader: codeLoader(queryClient),
             lazy: async () => ({ Component: (await import("./routes/code-route")).Component }),
           },
           {
