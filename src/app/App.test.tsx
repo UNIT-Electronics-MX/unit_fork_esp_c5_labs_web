@@ -38,7 +38,7 @@ describe("App", () => {
 
     const first = screen.getAllByRole("checkbox")[0]!;
     await userEvent.click(first);
-    expect(JSON.parse(localStorage.getItem("esp-ticks") ?? "{}")).toEqual({ "02-0": true });
+    expect(JSON.parse(localStorage.getItem("esp-ticks") ?? "{}")).toEqual({ "02.arduino-0": true });
     expect(localStorage.getItem("esp-lesson")).toBe('"02"');
   });
 
@@ -67,7 +67,7 @@ describe("App", () => {
     const App = await loadApp();
     render(<App />);
     expect(
-      await screen.findByRole("heading", { name: "Une LED sur la plaque d'essai" }, LOAD),
+      await screen.findByRole("heading", { name: "An LED on the breadboard" }, LOAD),
     ).toBeTruthy();
     expect(document.documentElement.lang).toBe("fr");
     expect(localStorage.getItem("esp-locale")).toBe('"fr"');

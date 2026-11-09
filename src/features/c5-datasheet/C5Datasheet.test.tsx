@@ -42,11 +42,11 @@ describe("ESP32-C5 datasheet routes", () => {
 
   it.each(["00", "01", "02"])("shows the C5 pinout in introduction lesson %s", async (lessonId) => {
     await openApp(`#/lessons/${lessonId}?lang=en`);
-    const summary = await screen.findByText("Pulsar C5 pinout · 30 positions", {}, LOAD);
-    expect((summary.closest("details") as HTMLDetailsElement).open).toBe(true);
-    expect(screen.getByRole("img", { name: /Top view of the Pulsar C5 pinout/ })).toBeTruthy();
-    expect(screen.getAllByText(/wiring and firmware in these lessons have not yet been adapted/).length)
-      .toBeGreaterThan(0);
+    const pinout = await screen.findByRole("img", { name: /UNIT Pulsar C5 pinout/ }, LOAD);
+    expect(pinout.tagName.toLowerCase()).toBe("svg");
+    expect(screen.getByRole("link", { name: "Open full-size diagram" }).getAttribute("href"))
+      .toContain(`lesson=${lessonId}`);
+    expect(screen.queryByText(/wiring and firmware in these lessons have not yet been adapted/)).toBeNull();
   });
 
   it("links C5 peripherals to the bundled official PDF", async () => {
