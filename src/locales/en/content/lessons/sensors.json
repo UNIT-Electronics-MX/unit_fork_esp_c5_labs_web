@@ -112,9 +112,11 @@
     "note": "The reading is a relative 12-bit level, not lux: calibrate against a light meter before quoting units.",
     "variants": {
       "arduino": {
+        "label": "Arduino",
         "short": "SSD1306 and DevLabDDP sketch"
       },
       "micropython": {
+        "label": "MicroPython",
         "short": "OLED graph over I²C",
         "goal": "Read the TEMT6000 DDP over QWIIC and plot its recent light readings on an SSD1306 OLED with MicroPython.",
         "learn": [

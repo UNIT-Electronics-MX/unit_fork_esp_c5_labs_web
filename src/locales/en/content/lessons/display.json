@@ -60,9 +60,11 @@
     "note": "This example expects a 128 × 64 OLED at I²C address 0x3C. Change the dimensions or address in the code if your module differs. The Pulsar C5 QWIIC connector has no on-board pull-ups; most OLED modules include them.",
     "variants": {
       "arduino": {
+        "label": "Arduino",
         "short": "Show text on the OLED"
       },
       "micropython": {
+        "label": "MicroPython",
         "short": "Show text over QWIIC",
         "learn": [
           "machine.I2C",
