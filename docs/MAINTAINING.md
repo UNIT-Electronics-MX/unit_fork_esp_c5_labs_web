@@ -7,7 +7,7 @@ What runs on every pull request, what protects `main`, and the repository settin
 | Workflow                                                     | When                              | What it does                                                                                       |
 | ------------------------------------------------------------ | --------------------------------- | -------------------------------------------------------------------------------------------------- |
 | [CI](../.github/workflows/ci.yml)                            | every PR, push to `main`, merge queue | `pnpm typecheck`, `pnpm lint`, `pnpm test` (a stale translator catalogue fails), `pnpm chip:refs` (every chip citation names a section of the committed reference), `pnpm build` with the esp-labs firmware, actionlint on the workflows |
-| [Deploy](../.github/workflows/deploy.yml)                    | by hand (Run workflow, `gh workflow run Deploy --ref main`) | runs lint, citation checks, tests and a build with the esp-labs firmware and reference, deploys `dist/` to GitHub Pages, and tags it `vX.Y.Z` with a GitHub release and its notes. Never runs a PR's code |
+| [Deploy](../.github/workflows/deploy.yml)                    | every push to `main`, or by hand (Run workflow, `gh workflow run Deploy --ref main`) | runs typecheck, lint, citation checks, tests and a build with the esp-labs firmware and reference, deploys `dist/` to GitHub Pages, and tags it `vX.Y.Z` with a GitHub release and its notes. Never runs a PR's code |
 | [CodeQL](../.github/workflows/codeql.yml)                    | every PR, push to `main`, weekly  | security analysis of the TypeScript and of the workflows                                          |
 | [Dependency review](../.github/workflows/dependency-review.yml) | PRs that touch dependencies or `.github/` | fails when a PR adds a dependency with a known moderate-or-worse vulnerability          |
 | [PR title](../.github/workflows/pr-title.yml)                | PR opened or edited               | the title (the squash commit) follows Conventional Commits, lower-case subject                    |
@@ -60,12 +60,12 @@ JSON
 
 ## Production deploys
 
-[Deploy](../.github/workflows/deploy.yml) puts `main` on GitHub Pages when you run it (merging does not deploy), and refuses a branch other than `main`. It runs the same checks as CI before the upload, and the build fails if the firmware checkout is missing. After a successful deploy:
+[Deploy](../.github/workflows/deploy.yml) puts `main` on GitHub Pages after every push to `main`, including a merge, and can also be run manually. It refuses other branches. It runs the same checks as CI before the upload, and the build fails if the firmware checkout is missing. After a successful deploy:
 
 - **Release.** `tools/deploy/` picks the next version from the Conventional Commits since the last `v*` tag (breaking: major, or minor below 1.0.0; `feat`: minor; anything else: patch; the first release is `package.json`'s version), tags the deployed commit and publishes a GitHub release marked latest. The notes group the changes (breaking first, then features, fixes, performance, docs, maintenance) with their PRs, and link the live URL, the commit, the run and the comparison with the previous tag. Redeploying a commit that is already tagged makes no new release. Tags are the version; `package.json`'s stays the starting point.
 - **Deployment history.** GitHub's `github-pages` environment lists each deployment with its URL and workflow run. GitHub Pages serves the latest successful deployment.
 
-To undo a bad release, revert the change on `main`, wait for CI, then run Deploy again. The next deployment and release contain the revert.
+To undo a bad release, revert the change on `main`. The push starts CI and Deploy; the next successful deployment and release contain the revert.
 
 If Actions are disabled in this fork, enable them on the **Actions** tab first. Before the first run, set **Settings → Pages → Build and deployment → Source** to **GitHub Actions**. The workflow uses `GITHUB_TOKEN`, so it needs no deployment secrets or variables. Protect the automatically created `github-pages` environment in **Settings → Environments** so only `main` can deploy.
 

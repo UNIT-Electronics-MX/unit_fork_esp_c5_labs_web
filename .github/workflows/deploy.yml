@@ -1,5 +1,6 @@
-# Deploys main to GitHub Pages when you run it (Actions → Deploy → Run workflow, or
-# `gh workflow run Deploy --ref main`). The build includes the esp-labs firmware checkout.
+# Deploys each push to main to GitHub Pages after its checks pass. It can also be run
+# manually (Actions → Deploy → Run workflow, or `gh workflow run Deploy --ref main`).
+# The build includes the esp-labs firmware checkout.
 # Only main may deploy; checks run before the upload.
 #
 # A successful deploy is then released: tagged vX.Y.Z (the next semver from the Conventional
@@ -7,6 +8,8 @@
 name: Deploy
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -57,6 +60,8 @@ jobs:
         run: node tools/deploy/cli.ts plan | tee -a "$GITHUB_OUTPUT"
       - name: Configure Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+      - name: Typecheck
+        run: pnpm typecheck
       - name: Lint
         run: pnpm lint
       - name: Check chip citations
