@@ -30,7 +30,18 @@ export const router = createHashRouter([
           { index: true, loader: homeLoader(queryClient), Component: HomeRoute },
           { path: "lessons", loader: homeLoader(queryClient), Component: HomeRoute },
           { path: "tracks/:trackId", loader: trackLoader(queryClient) },
+          // P0 repeated Intro 00; keep old links pointed at the shared setup lesson.
+          { path: "lessons/P0", loader: ({ request }) => redirect(`/lessons/00${new URL(request.url).search}`) },
+          { path: "lessons/P0/code", loader: ({ request }) => redirect(`/lessons/00/code${new URL(request.url).search}`) },
           { path: "lessons/:lessonId", loader: lessonLoader(queryClient), Component: LessonRoute },
+          {
+            path: "pinout",
+            lazy: async () => ({ Component: (await import("./routes/pinout-route")).Component }),
+          },
+          {
+            path: "flash",
+            lazy: async () => ({ Component: (await import("./routes/flasher-route")).Component }),
+          },
           {
             // Reading a lab's code: same loader, its own lazily loaded screen.
             path: "lessons/:lessonId/code",

@@ -45,3 +45,22 @@
 .variants button:focus-visible {
   outline-offset: -2px;
 }
+.compact {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  margin: 0;
+}
+.compact button {
+  flex: 0 1 auto;
+  min-width: 110px;
+  padding: 8px 12px;
+  border-bottom: 0;
+  border-inline-end: 1px solid var(--line);
+}
+.compact b { font-size: 13px; }
+.compact span { display: none; }
+@media (max-width: 560px) {
+  .compact { width: 100%; }
+  .compact button { flex: 1 1 0; min-width: 0; }
+}

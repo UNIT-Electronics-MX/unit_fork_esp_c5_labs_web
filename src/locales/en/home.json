@@ -2,12 +2,12 @@
   "hero": {
     "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
     "title": "Pulsar <part>C5 Labs</part>",
-    "legacyNotice": "Legacy ESP32-S3 content: the wiring and firmware in these lessons have not yet been adapted for Pulsar C5.",
+    "legacyNotice": "Intro (00–02), On-board hardware, Sensors, Wi-Fi & BLE on the C5 and Zigbee are written for this board. Other themes are still being ported: check their wiring before you build.",
     "motto": {
       "wire": "Wire",
       "flash": "Flash",
       "watch": "Watch",
-      "read": "Read the code"
+      "read": "Code"
     }
   },
   "hud": {
@@ -22,7 +22,7 @@
     "start": "Start here",
     "continue": "Continue the lab",
     "open": "Open the lab",
-    "code": "Read its code"
+    "code": "Open code"
   },
   "kit": {
     "title": "What's on your bench?",
@@ -58,14 +58,23 @@
       "ky037": "KY-037 analog microphone",
       "inmp441": "INMP441 I²S microphone",
       "amp": "MAX98357A amp + speaker",
-      "keyboard": "Bluetooth keyboard or mouse"
+      "keyboard": "Bluetooth keyboard or mouse",
+      "pot": "10 kΩ potentiometer",
+      "microsd": "microSD card (FAT32)",
+      "bmi270": "BMI270 IMU (QWIIC)",
+      "oled": "SSD1306 128×64 I²C OLED",
+      "temt6000": "TEMT6000 light sensor (DevLab ATOM)",
+      "tmp235": "TMP235 analog temperature sensor",
+      "dht11": "DHT11 KY-015 sensor",
+      "ttp223": "TTP223B touch pad",
+      "pulsar2": "A second Pulsar C5"
     }
   },
   "board": {
     "title": "Meet the board",
     "intro": "Six parts you will use lab after lab. Drag the board to turn it; pick a part to light it up and see which labs use it.",
     "c5Menu": "Board components",
-    "c5Intro": "Explore the Pulsar C5 in 3D: rotate, zoom and open the component menu to locate each part. The lessons below still use ESP32-S3 wiring.",
+    "c5Intro": "Explore the Pulsar C5 in 3D: rotate, zoom and open the component menu to locate each part.",
     "c5Parts": {
       "usb": { "title": "USB-C and controls", "text": "One port for power, programming and serial console. BOOT uses GPIO28; RESET restarts the board." },
       "mcu": { "title": "ESP32-C5HR8", "text": "RISC-V processor with 8 MiB of in-package PSRAM and 8 MiB of external QSPI flash." },
@@ -76,37 +85,8 @@
       "radio": { "title": "Radio and antenna", "text": "2.4/5 GHz Wi-Fi 6, Bluetooth LE 5 and 802.15.4 through a coaxial RF antenna connector." },
       "headers": { "title": "Pins and QWIIC", "text": "30 Nano-style positions. QWIIC uses GPIO1/GPIO6; onboard sensors use GPIO2/GPIO3." }
     },
-    "model": "3D model of the ESP32-S3 DevKitC-1: the module with its antenna, two USB-C ports, BOOT and RST buttons, the RGB LED and two rows of header pins. Drag to turn it.",
-    "fallback": "Every part is described in the cards.",
-    "usedIn": "Used in ",
     "more_one": "+{{count}} lab",
     "more_other": "+{{count}} labs",
-    "parts": {
-      "usb": {
-        "title": "USB-C ports",
-        "text": "COM flashes the board and carries the serial monitor. USB is the S3's own port."
-      },
-      "buttons": {
-        "title": "BOOT and RST",
-        "text": "RST restarts your program. BOOT is GPIO 0: a free push button once the board runs."
-      },
-      "rgb": {
-        "title": "RGB LED",
-        "text": "One WS2812 on GPIO 48: 16 million colours from a single data pin."
-      },
-      "module": {
-        "title": "ESP32-S3 module",
-        "text": "Two 240 MHz cores, 16 MB flash and 8 MB PSRAM under the metal can."
-      },
-      "antenna": {
-        "title": "PCB antenna",
-        "text": "Wi-Fi 4 and Bluetooth 5 leave from this copper zigzag: keep it clear of metal."
-      },
-      "headers": {
-        "title": "Pin headers",
-        "text": "44 pins: 3V3, 5V, GND and the GPIO you wire screens, readers and mics to."
-      }
-    },
     "goInside": "Go inside the chip"
   },
   "map": {

@@ -3,7 +3,17 @@
 // widget registry, so content never imports code.
 import type { WidgetId } from "@/widgets/registry";
 
-export type TrackId = "intro" | "display" | "wifi" | "rfid" | "sensors" | "ble" | "sound";
+export type TrackId =
+  | "intro"
+  | "pulsar"
+  | "display"
+  | "wifi"
+  | "rfid"
+  | "sensors"
+  | "iot"
+  | "zigbee"
+  | "ble"
+  | "sound";
 
 /** Rich text: plain text that may carry <b>, <i>, <code> and <span class="..."> (see RichText). */
 export type Rich = string;

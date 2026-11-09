@@ -7,9 +7,13 @@ import { TOURS } from "./code/tours";
 import { bleLessons } from "./lessons/ble";
 import { displayLessons } from "./lessons/display";
 import { introLessons } from "./lessons/intro";
+import { iotLessons } from "./lessons/iot";
+import { pulsarLessons } from "./lessons/pulsar";
 import { rfidLessons } from "./lessons/rfid";
+import { sensorsLessons } from "./lessons/sensors";
 import { soundLessons } from "./lessons/sound";
 import { wifiLessons } from "./lessons/wifi";
+import { zigbeeLessons } from "./lessons/zigbee";
 import { CHIP_TEXT, GLOSSARY_TEXT, LESSON_TEXT, TOUR_TEXT } from "./text-policies";
 
 // The English content catalogues (src/locales/en/content) are generated from the TypeScript
@@ -24,6 +28,10 @@ const CATALOGUES: readonly { name: string; source: unknown; policy: TextPolicy }
   { name: "lessons/rfid", source: rfidLessons, policy: LESSON_TEXT },
   { name: "lessons/ble", source: bleLessons, policy: LESSON_TEXT },
   { name: "lessons/sound", source: soundLessons, policy: LESSON_TEXT },
+  { name: "lessons/pulsar", source: pulsarLessons, policy: LESSON_TEXT },
+  { name: "lessons/sensors", source: sensorsLessons, policy: LESSON_TEXT },
+  { name: "lessons/iot", source: iotLessons, policy: LESSON_TEXT },
+  { name: "lessons/zigbee", source: zigbeeLessons, policy: LESSON_TEXT },
   { name: "glossary", source: { entries: GLOSSARY, topics: TOPIC_LABELS }, policy: GLOSSARY_TEXT },
   { name: "tours", source: TOURS, policy: TOUR_TEXT },
   { name: "chip", source: CHIP, policy: CHIP_TEXT },

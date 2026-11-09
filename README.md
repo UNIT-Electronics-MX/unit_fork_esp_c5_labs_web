@@ -28,7 +28,7 @@ An interactive guide to the ESP32-C5HR8 and the UNIT PULSAR board, with a comple
 </div>
 
 > [!IMPORTANT]
-> **Migration status:** The home page and Datasheet section now present the Pulsar C5 and ESP32-C5HR8. Lessons, wiring tables, firmware and the bench log still describe the original ESP32-S3 setup. Do not use their pin assignments or flash commands on the Pulsar C5. The [Pulsar C5 hardware repository](https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_c5) does not yet publish the C++ examples needed to port these labs. The firmware reader and GitHub Pages build therefore continue to use the [original ESP32-S3 firmware](https://github.com/agharsallah/esp-labs).
+> **Migration status:** The Intro 00–02 and Pulsar C5 lessons are written for the ESP32-C5HR8. Other themes and their older firmware reader content still include ESP32-S3 material; check their wiring before using them on the Pulsar C5. The Arduino and MicroPython Intro examples have not been verified on a physical board yet.
 
 ## Contents
 
@@ -97,17 +97,29 @@ The firmware for every lab is a standalone PlatformIO project in [esp-labs](http
 
 ## Quick start
 
+### Flash an ESP32-C5 from the browser
+
+Open `#/flash` in Chrome or Edge on a desktop computer over HTTPS (or `localhost`). The guide uses Espressif's `esptool-js` and Web Serial directly; no server receives the firmware file.
+
+Choose a compiled `.bin`. A merged flash image starts at `0x0`. For separate bootloader, partition table and application images, add each file and use the offsets reported by that firmware build. Connect the board with a USB data cable, close other serial monitors, then select its port and flash. The page checks that the connected chip is an ESP32-C5 before writing. The MicroPython profile includes `ESP32_GENERIC_C5-20260824-v1.29.0.bin` for Pulsar C5 at `0x2000`; `SPARKFUN_THINGPLUS_ESP32C5-20260824-v1.29.0.bin` can be selected for a SparkFun Thing Plus board. Each included image is verified before flashing.
+
+If the connection does not enter download mode automatically, hold BOOT, press and release RESET, then release BOOT and try again. Writing erases the flash sectors covered by the selected images; keep the cable connected until the page reports completion.
+
+The **Serial editor and monitor** on the same page lets you connect to the board, read its output and send text commands. Select the baud rate and line ending your firmware expects. If the terminal is connected, flashing closes it and reuses its port; otherwise the browser asks for a port. After flashing, connect the terminal again. The same erase, flash and REPL flow is embedded in Intro lesson 00's **Firmware & console** view for MicroPython.
+
+The **MicroPython editor** on `#/flash` and the Intro lessons' **Read the code** view loads Pulsar C5 examples from the sibling `esp-labs/examples/micropython/pulsar-c5/` checkout at build time. After installing the official ESP32-C5 MicroPython firmware at offset `0x2000`, connect the browser serial console. You can edit and run a script over the REPL, stop it with Ctrl-C, save the `.py` file to the board, or download it. A `.py` script is not flashed as a `.bin` image. Intro lesson 00 prepares Arduino without a sketch; 01 and 02 offer editable Arduino sketches. All three offer MicroPython examples in the code view, and navigation preserves the selected variant.
+
 You need **Node 24.14+** and **pnpm 11** (`corepack enable` gives you the pinned version). The code reader shows the firmware from a sibling checkout of `esp-labs`, so clone both repos side by side:
 
 ```sh
-git clone https://github.com/agharsallah/esp-labs.git
+git clone https://github.com/UNIT-Electronics-MX/unit_fork_esp_labs_c5.git esp-labs
 git clone https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web.git
 cd unit_fork_esp_c5_labs_web
 pnpm install
 pnpm dev              # http://localhost:5180
 ```
 
-Without `../esp-labs`, everything else still works: the lessons, the simulators and the bench log. Only the code reader has nothing to show. Point `FIRMWARE_DIR` elsewhere if your checkout lives somewhere else ([Configuration](#configuration)).
+Without `../esp-labs`, the Arduino Intro sketches and lessons still build, but the MicroPython example editor and older firmware reader have no bundled source. Point `FIRMWARE_DIR` elsewhere if your checkout lives somewhere else ([Configuration](#configuration)).
 
 ## How it is built
 
@@ -158,7 +170,7 @@ Copy `.env.example` to `.env` to override:
 | ---------------------- | ----------------------------------------------------- | ------------------------------------------------------------- |
 | `VITE_BENCH_DATA_URL`  | `./data/`                                             | Where `bench-status.json` and `bench-log.json` are read       |
 | `VITE_FIRMWARE_URL`    | `./firmware/`                                         | Where the bundled lab code is read                            |
-| `VITE_LABS_SOURCE_URL` | `https://github.com/agharsallah/esp-labs/tree/main/labs/` | Where each lesson's "code on GitHub" link points          |
+| `VITE_LABS_SOURCE_URL` | `https://github.com/UNIT-Electronics-MX/unit_fork_esp_labs_c5/tree/main/labs/` | Where each lesson's "code on GitHub" link points          |
 | `VITE_LOG_LEVEL`       | `info`                                                | `debug`, `info`, `warn`, `error` or `silent`                  |
 | `FIRMWARE_DIR`         | `../esp-labs`                                         | Build time only: the firmware checkout the code reader shows  |
 

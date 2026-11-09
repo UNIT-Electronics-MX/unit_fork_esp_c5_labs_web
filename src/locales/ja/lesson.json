@@ -97,7 +97,8 @@
     "label": "レッスンの画面",
     "lab": "ラボをやる",
     "labSub": "配線 · 書き込み · 確認",
-    "code": "コードを読む",
+    "code": "コード",
+    "console": "コンソール",
     "stopsRead_other": "{{count}}か所を読了",
     "codeSub_other": "{{count}}ファイル · {{lines}}行 · ガイドツアー",
     "codeSubEmpty": "ガイドツアー · 好きな行をタップ"

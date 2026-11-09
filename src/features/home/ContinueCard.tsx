@@ -26,7 +26,7 @@ export function ContinueCard({
   resumed: boolean;
 }) {
   const style = { "--track": `var(${track.color})` } as CSSProperties;
-  const hasCode = Boolean(envOfCommand(lesson.cmd ?? ""));
+  const hasCode = lesson.track === "intro" || lesson.track === "pulsar" || Boolean(envOfCommand(lesson.cmd ?? ""));
   const { t } = useTranslation("home");
   const trackText = useTrackText();
   return (

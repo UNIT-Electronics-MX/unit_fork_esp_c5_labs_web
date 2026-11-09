@@ -7,14 +7,16 @@ export function VariantSwitch({
   variants,
   current,
   onChange,
+  compact = false,
 }: {
   variants: readonly LessonVariant[];
   current?: string;
   onChange: (key: string) => void;
+  compact?: boolean;
 }) {
   const { t } = useTranslation("lesson");
   return (
-    <div className={styles.variants} role="group" aria-label={t("variants.label")}>
+    <div className={`${styles.variants} ${compact ? styles.compact : ""}`} role="group" aria-label={t("variants.label")}>
       {variants.map((v) => (
         <button
           key={v.key}

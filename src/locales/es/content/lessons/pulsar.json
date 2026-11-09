@@ -1,0 +1,181 @@
+{
+  "P1": {
+    "title": "Parpadeo",
+    "heading": "El LED de usuario y el botón BOOT",
+    "goal": "Explora dos controles de la placa: haz parpadear el LED de usuario en GPIO27 y lee el botón BOOT en GPIO28. Mantén BOOT para cambiar la velocidad.",
+    "learn": [
+      "pinMode()",
+      "digitalWrite()",
+      "digitalRead()",
+      "entradas con pull-up",
+      "pines de arranque (strapping)"
+    ],
+    "steps": [
+      "No hay nada que cablear: el LED y el botón BOOT están en la placa.",
+      "Ejecuta el comando. El LED parpadea dos veces por segundo.",
+      "Mantén <b>BOOT</b>: el LED parpadea rápido y el monitor imprime <code>button pressed</code>."
+    ],
+    "note": "GPIO27 y GPIO28 son pines de arranque: el chip los lee al reiniciar para elegir el modo de arranque. Usarlos después del arranque no da problemas; mantener BOOT <i>durante</i> el reinicio entra en modo de descarga."
+  },
+  "P2": {
+    "title": "Mezclador RGB",
+    "heading": "Mezcla colores desde la consola serie",
+    "goal": "Envía valores RGB al WS2812 de la placa, compara los colores primarios y ajusta el brillo sin volver a cargar el sketch.",
+    "learn": [
+      "mezcla aditiva RGB",
+      "comandos serie",
+      "rgbLedWrite()",
+      "escalado de brillo"
+    ],
+    "steps": [
+      "No hay nada que cablear. Carga el sketch y abre el monitor serie a <code>115200</code> baudios.",
+      "Envía <code>rgb 255 0 0</code>, <code>rgb 0 255 0</code> y <code>rgb 0 0 255</code> para comparar los colores primarios.",
+      "Envía <code>rgb 255 80 0</code>, luego <code>level 20</code> y <code>level 100</code>. Compara color y brillo; envía <code>off</code> al terminar."
+    ],
+    "note": "¿No hay color? El esquema conecta la línea de datos del LED a GPIO0, pero la ilustración de UNIT la marca como GPIO8. Prueba <code>RGB_PIN = 8</code> y cuéntanos cuál usa tu placa."
+  },
+  "P3": {
+    "title": "Entrada analógica",
+    "heading": "Lee un voltaje con el ADC",
+    "goal": "Gira un potenciómetro en A2 y observa cómo lo sigue el ADC de 12 bits, en cuentas crudas y en milivoltios calibrados.",
+    "learn": [
+      "resolución del ADC",
+      "analogRead()",
+      "analogReadMilliVolts()",
+      "divisores de voltaje"
+    ],
+    "pins": {
+      "0": {
+        "role": "POT +"
+      },
+      "1": {
+        "role": "POT cursor"
+      },
+      "2": {
+        "role": "POT −"
+      }
+    },
+    "wiring": {
+      "rows": [
+        [
+          "3V3",
+          "pata exterior del potenciómetro",
+          "cualquiera de las dos"
+        ],
+        [
+          "A2 (GPIO4)",
+          "pata central del potenciómetro",
+          "el cursor"
+        ],
+        [
+          "GND",
+          "la otra pata exterior",
+          ""
+        ]
+      ]
+    },
+    "steps": [
+      "Desconecta el USB y cablea el potenciómetro como en la tabla.",
+      "Conecta y ejecuta el comando.",
+      "Gira el mando de extremo a extremo: el valor crudo va de unos 0 a 4095 y los milivoltios de unos 0 a 3100.",
+      "Abre <b>Herramientas → Serial Plotter</b> para ver moverse las dos líneas."
+    ],
+    "note": "Los pines de la cabecera con ADC son A1 (GPIO1), A2 (GPIO4), A3 (GPIO5) y A6 (GPIO6). Nunca les metas más de 3,3 V."
+  },
+  "P4": {
+    "title": "Sensores de la placa",
+    "heading": "Escanea el bus I²C de sensores",
+    "goal": "Arranca el bus I²C que une el chip con los cinco sensores de la placa y lista quién responde: presión, temperatura y humedad, proximidad y luz, campo magnético y batería.",
+    "learn": [
+      "direcciones I²C",
+      "Wire.begin(sda, scl)",
+      "escaneo del bus",
+      "resistencias pull-up"
+    ],
+    "wiring": {
+      "title": "Dispositivos esperados",
+      "head": [
+        "Dirección",
+        "Sensor",
+        "Mide"
+      ],
+      "rows": [
+        [
+          "<code>0x30</code>",
+          "MMC5603",
+          "campo magnético"
+        ],
+        [
+          "<code>0x36</code>",
+          "MAX17048",
+          "carga de la batería"
+        ],
+        [
+          "<code>0x44</code>",
+          "FHT40",
+          "temperatura y humedad"
+        ],
+        [
+          "<code>0x5C</code>",
+          "LPS22",
+          "presión del aire"
+        ],
+        [
+          "<code>0x60</code>",
+          "VCNL4040",
+          "proximidad y luz"
+        ]
+      ]
+    },
+    "steps": [
+      "No hay nada que cablear: los sensores y sus pull-ups de 4,7 kΩ están en la placa.",
+      "Ejecuta el comando. Cada cinco segundos el monitor lista los dispositivos encontrados.",
+      "Compara la lista con la tabla."
+    ],
+    "note": "Este bus es independiente del conector QWIIC (GPIO1 y GPIO6), que usan las lecciones de Sensores para placas externas."
+  },
+  "P5": {
+    "title": "microSD",
+    "heading": "Escribe un archivo por SPI",
+    "goal": "Monta la tarjeta microSD por SPI, añade una línea en cada arranque y lee el archivo completo.",
+    "learn": [
+      "bus SPI",
+      "selección de chip",
+      "sistema de archivos FAT",
+      "librería SD"
+    ],
+    "steps": [
+      "Formatea una microSD como <b>FAT32</b> e insértala en la ranura.",
+      "Ejecuta el comando. El monitor imprime el tamaño de la tarjeta y el archivo.",
+      "Pulsa <b>RST</b> varias veces: cada vez aparece otra línea <code>boot at … ms</code>."
+    ],
+    "note": "SCK comparte GPIO27 con el LED de usuario, así que el LED parpadea mientras la tarjeta trabaja. Es lo esperado."
+  },
+  "P6": {
+    "title": "UART",
+    "heading": "Conecta un puerto serie consigo mismo",
+    "goal": "Envía lo que escribes por TX0 y léelo de vuelta en RX0 con un solo cable, mientras el USB sigue siendo tu consola.",
+    "learn": [
+      "trama UART",
+      "velocidad en baudios",
+      "Serial frente a Serial1",
+      "prueba en bucle (loopback)"
+    ],
+    "wiring": {
+      "rows": [
+        [
+          "TX0 (GPIO11)",
+          "RX0 (GPIO12)",
+          "un cable puente"
+        ]
+      ]
+    },
+    "steps": [
+      "Desconecta el USB y pon un cable puente entre TX0 y RX0.",
+      "Conecta y ejecuta el comando.",
+      "Escribe una línea y pulsa Enter: vuelve como <code>loopback: …</code>.",
+      "Quita el cable: no vuelve nada."
+    ],
+    "note": "Para hablar con otra placa, cruza los cables (TX → RX, RX → TX) y une las tierras."
+  }
+}

@@ -1,4 +1,118 @@
 {
+  "flasher": {
+    "eyebrow": "Pulsar C5 · Web Serial",
+    "title": "Carga firmware a tu ESP32-C5",
+    "intro": "Elige un .bin de tu computadora o usa el MicroPython para ESP32-C5 incluido. El navegador programa la placa directamente por Web Serial.",
+    "images": "Imágenes de firmware",
+    "imageHelp": "Para una imagen fusionada, usa un .bin en 0x0. Para bootloader, particiones y aplicación por separado, agrega cada archivo con el offset indicado por tu compilación.",
+    "microPythonImageHelp": "Elige el firmware de tu placa. Los dos .bin completos incluidos se graban en 0x2000; también puedes elegir un .bin propio (no un .app-bin).",
+    "firmwareSource": "Imagen de firmware",
+    "bundledPulsar": "Espressif · ESP32_GENERIC_C5 (Pulsar C5)",
+    "bundledSparkfun": "SparkFun · Thing Plus ESP32-C5",
+    "localBinary": "Mi propio .bin completo",
+    "bundledOffset": "Incluido en la página · offset 0x2000",
+    "downloadBundled": "Descargar este .bin",
+    "sparkfunOnly": "Esta opción es para la placa SparkFun Thing Plus ESP32-C5. Si usas Pulsar C5, selecciona ESP32_GENERIC_C5.",
+    "microPythonDownload": "Ver firmware en MicroPython.org",
+    "file": "Binario {{number}}",
+    "address": "Offset de flash",
+    "remove": "Quitar",
+    "add": "Agregar otro binario",
+    "offsetHelp": "Usa los offsets de tu compilación. En ESP32-C5 suelen ser bootloader 0x2000, particiones 0x8000 y aplicación 0x10000, pero tu proyecto puede usar otros.",
+    "connection": "Conectar y programar",
+    "stepCable": "Conecta la placa con un cable USB de datos y cierra cualquier otro monitor serie.",
+    "stepPort": "Pulsa Cargar firmware y elige el puerto serie de la placa.",
+    "stepBoot": "Si no conecta, mantén BOOT, pulsa RESET, suelta RESET y después BOOT; vuelve a intentarlo.",
+    "warning": "La carga borra los sectores cubiertos por estas imágenes. No desconectes la placa mientras se escribe.",
+    "eraseAll": "Borrar toda la flash antes de cargar",
+    "eraseAllWarning": "Se borrará toda la flash, incluidos los scripts .py y datos guardados. Después se escribirá el firmware seleccionado. No desconectes la placa durante el proceso.",
+    "unsupported": "Esta página requiere HTTPS o localhost y un navegador con Web Serial, como Chrome o Edge en una computadora.",
+    "start": "Cargar firmware",
+    "eraseAndStart": "Borrar y cargar firmware",
+    "working": "Trabajando…",
+    "progress": "Progreso de carga del firmware",
+    "detected": "Detectado: {{chip}}",
+    "unknownChip": "chip desconocido",
+    "cancelled": "Se canceló la selección del puerto.",
+    "success": "Firmware escrito. La placa se reinició.",
+    "successManualReset": "Firmware escrito. Pulsa RESET en la placa para iniciarlo.",
+    "log": "Registro de conexión",
+    "logEmpty": "Aquí aparecerá el registro de conexión.",
+    "phase": { "ready": "Listo para conectar.", "connecting": "Conectando y comprobando el chip…", "erasing": "Borrando toda la flash…", "writing": "Escribiendo firmware…", "done": "Terminado.", "error": "Revisa el mensaje y vuelve a intentarlo." },
+    "serial": {
+      "title": "Editor y monitor serial",
+      "intro": "Lee la salida de la placa y envía comandos después de cargar el firmware.",
+      "dockedTitle": "TERMINAL / REPL",
+      "baudRate": "Baudios",
+      "lineEnding": "Fin de línea",
+      "ending": { "none": "Ninguno", "lf": "LF (\\n)", "cr": "CR (\\r)", "crlf": "CRLF (\\r\\n)" },
+      "connect": "Conectar serial",
+      "disconnect": "Desconectar",
+      "clear": "Limpiar salida",
+      "output": "Salida serial",
+      "empty": "Conecta un puerto serie para ver la salida de la placa.",
+      "command": "Comando para enviar",
+      "placeholder": "Escribe un comando…",
+      "send": "Enviar",
+      "sendHint": "Usa Enviar o Ctrl+Enter. Se agrega el fin de línea seleccionado al texto.",
+      "autoScroll": "Seguir la salida nueva",
+      "waitFlash": "Espera a que termine la carga del firmware antes de abrir el terminal.",
+      "disconnectToFlash": "El terminal se desconectará automáticamente al cargar firmware.",
+      "error": "Conexión serial: {{detail}}",
+      "noReadable": "El puerto seleccionado no tiene un flujo de lectura serial.",
+      "notWritable": "El puerto seleccionado no puede recibir datos seriales.",
+      "replInterruptFailed": "No se pudo detener el programa: la placa no respondió con >>> tras Ctrl+C. Revisa que tenga MicroPython y pulsa RESET antes de volver a conectar.",
+      "state": { "ready": "Listo", "connecting": "Conectando…", "connected": "Conectado", "disconnecting": "Desconectando…", "disconnected": "Desconectado", "error": "Error" }
+    },
+    "examples": {
+      "title": "Editor de código MicroPython",
+      "intro": "Edita un ejemplo de Pulsar C5 o abre un .py de tu computadora; ejecútalo o guárdalo en la placa por serial.",
+      "workspace": "Espacio de trabajo",
+      "help": "Ayuda y firmware",
+      "workspacePath": "Pulsar C5 / MicroPython",
+      "actions": "Acciones del editor",
+      "modified": "Modificado",
+      "codeLabel": "Código de {{file}}",
+      "position": "Lín {{line}}, Col {{column}}",
+      "lines": "líneas",
+      "shortcuts": "Tab inserta 4 espacios · Ctrl+Enter ejecuta · Ctrl+S guarda en la placa",
+      "firmwareHint": "Instala el .bin oficial de MicroPython para ESP32-C5 en el offset 0x2000 antes de ejecutar estos scripts.",
+      "firmwareLink": "Obtener firmware MicroPython",
+      "loading": "Cargando ejemplos…",
+      "unavailable": "Los ejemplos MicroPython no están disponibles en esta compilación.",
+      "choose": "Ejemplo",
+      "openFile": "Abrir archivo .py de mi computadora",
+      "filename": "Nombre del archivo en la placa",
+      "invalidName": "Usa un nombre .py sin espacios ni rutas; se permiten letras, números, guiones y guiones bajos.",
+      "fileLoaded": "{{file}} abierto en el editor.",
+      "requires": "Necesita: {{items}}",
+      "reset": "Restaurar ejemplo",
+      "download": "Descargar .py",
+      "hint": "Un archivo .py es un script, no un firmware .bin. Puedes ejecutarlo por serial o guardarlo en la placa desde este editor.",
+      "run": "Ejecutar en la placa",
+      "connect": "Conectar consola serie",
+      "save": "Guardar en la placa",
+      "stop": "Detener",
+      "connectFirst": "Conecta la consola serie para ejecutar o guardar el script en la placa.",
+      "saveHint": "Guardar en la placa reemplaza un archivo existente con el mismo nombre.",
+      "working": "Enviando por serial…",
+      "runDone": "Script enviado a la placa. La salida aparece en la consola serie.",
+      "saveDone": "{{file}} guardado en la placa.",
+      "stopDone": "Programa detenido; el prompt >>> respondió.",
+      "serialError": "MicroPython por serial: {{detail}}"
+    },
+    "errors": {
+      "missingImage": "Elige por lo menos un archivo binario.",
+      "invalidFile": "Elige un archivo .bin no vacío para cada fila.",
+      "invalidAddress": "Escribe un offset válido alineado a 0x1000 (4 KB).",
+      "overlap": "Estas imágenes se superponen en sectores de flash. Revisa sus offsets y tamaños.",
+      "wrongChip": "La placa conectada es {{chip}}. Solo se permite ESP32-C5; no se escribió nada.",
+      "serialClose": "No se pudo desconectar el terminal serial. Desconéctalo y vuelve a intentarlo.",
+      "bundledFirmwareUnavailable": "No se pudo cargar el firmware incluido. Recarga la página o elige un .bin local.",
+      "bundledFirmwareInvalid": "El firmware incluido no superó la verificación de integridad. Recarga la página o elige un .bin local.",
+      "connection": "No se pudo programar la placa: {{detail}}"
+    }
+  },
   "app": {
     "title": "Pulsar C5 Labs",
     "loading": "Cargando la guía de banco…",
@@ -17,23 +131,25 @@
     "sections": "Secciones",
     "nav": {
       "labs": "Laboratorios",
+      "flasher": "Cargar firmware",
       "chip": "Hoja de datos",
       "bench": "Banco",
       "settings": "Ajustes"
     },
-    "footnote": "Las lecciones existentes y sus pinouts usan la ESP32-S3 DevKitC-1, no la Pulsar C5. Revisa las etiquetas de tu placa. Tus marcas se guardan solo en este navegador.",
+    "footnote": "Los temas de la Pulsar C5 están escritos para esta placa; los demás aún se están migrando, así que revisa sus conexiones. Tus marcas se guardan solo en este navegador.",
     "partsLink": "La biblioteca de piezas",
     "credit": "Basado en el proyecto original de Abderrehmen Gharsallah: <project>ESP32 Labs</project>.",
-    "legacyNotice": "Contenido heredado del ESP32-S3: las conexiones y el firmware de estas lecciones aún no están adaptados a la Pulsar C5.",
+    "legacyNotice": "Esta lección aún no está migrada a la Pulsar C5: el pinout coloca sus pines por número de GPIO, pero sus conexiones y su firmware todavía hay que adaptarlos.",
     "new": "Nuevo"
   },
   "titles": {
     "labs": "Pulsar C5 Labs",
-    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "code": "Código {{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "log": "Registro del banco · ESP32-S3 · Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · Pulsar C5 Labs",
+    "code": "Código {{id}} · {{title}} · Pulsar C5 Labs",
+    "log": "Registro del banco · Pulsar C5 Labs",
     "parts": "Biblioteca de piezas · Pulsar C5 Labs",
     "settings": "Ajustes · Pulsar C5 Labs",
+    "flasher": "Cargar firmware · Pulsar C5 Labs",
     "chip": "{{page}} · Hoja de datos · ESP32-C5HR8 · Pulsar C5 Labs"
   },
   "routeError": {
@@ -51,12 +167,107 @@
     }
   },
   "codeRoute": {
-    "none": "Esta lección prepara tus herramientas: todavía no hay programa para la placa. El primer código para leer está en la lección 01."
+    "none": "Esta lección todavía no tiene un programa disponible para leer.",
+    "guide": {
+      "label": "Prueba en el workspace",
+      "try": "Haz",
+      "expect": "Observa",
+      "locate": "Ir a la línea",
+      "connectFirst": "Conecta el puerto serie para enviar comandos.",
+      "codeUnavailable": "Espera a que cargue el editor.",
+      "lineChanged": "La línea cambió en tu versión; busca el nombre en el editor.",
+      "commandError": "No se pudo enviar el comando: {{detail}}",
+      "arduino": {
+        "01": {
+          "title": "Cambia el brillo RGB",
+          "try": "Cambia BRIGHTNESS de 40 a 15, descarga el sketch y cárgalo desde Arduino IDE. Desconecta antes el monitor serie.",
+          "expect": "El arcoíris continúa, pero el LED se ve menos intenso. El monitor muestra los datos del chip."
+        },
+        "02": {
+          "title": "Compara dos velocidades",
+          "try": "Con el sketch cargado y el terminal conectado, envía blink 200 y después blink 800. Lee cómo command() interpreta el texto.",
+          "expect": "El LED pasa de un parpadeo rápido a uno lento; el monitor confirma cada modo."
+        },
+        "P1": {
+          "title": "Prueba la entrada BOOT",
+          "try": "Cambia de 100 a 50 ms el intervalo al pulsar, carga el sketch y mantén BOOT.",
+          "expect": "El LED de usuario parpadea más rápido mientras mantienes BOOT; el monitor indica el estado del botón."
+        },
+        "P2": {
+          "title": "Mezcla un color y baja su brillo",
+          "try": "Carga el sketch, conecta la consola y envía rgb 255 80 0. Compara level 20 con level 100.",
+          "expect": "El LED permanece naranja mientras cambia el brillo; off lo apaga."
+        },
+        "P3": {
+          "title": "Compara lecturas crudas y calibradas",
+          "try": "Coloca el potenciómetro cerca de la mitad y localiza las dos lecturas ADC en el sketch.",
+          "expect": "El monitor muestra una cuenta cruda y milivoltios para la misma posición."
+        },
+        "P4": {
+          "title": "Cuenta los dispositivos de la placa",
+          "try": "Ejecuta el escáner y compara las direcciones con los cinco sensores esperados en la guía.",
+          "expect": "El monitor serie enumera las direcciones que respondieron en el bus I²C de la placa."
+        },
+        "P5": {
+          "title": "Comprueba que el archivo sobrevive al reinicio",
+          "try": "Ejecuta el sketch con una microSD FAT32, pulsa RST dos veces y vuelve a leer el registro.",
+          "expect": "Cada arranque añade una línea a /pulsar.txt sin borrar las anteriores."
+        },
+        "P6": {
+          "title": "Prueba el lazo UART",
+          "try": "Une TX0 con RX0, carga el sketch y envía hello UART. Retira el cable y vuelve a enviarlo.",
+          "expect": "El primer mensaje vuelve como loopback: hello UART; el segundo ya no vuelve."
+        }
+      },
+      "micropython": {
+        "00": {
+          "title": "Comprueba el REPL",
+          "try": "Tras instalar el firmware, conecta el puerto serie a 115200 baudios y envía el comando de prueba.",
+          "expect": "La consola muestra MicroPython OK y vuelve al indicador >>>. El primer archivo .py aparece en la lección 01."
+        },
+        "01": {
+          "title": "Cambia el brillo RGB",
+          "try": "Cambia BRIGHTNESS de 40 a 15 y pulsa Ejecutar en la placa. Pulsa Detener antes de volver a editar.",
+          "expect": "El LED recorre los mismos colores con menos intensidad."
+        },
+        "02": {
+          "title": "Cambia el tiempo del LED",
+          "try": "Cambia sleep_ms(12) por sleep_ms(30) y vuelve a ejecutar el archivo.",
+          "expect": "El LED externo sube y baja de brillo más despacio."
+        }
+      }
+    },
+    "sketch": {
+      "eyebrow": "PULSAR C5 / ARDUINO",
+      "title": "Editor de sketch Arduino",
+      "intro": "Edita este ejemplo y descarga el archivo .ino para compilarlo en Arduino IDE.",
+      "path": "Pulsar C5 / Arduino",
+      "local": "Edición local",
+      "actions": "Acciones del sketch",
+      "copy": "Copiar código",
+      "copied": "Código copiado al portapapeles.",
+      "copyFailed": "No se pudo copiar; selecciona el texto del editor.",
+      "download": "Descargar .ino",
+      "downloaded": "{{file}} descargado.",
+      "restore": "Restaurar ejemplo",
+      "restored": "Ejemplo restaurado.",
+      "help": "Tab inserta 2 espacios · Ctrl+S descarga el archivo · Carga el sketch compilado con Arduino IDE",
+      "editLabel": "Código Arduino de {{file}}"
+    },
+    "setup": {
+      "title": "Código de Pulsar C5",
+      "actions": "Continuar la lección",
+      "noSketch": "La lección 00 prepara el entorno; todavía no hay un sketch Arduino para cargar.",
+      "firstSketch": "Abrir el primer sketch en la lección 01",
+      "flashFirmware": "Ir a Cargar firmware y al terminal serie",
+      "nextLesson": "Abrir lección {{id}}",
+      "back": "Volver a la lección"
+    }
   },
   "tracks": {
     "intro": {
       "title": "Introducción",
-      "blurb": "Herramientas, primer programa, primer circuito"
+      "blurb": "Arduino y MicroPython: preparación, hola y primer circuito"
     },
     "display": {
       "title": "Pantalla y entrada",
@@ -81,6 +292,18 @@
     "sound": {
       "title": "Sonido",
       "blurb": "Oír, medir, aplaudir, grabar, ver el tono, reproducir"
+    },
+    "pulsar": {
+      "title": "Hardware de la Pulsar C5",
+      "blurb": "Experimentos Arduino con BOOT, control RGB, ADC, sensores I²C, microSD y UART"
+    },
+    "iot": {
+      "title": "Wi-Fi y BLE en la C5",
+      "blurb": "Wi-Fi de doble banda a la nube, Bluetooth LE al teléfono"
+    },
+    "zigbee": {
+      "title": "Zigbee",
+      "blurb": "Una red 802.15.4 entre dos placas"
     }
   },
   "states": {
@@ -142,10 +365,75 @@
       "warning": "Nunca desconectes durante <code>Writing at 0x…</code>. ¿Un pin pasa de salida a entrada? Flashea primero y cablea después."
     },
     "pinout": {
-      "title": "Pinout de la ESP32-S3 DevKitC",
+      "title": "Pinout de la UNIT Pulsar C5",
       "use": "{{role}} en {{pin}}",
       "uses": "Esta lección usa: {{uses}}.",
       "none": "Esta lección no usa pines de la tira."
+    },
+    "explorer": {
+      "pageTitle": "Pinout interactivo · Pulsar C5 Labs",
+      "eyebrow": "UNIT PULSAR ESP32-C5HR8",
+      "title": "Pinout interactivo de Pulsar C5",
+      "intro": "Selecciona un pad en la placa o en la tabla para ver su GPIO, función y uso en la lección.",
+      "back": "Volver a la lección {{id}}",
+      "lessonPins": "Pines de esta lección",
+      "lessonTitle": "Lección {{id}} · {{title}}",
+      "lessonHint": "Los pines usados se resaltan en la placa y en la tabla.",
+      "noLessonPins": "Esta lección no usa pines de la cabecera.",
+      "diagram": "Diagrama interactivo de la placa",
+      "help": "Toca un pin o usa Tab y Enter para explorar el diagrama.",
+      "detail": "Detalle del pin",
+      "position": "Posición {{number}} · {{label}}",
+      "usedAs": "En esta lección: {{roles}}",
+      "unverified": "D2/RGB: el esquema indica GPIO0, pero la ilustración de UNIT indica GPIO8. Verifica tu placa.",
+      "avoid": "Este pad interviene en el arranque o una interfaz dedicada. Revisa su función antes de conectarlo.",
+      "choose": "Selecciona un pin para ver sus datos.",
+      "directory": "Los 30 pads de la cabecera",
+      "search": "Buscar pad, GPIO o función",
+      "select": "Ver posición {{number}}: {{label}}",
+      "noResults": "No hay pines que coincidan con la búsqueda.",
+      "qwiic": "Qwiic usa SDA en GPIO1 y SCL en GPIO6. Es distinto de los pads SDA/SCL de la cabecera, que usan GPIO2/GPIO3."
+    },
+    "pulsar": {
+      "summary": "Pinout de Pulsar C5 · 30 posiciones",
+      "position": "Posición",
+      "label": "Etiqueta",
+      "gpio": "GPIO",
+      "mainUse": "Uso principal",
+      "use": {
+        "sck": "SPI SCK · microSD · LED",
+        "v3": "3,3 V",
+        "en": "Habilitación del regulador",
+        "vbat": "Alimentación de batería",
+        "qwiicSda": "QWIIC SDA",
+        "analogMtck": "Analógico / MTCK",
+        "analogMtdo": "Analógico / MTDO",
+        "sensorSda": "I²C de sensores SDA",
+        "sensorScl": "I²C de sensores SCL",
+        "qwiicScl": "QWIIC SCL",
+        "rgbOut": "Salida de cadena RGB",
+        "vusb": "Alimentación USB",
+        "gnd": "Tierra",
+        "vin": "Entrada de alimentación",
+        "uartTx": "UART0 TX",
+        "uartRx": "UART0 RX",
+        "reset": "Reinicio",
+        "rgbData": "Datos WS2812",
+        "boot": "Botón BOOT",
+        "io": "Entrada/salida digital",
+        "sdCs": "microSD CS",
+        "usbDm": "USB D−",
+        "usbDp": "USB D+",
+        "spiSs": "SPI SS",
+        "spiMosi": "SPI MOSI",
+        "spiMiso": "SPI MISO"
+      },
+      "note": "Mapa documentado para la revisión V1.2.3. El diagrama muestra D2/RGB como GPIO0 según el esquema; la ilustración de referencia de UNIT indica GPIO8. Comprueba la placa antes de usar ese pin.",
+      "alt": "Pinout de Pulsar C5 visto desde arriba, con pines GPIO y conector Qwiic",
+      "open": "Abrir diagrama en tamaño completo",
+      "source": "Fuente: referencia oficial de UNIT Electronics",
+      "strapping": "GPIO 2, 3, 7, 25, 26, 27 y 28 son pines de arranque (strapping): no les pongas pull-ups ni pull-downs fuertes durante el reinicio.",
+      "missing": "No están en la cabecera de la Pulsar C5 (esta lección aún no está migrada): {{pins}}."
     }
   },
   "ui": {

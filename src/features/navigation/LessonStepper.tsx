@@ -18,6 +18,7 @@ export function LessonStepper({
   currentId,
   color,
   view = "lab",
+  variantKey,
 }: {
   lessons: readonly LessonEntry[];
   currentId: string;
@@ -25,6 +26,7 @@ export function LessonStepper({
   color: `--${string}`;
   /** Which tab the pads open: reading the code stays reading the code. */
   view?: "lab" | "code";
+  variantKey?: string;
 }) {
   const ticks = useTicks();
   const { t } = useTranslation();
@@ -66,7 +68,7 @@ export function LessonStepper({
               ) : (
                 <Link
                   ref={l.id === currentId ? currentRef : undefined}
-                  to={`/lessons/${l.id}${view === "code" ? "/code" : ""}`}
+                  to={`/lessons/${l.id}${view === "code" ? "/code" : ""}${variantKey && (l.id === "00" || l.id === "01" || l.id === "02") ? `?variant=${encodeURIComponent(variantKey)}` : ""}`}
                   preventScrollReset
                   className={styles.step}
                   aria-current={l.id === currentId ? "page" : undefined}

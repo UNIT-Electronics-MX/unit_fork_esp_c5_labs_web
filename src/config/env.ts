@@ -10,7 +10,7 @@ const EnvSchema = z.object({
   VITE_REFERENCE_URL: z._default(z.string(), "./reference/"),
   VITE_LABS_SOURCE_URL: z._default(
     z.string().check(z.minLength(1)),
-    "https://github.com/agharsallah/esp-labs/tree/main/labs/",
+    "https://github.com/UNIT-Electronics-MX/unit_fork_esp_labs_c5/tree/main/labs/",
   ),
   VITE_LOG_LEVEL: z._default(z.enum(["debug", "info", "warn", "error", "silent"]), "info"),
   DEV: z.boolean(),

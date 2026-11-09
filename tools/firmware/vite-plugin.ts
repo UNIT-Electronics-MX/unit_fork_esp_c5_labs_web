@@ -2,6 +2,7 @@ import { join, resolve } from "node:path";
 import type { Plugin } from "vite";
 import { collectFirmware, type FirmwareEnv } from "./collect.ts";
 import { detectLayout } from "./layout.ts";
+import { collectMicroPython } from "./micropython.ts";
 
 // Ships the firmware sources next to the guide so the code reader always shows the code that is
 // actually flashed, without copying it into this project:
@@ -30,16 +31,19 @@ export function firmwarePlugin(options: { root: string; required?: boolean }): P
     }
     return collectFirmware(root);
   };
-  const documents = (envs: readonly FirmwareEnv[]) =>
-    new Map<string, unknown>([
+  const documents = (envs: readonly FirmwareEnv[]) => {
+    const examples = collectMicroPython(root);
+    return new Map<string, unknown>([
       ["index.json", indexOf(envs)],
       ...envs.map((e) => [`${e.env}.json`, e] as const),
+      ...(examples ? [["micropython.json", examples] as const] : []),
     ]);
+  };
 
   return {
     name: "bench-firmware",
     configureServer(server) {
-      for (const sub of ["labs", "kit", "src", "lib", "include", "platformio.ini"])
+      for (const sub of ["labs", "kit", "src", "lib", "include", "platformio.ini", "examples"])
         server.watcher.add(join(root, sub));
       server.watcher.on("change", (file) => {
         if (file.startsWith(root)) server.ws.send({ type: "full-reload" });
@@ -60,7 +64,11 @@ export function firmwarePlugin(options: { root: string; required?: boolean }): P
           `no firmware found in ${root}. Set FIRMWARE_DIR to an esp-labs checkout before building for deployment.`,
         );
       }
-      for (const [name, doc] of documents(envs)) {
+      const docs = documents(envs);
+      if (options.required && !docs.has("micropython.json")) {
+        this.error(`no MicroPython examples found in ${root}/examples/micropython/pulsar-c5`);
+      }
+      for (const [name, doc] of docs) {
         this.emitFile({ type: "asset", fileName: `${DIR}/${name}`, source: JSON.stringify(doc) });
       }
       this.info(`${envs.length} firmware environments from ${root}`);

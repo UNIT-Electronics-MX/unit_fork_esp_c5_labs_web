@@ -5,11 +5,11 @@
   },
   "specs": {
     "label": "Board specifications",
-    "chip": "ESP32-S3 <b>N16R8</b>",
-    "cores": "<b>2×</b> Xtensa LX7 @ 240 MHz",
-    "flash": "<b>16 MB</b> flash",
-    "psram": "<b>8 MB</b> octal PSRAM",
-    "radio": "<b>Wi-Fi 4</b> + BLE 5",
+    "chip": "ESP32-C5 <b>HR8</b>",
+    "cores": "<b>RISC-V</b> @ 240 MHz",
+    "flash": "<b>8 MB</b> flash",
+    "psram": "<b>8 MB</b> in-package PSRAM",
+    "radio": "<b>Wi-Fi 6</b> 2.4/5 GHz · BLE 5 · 802.15.4",
     "logic": "<b>3.3 V</b> logic"
   },
   "log": {

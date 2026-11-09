@@ -7,18 +7,33 @@ import type { PartName } from "@/ui/parts/registry";
 
 export const TRACK_PART: Record<TrackId, PartName> = {
   intro: "devkit",
+  pulsar: "module",
   display: "tft",
   wifi: "router",
   rfid: "reader",
   sensors: "sensor",
   ble: "bluetooth",
   sound: "speaker",
+  iot: "cloud",
+  zigbee: "antenna",
 };
 
 export const LESSON_PART: Readonly<Record<string, PartName>> = {
   "00": "cable",
   "01": "rgb-led",
   "02": "led",
+  P1: "led",
+  P2: "rgb-led",
+  P3: "knob",
+  P4: "sensor",
+  P5: "memory",
+  P6: "chat",
+  D1: "radar",
+  D2: "tft",
+  D3: "meter",
+  I1: "cloud",
+  I2: "phone-ble",
+  Z1: "antenna",
   "03": "tft",
   "03b": "showcase",
   W1: "router",

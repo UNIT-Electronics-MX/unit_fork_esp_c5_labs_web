@@ -1,6 +1,7 @@
 /* eslint-disable i18next/no-literal-string -- hardware and repository names stay the same in every locale. */
 import { Trans, useTranslation } from "react-i18next";
 import { Link, Outlet, ScrollRestoration, useLocation, useNavigation } from "react-router";
+import { boardOfLesson } from "@/content/tracks";
 import { BenchPill } from "@/features/bench/BenchPill";
 import { LanguageMenu } from "@/features/language/LanguageMenu";
 import { BackToTop } from "@/ui/BackToTop";
@@ -11,6 +12,7 @@ import { prefetchChip } from "./prefetch-chip";
 
 const SECTIONS = [
   { to: "/", key: "labs", icon: "board", match: /^\/($|lessons|tracks)/ },
+  { to: "/flash", key: "flasher", icon: "terminal", match: /^\/flash/ },
   // Shipped 25 Oct 2026: marked new for three days.
   { to: "/datasheet", key: "chip", icon: "chip", match: /^\/datasheet/, newUntil: "2026-10-28" },
   { to: "/log", key: "bench", icon: "log", match: /^\/log/ },
@@ -28,8 +30,12 @@ export function AppLayout() {
   const navigation = useNavigation();
   const { pathname } = useLocation();
   const { t } = useTranslation();
+  // S3-era lessons carry a notice until they are ported; the Pulsar C5 tracks do not.
+  const lessonId = /^\/lessons\/([^/]+)/.exec(pathname)?.[1];
+  const legacyLesson = lessonId !== undefined && boardOfLesson(lessonId) === "devkitc-s3";
+  const wideWorkspace = pathname === "/" || pathname === "/lessons" || /^\/lessons\/[^/]+(?:\/code)?$/.test(pathname) || pathname === "/pinout";
   return (
-    <div className={styles.wrap}>
+    <div className={`${styles.wrap} ${wideWorkspace ? styles.wide : ""}`}>
       {/* The hash router owns location.hash, so the skip link moves focus itself. */}
       <a
         className={styles.skip}
@@ -84,7 +90,7 @@ export function AppLayout() {
         <LanguageMenu />
       </header>
       <main id="main" tabIndex={-1} className={styles.main}>
-        {pathname.startsWith("/lessons/") ? (
+        {legacyLesson ? (
           <p className={styles.legacyNotice}>{t("layout.legacyNotice")}</p>
         ) : null}
         <Outlet />

@@ -1,0 +1,161 @@
+{
+  "D1": {
+    "title": "IMU on QWIIC",
+    "heading": "Find a BMI270 on the QWIIC bus",
+    "goal": "Plug a BMI270 motion sensor into the QWIIC connector, scan the bus and read its chip ID register to prove it is the part you think it is.",
+    "learn": [
+      "QWIIC connector",
+      "register reads",
+      "repeated start",
+      "chip ID checks"
+    ],
+    "pins": {
+      "0": {
+        "role": "VCC"
+      },
+      "1": {
+        "role": "SDA"
+      },
+      "2": {
+        "role": "SCL"
+      },
+      "3": {
+        "role": "GND"
+      }
+    },
+    "wiring": {
+      "rows": [
+        [
+          "QWIIC SDA (GPIO1)",
+          "BMI270 SDA",
+          "or header A1"
+        ],
+        [
+          "QWIIC SCL (GPIO6)",
+          "BMI270 SCL",
+          "or header A6"
+        ],
+        [
+          "3V3 / GND",
+          "BMI270 VCC / GND",
+          "3.3 V only"
+        ]
+      ]
+    },
+    "steps": [
+      "Unplug USB and connect the BMI270 with a QWIIC cable, or with jumpers to the header pins in the table.",
+      "Run the command. The scan prints <code>found 0x68</code> (or <code>0x69</code>).",
+      "Check the last line: <code>chip ID 0x24 (BMI270)</code>."
+    ],
+    "note": "The Pulsar C5 has <b>no pull-ups on QWIIC</b>. Most sensor boards carry their own; with a bare chip, add 4.7 kΩ from SDA and SCL to 3V3. On the C6 this lab used GPIO6/7."
+  },
+  "D2": {
+    "title": "OLED light graph",
+    "heading": "Two devices on one bus: OLED and light sensor",
+    "goal": "Put an SSD1306 OLED (<code>0x3C</code>) and a TEMT6000 light sensor (<code>0x20</code>) on the same QWIIC bus, and plot the last six seconds of light on the screen.",
+    "learn": [
+      "shared I²C bus",
+      "addresses",
+      "frame buffers",
+      "ring buffers",
+      "steady sampling"
+    ],
+    "pins": {
+      "0": {
+        "role": "VCC"
+      },
+      "1": {
+        "role": "SDA"
+      },
+      "2": {
+        "role": "SCL"
+      },
+      "3": {
+        "role": "GND"
+      }
+    },
+    "wiring": {
+      "head": [
+        "Pulsar C5",
+        "OLED SSD1306",
+        "TEMT6000 (ATOM)"
+      ],
+      "rows": [
+        [
+          "3V3",
+          "VCC",
+          "VCC"
+        ],
+        [
+          "GND",
+          "GND",
+          "GND"
+        ],
+        [
+          "QWIIC SDA (GPIO1)",
+          "SDA",
+          "SDA"
+        ],
+        [
+          "QWIIC SCL (GPIO6)",
+          "SCL",
+          "SCL"
+        ]
+      ]
+    },
+    "steps": [
+      "Install <code>Adafruit SSD1306</code>, <code>Adafruit GFX Library</code> and <code>DevLabDDP</code> from the Library Manager.",
+      "Unplug USB and wire both boards in parallel, or chain them with QWIIC cables.",
+      "Run the command. The monitor confirms a TEMT6000 with ID <code>0x0102</code> at <code>0x20</code>.",
+      "Cover the sensor, then shine a light on it: the graph drops and climbs."
+    ],
+    "note": "The reading is a relative 12-bit level, not lux: calibrate against a light meter before quoting units."
+  },
+  "D3": {
+    "title": "Analog temperature",
+    "heading": "From millivolts to degrees with a TMP235",
+    "goal": "Read a TMP235 analog temperature sensor on A2, convert millivolts to °C and smooth the result with a simple filter.",
+    "learn": [
+      "sensor transfer functions",
+      "calibrated ADC",
+      "exponential filter",
+      "noise"
+    ],
+    "pins": {
+      "0": {
+        "role": "VDD"
+      },
+      "1": {
+        "role": "VOUT"
+      },
+      "2": {
+        "role": "GND"
+      }
+    },
+    "wiring": {
+      "rows": [
+        [
+          "3V3",
+          "TMP235 VDD",
+          ""
+        ],
+        [
+          "A2 (GPIO4)",
+          "TMP235 VOUT",
+          "was GPIO0 on the C6"
+        ],
+        [
+          "GND",
+          "TMP235 GND",
+          ""
+        ]
+      ]
+    },
+    "steps": [
+      "Unplug USB and wire the sensor as in the table.",
+      "Run the command and open the Serial Plotter.",
+      "Pinch the sensor: the raw line jumps, the filtered line follows smoothly."
+    ],
+    "note": "TMP235: Vout = 500 mV + 10 mV/°C, so 750 mV is 25 °C. <code>analogReadMilliVolts()</code> already applies the chip's factory ADC calibration."
+  }
+}

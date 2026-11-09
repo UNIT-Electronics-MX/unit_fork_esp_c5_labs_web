@@ -2,12 +2,12 @@
   "hero": {
     "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
     "title": "Pulsar <part>C5 Labs</part>",
-    "legacyNotice": "Contenido heredado del ESP32-S3: las conexiones y el firmware de estas lecciones aún no están adaptados a la Pulsar C5.",
+    "legacyNotice": "Introducción (00–02), Hardware de la Pulsar C5, Sensores, Wi-Fi y BLE en la C5 y Zigbee están escritos para esta placa. Los demás temas aún se están migrando: revisa sus conexiones antes de montar.",
     "motto": {
       "wire": "Cablea",
       "flash": "Flashea",
       "watch": "Observa",
-      "read": "Lee el código"
+      "read": "Código"
     }
   },
   "hud": {
@@ -22,7 +22,7 @@
     "start": "Empieza aquí",
     "continue": "Continuar el laboratorio",
     "open": "Abrir el laboratorio",
-    "code": "Leer su código"
+    "code": "Abrir código"
   },
   "kit": {
     "title": "¿Qué hay en tu banco?",
@@ -62,14 +62,23 @@
       "ky037": "Micrófono analógico KY-037",
       "inmp441": "Micrófono I²S INMP441",
       "amp": "Amplificador MAX98357A + altavoz",
-      "keyboard": "Teclado o ratón Bluetooth"
+      "keyboard": "Teclado o ratón Bluetooth",
+      "pot": "Potenciómetro de 10 kΩ",
+      "microsd": "Tarjeta microSD (FAT32)",
+      "bmi270": "IMU BMI270 (QWIIC)",
+      "oled": "OLED SSD1306 128×64 I²C",
+      "temt6000": "Sensor de luz TEMT6000 (DevLab ATOM)",
+      "tmp235": "Sensor de temperatura analógico TMP235",
+      "dht11": "Sensor DHT11 KY-015",
+      "ttp223": "Sensor táctil TTP223B",
+      "pulsar2": "Una segunda Pulsar C5"
     }
   },
   "board": {
     "title": "Conoce la placa",
     "intro": "Seis piezas que usarás laboratorio tras laboratorio. Arrastra la placa para girarla; elige una pieza para iluminarla y ver qué laboratorios la usan.",
     "c5Menu": "Componentes de la placa",
-    "c5Intro": "Explora la Pulsar C5 en 3D: gírala, acércala y abre el menú de componentes para localizar cada pieza. Las lecciones de abajo aún usan conexiones del ESP32-S3.",
+    "c5Intro": "Explora la Pulsar C5 en 3D: gírala, acércala y abre el menú de componentes para localizar cada pieza.",
     "c5Parts": {
       "usb": { "title": "USB-C y controles", "text": "Un puerto para alimentación, programación y consola. BOOT usa GPIO28; RESET reinicia la placa." },
       "mcu": { "title": "ESP32-C5HR8", "text": "Procesador RISC-V con 8 MiB de PSRAM integrada y 8 MiB de flash QSPI externa." },
@@ -80,38 +89,9 @@
       "radio": { "title": "Radio y antena", "text": "Wi-Fi 6 de 2,4/5 GHz, Bluetooth LE 5 y 802.15.4 con salida a antena RF coaxial." },
       "headers": { "title": "Pines y QWIIC", "text": "30 posiciones tipo Nano. QWIIC usa GPIO1/GPIO6; los sensores integrados usan GPIO2/GPIO3." }
     },
-    "model": "Modelo 3D de la ESP32-S3 DevKitC-1: el módulo con su antena, dos puertos USB-C, los botones BOOT y RST, el LED RGB y dos filas de pines. Arrastra para girarlo.",
-    "fallback": "Cada pieza se describe en las tarjetas.",
-    "usedIn": "Se usa en ",
     "more_one": "+{{count}} laboratorio",
     "more_many": "+{{count}} laboratorios",
     "more_other": "+{{count}} laboratorios",
-    "parts": {
-      "usb": {
-        "title": "Puertos USB-C",
-        "text": "COM flashea la placa y lleva el monitor serie. USB es el puerto propio del S3."
-      },
-      "buttons": {
-        "title": "BOOT y RST",
-        "text": "RST reinicia tu programa. BOOT es el GPIO 0: un pulsador libre cuando la placa ya está en marcha."
-      },
-      "rgb": {
-        "title": "LED RGB",
-        "text": "Un WS2812 en el GPIO 48: 16 millones de colores con un solo pin de datos."
-      },
-      "module": {
-        "title": "Módulo ESP32-S3",
-        "text": "Dos núcleos a 240 MHz, 16 MB de flash y 8 MB de PSRAM bajo la tapa metálica."
-      },
-      "antenna": {
-        "title": "Antena de PCB",
-        "text": "El Wi-Fi 4 y el Bluetooth 5 salen de este zigzag de cobre: mantenlo lejos de metales."
-      },
-      "headers": {
-        "title": "Tiras de pines",
-        "text": "44 pines: 3V3, 5V, GND y los GPIO donde cableas pantallas, lectores y micrófonos."
-      }
-    },
     "goInside": "Entra en el chip"
   },
   "map": {

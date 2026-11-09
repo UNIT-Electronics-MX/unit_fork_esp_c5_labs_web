@@ -1,0 +1,39 @@
+.terminal { display: grid; gap: 14px; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius-l); background: var(--surface); }
+.head { display: flex; flex-wrap: wrap; align-items: start; justify-content: space-between; gap: 10px; }
+.head h2 { margin: 0 0 4px; font: 750 19px var(--font-display); }
+.head p { margin: 0; color: var(--muted); font-size: 13px; }
+.state { padding: 5px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font: 700 11px var(--font-mono); }
+.state[data-state="connected"] { color: var(--ok); border-color: var(--ok); }
+.state[data-state="error"] { color: var(--danger); border-color: var(--danger); }
+.toolbar { display: flex; align-items: end; flex-wrap: wrap; gap: 8px; }
+.toolbar label { display: grid; gap: 4px; color: var(--muted); font: 650 11px var(--font-mono); }
+.toolbar select { min-height: 37px; padding: 7px 9px; border: 1px solid var(--line); border-radius: var(--radius-s); color: var(--ink); background: var(--bg); font: 13px var(--font-mono); }
+.toolbar button { min-height: 37px; padding: 8px 12px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+.terminal button { cursor: pointer; border-radius: var(--radius-s); font: 700 13px var(--font-display); }
+.terminal button:disabled { cursor: default; opacity: .55; }
+.terminal button:focus-visible, .terminal textarea:focus-visible, .terminal select:focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
+.note { margin: 0; color: var(--warn); font-size: 13px; }
+.error { margin: 0; color: var(--danger); font-size: 13px; overflow-wrap: anywhere; }
+.output { min-height: 220px; max-height: 380px; margin: 0; padding: 12px; overflow: auto; border-radius: var(--radius-s); background: var(--term-bg); color: var(--term-ink); white-space: pre-wrap; overflow-wrap: anywhere; font: 12px / 1.5 var(--font-mono); }
+.command { display: grid; gap: 6px; }
+.command label { color: var(--muted); font: 650 12px var(--font-mono); }
+.command > div { display: flex; gap: 8px; align-items: stretch; }
+.command textarea { flex: 1; min-width: 0; padding: 9px; resize: vertical; border: 1px solid var(--line); border-radius: var(--radius-s); color: var(--ink); background: var(--bg); font: 13px / 1.4 var(--font-mono); }
+.command button { padding: 9px 18px; border: 1px solid var(--pcb-edge); background: var(--pcb); color: var(--surface); }
+.command p { margin: 0; color: var(--muted); font-size: 12px; }
+.autoScroll { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; }
+.docked { gap: 9px; padding: 12px 14px 14px; border-color: var(--line); border-top: 1px solid var(--line); border-top-left-radius: 0; border-top-right-radius: 0; color: var(--ink); background: var(--bg); }
+.docked .head h2 { color: var(--ink); font: 700 13px var(--font-display); }
+.docked .head p, .docked .toolbar label, .docked .command label, .docked .command p, .docked .autoScroll { color: var(--muted); }
+.docked .state { border-color: var(--line); color: var(--muted); }
+.docked .state[data-state="connected"] { border-color: var(--ink); color: var(--ink); }
+.docked .state[data-state="error"] { border-color: var(--danger); color: var(--danger); }
+.docked .toolbar select, .docked .toolbar button, .docked .command textarea { border-color: var(--line); color: var(--ink); background: var(--surface); }
+.docked .toolbar button:hover:not(:disabled) { border-color: var(--muted); }
+.docked .output { min-height: 130px; max-height: 300px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--ink); }
+.docked .command button { border-color: var(--ink); color: var(--surface); background: var(--ink); }
+.docked .command textarea::placeholder { color: var(--muted); }
+.sidecar { align-content: start; height: 100%; border-radius: var(--radius-l); border-top: 1px solid var(--line); }
+.sidecar .output { height: clamp(300px, 42vh, 510px); max-height: none; }
+@media (max-width: 1119px) { .sidecar .output { height: 220px; } }
+@media (max-width: 560px) { .command > div { flex-direction: column; } .command button { align-self: end; } }

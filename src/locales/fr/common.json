@@ -21,17 +21,17 @@
       "bench": "Établi",
       "settings": "Réglages"
     },
-    "footnote": "Les leçons existantes et leurs brochages utilisent l’ESP32-S3 DevKitC-1, pas la Pulsar C5. Vérifie les étiquettes de ta carte. Tes coches sont enregistrées uniquement dans ce navigateur.",
+    "footnote": "Les thèmes Pulsar C5 sont écrits pour cette carte ; les autres sont encore en cours de portage, vérifie donc leur câblage. Tes coches sont enregistrées uniquement dans ce navigateur.",
     "partsLink": "La bibliothèque de pièces",
     "credit": "Basé sur le projet original d’Abderrehmen Gharsallah : <project>ESP32 Labs</project>.",
-    "legacyNotice": "Contenu hérité de l’ESP32-S3 : le câblage et le firmware de ces leçons ne sont pas encore adaptés à la Pulsar C5.",
+    "legacyNotice": "Cette leçon n’est pas encore portée sur la Pulsar C5 : le brochage place ses broches par numéro de GPIO, mais son câblage et son firmware restent à adapter.",
     "new": "Nouveau"
   },
   "titles": {
     "labs": "Pulsar C5 Labs",
-    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "code": "Code {{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "log": "Journal de l'établi · ESP32-S3 · Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · Pulsar C5 Labs",
+    "code": "Code {{id}} · {{title}} · Pulsar C5 Labs",
+    "log": "Journal de l'établi · Pulsar C5 Labs",
     "parts": "Bibliothèque de pièces · Pulsar C5 Labs",
     "settings": "Réglages · Pulsar C5 Labs",
     "chip": "{{page}} · Fiche technique · ESP32-C5HR8 · Pulsar C5 Labs"
@@ -55,8 +55,7 @@
   },
   "tracks": {
     "intro": {
-      "title": "Intro",
-      "blurb": "Outils, premier programme, premier circuit"
+      "title": "Intro"
     },
     "display": {
       "title": "Écran et entrées",
@@ -142,7 +141,7 @@
       "warning": "Ne débranche jamais pendant <code>Writing at 0x…</code>. Une broche passe de sortie à entrée ? Flashe d'abord, câble ensuite."
     },
     "pinout": {
-      "title": "Brochage de l'ESP32-S3 DevKitC",
+      "title": "Brochage de la UNIT Pulsar C5",
       "use": "{{role}} sur {{pin}}",
       "uses": "Cette leçon utilise : {{uses}}.",
       "none": "Cette leçon n'utilise aucune broche de la barrette."

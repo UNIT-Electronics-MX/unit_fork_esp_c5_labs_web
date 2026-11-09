@@ -56,12 +56,13 @@ export function LessonTabs({
   const env = envOfCommand(lesson.cmd);
   const { data: index } = useQuery({ ...firmwareIndexQuery(), enabled: !!env });
   const progress = useAllProgress();
-  if (!env) return null;
-  const files = index?.envs.find((e) => e.env === env)?.files ?? [];
+  if (!env && lesson.track !== "intro" && lesson.track !== "pulsar") return null;
+  const files = env ? index?.envs.find((e) => e.env === env)?.files ?? [] : [];
   const own = files.filter((f) => f.role === "lab");
   const lines = own.reduce((n, f) => n + f.lines, 0);
-  const read = progress[env]?.stops.length ?? 0;
+  const read = env ? progress[env]?.stops.length ?? 0 : 0;
   const variant = params.get("variant");
+  const consoleSetup = lesson.id === "00" && lesson.variantKey === "micropython";
   const search = variant ? `?variant=${encodeURIComponent(variant)}` : "";
   const track = findTrack(lesson.track);
   const style = { "--track": `var(${track?.color ?? "--copper"})` } as CSSProperties;
@@ -98,7 +99,7 @@ export function LessonTabs({
         >
           <span className={styles.label}>
             <Icon name="code" size={16} />
-            {t("tabs.code")}{" "}
+            {t(consoleSetup ? "tabs.console" : "tabs.code")}{" "}
             {read ? (
               <span className={styles.badge}>{t("tabs.stopsRead", { count: read })}</span>
             ) : null}
@@ -106,7 +107,17 @@ export function LessonTabs({
           <span className={styles.sub}>
             {own.length
               ? t("tabs.codeSub", { count: own.length, lines })
-              : t("tabs.codeSubEmpty")}
+              : consoleSetup
+                ? t("tabs.consoleSub")
+              : lesson.id === "00"
+                ? t("tabs.codeSubSetup")
+                : lesson.track === "intro" && lesson.variantKey === "arduino"
+                ? t("tabs.codeSubArduino")
+                : lesson.track === "intro" && lesson.variantKey === "micropython"
+                ? t("tabs.codeSubMicroPython")
+                : lesson.track === "pulsar"
+                ? t("tabs.codeSubArduino")
+                : t("tabs.codeSubEmpty")}
           </span>
         </Link>
       </nav>

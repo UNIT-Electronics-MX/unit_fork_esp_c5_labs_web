@@ -4,8 +4,8 @@
     "intro": "Deneylerde kullanılan her parça bir kez çizilir, her yerde yeniden kullanılır: <code>{{example}}</code>."
   },
   "names": {
-    "devkit": "ESP32-S3 DevKitC kartı",
-    "module": "ESP32-S3 WROOM modülü",
+    "devkit": "UNIT Pulsar C5 kartı",
+    "module": "ESP32 WROOM modülü",
     "usbc": "USB-C portu",
     "cable": "USB-C kablosu",
     "button": "basmalı düğme",

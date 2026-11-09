@@ -21,17 +21,17 @@
       "bench": "ベンチ",
       "settings": "設定"
     },
-    "footnote": "既存のレッスンとピン配置は Pulsar C5 ではなく ESP32-S3 DevKitC-1 用です。基板の表示を確認してください。チェックはこのブラウザにだけ保存されます。",
+    "footnote": "Pulsar C5 のテーマはこの基板向けです。その他のテーマは移植中なので配線を確認してください。チェックはこのブラウザにだけ保存されます。",
     "partsLink": "パーツライブラリ",
     "credit": "Abderrehmen Gharsallah による元のプロジェクトを基にしています：<project>ESP32 Labs</project>。",
-    "legacyNotice": "従来の ESP32-S3 用コンテンツ：これらのレッスンの配線とファームウェアは、まだ Pulsar C5 向けに更新されていません。",
+    "legacyNotice": "このレッスンはまだ Pulsar C5 に移植されていません。ピン配置は GPIO 番号でピンを示しますが、配線とファームウェアはまだ調整が必要です。",
     "new": "新着"
   },
   "titles": {
     "labs": "Pulsar C5 Labs",
-    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "code": "{{id}} コード · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "log": "ベンチログ · ESP32-S3 · Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · Pulsar C5 Labs",
+    "code": "{{id}} コード · {{title}} · Pulsar C5 Labs",
+    "log": "ベンチログ · Pulsar C5 Labs",
     "parts": "パーツライブラリ · Pulsar C5 Labs",
     "settings": "設定 · Pulsar C5 Labs",
     "chip": "{{page}} · データシート · ESP32-C5HR8 · Pulsar C5 Labs"
@@ -55,8 +55,7 @@
   },
   "tracks": {
     "intro": {
-      "title": "はじめに",
-      "blurb": "道具、最初のプログラム、最初の回路"
+      "title": "はじめに"
     },
     "display": {
       "title": "ディスプレイと入力",
@@ -142,7 +141,7 @@
       "warning": "<code>Writing at 0x…</code>の間は、絶対に抜かないでください。ピンが出力から入力に変わるときは、先に書き込んでから配線します。"
     },
     "pinout": {
-      "title": "ESP32-S3 DevKitCのピン配置",
+      "title": "UNIT Pulsar C5のピン配置",
       "use": "{{pin}}の{{role}}",
       "uses": "このレッスンで使うもの：{{uses}}。",
       "none": "このレッスンでは、ヘッダーピンを使いません。"

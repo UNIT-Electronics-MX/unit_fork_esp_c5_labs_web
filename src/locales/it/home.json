@@ -2,12 +2,11 @@
   "hero": {
     "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
     "title": "Pulsar <part>C5 Labs</part>",
-    "legacyNotice": "Contenuti ESP32-S3 precedenti: collegamenti e firmware di queste lezioni non sono ancora adattati alla Pulsar C5.",
     "motto": {
       "wire": "Collega",
       "flash": "Flasha",
       "watch": "Osserva",
-      "read": "Leggi il codice"
+      "read": "Codice"
     }
   },
   "hud": {
@@ -22,7 +21,7 @@
     "start": "Comincia da qui",
     "continue": "Continua il lab",
     "open": "Apri il lab",
-    "code": "Leggi il suo codice"
+    "code": "Apri il codice"
   },
   "kit": {
     "title": "Cosa c’è sul tuo banco?",
@@ -69,39 +68,10 @@
     "title": "Conosci la scheda",
     "intro": "Sei componenti che userai lab dopo lab. Trascina la scheda per girarla; scegli un componente per illuminarlo e vedere quali lab lo usano.",
     "c5Menu": "Componenti della scheda",
-    "c5Intro": "Esplora la Pulsar C5 in 3D: ruotala, ingrandiscila, esamina i componenti e separa gli strati. Le lezioni qui sotto usano ancora i collegamenti ESP32-S3.",
-    "model": "Modello 3D dell'ESP32-S3 DevKitC-1: il modulo con la sua antenna, due porte USB-C, i pulsanti BOOT e RST, il LED RGB e due file di pin. Trascina per girarlo.",
-    "fallback": "Ogni componente è descritto nelle schede.",
-    "usedIn": "Usato in ",
+    "c5Intro": "Esplora la Pulsar C5 in 3D: ruotala, ingrandisci e apri il menu dei componenti per individuare ogni parte.",
     "more_one": "+{{count}} lab",
     "more_many": "+{{count}} lab",
     "more_other": "+{{count}} lab",
-    "parts": {
-      "usb": {
-        "title": "Porte USB-C",
-        "text": "COM flasha la scheda e porta il monitor seriale. USB è la porta nativa dell'S3."
-      },
-      "buttons": {
-        "title": "BOOT e RST",
-        "text": "RST riavvia il programma. BOOT è il GPIO 0: un pulsante libero quando la scheda è in funzione."
-      },
-      "rgb": {
-        "title": "LED RGB",
-        "text": "Un WS2812 sul GPIO 48: 16 milioni di colori da un solo pin dati."
-      },
-      "module": {
-        "title": "Modulo ESP32-S3",
-        "text": "Due core a 240 MHz, 16 MB di flash e 8 MB di PSRAM sotto lo schermo metallico."
-      },
-      "antenna": {
-        "title": "Antenna su PCB",
-        "text": "Wi-Fi 4 e Bluetooth 5 partono da questo zigzag di rame: tienilo lontano dal metallo."
-      },
-      "headers": {
-        "title": "Connettori a pin",
-        "text": "44 pin: 3V3, 5V, GND e i GPIO a cui colleghi schermi, lettori e microfoni."
-      }
-    },
     "goInside": "Entra nel chip"
   },
   "map": {

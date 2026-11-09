@@ -1,0 +1,112 @@
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import styles from "./LessonCodeGuide.module.css";
+
+type Variant = "arduino" | "micropython";
+
+const FOCUS: Record<string, string> = {
+  "arduino:01": "BRIGHTNESS = 40",
+  "arduino:02": "line.startsWith(\"blink \"",
+  "arduino:P1": "BOOT_BUTTON = 28",
+  "arduino:P2": "rgbLedWrite(RGB_PIN",
+  "arduino:P3": "analogReadMilliVolts(POT_PIN)",
+  "arduino:P4": "Wire.begin(SDA_PIN",
+  "arduino:P5": "SD.begin(CS_PIN",
+  "arduino:P6": "Serial1.begin(115200",
+  "micropython:01": "BRIGHTNESS = 40",
+  "micropython:02": "sleep_ms(12)",
+};
+const COMMANDS: Record<string, readonly string[]> = {
+  "arduino:02": ["blink 200", "blink 800"],
+  "arduino:P2": ["rgb 255 80 0", "level 20", "level 100", "off"],
+  "arduino:P6": ["hello UART"],
+  "micropython:00": ['print("MicroPython OK")'],
+};
+const GUIDE_KEYS = {
+  "arduino:01": ["codeRoute.guide.arduino.01.title", "codeRoute.guide.arduino.01.try", "codeRoute.guide.arduino.01.expect"],
+  "arduino:02": ["codeRoute.guide.arduino.02.title", "codeRoute.guide.arduino.02.try", "codeRoute.guide.arduino.02.expect"],
+  "arduino:P1": ["codeRoute.guide.arduino.P1.title", "codeRoute.guide.arduino.P1.try", "codeRoute.guide.arduino.P1.expect"],
+  "arduino:P2": ["codeRoute.guide.arduino.P2.title", "codeRoute.guide.arduino.P2.try", "codeRoute.guide.arduino.P2.expect"],
+  "arduino:P3": ["codeRoute.guide.arduino.P3.title", "codeRoute.guide.arduino.P3.try", "codeRoute.guide.arduino.P3.expect"],
+  "arduino:P4": ["codeRoute.guide.arduino.P4.title", "codeRoute.guide.arduino.P4.try", "codeRoute.guide.arduino.P4.expect"],
+  "arduino:P5": ["codeRoute.guide.arduino.P5.title", "codeRoute.guide.arduino.P5.try", "codeRoute.guide.arduino.P5.expect"],
+  "arduino:P6": ["codeRoute.guide.arduino.P6.title", "codeRoute.guide.arduino.P6.try", "codeRoute.guide.arduino.P6.expect"],
+  "micropython:00": ["codeRoute.guide.micropython.00.title", "codeRoute.guide.micropython.00.try", "codeRoute.guide.micropython.00.expect"],
+  "micropython:01": ["codeRoute.guide.micropython.01.title", "codeRoute.guide.micropython.01.try", "codeRoute.guide.micropython.01.expect"],
+  "micropython:02": ["codeRoute.guide.micropython.02.title", "codeRoute.guide.micropython.02.try", "codeRoute.guide.micropython.02.expect"],
+} as const;
+
+/** A single experiment next to the editable source, separate from the wiring guide. */
+export function LessonCodeGuide({
+  lessonId,
+  variant,
+  connected = false,
+  onCommand,
+}: {
+  lessonId: string;
+  variant: Variant;
+  connected?: boolean;
+  onCommand?: (command: string) => Promise<void>;
+}) {
+  const { t } = useTranslation();
+  const [notice, setNotice] = useState("");
+  const [busy, setBusy] = useState(false);
+  const key = `${variant}:${lessonId}`;
+  const guide = GUIDE_KEYS[key as keyof typeof GUIDE_KEYS];
+  if (!guide) return null;
+
+  function locate() {
+    const editor = document.querySelector<HTMLTextAreaElement>("[data-lesson-code]");
+    const token = FOCUS[key];
+    if (!editor || !token) {
+      setNotice(t("codeRoute.guide.codeUnavailable"));
+      return;
+    }
+    const start = editor.value.indexOf(token);
+    if (start < 0) {
+      setNotice(t("codeRoute.guide.lineChanged"));
+      return;
+    }
+    editor.focus();
+    editor.setSelectionRange(start, start + token.length);
+    const line = editor.value.slice(0, start).split("\n").length;
+    editor.scrollTop = Math.max(0, (line - 4) * 21);
+    setNotice("");
+  }
+
+  async function sendCommand(command: string) {
+    if (!onCommand || !connected || busy) return;
+    setBusy(true);
+    setNotice("");
+    try {
+      await onCommand(command);
+    } catch (cause) {
+      setNotice(t("codeRoute.guide.commandError", { detail: cause instanceof Error ? cause.message : String(cause) }));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <aside className={styles.guide} data-workspace-guide aria-label={t("codeRoute.guide.label")}>
+      <div className={styles.title}>
+        <span>{t("codeRoute.guide.label")}</span>
+        <h2>{t(guide[0])}</h2>
+      </div>
+      <div className={styles.steps}>
+        <p><strong>{t("codeRoute.guide.try")}</strong>{t(guide[1])}</p>
+        <p><strong>{t("codeRoute.guide.expect")}</strong>{t(guide[2])}</p>
+      </div>
+      <div className={styles.actions}>
+        {FOCUS[key] ? <button type="button" onClick={locate}>{t("codeRoute.guide.locate")}</button> : null}
+        {COMMANDS[key]?.map((command) => (
+          <button key={command} type="button" disabled={!connected || busy} onClick={() => void sendCommand(command)}>
+            <code>{command}</code>
+          </button>
+        ))}
+        {COMMANDS[key]?.length && !connected ? <span>{t("codeRoute.guide.connectFirst")}</span> : null}
+      </div>
+      {notice ? <p className={styles.notice} role="status">{notice}</p> : null}
+    </aside>
+  );
+}

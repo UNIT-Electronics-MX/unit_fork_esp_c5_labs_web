@@ -45,7 +45,7 @@
   },
   "pins": {
     "label": "En la placa",
-    "usb": "Puerto COM"
+    "usb": "Puerto USB-C"
   },
   "commands": {
     "intro": "Escríbelos en el monitor serie (<code>uv run pio device monitor</code>) salvo que la etiqueta gris diga otra cosa. La etiqueta de color indica qué debe haber cerca de la placa mientras funciona.",
@@ -85,6 +85,10 @@
     "status_many": "{{ticked}} de {{count}} marcados. Las marcas se guardan en este navegador.",
     "status_other": "{{ticked}} de {{count}} marcados. Las marcas se guardan en este navegador."
   },
+  "setupFlash": {
+    "download": "Descargar MicroPython oficial",
+    "openFlasher": "Abrir firmware y consola"
+  },
   "wiring": {
     "from": "Desde",
     "to": "Hasta",
@@ -101,17 +105,26 @@
     "label": "Vistas de la lección",
     "lab": "Haz el laboratorio",
     "labSub": "cablea · flashea · comprueba",
-    "code": "Lee el código",
+    "code": "Código",
+    "console": "Firmware y consola",
     "stopsRead_one": "{{count}} parada leída",
     "stopsRead_many": "{{count}} paradas leídas",
     "stopsRead_other": "{{count}} paradas leídas",
     "codeSub_one": "{{count}} archivo · {{lines}} líneas · recorrido guiado",
     "codeSub_many": "{{count}} archivos · {{lines}} líneas · recorrido guiado",
     "codeSub_other": "{{count}} archivos · {{lines}} líneas · recorrido guiado",
-    "codeSubEmpty": "recorrido guiado · toca cualquier línea"
+    "codeSubEmpty": "recorrido guiado · toca cualquier línea",
+    "codeSubIntro": "sketch Arduino · editor MicroPython · consola serie",
+    "codeSubArduino": "sketch editable · monitor serie",
+    "codeSubMicroPython": "un archivo .py, una prueba y REPL",
+    "consoleSub": "borra, carga y comprueba el REPL aquí",
+    "codeSubSetup": "primer sketch en la lección 01"
   },
   "next": {
     "label": "Siguiente",
+    "firstC5": "Parpadeo de Pulsar C5",
+    "firstCode": "Primer código",
+    "firstMicroPython": "Abrir ejemplos MicroPython para Pulsar C5",
     "lesson": "Lección siguiente",
     "theme": "Fin de este tema · tema siguiente",
     "last": "Esa fue la última lección",

@@ -21,17 +21,17 @@
       "bench": "Tezgâh",
       "settings": "Ayarlar"
     },
-    "footnote": "Mevcut dersler ve pin şemaları Pulsar C5 yerine ESP32-S3 DevKitC-1 kullanır. Kartındaki etiketleri kontrol et. İşaretlerin yalnızca bu tarayıcıda saklanır.",
+    "footnote": "Pulsar C5 temaları bu kart için yazıldı; diğerleri hâlâ aktarılıyor, bu yüzden bağlantılarını kontrol et. İşaretlerin yalnızca bu tarayıcıda saklanır.",
     "partsLink": "Parça kütüphanesi",
     "credit": "Abderrehmen Gharsallah'ın özgün projesi temel alınmıştır: <project>ESP32 Labs</project>.",
-    "legacyNotice": "Eski ESP32-S3 içeriği: bu derslerdeki bağlantılar ve aygıt yazılımı henüz Pulsar C5 için uyarlanmadı.",
+    "legacyNotice": "Bu ders henüz Pulsar C5'e aktarılmadı: pin şeması pinlerini GPIO numarasına göre gösterir, ancak bağlantıları ve yazılımı hâlâ uyarlanmalı.",
     "new": "Yeni"
   },
   "titles": {
     "labs": "Pulsar C5 Labs",
-    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "code": "{{id}} kodu · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "log": "Tezgâh günlüğü · ESP32-S3 · Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · Pulsar C5 Labs",
+    "code": "{{id}} kodu · {{title}} · Pulsar C5 Labs",
+    "log": "Tezgâh günlüğü · Pulsar C5 Labs",
     "parts": "Parça kütüphanesi · Pulsar C5 Labs",
     "settings": "Ayarlar · Pulsar C5 Labs",
     "chip": "{{page}} · Veri sayfası · ESP32-C5HR8 · Pulsar C5 Labs"
@@ -55,8 +55,7 @@
   },
   "tracks": {
     "intro": {
-      "title": "Giriş",
-      "blurb": "Araçlar, ilk program, ilk devre"
+      "title": "Giriş"
     },
     "display": {
       "title": "Ekran ve giriş",
@@ -142,7 +141,7 @@
       "warning": "<code>Writing at 0x…</code> yazarken asla çekme. Pin çıkıştan girişe mi geçiyor? Önce yükle, sonra bağla."
     },
     "pinout": {
-      "title": "ESP32-S3 DevKitC pin düzeni",
+      "title": "UNIT Pulsar C5 pin düzeni",
       "use": "{{role}}, {{pin}} pininde",
       "uses": "Bu derste kullanılanlar: {{uses}}.",
       "none": "Bu ders kart pinlerinden hiçbirini kullanmaz."

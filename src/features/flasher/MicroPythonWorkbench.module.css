@@ -1,0 +1,10 @@
+.workbench {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+@media (min-width: 1120px) {
+  .workbench { grid-template-columns: minmax(0, 1fr) minmax(300px, 340px); align-items: stretch; }
+  .workbench > [data-workspace-guide] { grid-column: 1 / -1; }
+  .workbench > [data-console-only] { grid-column: 1 / -1; }
+}

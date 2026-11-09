@@ -1,0 +1,122 @@
+{
+  "D1": {
+    "title": "IMU por QWIIC",
+    "heading": "Encuentra un BMI270 en el bus QWIIC",
+    "goal": "Conecta un sensor de movimiento BMI270 al conector QWIIC, escanea el bus y lee su registro de ID para comprobar que es la pieza que crees.",
+    "learn": [
+      "conector QWIIC",
+      "lectura de registros",
+      "repeated start",
+      "comprobación del ID del chip"
+    ],
+    "wiring": {
+      "rows": [
+        [
+          "QWIIC SDA (GPIO1)",
+          "BMI270 SDA",
+          "o el pin A1 de la cabecera"
+        ],
+        [
+          "QWIIC SCL (GPIO6)",
+          "BMI270 SCL",
+          "o el pin A6 de la cabecera"
+        ],
+        [
+          "3V3 / GND",
+          "BMI270 VCC / GND",
+          "solo 3,3 V"
+        ]
+      ]
+    },
+    "steps": [
+      "Desconecta el USB y conecta el BMI270 con un cable QWIIC, o con cables a los pines de la tabla.",
+      "Ejecuta el comando. El escaneo imprime <code>found 0x68</code> (o <code>0x69</code>).",
+      "Revisa la última línea: <code>chip ID 0x24 (BMI270)</code>."
+    ],
+    "note": "La Pulsar C5 <b>no tiene pull-ups en QWIIC</b>. La mayoría de las placas de sensores traen las suyas; con un chip suelto, añade 4,7 kΩ de SDA y SCL a 3V3. En la C6 esta práctica usaba GPIO6/7."
+  },
+  "D2": {
+    "title": "Gráfica de luz en OLED",
+    "heading": "Dos dispositivos en un bus: OLED y sensor de luz",
+    "goal": "Pon una OLED SSD1306 (<code>0x3C</code>) y un sensor de luz TEMT6000 (<code>0x20</code>) en el mismo bus QWIIC y dibuja en la pantalla los últimos seis segundos de luz.",
+    "learn": [
+      "bus I²C compartido",
+      "direcciones",
+      "búfer de pantalla",
+      "búfer circular",
+      "muestreo estable"
+    ],
+    "wiring": {
+      "head": [
+        "Pulsar C5",
+        "OLED SSD1306",
+        "TEMT6000 (ATOM)"
+      ],
+      "rows": [
+        [
+          "3V3",
+          "VCC",
+          "VCC"
+        ],
+        [
+          "GND",
+          "GND",
+          "GND"
+        ],
+        [
+          "QWIIC SDA (GPIO1)",
+          "SDA",
+          "SDA"
+        ],
+        [
+          "QWIIC SCL (GPIO6)",
+          "SCL",
+          "SCL"
+        ]
+      ]
+    },
+    "steps": [
+      "Instala <code>Adafruit SSD1306</code>, <code>Adafruit GFX Library</code> y <code>DevLabDDP</code> desde el gestor de librerías.",
+      "Desconecta el USB y cablea las dos placas en paralelo, o encadénalas con cables QWIIC.",
+      "Ejecuta el comando. El monitor confirma un TEMT6000 con ID <code>0x0102</code> en <code>0x20</code>.",
+      "Tapa el sensor y luego ilumínalo: la gráfica baja y sube."
+    ],
+    "note": "La lectura es un nivel relativo de 12 bits, no lux: calíbrala con un luxómetro antes de dar unidades."
+  },
+  "D3": {
+    "title": "Temperatura analógica",
+    "heading": "De milivoltios a grados con un TMP235",
+    "goal": "Lee un sensor de temperatura analógico TMP235 en A2, convierte milivoltios a °C y suaviza el resultado con un filtro sencillo.",
+    "learn": [
+      "función de transferencia del sensor",
+      "ADC calibrado",
+      "filtro exponencial",
+      "ruido"
+    ],
+    "wiring": {
+      "rows": [
+        [
+          "3V3",
+          "TMP235 VDD",
+          ""
+        ],
+        [
+          "A2 (GPIO4)",
+          "TMP235 VOUT",
+          "en la C6 era GPIO0"
+        ],
+        [
+          "GND",
+          "TMP235 GND",
+          ""
+        ]
+      ]
+    },
+    "steps": [
+      "Desconecta el USB y cablea el sensor como en la tabla.",
+      "Ejecuta el comando y abre el Serial Plotter.",
+      "Pellizca el sensor: la línea cruda salta y la filtrada la sigue suavemente."
+    ],
+    "note": "TMP235: Vout = 500 mV + 10 mV/°C, así que 750 mV son 25 °C. <code>analogReadMilliVolts()</code> ya aplica la calibración de fábrica del ADC del chip."
+  }
+}

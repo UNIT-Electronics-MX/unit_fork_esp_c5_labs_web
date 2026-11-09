@@ -9,6 +9,10 @@ type LessonLoader = () => Promise<readonly LessonEntry[]>;
 // One chunk per track: opening a Wi-Fi lesson never downloads the sound track's text.
 const LOADERS: Partial<Record<TrackId, LessonLoader>> = {
   intro: () => import("./lessons/intro").then((m) => m.introLessons),
+  pulsar: () => import("./lessons/pulsar").then((m) => m.pulsarLessons),
+  sensors: () => import("./lessons/sensors").then((m) => m.sensorsLessons),
+  iot: () => import("./lessons/iot").then((m) => m.iotLessons),
+  zigbee: () => import("./lessons/zigbee").then((m) => m.zigbeeLessons),
   display: () => import("./lessons/display").then((m) => m.displayLessons),
   wifi: () => import("./lessons/wifi").then((m) => m.wifiLessons),
   rfid: () => import("./lessons/rfid").then((m) => m.rfidLessons),

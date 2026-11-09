@@ -21,17 +21,17 @@
       "bench": "Stanowisko",
       "settings": "Ustawienia"
     },
-    "footnote": "Istniejące lekcje i ich schematy pinów dotyczą ESP32-S3 DevKitC-1, a nie Pulsar C5. Sprawdź oznaczenia na płytce. Twoje odhaczenia zapisują się tylko w tej przeglądarce.",
+    "footnote": "Tematy Pulsar C5 są napisane dla tej płytki; pozostałe są wciąż przenoszone, więc sprawdź ich połączenia. Twoje odhaczenia zapisują się tylko w tej przeglądarce.",
     "partsLink": "Biblioteka części",
     "credit": "Na podstawie oryginalnego projektu Abderrehmen Gharsallah: <project>ESP32 Labs</project>.",
-    "legacyNotice": "Starsze materiały ESP32-S3: połączenia i firmware tych lekcji nie zostały jeszcze dostosowane do Pulsar C5.",
+    "legacyNotice": "Ta lekcja nie jest jeszcze przeniesiona na Pulsar C5: schemat pokazuje jej piny według numeru GPIO, ale połączenia i firmware wymagają jeszcze dostosowania.",
     "new": "Nowe"
   },
   "titles": {
     "labs": "Pulsar C5 Labs",
-    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "code": "{{id}} kod · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "log": "Dziennik stanowiska · ESP32-S3 · Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · Pulsar C5 Labs",
+    "code": "{{id}} kod · {{title}} · Pulsar C5 Labs",
+    "log": "Dziennik stanowiska · Pulsar C5 Labs",
     "parts": "Biblioteka części · Pulsar C5 Labs",
     "settings": "Ustawienia · Pulsar C5 Labs",
     "chip": "{{page}} · Nota katalogowa · ESP32-C5HR8 · Pulsar C5 Labs"
@@ -55,8 +55,7 @@
   },
   "tracks": {
     "intro": {
-      "title": "Wprowadzenie",
-      "blurb": "Narzędzia, pierwszy program, pierwszy obwód"
+      "title": "Wprowadzenie"
     },
     "display": {
       "title": "Ekran i wejście",
@@ -142,7 +141,7 @@
       "warning": "Nigdy nie odłączaj podczas <code>Writing at 0x…</code>. Pin zmienia się z wyjścia na wejście? Najpierw wgraj, potem przepinaj."
     },
     "pinout": {
-      "title": "Układ pinów ESP32-S3 DevKitC",
+      "title": "Układ pinów UNIT Pulsar C5",
       "use": "{{role}} na {{pin}}",
       "uses": "Ta lekcja używa: {{uses}}.",
       "none": "Ta lekcja nie używa pinów listwy."

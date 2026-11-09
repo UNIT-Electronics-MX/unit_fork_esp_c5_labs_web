@@ -1,0 +1,113 @@
+.editor { display: grid; gap: 10px; min-width: 0; }
+.editor p { margin: 0; }
+.introduction { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.introduction h2 { margin: 2px 0 3px; font: 750 clamp(18px, 2vw, 22px)/1.2 var(--font-display); }
+.introduction p:not(.eyebrow) { color: var(--muted); font-size: 13px; line-height: 1.45; }
+.editor .eyebrow { color: var(--muted); font: 700 10px var(--font-mono); letter-spacing: .08em; }
+.languageBadge { flex: none; padding: 5px 7px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted); font: 700 12px var(--font-mono); }
+.ide { container-type: inline-size; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-l); background: var(--surface); }
+.editor[data-docked="true"] .ide { border-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.windowBar { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 38px; padding: 6px 12px; border-bottom: 1px solid var(--line); color: var(--ink); background: var(--bg); }
+.windowIdentity { display: flex; align-items: center; gap: 8px; min-width: 0; font: 700 12px var(--font-display); }
+.windowIdentity strong { white-space: nowrap; }
+.windowMark { display: grid; place-items: center; flex: none; width: 21px; height: 21px; border: 1px solid var(--line); border-radius: 4px; color: var(--muted); font: 700 9px var(--font-mono); }
+.windowPath { min-width: 0; overflow: hidden; color: var(--muted); text-overflow: ellipsis; white-space: nowrap; font: 11px var(--font-mono); }
+.connection { display: inline-flex; align-items: center; gap: 6px; flex: none; color: var(--muted); font: 650 11px var(--font-mono); }
+.connection > span { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
+.connection[data-connected="true"] { color: var(--ink); }
+.connection[data-connected="true"] > span { background: var(--ink); }
+.toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 5px 12px; padding: 7px 9px; border-bottom: 1px solid var(--line); background: var(--surface); }
+.toolGroup { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+.toolDivider { width: 1px; height: 22px; margin-inline: 3px; background: var(--line); }
+.toolbar button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 32px; padding: 5px 9px; border: 1px solid transparent; border-radius: 5px; color: var(--ink); background: transparent; cursor: pointer; font: 650 12px var(--font-display); }
+.toolbar button:not(:disabled):hover { border-color: var(--line); background: var(--bg); }
+.toolbar button:disabled { opacity: .45; cursor: default; }
+.toolbar .connect { border-color: var(--line); }
+.toolbar .run { border-color: var(--ink); color: var(--surface); background: var(--ink); }
+.toolbar .run:not(:disabled):hover { border-color: var(--ink); color: var(--ink); background: var(--surface); }
+.toolbar .stop { color: var(--ink); }
+.lessonActions { position: sticky; top: 72px; z-index: 4; border: 1px solid var(--line); border-radius: var(--radius-l); background: var(--surface); box-shadow: 0 7px 18px -15px var(--ink); }
+.lessonActions .toolbar { border-radius: var(--radius-l); }
+.actionNotice { padding: 7px 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1.35; }
+.actionError { padding: 7px 12px; border-top: 1px solid var(--line); color: var(--danger); font-size: 12px; line-height: 1.35; }
+.body { display: grid; grid-template-columns: minmax(150px, 190px) minmax(0, 1fr); min-width: 0; }
+.body[data-focused="true"] { grid-template-columns: minmax(0, 1fr); }
+.explorer { display: flex; flex-direction: column; min-width: 0; border-inline-end: 1px solid var(--line); background: var(--bg); }
+.explorerHeading { display: flex; align-items: center; gap: 7px; padding: 12px 11px 8px; color: var(--muted); font: 700 10px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+.exampleList { display: grid; align-content: start; gap: 1px; padding: 0 5px 10px; }
+.example { display: flex; align-items: center; gap: 7px; width: 100%; min-width: 0; padding: 7px 6px; border: 0; border-inline-start: 2px solid transparent; border-radius: 4px; color: var(--ink); background: transparent; text-align: start; cursor: pointer; font: 650 12px/1.2 var(--font-display); }
+.example:hover { background: var(--surface); }
+.example[data-active="true"] { border-inline-start-color: var(--ink); background: var(--surface); }
+.example > span:nth-child(2) { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.example small { display: block; overflow: hidden; margin-top: 3px; color: var(--muted); font: 10px var(--font-mono); text-overflow: ellipsis; white-space: nowrap; }
+.pyFile, .inoFile { display: inline-grid; place-items: center; flex: none; height: 20px; padding-inline: 3px; border: 1px solid var(--line); border-radius: 3px; color: var(--muted); background: var(--surface); font: 700 9px var(--font-mono); }
+.pyFile { width: 24px; }
+.inoFile { width: 29px; }
+.dirty { display: inline-block; flex: none; width: 6px; height: 6px; margin-inline-start: auto; border-radius: 50%; background: var(--copper); }
+.openFile { position: relative; display: flex; align-items: center; gap: 7px; margin: auto 10px 10px; padding: 8px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); cursor: pointer; font: 650 11px/1.3 var(--font-display); }
+.openFile:hover { background: var(--surface); }
+.openFile:focus-within { outline: 2px solid var(--copper); outline-offset: 2px; }
+.openFile input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.toolbar .openFile { margin: 0; min-height: 32px; padding: 5px 9px; border-color: transparent; font-size: 12px; }
+.mainPane { display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; min-width: 0; }
+.tabBar { display: flex; align-items: stretch; justify-content: space-between; min-width: 0; min-height: 38px; border-bottom: 1px solid var(--line); background: var(--bg); }
+.activeTab { display: flex; align-items: center; gap: 7px; min-width: 0; max-width: 75%; padding: 6px 11px; border-inline-end: 1px solid var(--line); border-top: 2px solid var(--ink); color: var(--ink); background: var(--surface); font: 650 12px var(--font-mono); }
+.activeTab > span:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.activeTab .pyFile { width: 21px; height: 18px; }
+.tabHint { align-self: center; padding-inline: 12px; color: var(--muted); font: 11px var(--font-mono); }
+.fileInfo { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 6px 11px; border-bottom: 1px solid var(--line); color: var(--muted); font: 11px var(--font-mono); }
+.fileInfo label { flex: none; }
+.fileInfo input { width: min(100%, 260px); min-width: 0; padding: 4px 6px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: var(--surface); font: 11px var(--font-mono); }
+.codeViewport { display: grid; grid-template-columns: 44px minmax(0, 1fr); min-width: 0; height: clamp(290px, 42vw, 440px); background: var(--surface); }
+.editor[data-lesson="true"] .codeViewport { height: clamp(520px, 68vh, 800px); }
+.gutter { overflow: hidden; padding-block: 16px; border-inline-end: 1px solid var(--line); color: var(--muted); background: var(--surface); text-align: end; user-select: none; font: 12px/21px var(--font-mono); }
+.gutter > div { height: 21px; padding-inline-end: 8px; }
+.gutter > div[data-current="true"] { color: var(--ink); }
+.sourceArea { position: relative; min-width: 0; min-height: 0; }
+.highlight, .code { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 16px 14px; border: 0; border-radius: 0; tab-size: 4; white-space: pre; font: 13px/21px var(--font-mono); letter-spacing: 0; }
+.highlight { z-index: 0; overflow: hidden; color: var(--ink); pointer-events: none; }
+.code { z-index: 1; overflow: auto; resize: none; color: transparent; background: transparent; -webkit-text-fill-color: transparent; caret-color: var(--ink); }
+.code::selection { background: color-mix(in oklab, var(--ink) 17%, transparent); }
+.keyword, .decorator, .builtin { color: var(--copper); }
+.string, .number, .constant { color: var(--ink); }
+.comment { color: var(--muted); }
+.statusBar { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 12px; padding: 6px 11px; border-top: 1px solid var(--line); color: var(--muted); background: var(--bg); font: 10px var(--font-mono); }
+.statusBar span:first-child { margin-inline-end: auto; }
+.underbar { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 16px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.underbar p { max-width: 100%; }
+.underbar .description { color: var(--ink); }
+.underbar .requirements { color: var(--muted); }
+.underbar .error, .editor > .error { color: var(--danger); }
+.underbar a { color: var(--copper); font-weight: 650; }
+.underbar button { padding: 5px 9px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--surface); cursor: pointer; font: 650 12px var(--font-display); }
+.help { flex-basis: 100%; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.help summary { width: fit-content; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.help p { margin-top: 6px; }
+.editor button:focus-visible, .editor input:focus-visible, .editor textarea:focus-visible { outline: 2px solid var(--copper); outline-offset: -2px; }
+@container (max-width: 700px) {
+  .windowPath, .tabHint { display: none; }
+  .body { grid-template-columns: minmax(0, 1fr); }
+  .explorer { border-inline-end: 0; border-bottom: 1px solid var(--line); }
+  .explorerHeading { padding: 8px 10px 3px; }
+  .exampleList { display: flex; overflow-x: auto; padding: 3px 7px 8px; }
+  .example { flex: 0 0 auto; width: auto; max-width: 170px; padding: 6px 8px; }
+  .example small { display: none; }
+  .openFile { align-self: start; margin: 0 10px 9px; padding: 6px 9px; }
+  .codeViewport { height: 340px; }
+  .editor[data-lesson="true"] .codeViewport { height: clamp(420px, 58vh, 640px); }
+}
+@container (max-width: 480px) {
+  .toolbar button { padding: 6px 8px; font-size: 11px; }
+  .toolbar button svg { width: 14px; height: 14px; }
+  .codeViewport { grid-template-columns: 38px minmax(0, 1fr); }
+  .gutter > div { padding-inline-end: 6px; }
+  .fileInfo { align-items: start; flex-direction: column; gap: 4px; }
+  .fileInfo input { width: 100%; }
+}
+@media (max-width: 879px) {
+  .lessonActions { top: 116px; }
+}
+@media (forced-colors: active) {
+  .highlight { display: none; }
+  .code { color: CanvasText; -webkit-text-fill-color: CanvasText; }
+}

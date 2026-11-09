@@ -97,7 +97,8 @@
     "label": "课程视图",
     "lab": "做实验",
     "labSub": "接线 · 烧录 · 检查",
-    "code": "读代码",
+    "code": "代码",
+    "console": "控制台",
     "stopsRead_other": "已读 {{count}} 站",
     "codeSub_other": "{{count}} 个文件 · {{lines}} 行 · 导览",
     "codeSubEmpty": "导览 · 点任意一行"

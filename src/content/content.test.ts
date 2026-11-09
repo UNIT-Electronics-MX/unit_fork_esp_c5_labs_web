@@ -5,10 +5,12 @@ import { introWidgets } from "@/labs/intro/widgets";
 import { rfidWidgets } from "@/labs/rfid/widgets";
 import { soundWidgets } from "@/labs/sound/widgets";
 import { wifiWidgets } from "@/labs/wifi/widgets";
+import { pulsarPosition, pulsarSide } from "@/domain/pulsar";
 import { LESSON_PART } from "./icons";
 import { LESSON_KIT } from "./kit";
 import { trackLessonsQuery } from "./queries";
-import { TRACKS } from "./tracks";
+import { boardOfLesson, TRACKS } from "./tracks";
+import { isActive, resolveLesson } from "@/domain/lesson";
 
 describe("content", () => {
   it.each(TRACKS.filter((t) => !t.planned))(
@@ -47,6 +49,47 @@ describe("content", () => {
       soundWidgets,
     ].flatMap((m) => Object.keys(m));
     expect(ids.length).toBe(new Set(ids).size);
+  });
+
+  it.each(TRACKS.filter((t) => t.board === "pulsar-c5" && !t.planned))(
+    "places every $id pin on the Pulsar C5 header, on the side and position it names",
+    async (track) => {
+      const lessons = await trackLessonsQuery(track.id, "en").queryFn!({} as never);
+      const misplaced = lessons
+        .flatMap((l) => (l.kind === "lesson" ? (l.pins ?? []).map((p) => ({ id: l.id, p })) : []))
+        .filter(({ p }) => {
+          const at = pulsarPosition(p);
+          return at < 0 || pulsarSide(at) !== p.side || (p.idx !== undefined && p.idx !== at);
+        });
+      expect(misplaced).toEqual([]);
+    },
+  );
+
+  it("knows which board each lesson is wired on", () => {
+    expect(boardOfLesson("00")).toBe("pulsar-c5");
+    expect(boardOfLesson("01")).toBe("pulsar-c5");
+    expect(boardOfLesson("02")).toBe("pulsar-c5");
+    expect(boardOfLesson("P4")).toBe("pulsar-c5");
+    expect(boardOfLesson("R1")).toBe("devkitc-s3");
+    expect(boardOfLesson("nope")).toBe("devkitc-s3");
+  });
+
+  it("keeps Arduino and MicroPython variants through the three C5 intro lessons", async () => {
+    const lessons = await trackLessonsQuery("intro", "es").queryFn!({} as never);
+    for (const id of ["00", "01", "02"]) {
+      const lesson = lessons.find((entry) => entry.id === id);
+      expect(lesson && isActive(lesson)).toBe(true);
+      if (!lesson || !isActive(lesson)) continue;
+      expect(lesson.variants?.map((variant) => variant.key)).toEqual(["arduino", "micropython"]);
+      expect(resolveLesson(lesson, "arduino").cmd).toContain("arduino-cli");
+      expect(resolveLesson(lesson, "micropython").cmd).toBe("");
+    }
+    const setup = lessons.find((entry) => entry.id === "00");
+    if (!setup || !isActive(setup)) return;
+    const micropython = resolveLesson(setup, "micropython");
+    expect(micropython.steps.join(" ")).toContain("0x2000");
+    expect(micropython.steps.join(" ")).toContain("Firmware y consola");
+    expect(micropython.steps.join(" ")).toContain("ESP32_GENERIC_C5");
   });
 
   it("uses unique lesson ids across tracks", () => {

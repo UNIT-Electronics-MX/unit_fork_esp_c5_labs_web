@@ -2,12 +2,11 @@
   "hero": {
     "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
     "title": "Pulsar <part>C5 Labs</part>",
-    "legacyNotice": "Contenu hérité de l’ESP32-S3 : le câblage et le firmware de ces leçons ne sont pas encore adaptés à la Pulsar C5.",
     "motto": {
       "wire": "Câble",
       "flash": "Flashe",
       "watch": "Observe",
-      "read": "Lis le code"
+      "read": "Code"
     }
   },
   "hud": {
@@ -22,7 +21,7 @@
     "start": "Commence ici",
     "continue": "Continuer le labo",
     "open": "Ouvrir le labo",
-    "code": "Lire son code"
+    "code": "Ouvrir le code"
   },
   "kit": {
     "title": "Qu’y a-t-il sur votre établi ?",
@@ -69,39 +68,10 @@
     "title": "Découvre la carte",
     "intro": "Six pièces que tu retrouveras labo après labo. Fais glisser la carte pour la tourner ; choisis une pièce pour l'allumer et voir quels labos l'utilisent.",
     "c5Menu": "Composants de la carte",
-    "c5Intro": "Explorez la Pulsar C5 en 3D : faites-la tourner, zoomez, inspectez ses composants et séparez ses couches. Les leçons ci-dessous utilisent encore le câblage ESP32-S3.",
-    "model": "Modèle 3D de l'ESP32-S3 DevKitC-1 : le module avec son antenne, deux ports USB-C, les boutons BOOT et RST, la LED RGB et deux rangées de broches. Fais glisser pour la tourner.",
-    "fallback": "Chaque pièce est décrite dans les cartes.",
-    "usedIn": "Utilisée dans ",
+    "c5Intro": "Explore la Pulsar C5 en 3D : fais-la pivoter, zoome et ouvre le menu des composants pour repérer chaque pièce.",
     "more_one": "+{{count}} labo",
     "more_other": "+{{count}} labos",
     "more_many": "+{{count}} labos",
-    "parts": {
-      "usb": {
-        "title": "Ports USB-C",
-        "text": "COM flashe la carte et transporte le moniteur série. USB est le port propre au S3."
-      },
-      "buttons": {
-        "title": "BOOT et RST",
-        "text": "RST relance ton programme. BOOT est le GPIO 0 : un bouton libre une fois la carte lancée."
-      },
-      "rgb": {
-        "title": "LED RGB",
-        "text": "Une WS2812 sur le GPIO 48 : 16 millions de couleurs avec une seule broche de données."
-      },
-      "module": {
-        "title": "Module ESP32-S3",
-        "text": "Deux cœurs à 240 MHz, 16 Mo de flash et 8 Mo de PSRAM sous le capot métallique."
-      },
-      "antenna": {
-        "title": "Antenne imprimée",
-        "text": "Le Wi-Fi 4 et le Bluetooth 5 partent de ce zigzag de cuivre : garde-le loin du métal."
-      },
-      "headers": {
-        "title": "Barrettes de broches",
-        "text": "44 broches : 3V3, 5V, GND et les GPIO où tu câbles écrans, lecteurs et micros."
-      }
-    },
     "goInside": "Entre dans la puce"
   },
   "map": {

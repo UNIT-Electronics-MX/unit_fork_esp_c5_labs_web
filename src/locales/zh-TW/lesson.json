@@ -97,7 +97,8 @@
     "label": "課程檢視",
     "lab": "做實驗",
     "labSub": "接線 · 燒錄 · 檢查",
-    "code": "讀程式碼",
+    "code": "程式碼",
+    "console": "主控台",
     "stopsRead_other": "已讀 {{count}} 站",
     "codeSub_other": "{{count}} 個檔案 · {{lines}} 行 · 導覽",
     "codeSubEmpty": "導覽 · 點任何一行"

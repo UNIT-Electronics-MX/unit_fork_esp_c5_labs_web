@@ -52,9 +52,6 @@
   .tabs {
     flex: 0 0 auto;
   }
-  .dock[data-view="code"] .tabs {
-    flex: 1 1 auto;
-  }
 }
 .tabs a {
   display: flex;
@@ -106,9 +103,9 @@
   font: 11.5px var(--font-mono);
   opacity: 0.75;
 }
-/* On the lab page the section nav sits next to the tabs: keep the tabs to their labels. */
+/* Keep the same tab height in the lab and code views on wide screens. */
 @media (min-width: 880px) {
-  .dock[data-view="lab"] .sub {
+  .dock .sub {
     display: none;
   }
 }

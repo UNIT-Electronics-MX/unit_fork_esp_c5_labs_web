@@ -1,5 +1,5 @@
 import type { TrackId } from "@/domain/lesson";
-import type { Track } from "@/domain/track";
+import type { BoardId, Track } from "@/domain/track";
 
 // The table of contents. Adding a theme = one entry here + a lessons file + one loader below.
 // Lesson content itself is code-split per track and loaded on demand (see ./queries.ts).
@@ -7,9 +7,18 @@ export const TRACKS: readonly Track[] = [
   {
     id: "intro",
     title: "Intro",
-    blurb: "Tools, first program, first circuit",
+    blurb: "Arduino and MicroPython: setup, hello, first circuit",
     color: "--ok",
     lessonIds: ["00", "01", "02"],
+    board: "pulsar-c5",
+  },
+  {
+    id: "pulsar",
+    title: "On-board hardware",
+    blurb: "Arduino experiments with BOOT, RGB controls, ADC, I²C sensors, microSD and UART",
+    color: "--fam-system",
+    lessonIds: ["P1", "P2", "P3", "P4", "P5", "P6"],
+    board: "pulsar-c5",
   },
   {
     id: "display",
@@ -37,8 +46,24 @@ export const TRACKS: readonly Track[] = [
     title: "Sensors",
     blurb: "Temperature, air, motion over I2C",
     color: "--w-dc",
-    lessonIds: [],
-    planned: true,
+    lessonIds: ["D1", "D2", "D3"],
+    board: "pulsar-c5",
+  },
+  {
+    id: "iot",
+    title: "Wi-Fi & BLE on the C5",
+    blurb: "Dual-band Wi-Fi to the cloud, Bluetooth LE to a phone",
+    color: "--fam-connectivity",
+    lessonIds: ["I1", "I2"],
+    board: "pulsar-c5",
+  },
+  {
+    id: "zigbee",
+    title: "Zigbee",
+    blurb: "An 802.15.4 network between two boards",
+    color: "--part-teal",
+    lessonIds: ["Z1"],
+    board: "pulsar-c5",
   },
   {
     id: "ble",
@@ -59,6 +84,10 @@ export const TRACKS: readonly Track[] = [
 export const DEFAULT_LESSON_ID = "00";
 
 export const findTrack = (id: string) => TRACKS.find((t) => t.id === id);
+
+/** The board a lesson is wired on; tracks without one still use the original ESP32-S3. */
+export const boardOfLesson = (lessonId: string): BoardId =>
+  TRACKS.find((t) => t.lessonIds.includes(lessonId))?.board ?? "devkitc-s3";
 
 /** The track a lesson id belongs to, or undefined for an unknown id. */
 export const trackOfLesson = (lessonId: string): TrackId | undefined =>

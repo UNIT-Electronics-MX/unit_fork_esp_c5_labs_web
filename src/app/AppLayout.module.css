@@ -5,6 +5,7 @@
   flex-direction: column;
   gap: 16px;
 }
+.wide { max-width: 1540px; }
 @media (min-width: 720px) {
   .wrap {
     gap: 20px;

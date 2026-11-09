@@ -46,7 +46,7 @@ jobs:
           persist-credentials: false
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          repository: agharsallah/esp-labs
+          repository: UNIT-Electronics-MX/unit_fork_esp_labs_c5
           path: esp-labs-firmware
           persist-credentials: false
       - name: Place the firmware beside the guide

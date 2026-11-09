@@ -4,8 +4,8 @@
     "intro": "實驗用到的每個元件，只畫一次，到處複用：<code>{{example}}</code>。"
   },
   "names": {
-    "devkit": "ESP32-S3 DevKitC 開發板",
-    "module": "ESP32-S3 WROOM 模組",
+    "devkit": "UNIT Pulsar C5 開發板",
+    "module": "ESP32 WROOM 模組",
     "usbc": "USB-C 口",
     "cable": "USB-C 資料線",
     "button": "按鍵",

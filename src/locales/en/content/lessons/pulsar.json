@@ -1,0 +1,224 @@
+{
+  "P1": {
+    "title": "Blink",
+    "heading": "The user LED and the BOOT button",
+    "goal": "Explore two on-board controls: blink the user LED on GPIO27 and read the BOOT button on GPIO28. Hold BOOT to change the blink rate.",
+    "learn": [
+      "pinMode()",
+      "digitalWrite()",
+      "digitalRead()",
+      "pull-up inputs",
+      "strapping pins"
+    ],
+    "pins": {
+      "0": {
+        "role": "LED"
+      },
+      "1": {
+        "role": "BOOT"
+      }
+    },
+    "steps": [
+      "Nothing to wire: the LED and the BOOT button are on the board.",
+      "Run the command. The LED blinks twice a second.",
+      "Hold <b>BOOT</b>: the LED blinks fast and the monitor prints <code>button pressed</code>."
+    ],
+    "note": "GPIO27 and GPIO28 are strapping pins: the chip reads them at reset to pick its boot mode. Using them after boot is fine; holding BOOT <i>during</i> reset enters download mode."
+  },
+  "P2": {
+    "title": "RGB mixer",
+    "heading": "Mix colours from the serial console",
+    "goal": "Send RGB values to the on-board WS2812, compare the primary colours and adjust brightness without uploading another sketch.",
+    "learn": [
+      "additive RGB mixing",
+      "serial commands",
+      "rgbLedWrite()",
+      "brightness scaling"
+    ],
+    "pins": {
+      "0": {
+        "role": "RGB"
+      }
+    },
+    "steps": [
+      "Nothing to wire. Upload the sketch and open its serial monitor at <code>115200</code> baud.",
+      "Send <code>rgb 255 0 0</code>, <code>rgb 0 255 0</code> and <code>rgb 0 0 255</code> to compare the primary colours.",
+      "Send <code>rgb 255 80 0</code>, then <code>level 20</code> and <code>level 100</code>. Compare colour and brightness; send <code>off</code> when done."
+    ],
+    "note": "No colour? The schematic wires the LED's data line to GPIO0, but UNIT's board artwork labels it GPIO8. Try <code>RGB_PIN = 8</code> and tell us which one your board uses."
+  },
+  "P3": {
+    "title": "Analog in",
+    "heading": "Read a voltage with the ADC",
+    "goal": "Turn a potentiometer on A2 and watch the 12-bit ADC follow it, in raw counts and in calibrated millivolts.",
+    "learn": [
+      "ADC resolution",
+      "analogRead()",
+      "analogReadMilliVolts()",
+      "voltage dividers"
+    ],
+    "pins": {
+      "0": {
+        "role": "POT +"
+      },
+      "1": {
+        "role": "POT wiper"
+      },
+      "2": {
+        "role": "POT −"
+      }
+    },
+    "wiring": {
+      "rows": [
+        [
+          "3V3",
+          "potentiometer outer leg",
+          "either side"
+        ],
+        [
+          "A2 (GPIO4)",
+          "potentiometer middle leg",
+          "the wiper"
+        ],
+        [
+          "GND",
+          "potentiometer other outer leg",
+          ""
+        ]
+      ]
+    },
+    "steps": [
+      "Unplug USB, then wire the potentiometer as in the table.",
+      "Plug in and run the command.",
+      "Turn the knob end to end: raw goes from about 0 to 4095, millivolts from about 0 to 3100.",
+      "Open <b>Tools → Serial Plotter</b> to see both lines move."
+    ],
+    "note": "Analog-capable header pins are A1 (GPIO1), A2 (GPIO4), A3 (GPIO5) and A6 (GPIO6). Never feed more than 3.3 V into them."
+  },
+  "P4": {
+    "title": "On-board sensors",
+    "heading": "Scan the sensor I²C bus",
+    "goal": "Start the I²C bus that links the chip to the board's five sensors and list who answers: pressure, temperature and humidity, proximity and light, magnetic field and battery.",
+    "learn": [
+      "I²C addresses",
+      "Wire.begin(sda, scl)",
+      "bus scanning",
+      "pull-up resistors"
+    ],
+    "pins": {
+      "0": {
+        "role": "SDA"
+      },
+      "1": {
+        "role": "SCL"
+      }
+    },
+    "wiring": {
+      "title": "Expected devices",
+      "head": [
+        "Address",
+        "Sensor",
+        "Measures"
+      ],
+      "rows": [
+        [
+          "<code>0x30</code>",
+          "MMC5603",
+          "magnetic field"
+        ],
+        [
+          "<code>0x36</code>",
+          "MAX17048",
+          "battery charge"
+        ],
+        [
+          "<code>0x44</code>",
+          "FHT40",
+          "temperature and humidity"
+        ],
+        [
+          "<code>0x5C</code>",
+          "LPS22",
+          "air pressure"
+        ],
+        [
+          "<code>0x60</code>",
+          "VCNL4040",
+          "proximity and light"
+        ]
+      ]
+    },
+    "steps": [
+      "Nothing to wire: the sensors and their 4.7 kΩ pull-ups are on the board.",
+      "Run the command. Every five seconds the monitor lists the devices found.",
+      "Compare the list with the table."
+    ],
+    "note": "This bus is separate from the QWIIC connector (GPIO1 and GPIO6), which the Sensors lessons use for external boards."
+  },
+  "P5": {
+    "title": "microSD",
+    "heading": "Write a file over SPI",
+    "goal": "Mount the microSD card over SPI, append a line on every boot and read the whole file back.",
+    "learn": [
+      "SPI bus",
+      "chip select",
+      "FAT file system",
+      "SD library"
+    ],
+    "pins": {
+      "0": {
+        "role": "SCK"
+      },
+      "1": {
+        "role": "SD CS"
+      },
+      "2": {
+        "role": "MOSI"
+      },
+      "3": {
+        "role": "MISO"
+      }
+    },
+    "steps": [
+      "Format a microSD card as <b>FAT32</b> and push it into the slot.",
+      "Run the command. The monitor prints the card size and the file.",
+      "Press <b>RST</b> a few times: one more <code>boot at … ms</code> line each time."
+    ],
+    "note": "SCK shares GPIO27 with the user LED, so the LED flickers while the card is busy. That is expected."
+  },
+  "P6": {
+    "title": "UART",
+    "heading": "Loop a serial port back to itself",
+    "goal": "Send what you type out of TX0 and read it back on RX0 through one jumper, while the USB port stays your console.",
+    "learn": [
+      "UART framing",
+      "baud rate",
+      "Serial vs Serial1",
+      "loopback testing"
+    ],
+    "pins": {
+      "0": {
+        "role": "TX"
+      },
+      "1": {
+        "role": "RX"
+      }
+    },
+    "wiring": {
+      "rows": [
+        [
+          "TX0 (GPIO11)",
+          "RX0 (GPIO12)",
+          "one jumper wire"
+        ]
+      ]
+    },
+    "steps": [
+      "Unplug USB and put one jumper between TX0 and RX0.",
+      "Plug in and run the command.",
+      "Type a line and press Enter: it comes back as <code>loopback: …</code>.",
+      "Pull the jumper: nothing comes back."
+    ],
+    "note": "To talk to another board instead, cross the wires (TX → RX, RX → TX) and join the grounds."
+  }
+}

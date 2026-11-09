@@ -44,7 +44,7 @@
   },
   "pins": {
     "label": "On the board",
-    "usb": "COM port"
+    "usb": "USB-C port"
   },
   "commands": {
     "intro": "Type these in the serial monitor (<code>uv run pio device monitor</code>) unless the grey tag says otherwise. The coloured tag says what should be near the board while it runs.",
@@ -83,6 +83,10 @@
     "status_one": "{{ticked}} of {{count}} ticked. Ticks are saved in this browser.",
     "status_other": "{{ticked}} of {{count}} ticked. Ticks are saved in this browser."
   },
+  "setupFlash": {
+    "download": "Download official MicroPython",
+    "openFlasher": "Open firmware & console"
+  },
   "wiring": {
     "from": "From",
     "to": "To",
@@ -99,15 +103,24 @@
     "label": "Lesson views",
     "lab": "Do the lab",
     "labSub": "wire · flash · check",
-    "code": "Read the code",
+    "code": "Code",
+    "console": "Firmware & console",
     "stopsRead_one": "{{count}} stop read",
     "stopsRead_other": "{{count}} stops read",
     "codeSub_one": "{{count}} file · {{lines}} lines · guided tour",
     "codeSub_other": "{{count}} files · {{lines}} lines · guided tour",
-    "codeSubEmpty": "guided tour · tap any line"
+    "codeSubEmpty": "guided tour · tap any line",
+    "codeSubIntro": "Arduino sketch · MicroPython editor · serial console",
+    "codeSubArduino": "editable sketch · serial monitor",
+    "codeSubMicroPython": "one .py file, one test and REPL",
+    "consoleSub": "erase, flash and check the REPL here",
+    "codeSubSetup": "first sketch in lesson 01"
   },
   "next": {
     "label": "Next",
+    "firstC5": "Pulsar C5 blink",
+    "firstCode": "First code",
+    "firstMicroPython": "Open Pulsar C5 MicroPython examples",
     "lesson": "Next lesson",
     "theme": "End of this theme · next theme",
     "last": "That was the last lesson",

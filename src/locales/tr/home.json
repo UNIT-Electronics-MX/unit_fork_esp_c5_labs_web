@@ -2,12 +2,11 @@
   "hero": {
     "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
     "title": "Pulsar <part>C5 Labs</part>",
-    "legacyNotice": "Eski ESP32-S3 içeriği: bu derslerdeki bağlantılar ve aygıt yazılımı henüz Pulsar C5 için uyarlanmadı.",
     "motto": {
       "wire": "Bağla",
       "flash": "Yükle",
       "watch": "İzle",
-      "read": "Kodu oku"
+      "read": "Kod"
     }
   },
   "hud": {
@@ -22,7 +21,7 @@
     "start": "Buradan başla",
     "continue": "Deneye devam et",
     "open": "Deneyi aç",
-    "code": "Kodunu oku"
+    "code": "Kodu aç"
   },
   "kit": {
     "title": "Tezgâhında neler var?",
@@ -65,38 +64,9 @@
     "title": "Kartla tanış",
     "intro": "Deney deney kullanacağın altı parça. Kartı çevirmek için sürükle; bir parça seçince ışıklanır ve hangi deneylerde kullanıldığını gösterir.",
     "c5Menu": "Kart bileşenleri",
-    "c5Intro": "Pulsar C5 modelini 3D olarak inceleyin: döndürün, yakınlaştırın, bileşenleri görün ve katmanları ayırın. Aşağıdaki dersler hâlâ ESP32-S3 bağlantılarını kullanıyor.",
-    "model": "ESP32-S3 DevKitC-1'in 3B modeli: anteni olan modül, iki USB-C portu, BOOT ve RST düğmeleri, RGB LED ve iki sıra başlık pini. Çevirmek için sürükle.",
-    "fallback": "Her parça kartlarda anlatılıyor.",
-    "usedIn": "Kullanıldığı yerler: ",
+    "c5Intro": "Pulsar C5'i 3D olarak keşfet: döndür, yakınlaştır ve her parçayı bulmak için bileşen menüsünü aç.",
     "more_one": "+{{count}} deney",
     "more_other": "+{{count}} deney",
-    "parts": {
-      "usb": {
-        "title": "USB-C portları",
-        "text": "COM kartı yükler ve seri monitörü taşır. USB, S3'ün kendi portudur."
-      },
-      "buttons": {
-        "title": "BOOT ve RST",
-        "text": "RST programını yeniden başlatır. BOOT ise GPIO 0'dır: kart çalıştığında serbest bir basmalı düğme."
-      },
-      "rgb": {
-        "title": "RGB LED",
-        "text": "GPIO 48'de bir WS2812: tek bir veri pininden 16 milyon renk."
-      },
-      "module": {
-        "title": "ESP32-S3 modülü",
-        "text": "Metal kutunun altında iki 240 MHz çekirdek, 16 MB flash bellek ve 8 MB PSRAM."
-      },
-      "antenna": {
-        "title": "PCB anteni",
-        "text": "Wi-Fi 4 ve Bluetooth 5 bu bakır zikzaktan çıkar: metalden uzak tut."
-      },
-      "headers": {
-        "title": "Pin başlıkları",
-        "text": "44 pin: 3V3, 5V, GND ve ekranları, okuyucuları ile mikrofonları bağlayacağın GPIO'lar."
-      }
-    },
     "goInside": "Çipin içine gir"
   },
   "map": {

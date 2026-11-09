@@ -12,5 +12,15 @@ docs-llm/*
 docs-llm/esp32-s3/*
 !docs-llm/esp32-s3/ESP32-S3_REFERENCE.md
 !docs-llm/esp32-s3/images/
+# The ESP32-C5 / Pulsar reference replacing it (docs/C5_REFERENCE_MIGRATION.md). Its source PDFs,
+# intermediate parts and conversion scripts stay local.
+!docs-llm/esp32-c5/
+docs-llm/esp32-c5/*
+!docs-llm/esp32-c5/ESP32-C5_REFERENCE.md
+!docs-llm/esp32-c5/images/
 .vercel
 .env*
+# Local source checkouts used for reference; never publish their nested Git history or assets.
+/public/unit_devlab_esp32_examples/
+/public/unit_microsupport_labs/
+/public/unit_pulsar_esp32_c5/

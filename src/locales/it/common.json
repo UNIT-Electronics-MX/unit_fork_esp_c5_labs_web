@@ -21,17 +21,17 @@
       "bench": "Banco",
       "settings": "Impostazioni"
     },
-    "footnote": "Le lezioni esistenti e i loro pinout usano la ESP32-S3 DevKitC-1, non la Pulsar C5. Controlla le etichette sulla scheda. Le tue spunte sono salvate solo in questo browser.",
+    "footnote": "I temi Pulsar C5 sono scritti per questa scheda; gli altri sono ancora in fase di porting, quindi controlla i collegamenti. Le tue spunte sono salvate solo in questo browser.",
     "partsLink": "La libreria dei componenti",
     "credit": "Basato sul progetto originale di Abderrehmen Gharsallah: <project>ESP32 Labs</project>.",
-    "legacyNotice": "Contenuti ESP32-S3 precedenti: collegamenti e firmware di queste lezioni non sono ancora adattati alla Pulsar C5.",
+    "legacyNotice": "Questa lezione non è ancora portata sulla Pulsar C5: il pinout colloca i suoi pin per numero di GPIO, ma collegamenti e firmware vanno ancora adattati.",
     "new": "Nuovo"
   },
   "titles": {
     "labs": "Pulsar C5 Labs",
-    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "code": "Codice {{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "log": "Registro del banco · ESP32-S3 · Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · Pulsar C5 Labs",
+    "code": "Codice {{id}} · {{title}} · Pulsar C5 Labs",
+    "log": "Registro del banco · Pulsar C5 Labs",
     "parts": "Libreria dei componenti · Pulsar C5 Labs",
     "settings": "Impostazioni · Pulsar C5 Labs",
     "chip": "{{page}} · Scheda tecnica · ESP32-C5HR8 · Pulsar C5 Labs"
@@ -55,8 +55,7 @@
   },
   "tracks": {
     "intro": {
-      "title": "Intro",
-      "blurb": "Strumenti, primo programma, primo circuito"
+      "title": "Intro"
     },
     "display": {
       "title": "Display e input",
@@ -142,7 +141,7 @@
       "warning": "Non scollegare mai durante <code>Writing at 0x…</code>. Un pin passa da output a input? Prima flasha, poi collega."
     },
     "pinout": {
-      "title": "Pinout dell'ESP32-S3 DevKitC",
+      "title": "Pinout della UNIT Pulsar C5",
       "use": "{{role}} su {{pin}}",
       "uses": "Questa lezione usa: {{uses}}.",
       "none": "Questa lezione non usa pin del connettore."

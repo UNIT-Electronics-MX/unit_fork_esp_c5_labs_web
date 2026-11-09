@@ -1,47 +1,34 @@
-// The DevKitC and the parts on it, plus the small modules wired to it.
+// The board (a UNIT Pulsar C5, drawn as "devkit") and the parts on it, plus the small modules
+// wired to it.
 import { arc, box, cylinder, disc, line, poly, project } from "../iso";
 import { Cyl, Face, Glow, Shadow, Solid, Stroke, Wire } from "../shapes";
 
 const at = (x: number, y: number, z: number) => project([x, y, z]);
 
+/** The UNIT Pulsar C5: USB-C at one end, the ESP32-C5 chip, microSD, QWIIC and two 15-pin rows. */
 export function DevKit() {
-  const pins = Array.from({ length: 12 }, (_, i) => -14 + i * 2.8);
-  const [gx, gy] = at(-1.5, 2.5, 4);
+  const pins = Array.from({ length: 15 }, (_, i) => -17.5 + i * 2.5);
+  const [gx, gy] = at(13, -5, 3.5);
   return (
     <>
       <Shadow rx={25} y={47} />
       {pins.map((x) => (
-        <Wire key={`leg${x}`} d={line([x, 6.3, 0], [x, 6.3, -4.5])} hue="gold" w={1} />
+        <Wire key={`leg${x}`} d={line([x, 7.2, 0], [x, 7.2, -4.5])} hue="gold" w={1} />
       ))}
-      <Solid b={box(-20, -7, 0, 40, 14, 2.5)} hue="pcb" />
-      <Solid b={box(5, -6, 2.5, 15, 12, 1)} hue="edge" />
-      <Solid b={box(6, -5.5, 3.5, 10, 11, 3.5)} hue="metal" />
-      <Stroke
-        d={line(
-          [17, -4.5, 3.5],
-          [19, -4.5, 3.5],
-          [19, -2, 3.5],
-          [17, -2, 3.5],
-          [17, 0.5, 3.5],
-          [19, 0.5, 3.5],
-          [19, 3, 3.5],
-          [17, 3, 3.5],
-        )}
-        hue="gold"
-        w={1}
-        t="lit"
-      />
-      <Solid b={box(-22, -5.5, 2.5, 5, 4, 2.2)} hue="metal" />
-      <Solid b={box(-22, 1.5, 2.5, 5, 4, 2.2)} hue="metal" />
-      <Solid b={box(-15.5, -6.2, 2.5, 2.4, 2.4, 1.2)} hue="plastic" />
-      <Solid b={box(-15.5, 3.8, 2.5, 2.4, 2.4, 1.2)} hue="plastic" />
-      <Glow x={gx} y={gy} r={7} hue="pink" />
-      <Solid b={box(-3, 1, 2.5, 3, 3, 1.2)} hue="white" />
+      <Solid b={box(-19, -8, 0, 38, 16, 2.2)} hue="pcb" />
+      <Solid b={box(-22, -4, 2.2, 6, 8, 2.6)} hue="metal" />
+      <Solid b={box(-14, -6.5, 2.2, 2, 2.4, 1)} hue="plastic" />
+      <Solid b={box(-14, 4.1, 2.2, 2, 2.4, 1)} hue="plastic" />
+      <Solid b={box(-11, -5, 2.2, 9, 10, 0.8)} hue="steel" />
+      <Solid b={box(1, -3.5, 2.2, 7, 7, 1.2)} hue="edge" />
+      <Solid b={box(11, -1, 2.2, 6, 5, 2)} hue="orange" />
+      <Glow x={gx} y={gy} r={6} hue="pink" />
+      <Solid b={box(12.2, -6, 2.2, 1.8, 1.8, 1)} hue="white" />
       {pins.map((x) => (
-        <Solid key={`b${x}`} b={box(x - 0.5, -6.8, 2.5, 1, 1, 0.7)} hue="gold" />
+        <Solid key={`b${x}`} b={box(x - 0.5, -7.6, 2.2, 1, 1, 0.6)} hue="gold" />
       ))}
       {pins.map((x) => (
-        <Solid key={`f${x}`} b={box(x - 0.5, 5.8, 2.5, 1, 1, 0.7)} hue="gold" />
+        <Solid key={`f${x}`} b={box(x - 0.5, 6.6, 2.2, 1, 1, 0.6)} hue="gold" />
       ))}
     </>
   );

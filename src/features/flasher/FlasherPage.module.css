@@ -1,0 +1,44 @@
+.page { display: grid; gap: 20px; }
+.head { display: grid; gap: 6px; }
+.head h1 { margin: 0; font: 800 clamp(27px, 4vw, 38px) / 1.1 var(--font-display); }
+.head p { margin: 0; color: var(--muted); }
+.eyebrow { font: 700 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--copper) !important; }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)); align-items: start; }
+.panel, .console { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 18px; }
+.panel h2, .console h2 { margin: 0 0 10px; font: 750 19px var(--font-display); }
+.help { color: var(--muted); font-size: 13px; line-height: 1.45; margin: 8px 0 14px; }
+.firmwareLink { display: inline-block; margin-bottom: 14px; color: var(--ink); font-size: 13px; font-weight: 700; text-underline-offset: 3px; }
+.firmwareLink:hover { color: var(--copper); }
+.sourceSelect { display: grid; gap: 5px; margin: 12px 0; color: var(--muted); font: 650 12px var(--font-mono); }
+.sourceSelect select { min-width: 0; width: 100%; padding: 9px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-s); font: 13px var(--font-display); }
+.bundledFile { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 12px; padding: 12px; margin: 0 0 10px; border: 1px solid var(--line); border-radius: var(--radius-s); font-size: 13px; }
+.bundledFile strong { min-width: 0; overflow-wrap: anywhere; }
+.bundledFile span { color: var(--muted); }
+.bundledFile a { margin-left: auto; color: var(--ink); text-underline-offset: 3px; }
+.otherBoard { margin: 8px 0 12px; padding: 9px 11px; border-inline-start: 3px solid var(--warn); border-radius: var(--radius-s); color: var(--warn); background: color-mix(in oklab, var(--warn) 8%, var(--surface)); font-size: 12px; line-height: 1.45; }
+.imageRow { display: grid; grid-template-columns: minmax(0, 1fr) minmax(110px, .3fr) auto; gap: 10px; align-items: end; padding: 12px 0; border-top: 1px solid var(--line); }
+.imageRow label { display: grid; min-width: 0; gap: 5px; color: var(--muted); font: 650 12px var(--font-mono); }
+.imageRow input { min-width: 0; width: 100%; padding: 9px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-s); font: 13px var(--font-mono); }
+.imageRow input[type="file"] { font-size: 11px; }
+.imageRow input:focus-visible, .page button:focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
+.page button { cursor: pointer; border-radius: var(--radius-s); font: 700 13px var(--font-display); }
+.page button:disabled { cursor: wait; opacity: .6; }
+.remove, .add { color: var(--ink); background: var(--bg); border: 1px solid var(--line); padding: 10px 12px; }
+.add { margin-top: 8px; }
+.steps { padding-inline-start: 22px; color: var(--ink); line-height: 1.6; font-size: 14px; }
+.steps li + li { margin-top: 4px; }
+.eraseOption { display: flex; align-items: start; gap: 9px; margin: 12px 0; color: var(--ink); cursor: pointer; font: 650 13px/1.4 var(--font-display); }
+.eraseOption input { width: 17px; height: 17px; margin: 1px 0 0; accent-color: var(--ink); cursor: pointer; }
+.eraseOption input:disabled { cursor: wait; }
+.warning { padding: 12px; border-radius: var(--radius-s); color: var(--warn); background: color-mix(in oklab, var(--warn) 9%, var(--surface)); font-size: 13px; line-height: 1.45; }
+.error { color: var(--danger); font-weight: 700; }
+.flash { width: 100%; padding: 13px 18px; color: var(--surface); background: var(--pcb); border: 1px solid var(--pcb-edge); }
+.flash:not(:disabled):hover { background: var(--copper); }
+.status { min-height: 1.5em; margin: 12px 0 0; color: var(--ink); font-weight: 650; }
+.chip { color: var(--muted); font: 12px var(--font-mono); }
+.progress { display: flex; align-items: center; gap: 10px; font: 700 12px var(--font-mono); }
+.progress progress { width: 100%; height: 12px; accent-color: var(--ok); }
+.console pre { margin: 0; min-height: 110px; max-height: 260px; overflow: auto; padding: 12px; border-radius: var(--radius-s); background: var(--term-bg); color: var(--term-ink); white-space: pre-wrap; overflow-wrap: anywhere; font: 12px / 1.5 var(--font-mono); }
+.console summary { cursor: pointer; font: 700 14px var(--font-display); }
+.console summary + pre { margin-top: 12px; }
+@media (max-width: 560px) { .imageRow { grid-template-columns: 1fr auto; } .imageRow label:first-child { grid-column: 1 / -1; } }

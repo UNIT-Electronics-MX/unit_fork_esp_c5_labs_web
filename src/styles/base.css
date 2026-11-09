@@ -94,7 +94,7 @@ a {
   scroll-behavior: auto !important;
 }
 
-/* Switching between "Do the lab" and "Read the code": the page cross-fades, the tab bar stays put. */
+/* Switching between the lab and code: the page cross-fades, the tab bar stays put. */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 0.28s;

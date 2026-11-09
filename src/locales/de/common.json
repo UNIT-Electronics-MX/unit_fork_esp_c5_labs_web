@@ -21,17 +21,17 @@
       "bench": "Bench",
       "settings": "Einstellungen"
     },
-    "footnote": "Die vorhandenen Lektionen und Pinbelegungen verwenden das ESP32-S3 DevKitC-1, nicht die Pulsar C5. Prüfe die Beschriftung deiner Platine. Deine Haken werden nur in diesem Browser gespeichert.",
+    "footnote": "Die Pulsar-C5-Themen sind für diese Platine geschrieben; die anderen werden noch portiert, prüfe also ihre Verdrahtung. Deine Haken werden nur in diesem Browser gespeichert.",
     "partsLink": "Die Bauteil-Bibliothek",
     "credit": "Basierend auf dem Originalprojekt von Abderrehmen Gharsallah: <project>ESP32 Labs</project>.",
-    "legacyNotice": "Bisherige ESP32-S3-Inhalte: Verdrahtung und Firmware dieser Lektionen sind noch nicht für die Pulsar C5 angepasst.",
+    "legacyNotice": "Diese Lektion ist noch nicht auf die Pulsar C5 portiert: Das Pinout zeigt ihre Pins nach GPIO-Nummer, Verdrahtung und Firmware müssen aber noch angepasst werden.",
     "new": "Neu"
   },
   "titles": {
     "labs": "Pulsar C5 Labs",
-    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "code": "{{id}}-Code · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "log": "Bench-Log · ESP32-S3 · Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · Pulsar C5 Labs",
+    "code": "{{id}}-Code · {{title}} · Pulsar C5 Labs",
+    "log": "Bench-Log · Pulsar C5 Labs",
     "parts": "Bauteil-Bibliothek · Pulsar C5 Labs",
     "settings": "Einstellungen · Pulsar C5 Labs",
     "chip": "{{page}} · Datenblatt · ESP32-C5HR8 · Pulsar C5 Labs"
@@ -55,8 +55,7 @@
   },
   "tracks": {
     "intro": {
-      "title": "Intro",
-      "blurb": "Werkzeuge, erstes Programm, erste Schaltung"
+      "title": "Intro"
     },
     "display": {
       "title": "Display & Eingabe",
@@ -142,7 +141,7 @@
       "warning": "Zieh nie ab, während <code>Writing at 0x…</code> läuft. Pin wechselt von Ausgang zu Eingang? Erst flashen, dann verkabeln."
     },
     "pinout": {
-      "title": "ESP32-S3-DevKitC-Pinout",
+      "title": "UNIT-Pulsar-C5-Pinout",
       "use": "{{role}} an {{pin}}",
       "uses": "Diese Lektion nutzt: {{uses}}.",
       "none": "Diese Lektion nutzt keine Header-Pins."

@@ -1,30 +1,54 @@
 {
   "00": {
     "title": "Preparación",
-    "heading": "Conecta y encuentra la placa",
-    "goal": "Haz que las herramientas hablen con el chip: un cable de datos, el puerto USB correcto y el nombre del puerto serie en tu Mac.",
+    "heading": "Conecta y encuentra la Pulsar C5",
+    "goal": "Elige Arduino o MicroPython y encuentra el puerto serie USB de la Pulsar C5 antes de abrir tu primer ejemplo.",
     "learn": [
-      "cable USB-C de datos vs de carga",
-      "puerto COM vs USB nativo",
-      "puertos serie",
-      "modo de arranque"
+      "Arduino o MicroPython",
+      "cable USB-C de datos",
+      "puerto serie",
+      "modo de descarga"
     ],
     "steps": [
-      "Conecta un cable USB-C de <b>datos</b> al puerto marcado <code>COM</code> (o <code>UART</code>).",
-      "Comprueba que se enciende un LED rojo de alimentación.",
-      "Ejecuta el comando de arriba. Debería aparecer un nuevo <code>/dev/cu.usbmodem…</code> o <code>/dev/cu.wchusbserial…</code>.",
-      "Dile a Claude el nombre del puerto y si tu placa tiene uno o dos puertos USB."
+      "Conecta un cable USB-C de <b>datos</b> a la Pulsar C5 y busca un puerto serie nuevo (<code>/dev/ttyACM…</code>, <code>/dev/cu.usbmodem…</code> o <code>COM…</code>).",
+      "En Arduino IDE, añade <code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> a las URL adicionales del Gestor de tarjetas, instala <b>esp32 by Espressif Systems</b> versión <b>3.3</b> o posterior y elige <b>ESP32C5 Dev Module</b>.",
+      "Activa <b>USB CDC On Boot</b> y <b>PSRAM</b>, ajusta la flash a <b>8 MB</b> y ejecuta el comando anterior si usas arduino-cli.",
+      "Cuando el puerto esté listo, abre la lección <b>01 Hola</b>."
     ],
-    "note": "¿Al flashear sale “Failed to connect”? Mantén BOOT, toca RST, suelta BOOT y flashea de nuevo."
+    "note": "Si falla la carga, mantén BOOT, toca RST, suelta BOOT e inténtalo de nuevo. Continúa con la lección 01 y después monta tu primer circuito en la 02.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Core de la placa y primer sketch"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Firmware y consola REPL",
+        "goal": "Encuentra el puerto serie USB de la Pulsar C5, instala el firmware oficial de MicroPython para ESP32-C5 y comprueba su consola REPL antes de abrir el primer script en la lección 01.",
+        "learn": [
+          "firmware MicroPython",
+          "cable USB-C de datos",
+          "consola REPL",
+          "modo de descarga"
+        ],
+        "steps": [
+          "Conecta un cable USB-C de <b>datos</b> a la Pulsar C5 y encuentra el puerto serie nuevo (<code>/dev/ttyACM…</code>, <code>/dev/cu.usbmodem…</code> o <code>COM…</code>).",
+          "Abre <b>Firmware y consola</b> de esta lección. El <code>.bin</code> <b>ESP32_GENERIC_C5</b> viene seleccionado para Pulsar C5. El selector también incluye el de <b>SparkFun Thing Plus ESP32-C5</b> para esa placa, o puedes elegir tu propio <code>.bin</code> completo.",
+          "En <code>0x2000</code>, deja activo <b>Borrar toda la flash</b> para una instalación limpia y pulsa <b>Borrar y cargar firmware</b>. Si la consola está conectada, liberará el puerto automáticamente.",
+          "Cuando la placa se reinicie, vuelve a conectar la consola de abajo a <code>115200</code> baudios y envía la prueba REPL. El primer script completo está en la lección 01."
+        ],
+        "note": "Borrar toda la flash elimina el firmware anterior, los scripts <code>.py</code> y los datos guardados en la placa. Un <code>.bin</code> instala MicroPython; un <code>.py</code> es un script. Comprueba el REPL antes de la lección 01."
+      }
+    }
   },
   "01": {
     "title": "Hola",
-    "heading": "Conoce la placa",
-    "goal": "Flashea tu primer programa. Imprime la tarjeta de identidad del chip y hace que el LED RGB de la placa recorra un arcoíris.",
+    "heading": "Conoce la Pulsar C5",
+    "goal": "Carga tu primer sketch Arduino. Imprime la identidad del chip y hace que el LED RGB integrado recorra un arcoíris.",
     "learn": [
       "setup() y loop()",
       "registro por serie",
-      "millis()",
+      "información del chip",
       "LED RGB WS2812"
     ],
     "pins": {
@@ -33,18 +57,42 @@
       }
     },
     "steps": [
-      "No hay nada que cablear. Deja el cable en el puerto <code>COM</code>.",
-      "Ejecuta el comando. Espera a ver <code>Hard resetting via RTS pin…</code>.",
-      "Lee la tarjeta de identidad: la flash debería decir <b>16 MB</b> y la PSRAM unos <b>8 MB</b>.",
-      "Mira cómo el LED RGB junto al chip recorre los colores.",
-      "Pulsa <code>Ctrl+C</code> para salir del monitor."
+      "No hay nada que cablear. Mantén conectado el cable USB-C de datos.",
+      "Abre <b>Código</b> para editar o descargar el sketch; después cárgalo con Arduino IDE o ejecuta el comando anterior tras reemplazar <code>PORT</code>.",
+      "Abre el monitor serie a <code>115200</code> baudios y lee los datos del chip y la flash.",
+      "Mira cómo el LED RGB integrado recorre los colores.",
+      "Cierra el monitor antes de cargar otro sketch."
     ],
-    "note": "¿No hay color en el LED? Algunas placas lo conectan al GPIO 38. Cambia PIN_RGB en kit/include/pins.h."
+    "note": "El esquema sitúa el LED RGB en GPIO0, mientras que la ilustración de UNIT indica GPIO8. Si no enciende, prueba a cambiar RGB_PIN a 8.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Sketch y monitor serie"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script RGB y consola serie",
+        "goal": "Ejecuta un script MicroPython desde el editor del navegador y observa cómo el LED RGB de la Pulsar C5 recorre los colores.",
+        "learn": [
+          "NeoPixel",
+          "bucles de Python",
+          "consola REPL",
+          "interrumpir un script"
+        ],
+        "steps": [
+          "Instala MicroPython en la lección 00, abre <b>Código</b> y conecta su consola serie a <code>115200</code> baudios.",
+          "Abre <code>rgb_led.py</code> en el editor y comprueba el número del pin RGB antes de ejecutarlo.",
+          "Pulsa <b>Ejecutar en la placa</b> y observa cómo cambia de color el LED RGB.",
+          "Pulsa <b>Detener</b> para volver al indicador <code>&gt;&gt;&gt;</code> y prueba un comando Python en la consola serie."
+        ],
+        "note": "El esquema usa GPIO0 para RGB; la ilustración de UNIT indica GPIO8. Cambia RGB_PIN en el editor si el LED no enciende."
+      }
+    }
   },
   "02": {
     "title": "Primer circuito",
     "heading": "Un LED en la protoboard",
-    "goal": "Construye tu primer circuito y contrólalo escribiendo comandos. El LED sigue animándose mientras la placa escucha.",
+    "goal": "Monta un circuito LED en GPIO9 y contrólalo desde el monitor serie Arduino mientras funciona la Pulsar C5.",
     "learn": [
       "filas de la protoboard",
       "resistencias",
@@ -62,7 +110,7 @@
     "wiring": {
       "rows": [
         [
-          "GPIO 4",
+          "GPIO 9 (D4)",
           "resistencia de 220–330 Ω",
           "primera pata"
         ],
@@ -80,10 +128,34 @@
     },
     "steps": [
       "Desconecta el USB antes de cablear. Coloca la placa a caballo sobre el canal central de la protoboard.",
-      "Cablea GPIO 4 → resistencia → pata larga del LED. Pata corta del LED → GND.",
-      "Vuelve a conectar y ejecuta el comando. El LED empieza a «respirar».",
+      "Conecta GPIO9 (D4) → resistencia → pata larga del LED. Pata corta del LED → GND.",
+      "Vuelve a conectar, abre <b>Código</b> para obtener el sketch Arduino y cárgalo. El LED empieza a respirar.",
       "Escribe <code>blink 200</code>, <code>sos</code>, <code>level 30</code>, <code>on</code>, <code>off</code>."
     ],
-    "note": "¿Aún no tienes resistencia? El código usa la corriente de pin más baja (unos 5 mA) como red de seguridad. Aun así, pon una pronto."
+    "note": "Usa una resistencia de 220–330 Ω en serie con el LED. Desconecta el USB antes de cambiar cables.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Sketch y comandos serie"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script LED y consola serie",
+        "goal": "Conecta un LED a GPIO9 y ejecuta un script MicroPython de brillo gradual directamente desde el navegador.",
+        "learn": [
+          "filas de la protoboard",
+          "resistencias",
+          "ciclo PWM",
+          "bucles de Python"
+        ],
+        "steps": [
+          "Desconecta el USB y conecta GPIO9 (D4) → resistencia de 220–330 Ω → pata larga del LED; une la pata corta a GND.",
+          "Vuelve a conectar el USB, abre <b>Código</b> y conecta su consola serie a <code>115200</code> baudios.",
+          "Abre <code>external_led.py</code> en el editor y pulsa <b>Ejecutar en la placa</b>.",
+          "Mira cómo el LED cambia de brillo. Pulsa <b>Detener</b> para volver al REPL y modifica el PWM o el tiempo."
+        ],
+        "note": "Mantén la resistencia en serie. Usa la opción Guardar en la placa del editor para conservar el script en el dispositivo."
+      }
+    }
   }
 }

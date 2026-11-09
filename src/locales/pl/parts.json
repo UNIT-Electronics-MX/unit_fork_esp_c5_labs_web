@@ -4,8 +4,8 @@
     "intro": "Każda część używana w ćwiczeniach, narysowana raz i wykorzystywana wszędzie: <code>{{example}}</code>."
   },
   "names": {
-    "devkit": "płytka ESP32-S3 DevKitC",
-    "module": "moduł ESP32-S3 WROOM",
+    "devkit": "płytka UNIT Pulsar C5",
+    "module": "moduł ESP32 WROOM",
     "usbc": "port USB-C",
     "cable": "kabel USB-C",
     "button": "przycisk",

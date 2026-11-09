@@ -1,4 +1,118 @@
 {
+  "flasher": {
+    "eyebrow": "Pulsar C5 · Web Serial",
+    "title": "Flash your ESP32-C5",
+    "intro": "Choose a compiled .bin image from your computer, or use the bundled ESP32-C5 MicroPython image. The browser flashes the board directly over Web Serial.",
+    "images": "Firmware images",
+    "imageHelp": "For a merged image, use one .bin at 0x0. For separate bootloader, partition and app images, add each file with its build's own flash offset.",
+    "microPythonImageHelp": "Choose the firmware for your board. Both included full .bin images are written at 0x2000; you can also choose your own full .bin (not an .app-bin).",
+    "firmwareSource": "Firmware image",
+    "bundledPulsar": "Espressif · ESP32_GENERIC_C5 (Pulsar C5)",
+    "bundledSparkfun": "SparkFun · Thing Plus ESP32-C5",
+    "localBinary": "My own full .bin",
+    "bundledOffset": "Included locally · flash offset 0x2000",
+    "downloadBundled": "Download this .bin",
+    "sparkfunOnly": "This option is for the SparkFun Thing Plus ESP32-C5 board. For Pulsar C5, select ESP32_GENERIC_C5.",
+    "microPythonDownload": "View firmware on MicroPython.org",
+    "file": "Binary {{number}}",
+    "address": "Flash offset",
+    "remove": "Remove",
+    "add": "Add another binary",
+    "offsetHelp": "Use the offsets from your build output. Common ESP32-C5 offsets are bootloader 0x2000, partitions 0x8000 and app 0x10000, but your project may differ.",
+    "connection": "Connect and program",
+    "stepCable": "Connect the board with a USB data cable and close any other serial monitor.",
+    "stepPort": "Press Flash firmware and choose the board's serial port.",
+    "stepBoot": "If connection fails, hold BOOT, press RESET, release RESET, then release BOOT and try again.",
+    "warning": "Flashing erases the sectors covered by these images. Do not unplug the board while writing.",
+    "eraseAll": "Erase entire flash before writing",
+    "eraseAllWarning": "The entire flash will be erased, including saved .py scripts and board data. The selected firmware will then be written. Do not unplug the board during this process.",
+    "unsupported": "This page needs HTTPS or localhost and a browser with Web Serial, such as Chrome or Edge on a desktop computer.",
+    "start": "Flash firmware",
+    "eraseAndStart": "Erase and flash firmware",
+    "working": "Working…",
+    "progress": "Firmware upload progress",
+    "detected": "Detected: {{chip}}",
+    "unknownChip": "unknown chip",
+    "cancelled": "Port selection cancelled.",
+    "success": "Firmware written. The board was reset.",
+    "successManualReset": "Firmware written. Press RESET on the board to start it.",
+    "log": "Connection log",
+    "logEmpty": "The connection log will appear here.",
+    "phase": { "ready": "Ready to connect.", "connecting": "Connecting and checking the chip…", "erasing": "Erasing the entire flash…", "writing": "Writing firmware…", "done": "Complete.", "error": "Check the message and try again." },
+    "serial": {
+      "title": "Serial editor and monitor",
+      "intro": "Read your board's output and send commands after flashing.",
+      "dockedTitle": "TERMINAL / REPL",
+      "baudRate": "Baud rate",
+      "lineEnding": "Line ending",
+      "ending": { "none": "None", "lf": "LF (\\n)", "cr": "CR (\\r)", "crlf": "CRLF (\\r\\n)" },
+      "connect": "Connect serial",
+      "disconnect": "Disconnect",
+      "clear": "Clear output",
+      "output": "Serial output",
+      "empty": "Connect a serial port to see board output.",
+      "command": "Command to send",
+      "placeholder": "Type a command…",
+      "send": "Send",
+      "sendHint": "Use Send or Ctrl+Enter. The selected line ending is appended to the text.",
+      "autoScroll": "Follow new output",
+      "waitFlash": "Wait for firmware writing to finish before opening the terminal.",
+      "disconnectToFlash": "The terminal will disconnect automatically when you flash firmware.",
+      "error": "Serial connection: {{detail}}",
+      "noReadable": "The selected port has no readable serial stream.",
+      "notWritable": "The selected port cannot receive serial data.",
+      "replInterruptFailed": "Could not stop the program: the board did not return to >>> after Ctrl+C. Check that MicroPython is installed and press RESET before reconnecting.",
+      "state": { "ready": "Ready", "connecting": "Connecting…", "connected": "Connected", "disconnecting": "Disconnecting…", "disconnected": "Disconnected", "error": "Error" }
+    },
+    "examples": {
+      "title": "MicroPython code editor",
+      "intro": "Edit a Pulsar C5 example or open a .py file from your computer; run or save it on the board over serial.",
+      "workspace": "Workspace",
+      "help": "Help and firmware",
+      "workspacePath": "Pulsar C5 / MicroPython",
+      "actions": "Editor actions",
+      "modified": "Modified",
+      "codeLabel": "Code in {{file}}",
+      "position": "Ln {{line}}, Col {{column}}",
+      "lines": "lines",
+      "shortcuts": "Tab inserts 4 spaces · Ctrl+Enter runs · Ctrl+S saves to board",
+      "firmwareHint": "Install the official ESP32-C5 MicroPython .bin at offset 0x2000 before running these scripts.",
+      "firmwareLink": "Get MicroPython firmware",
+      "loading": "Loading examples…",
+      "unavailable": "MicroPython examples are not available in this build.",
+      "choose": "Example",
+      "openFile": "Open a .py file from my computer",
+      "filename": "Filename on the board",
+      "invalidName": "Use a .py name without spaces or paths; letters, numbers, hyphens and underscores are allowed.",
+      "fileLoaded": "{{file}} opened in the editor.",
+      "requires": "Needs: {{items}}",
+      "reset": "Restore example",
+      "download": "Download .py",
+      "hint": "A .py file is a script, not a firmware .bin. Run it over serial or save it to the board from this editor.",
+      "run": "Run on board",
+      "connect": "Connect serial console",
+      "save": "Save to board",
+      "stop": "Stop",
+      "connectFirst": "Connect the serial console to run or save the script on the board.",
+      "saveHint": "Save to board replaces an existing file with the same name.",
+      "working": "Sending over serial…",
+      "runDone": "Script sent to the board. Output appears in the serial console.",
+      "saveDone": "{{file}} saved on the board.",
+      "stopDone": "Program stopped; the >>> prompt responded.",
+      "serialError": "MicroPython over serial: {{detail}}"
+    },
+    "errors": {
+      "missingImage": "Choose at least one binary file.",
+      "invalidFile": "Choose a non-empty .bin file for every row.",
+      "invalidAddress": "Enter a valid flash offset aligned to 0x1000 (4 KB).",
+      "overlap": "These images overlap in flash erase sectors. Check their offsets and sizes.",
+      "wrongChip": "The connected board is {{chip}}. Only ESP32-C5 is allowed; nothing was written.",
+      "serialClose": "Could not disconnect the serial terminal. Disconnect it and try again.",
+      "bundledFirmwareUnavailable": "Could not load the included firmware. Reload the page or choose a local .bin.",
+      "bundledFirmwareInvalid": "The included firmware failed its integrity check. Reload the page or choose a local .bin.",
+      "connection": "Could not program the board: {{detail}}"
+    }
+  },
   "app": {
     "title": "Pulsar C5 Labs",
     "loading": "Loading the bench guide…",
@@ -17,23 +131,25 @@
     "sections": "Sections",
     "nav": {
       "labs": "Labs",
+      "flasher": "Flash",
       "chip": "Datasheet",
       "bench": "Bench",
       "settings": "Settings"
     },
-    "footnote": "The existing lessons and their pinouts use the ESP32-S3 DevKitC-1, not the Pulsar C5. Check the labels on your board. Your ticks are saved in this browser only.",
+    "footnote": "The Pulsar C5 themes are written for this board; the other themes are still being ported, so check their wiring. Your ticks are saved in this browser only.",
     "partsLink": "The parts library",
     "credit": "Based on the original project by Abderrehmen Gharsallah: <project>ESP32 Labs</project>.",
-    "legacyNotice": "Legacy ESP32-S3 content: the wiring and firmware in these lessons have not yet been adapted for Pulsar C5.",
+    "legacyNotice": "This lesson is not ported to the Pulsar C5 yet: the pinout places its pins by GPIO number, but its wiring and firmware still need adapting.",
     "new": "New"
   },
   "titles": {
     "labs": "Pulsar C5 Labs",
-    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "code": "{{id}} code · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "log": "Bench log · ESP32-S3 · Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · Pulsar C5 Labs",
+    "code": "{{id}} code · {{title}} · Pulsar C5 Labs",
+    "log": "Bench log · Pulsar C5 Labs",
     "parts": "Parts library · Pulsar C5 Labs",
     "settings": "Settings · Pulsar C5 Labs",
+    "flasher": "Flash firmware · Pulsar C5 Labs",
     "chip": "{{page}} · Datasheet · ESP32-C5HR8 · Pulsar C5 Labs"
   },
   "routeError": {
@@ -51,12 +167,107 @@
     }
   },
   "codeRoute": {
-    "none": "This lesson sets up your tools: there is no program for the board yet. The first code to read is in lesson 01."
+    "none": "This lesson does not have a program available to read yet.",
+    "guide": {
+      "label": "Try it in the workspace",
+      "try": "Do",
+      "expect": "Observe",
+      "locate": "Go to line",
+      "connectFirst": "Connect the serial port to send commands.",
+      "codeUnavailable": "Wait for the editor to load.",
+      "lineChanged": "This line changed in your version; search for the name in the editor.",
+      "commandError": "Could not send command: {{detail}}",
+      "arduino": {
+        "01": {
+          "title": "Change RGB brightness",
+          "try": "Change BRIGHTNESS from 40 to 15, download the sketch and upload it from Arduino IDE. Disconnect the serial monitor first.",
+          "expect": "The rainbow continues at a lower brightness. The monitor displays chip information."
+        },
+        "02": {
+          "title": "Compare two speeds",
+          "try": "With the sketch uploaded and the terminal connected, send blink 200, then blink 800. Read how command() handles the text.",
+          "expect": "The LED changes from fast to slow blinking; the monitor confirms each mode."
+        },
+        "P1": {
+          "title": "Test the BOOT input",
+          "try": "Change the pressed interval from 100 to 50 ms, upload the sketch, then hold BOOT.",
+          "expect": "The user LED blinks faster while BOOT is held; the monitor reports the button state."
+        },
+        "P2": {
+          "title": "Mix a colour, then dim it",
+          "try": "Upload the sketch, connect the console and send rgb 255 80 0. Compare level 20 with level 100.",
+          "expect": "The LED stays orange while its brightness changes; off turns it dark."
+        },
+        "P3": {
+          "title": "Compare raw and calibrated readings",
+          "try": "Move the potentiometer near its midpoint and locate both ADC reads in the sketch.",
+          "expect": "The monitor reports a raw count and a millivolt value for the same position."
+        },
+        "P4": {
+          "title": "Count the on-board devices",
+          "try": "Run the scanner and compare its addresses with the five expected sensors in the guide.",
+          "expect": "The serial monitor lists the addresses that answered on the board's I²C bus."
+        },
+        "P5": {
+          "title": "Check that a file survives reset",
+          "try": "Run the sketch with a FAT32 microSD card, then press RST twice and read the log again.",
+          "expect": "Each boot appends one more line to /pulsar.txt without deleting earlier lines."
+        },
+        "P6": {
+          "title": "Test the UART loopback",
+          "try": "Join TX0 to RX0, upload the sketch and send hello UART. Then remove the jumper and send it again.",
+          "expect": "The first message returns as loopback: hello UART; the second no longer returns."
+        }
+      },
+      "micropython": {
+        "00": {
+          "title": "Check the REPL",
+          "try": "After installing the firmware, connect the serial port at 115200 baud and send the test command.",
+          "expect": "The console displays MicroPython OK and returns to the >>> prompt. The first .py file appears in lesson 01."
+        },
+        "01": {
+          "title": "Change RGB brightness",
+          "try": "Change BRIGHTNESS from 40 to 15 and press Run on board. Press Stop before editing again.",
+          "expect": "The LED cycles through the same colours at a lower brightness."
+        },
+        "02": {
+          "title": "Change the LED timing",
+          "try": "Change sleep_ms(12) to sleep_ms(30) and run the file again.",
+          "expect": "The external LED fades up and down more slowly."
+        }
+      }
+    },
+    "sketch": {
+      "eyebrow": "PULSAR C5 / ARDUINO",
+      "title": "Arduino sketch editor",
+      "intro": "Edit this example and download the .ino file to compile it in Arduino IDE.",
+      "path": "Pulsar C5 / Arduino",
+      "local": "Local editing",
+      "actions": "Sketch actions",
+      "copy": "Copy code",
+      "copied": "Code copied to clipboard.",
+      "copyFailed": "Could not copy; select the editor text instead.",
+      "download": "Download .ino",
+      "downloaded": "{{file}} downloaded.",
+      "restore": "Restore example",
+      "restored": "Example restored.",
+      "help": "Tab inserts 2 spaces · Ctrl+S downloads the file · Upload the compiled sketch with Arduino IDE",
+      "editLabel": "Arduino code in {{file}}"
+    },
+    "setup": {
+      "title": "Pulsar C5 code",
+      "actions": "Continue the lesson",
+      "noSketch": "Lesson 00 prepares the tools; there is no Arduino sketch to upload yet.",
+      "firstSketch": "Open the first sketch in lesson 01",
+      "flashFirmware": "Open Flash firmware and the serial terminal",
+      "nextLesson": "Open lesson {{id}}",
+      "back": "Back to the lesson"
+    }
   },
   "tracks": {
     "intro": {
       "title": "Intro",
-      "blurb": "Tools, first program, first circuit"
+      "blurb": "Arduino and MicroPython: setup, hello, first circuit"
     },
     "display": {
       "title": "Display & input",
@@ -81,6 +292,18 @@
     "sound": {
       "title": "Sound",
       "blurb": "Hear, measure, clap, record, see pitch, play"
+    },
+    "pulsar": {
+      "title": "On-board hardware",
+      "blurb": "Arduino experiments with BOOT, RGB controls, ADC, I²C sensors, microSD and UART"
+    },
+    "iot": {
+      "title": "Wi-Fi & BLE on the C5",
+      "blurb": "Dual-band Wi-Fi to the cloud, Bluetooth LE to a phone"
+    },
+    "zigbee": {
+      "title": "Zigbee",
+      "blurb": "An 802.15.4 network between two boards"
     }
   },
   "states": {
@@ -142,10 +365,75 @@
       "warning": "Never unplug during <code>Writing at 0x…</code>. Pin changing from output to input? Flash first, then wire."
     },
     "pinout": {
-      "title": "ESP32-S3 DevKitC pinout",
+      "title": "UNIT Pulsar C5 pinout",
       "use": "{{role}} on {{pin}}",
       "uses": "This lesson uses: {{uses}}.",
       "none": "This lesson uses no header pins."
+    },
+    "explorer": {
+      "pageTitle": "Interactive pinout · Pulsar C5 Labs",
+      "eyebrow": "UNIT PULSAR ESP32-C5HR8",
+      "title": "Pulsar C5 interactive pinout",
+      "intro": "Select a pad on the board or in the table to see its GPIO, function and use in this lesson.",
+      "back": "Back to lesson {{id}}",
+      "lessonPins": "Pins in this lesson",
+      "lessonTitle": "Lesson {{id}} · {{title}}",
+      "lessonHint": "Used pins are highlighted on the board and in the table.",
+      "noLessonPins": "This lesson uses no header pins.",
+      "diagram": "Interactive board diagram",
+      "help": "Select a pin, or use Tab and Enter to explore the diagram.",
+      "detail": "Pin details",
+      "position": "Position {{number}} · {{label}}",
+      "usedAs": "In this lesson: {{roles}}",
+      "unverified": "D2/RGB: the schematic says GPIO0, but UNIT's artwork says GPIO8. Check your board.",
+      "avoid": "This pad is involved in boot or a dedicated interface. Check its function before wiring it.",
+      "choose": "Select a pin to see its details.",
+      "directory": "All 30 header pads",
+      "search": "Search pad, GPIO or function",
+      "select": "View position {{number}}: {{label}}",
+      "noResults": "No pins match this search.",
+      "qwiic": "Qwiic uses SDA on GPIO1 and SCL on GPIO6. These differ from the SDA/SCL header pads, which use GPIO2/GPIO3."
+    },
+    "pulsar": {
+      "summary": "Pulsar C5 pinout · 30 positions",
+      "position": "Position",
+      "label": "Label",
+      "gpio": "GPIO",
+      "mainUse": "Main use",
+      "use": {
+        "sck": "SPI SCK · microSD · LED",
+        "v3": "3.3 V",
+        "en": "Regulator enable",
+        "vbat": "Battery rail",
+        "qwiicSda": "QWIIC SDA",
+        "analogMtck": "Analog / MTCK",
+        "analogMtdo": "Analog / MTDO",
+        "sensorSda": "Sensor I²C SDA",
+        "sensorScl": "Sensor I²C SCL",
+        "qwiicScl": "QWIIC SCL",
+        "rgbOut": "RGB chain output",
+        "vusb": "USB power",
+        "gnd": "Ground",
+        "vin": "Power input",
+        "uartTx": "UART0 TX",
+        "uartRx": "UART0 RX",
+        "reset": "Reset",
+        "rgbData": "WS2812 data",
+        "boot": "BOOT button",
+        "io": "Digital I/O",
+        "sdCs": "microSD CS",
+        "usbDm": "USB D−",
+        "usbDp": "USB D+",
+        "spiSs": "SPI SS",
+        "spiMosi": "SPI MOSI",
+        "spiMiso": "SPI MISO"
+      },
+      "note": "Documented map for revision V1.2.3. This diagram shows D2/RGB as GPIO0 according to the schematic; UNIT's reference artwork labels it GPIO8. Verify the board before using that pin.",
+      "alt": "Top view of the Pulsar C5 pinout with GPIO pins and Qwiic connector",
+      "open": "Open full-size diagram",
+      "source": "Source: official UNIT Electronics reference",
+      "strapping": "GPIO 2, 3, 7, 25, 26, 27 and 28 are strapping pins: keep them free of strong pull-ups or pull-downs at reset.",
+      "missing": "Not on the Pulsar C5 header (this lesson is not ported yet): {{pins}}."
     }
   },
   "ui": {

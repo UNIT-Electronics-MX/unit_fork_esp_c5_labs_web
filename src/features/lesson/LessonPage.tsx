@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router";
 import { useTrackText } from "@/features/navigation/use-track-text";
 import { findTrack } from "@/content/tracks";
 import type { LessonEntry, ResolvedLesson } from "@/domain/lesson";
@@ -67,7 +68,14 @@ export function LessonPage({
       case "commands":
         return lesson.commands ? <CommandsPanel commands={lesson.commands} /> : null;
       case "steps":
-        return <StepsChecklist lesson={lesson} />;
+        return <>
+          <StepsChecklist lesson={lesson} />
+          {lesson.id === "00" && lesson.variantKey === "micropython" ? (
+            <div className={styles.setupLinks}>
+              <Link to="/lessons/00/code?variant=micropython">{t("setupFlash.openFlasher")}</Link>
+            </div>
+          ) : null}
+        </>;
       case "preview":
         return lesson.preview ? (
           <div className={styles.stage}>
@@ -117,7 +125,7 @@ export function LessonPage({
               </LessonSection>
             ))}
         </article>
-        <NextUp lessons={lessons} currentId={lesson.id} trackId={lesson.track} />
+        <NextUp lessons={lessons} currentId={lesson.id} trackId={lesson.track} variantKey={lesson.variantKey} />
       </div>
     </div>
   );

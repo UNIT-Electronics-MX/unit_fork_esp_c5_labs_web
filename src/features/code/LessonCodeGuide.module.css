@@ -1,0 +1,15 @@
+.guide { display: grid; grid-template-columns: minmax(160px, 230px) minmax(0, 1fr) auto; align-items: center; gap: 12px 24px; padding: 15px 18px; border: 1px solid var(--line); border-radius: var(--radius-l); background: var(--surface); }
+.title span { color: var(--muted); font: 700 10px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.title h2 { margin: 3px 0 0; font: 750 17px/1.25 var(--font-display); }
+.steps { display: grid; gap: 5px; }
+.steps p { margin: 0; color: var(--ink); font-size: 13px; line-height: 1.4; }
+.steps strong { margin-inline-end: 7px; color: var(--muted); font: 700 11px var(--font-mono); text-transform: uppercase; }
+.actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 6px; }
+.actions button { min-height: 34px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--bg); cursor: pointer; font: 650 12px var(--font-display); }
+.actions button:hover:not(:disabled) { border-color: var(--ink); }
+.actions button:disabled { opacity: .5; cursor: default; }
+.actions button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.actions code { font: 12px var(--font-mono); }
+.actions span { flex-basis: 100%; color: var(--muted); font-size: 11px; text-align: end; }
+.notice { grid-column: 1 / -1; margin: 0; color: var(--danger); font-size: 12px; }
+@media (max-width: 900px) { .guide { grid-template-columns: minmax(0, 1fr); } .actions { justify-content: flex-start; } .actions span { text-align: start; } }

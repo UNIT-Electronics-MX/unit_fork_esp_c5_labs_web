@@ -1,0 +1,41 @@
+{
+  "Z1": {
+    "title": "Red de dos placas",
+    "heading": "Un coordinador y un dispositivo final",
+    "goal": "Carga una Pulsar C5 como <b>coordinador</b> Zigbee y otra como <b>dispositivo final</b>. El dispositivo final cuenta una vez por segundo y reporta la cuenta; el coordinador imprime lo que llega.",
+    "learn": [
+      "roles Zigbee",
+      "endpoints",
+      "clústeres (ZCL)",
+      "enlace (binding)",
+      "reporte de atributos"
+    ],
+    "wiring": {
+      "title": "Opciones de compilación por placa",
+      "head": [
+        "Placa",
+        "Zigbee Mode",
+        "Partition Scheme"
+      ],
+      "rows": [
+        [
+          "coordinador",
+          "Zigbee ZCZR (coordinator/router)",
+          "Zigbee ZCZR 8MB with spiffs"
+        ],
+        [
+          "dispositivo final",
+          "Zigbee ED (end device)",
+          "Zigbee 8MB with spiffs"
+        ]
+      ]
+    },
+    "steps": [
+      "Carga el coordinador con el comando de arriba. Abre la red durante tres minutos.",
+      "Carga la segunda placa: <code>arduino-cli compile -u -p PORT2 --fqbn esp32:esp32:esp32c5:CDCOnBoot=cdc,PSRAM=enabled,FlashSize=8M,PartitionScheme=zigbee_8MB,ZigbeeMode=ed sketches/pulsar-c5/z1-end-device</code>.",
+      "Mira el coordinador: <code>End device bound</code> y después las cuentas.",
+      "Pulsa BOOT en el coordinador para pedir un reporte en cada cambio; en el dispositivo final, una pulsación corta reporta al instante y mantenerlo 3 segundos borra su configuración de red."
+    ],
+    "note": "La cuenta viaja en el clúster Temperature Measurement, un truco de los ejemplos de Espressif. Los Labs 7 y 8 del curso de la C6 (PULSAR Stick, PULSAR Powersupply) traen firmware ya compilado para la C6 y no se migran."
+  }
+}

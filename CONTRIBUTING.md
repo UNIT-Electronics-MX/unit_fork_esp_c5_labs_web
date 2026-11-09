@@ -28,7 +28,7 @@ The firmware lives in its own repo, [esp-labs](https://github.com/agharsallah/es
 You need Node 24.14+ and pnpm 11 (`corepack enable` picks the version pinned in `package.json`). Clone both repos side by side so the code reader can show the firmware:
 
 ```sh
-git clone https://github.com/agharsallah/esp-labs.git
+git clone https://github.com/UNIT-Electronics-MX/unit_fork_esp_labs_c5.git esp-labs
 git clone https://github.com/UNIT-Electronics-MX/unit_fork_esp_c5_labs_web.git
 cd esp-labs-web
 pnpm install

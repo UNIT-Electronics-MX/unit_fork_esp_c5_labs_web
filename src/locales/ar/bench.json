@@ -5,11 +5,11 @@
   },
   "specs": {
     "label": "مواصفات اللوحة",
-    "chip": "ESP32-S3 <b>N16R8</b>",
-    "cores": "<b>2×</b> Xtensa LX7 بسرعة 240 MHz",
-    "flash": "ذاكرة فلاش <b>16 MB</b>",
-    "psram": "ذاكرة PSRAM ثمانية <b>8 MB</b>",
-    "radio": "<b>Wi-Fi 4</b> + BLE 5",
+    "chip": "ESP32-C5 <b>HR8</b>",
+    "cores": "<b>RISC-V</b> بسرعة 240 MHz",
+    "flash": "ذاكرة فلاش <b>8 MB</b>",
+    "psram": "ذاكرة PSRAM مدمجة <b>8 MB</b>",
+    "radio": "<b>Wi-Fi 6</b> 2.4/5 GHz · BLE 5 · 802.15.4",
     "logic": "منطق <b>3.3 V</b>"
   },
   "log": {

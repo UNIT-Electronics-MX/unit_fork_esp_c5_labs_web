@@ -5,6 +5,7 @@ import { lessonPart, TRACK_PART } from "@/content/icons";
 import { TRACKS } from "@/content/tracks";
 import type { LessonEntry, TrackId } from "@/domain/lesson";
 import { neighbours } from "@/domain/progress";
+import { useTrackText } from "@/features/navigation/use-track-text";
 import { goToSection } from "@/lib/active-section";
 import { Icon } from "@/ui/Icon";
 import { PartIcon } from "@/ui/parts/PartIcon";
@@ -15,20 +16,25 @@ export function NextUp({
   lessons,
   currentId,
   trackId,
+  variantKey,
 }: {
   lessons: readonly LessonEntry[];
   currentId: string;
   trackId: TrackId;
+  variantKey?: string;
 }) {
   const { t } = useTranslation("lesson");
+  const trackText = useTrackText();
   const { prev, next } = neighbours(lessons, currentId);
+  const variantSearch = variantKey && (currentId === "00" || currentId === "01" || currentId === "02")
+    ? `?variant=${encodeURIComponent(variantKey)}` : "";
   const at = TRACKS.findIndex((t) => t.id === trackId);
   const nextTrack = TRACKS.slice(at + 1).find((t) => !t.planned);
 
   return (
     <nav className={styles.next} aria-label={t("next.label")}>
       {next ? (
-        <Link to={`/lessons/${next.id}`} className={styles.primary}>
+        <Link to={`/lessons/${next.id}${variantSearch}`} className={styles.primary}>
           <PartIcon name={lessonPart(next.id, next.track)} size={64} className={styles.part} />
           <span className={styles.kicker}>{t("next.lesson")}</span>
           <span className={styles.title}>
@@ -38,13 +44,13 @@ export function NextUp({
         </Link>
       ) : nextTrack ? (
         <Link
-          to={`/tracks/${nextTrack.id}`}
+          to={currentId === "02" ? "/lessons/P1" : `/tracks/${nextTrack.id}`}
           className={styles.primary}
           style={{ "--track": `var(${nextTrack.color})` } as CSSProperties}
         >
           <PartIcon name={TRACK_PART[nextTrack.id]} size={64} className={styles.part} />
           <span className={styles.kicker}>{t("next.theme")}</span>
-          <span className={styles.title}>{nextTrack.title}</span>
+          <span className={styles.title}>{trackText(nextTrack).title}</span>
           <Icon name="arrow" size={22} />
         </Link>
       ) : (
@@ -56,7 +62,7 @@ export function NextUp({
       )}
       <div className={styles.minor}>
         {prev ? (
-          <Link to={`/lessons/${prev.id}`}>
+          <Link to={`/lessons/${prev.id}${variantSearch}`}>
             <Icon name="back" size={15} /> {prev.id} {prev.title}
           </Link>
         ) : (

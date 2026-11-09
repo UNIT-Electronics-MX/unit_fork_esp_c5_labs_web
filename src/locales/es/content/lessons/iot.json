@@ -1,0 +1,83 @@
+{
+  "I1": {
+    "title": "Wi-Fi a la nube",
+    "heading": "Publica lecturas en ThingSpeak",
+    "goal": "Conéctate a tu red Wi-Fi, de 2,4 GHz o 5 GHz, y envía la temperatura y la humedad de un DHT11 a un canal de ThingSpeak cada 20 segundos.",
+    "learn": [
+      "modo estación",
+      "Wi-Fi de doble banda",
+      "HTTP GET",
+      "claves de API",
+      "límites de frecuencia"
+    ],
+    "wiring": {
+      "rows": [
+        [
+          "A2 (GPIO4)",
+          "DHT11 KY-015 S / DATA",
+          ""
+        ],
+        [
+          "3V3",
+          "DHT11 VCC",
+          ""
+        ],
+        [
+          "GND",
+          "DHT11 GND",
+          ""
+        ]
+      ]
+    },
+    "steps": [
+      "Crea un canal gratuito de ThingSpeak con dos campos y copia su <b>Write API Key</b>.",
+      "Instala <code>DHT sensor library</code> desde el gestor de librerías.",
+      "Escribe el nombre de tu red, la contraseña y la clave en las tres constantes del principio del sketch.",
+      "Desconecta el USB, cablea el DHT11, conecta y ejecuta el comando.",
+      "El monitor imprime la IP, el canal y la banda, y luego <code>HTTP 200</code> cada 20 segundos. Mira cómo se llenan las gráficas del canal."
+    ],
+    "note": "A diferencia de la C6, la C5 también se conecta a redes de <b>5 GHz</b>: canal 36 en adelante. Nunca subas un sketch con tu contraseña o clave reales."
+  },
+  "I2": {
+    "title": "Toque por Bluetooth LE",
+    "heading": "Avisa al teléfono cuando tocas un sensor",
+    "goal": "Convierte la Pulsar C5 en un periférico Bluetooth LE con un servicio y una característica que notifica <code>touched</code> o <code>released</code> desde un sensor táctil TTP223B.",
+    "learn": [
+      "servidor GATT",
+      "servicios y características",
+      "notificaciones",
+      "anuncios (advertising)"
+    ],
+    "pins": {
+      "1": {
+        "role": "TOQUE"
+      }
+    },
+    "wiring": {
+      "rows": [
+        [
+          "A3 (GPIO5)",
+          "TTP223B OUT",
+          "en ALTO mientras lo tocas"
+        ],
+        [
+          "3V3",
+          "TTP223B VCC",
+          ""
+        ],
+        [
+          "GND",
+          "TTP223B GND",
+          ""
+        ]
+      ]
+    },
+    "steps": [
+      "Desconecta el USB, cablea el sensor táctil, conecta y ejecuta el comando.",
+      "En el teléfono, abre nRF Connect o LightBlue y conéctate a <code>PulsarC5-BLE</code>.",
+      "Abre el servicio y suscríbete a las notificaciones de la característica.",
+      "Toca el sensor: el teléfono muestra <code>touched</code> y luego <code>released</code>."
+    ],
+    "note": "La versión de la C6 notificaba cuatro veces por segundo aunque nada cambiara; esta solo notifica cuando hay un cambio, lo que mantiene la radio en silencio."
+  }
+}

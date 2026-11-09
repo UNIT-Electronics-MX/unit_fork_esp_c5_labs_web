@@ -21,17 +21,17 @@
       "bench": "工作臺",
       "settings": "設定"
     },
-    "footnote": "現有課程及其腳位圖適用於 ESP32-S3 DevKitC-1，不適用於 Pulsar C5。請核對開發板上的標註。勾選僅儲存在此瀏覽器中。",
+    "footnote": "Pulsar C5 主題專為這塊開發板編寫；其他主題仍在移植中，請核對接線。勾選僅儲存在此瀏覽器中。",
     "partsLink": "元件函式庫",
     "credit": "基於 Abderrehmen Gharsallah 的原始專案：<project>ESP32 Labs</project>。",
-    "legacyNotice": "舊版 ESP32-S3 內容：這些課程的接線與韌體尚未適配 Pulsar C5。",
+    "legacyNotice": "本課尚未移植到 Pulsar C5：腳位圖依 GPIO 編號顯示其腳位，但接線與韌體仍需調整。",
     "new": "新"
   },
   "titles": {
     "labs": "Pulsar C5 Labs",
-    "lesson": "{{id}} · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "code": "{{id}} 程式碼 · {{title}} · ESP32-S3 · Pulsar C5 Labs",
-    "log": "工作臺日誌 · ESP32-S3 · Pulsar C5 Labs",
+    "lesson": "{{id}} · {{title}} · Pulsar C5 Labs",
+    "code": "{{id}} 程式碼 · {{title}} · Pulsar C5 Labs",
+    "log": "工作臺日誌 · Pulsar C5 Labs",
     "parts": "元件函式庫 · Pulsar C5 Labs",
     "settings": "設定 · Pulsar C5 Labs",
     "chip": "{{page}} · 晶片 · ESP32-C5HR8 · Pulsar C5 Labs"
@@ -55,8 +55,7 @@
   },
   "tracks": {
     "intro": {
-      "title": "入門",
-      "blurb": "工具、第一個程式、第一個電路"
+      "title": "入門"
     },
     "display": {
       "title": "顯示與輸入",
@@ -142,7 +141,7 @@
       "warning": "<code>Writing at 0x…</code> 期間千萬別拔線。腳位要從輸出改成輸入？先燒錄，再接線。"
     },
     "pinout": {
-      "title": "ESP32-S3 DevKitC 腳位圖",
+      "title": "UNIT Pulsar C5 腳位圖",
       "use": "{{pin}} 用作{{role}}",
       "uses": "本課用到：{{uses}}。",
       "none": "本課不使用排針上的腳位。"
