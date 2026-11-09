@@ -36,9 +36,10 @@ describe("App", () => {
       await screen.findByRole("heading", { name: "An LED on the breadboard" }, LOAD),
     ).toBeTruthy();
 
+    // A new visitor starts on MicroPython (DEFAULT_CODE_PLATFORM).
     const first = screen.getAllByRole("checkbox")[0]!;
     await userEvent.click(first);
-    expect(JSON.parse(localStorage.getItem("esp-ticks") ?? "{}")).toEqual({ "02.arduino-0": true });
+    expect(JSON.parse(localStorage.getItem("esp-ticks") ?? "{}")).toEqual({ "02.micropython-0": true });
     expect(localStorage.getItem("esp-lesson")).toBe('"02"');
   });
 

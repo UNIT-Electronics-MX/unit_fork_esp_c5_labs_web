@@ -323,6 +323,37 @@ export function MicroPythonEditor({
     </div>
   ) : null;
 
+  const intro = (
+    <div className={styles.introduction}>
+      <div>
+        <p className={styles.eyebrow}>PULSAR C5 / MICROPYTHON</p>
+        <h2 id="micropython-title">{t("flasher.examples.title")}</h2>
+        <p>{t("flasher.examples.intro")}</p>
+      </div>
+      <span className={styles.languageBadge}>{PY_EXTENSION}</span>
+    </div>
+  );
+
+  // In a lesson the workspace comes first; its description, needs and help follow it.
+  const details = selected ? (
+    <div className={styles.underbar}>
+      {!customLoaded ? <p className={styles.description}>{spanish ? selected.description : selected.descriptionEn}</p> : null}
+      {!customLoaded && (spanish ? selected.requires : selected.requiresEn).length ? (
+        <p className={styles.requirements}>{t("flasher.examples.requires", { items: (spanish ? selected.requires : selected.requiresEn).join(" · ") })}</p>
+      ) : null}
+      {requiredLibraries.map((library) => <p key={library.id} className={styles.libraryHint}>{t("flasher.examples.libraryHint", { file: library.file })} <a href={library.source} target="_blank" rel="noreferrer">{t("flasher.examples.librarySource", { license: library.license })}</a></p>)}
+      {terminalRef && !connected ? <p>{t("flasher.examples.connectFirst")}</p> : null}
+      {terminalRef && !serialSupported ? <p className={styles.error}>{t("flasher.unsupported")}</p> : null}
+      {!toolbarAtTop && (operation || notice) ? <p role="status">{operation ? t("flasher.examples.working") : notice}</p> : null}
+      <details className={styles.help}>
+        <summary>{t("flasher.examples.help")}</summary>
+        <p>{t("flasher.examples.shortcuts")}</p>
+        <p>{t("flasher.examples.saveHint")}</p>
+        <p>{t("flasher.examples.firmwareHint")} <a href="https://micropython.org/download/ESP32_GENERIC_C5/" target="_blank" rel="noopener noreferrer">{t("flasher.examples.firmwareLink")}</a></p>
+      </details>
+    </div>
+  ) : null;
+
   return (
     <section className={styles.editor} data-docked={docked} data-lesson={Boolean(focusedExampleId)} aria-labelledby="micropython-title">
       {toolbarAtTop && toolbar ? (
@@ -332,14 +363,7 @@ export function MicroPythonEditor({
           {operation || notice ? <p className={styles.actionNotice} role="status">{operation ? t("flasher.examples.working") : notice}</p> : null}
         </div>
       ) : null}
-      <div className={styles.introduction}>
-        <div>
-          <p className={styles.eyebrow}>PULSAR C5 / MICROPYTHON</p>
-          <h2 id="micropython-title">{t("flasher.examples.title")}</h2>
-          <p>{t("flasher.examples.intro")}</p>
-        </div>
-        <span className={styles.languageBadge}>{PY_EXTENSION}</span>
-      </div>
+      {focusedExampleId ? null : intro}
       {error ? (
         <div className={styles.underbar}>
           <p className={styles.error} role="alert">{t("flasher.examples.unavailable")}</p>
@@ -350,22 +374,7 @@ export function MicroPythonEditor({
       {!data && !error ? <p role="status">{t("flasher.examples.loading")}</p> : null}
       {data && selected ? (
         <>
-          <div className={styles.underbar}>
-            {!customLoaded ? <p className={styles.description}>{spanish ? selected.description : selected.descriptionEn}</p> : null}
-            {!customLoaded && (spanish ? selected.requires : selected.requiresEn).length ? (
-              <p className={styles.requirements}>{t("flasher.examples.requires", { items: (spanish ? selected.requires : selected.requiresEn).join(" · ") })}</p>
-            ) : null}
-            {requiredLibraries.map((library) => <p key={library.id} className={styles.libraryHint}>{t("flasher.examples.libraryHint", { file: library.file })} <a href={library.source} target="_blank" rel="noreferrer">{t("flasher.examples.librarySource", { license: library.license })}</a></p>)}
-            {terminalRef && !connected ? <p>{t("flasher.examples.connectFirst")}</p> : null}
-            {terminalRef && !serialSupported ? <p className={styles.error}>{t("flasher.unsupported")}</p> : null}
-            {!toolbarAtTop && (operation || notice) ? <p role="status">{operation ? t("flasher.examples.working") : notice}</p> : null}
-            <details className={styles.help}>
-              <summary>{t("flasher.examples.help")}</summary>
-              <p>{t("flasher.examples.shortcuts")}</p>
-              <p>{t("flasher.examples.saveHint")}</p>
-              <p>{t("flasher.examples.firmwareHint")} <a href="https://micropython.org/download/ESP32_GENERIC_C5/" target="_blank" rel="noopener noreferrer">{t("flasher.examples.firmwareLink")}</a></p>
-            </details>
-          </div>
+          {focusedExampleId ? null : details}
           <div className={styles.ide}>
             <div className={styles.windowBar}>
               <div className={styles.windowIdentity}>
@@ -458,8 +467,10 @@ export function MicroPythonEditor({
               </div>
             </div>
           </div>
+          {focusedExampleId ? details : null}
         </>
       ) : null}
+      {focusedExampleId ? intro : null}
     </section>
   );
 }

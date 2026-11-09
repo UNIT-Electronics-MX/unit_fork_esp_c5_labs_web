@@ -107,6 +107,26 @@ describe("SerialSession", () => {
     expect(await session.close()).toBe(true);
   });
 
+  it("pastes a script whose echoed lines name an exception", async () => {
+    let input!: ReadableStreamDefaultController<Uint8Array>;
+    const writes: string[] = [];
+    const encoder = new TextEncoder();
+    const readable = new ReadableStream<Uint8Array>({ start(controller) { input = controller; } });
+    const writable = new WritableStream<Uint8Array>({ write(chunk) {
+      const text = new TextDecoder().decode(chunk);
+      writes.push(text);
+      if (text.includes("\x03")) input.enqueue(encoder.encode(">>> "));
+      else if (text === "\x05") input.enqueue(encoder.encode("paste mode; Ctrl-C to cancel, Ctrl-D to finish\r\n=== "));
+      // Like the board, paste mode echoes every line before its next prompt.
+      else if (text.endsWith("\r")) input.enqueue(encoder.encode(`${text.slice(0, -1)}\r\n=== `));
+    } });
+    const session = new SerialSession({ readable, writable, open: async () => undefined, close: async () => undefined }, () => undefined, () => undefined);
+    await session.open(115200);
+    await session.runPython("try:\n    n = int('x')\nexcept ValueError:\n    n = -1\nexcept OSError:\n    n = -2\n");
+    expect(writes).toContain("    n = -2\r");
+    expect(writes.at(-1)).toBe("\x04");
+  });
+
   it("confirms the REPL prompt before reporting that a program stopped", async () => {
     let input!: ReadableStreamDefaultController<Uint8Array>;
     let wrote!: () => void;

@@ -21,7 +21,7 @@ import { TrackNav } from "@/features/navigation/TrackNav";
 import { currentLocale } from "@/i18n/i18n";
 import { useLocale } from "@/i18n/use-locale";
 import { useTranslation } from "react-i18next";
-import { isCodePlatform, progress, useCodePlatform, useTicks, useVariants } from "@/features/progress/progress-store";
+import { DEFAULT_CODE_PLATFORM, isCodePlatform, progress, useCodePlatform, useTicks, useVariants } from "@/features/progress/progress-store";
 import { useActiveSection } from "@/lib/active-section";
 import type { RouteErrorReason } from "../route-errors";
 
@@ -79,7 +79,7 @@ export const codeLoader =
       const savedPlatform = progress.codePlatform.get();
       const platform = isCodePlatform(requestedPlatform)
         ? requestedPlatform
-        : isCodePlatform(savedPlatform) ? savedPlatform : "arduino";
+        : isCodePlatform(savedPlatform) ? savedPlatform : DEFAULT_CODE_PLATFORM;
       if (platform === "arduino") {
         search.set("variant", "arduino");
         return redirect(`/lessons/01/code?${search}`);

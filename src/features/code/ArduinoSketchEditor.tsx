@@ -96,14 +96,6 @@ export function ArduinoSketchEditor({ filename, source }: { filename: string; so
 
   return (
     <section className={styles.editor} data-lesson="true" aria-label={t("codeRoute.sketch.title")}>
-      <div className={styles.introduction}>
-        <div>
-          <p className={styles.eyebrow}>{t("codeRoute.sketch.eyebrow")}</p>
-          <h2>{t("codeRoute.sketch.title")}</h2>
-          <p>{t("codeRoute.sketch.intro")}</p>
-        </div>
-        <span className={styles.languageBadge}>{INO_EXTENSION}</span>
-      </div>
       <div className={styles.ide}>
         <div className={styles.windowBar}>
           <div className={styles.windowIdentity}>
@@ -184,6 +176,14 @@ export function ArduinoSketchEditor({ filename, source }: { filename: string; so
         </div>
       </div>
       {notice ? <p role="status">{notice}</p> : null}
+      <div className={styles.introduction}>
+        <div>
+          <p className={styles.eyebrow}>{t("codeRoute.sketch.eyebrow")}</p>
+          <h2>{t("codeRoute.sketch.title")}</h2>
+          <p>{t("codeRoute.sketch.intro")}</p>
+        </div>
+        <span className={styles.languageBadge}>{INO_EXTENSION}</span>
+      </div>
     </section>
   );
 }

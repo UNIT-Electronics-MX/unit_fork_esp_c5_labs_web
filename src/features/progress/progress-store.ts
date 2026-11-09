@@ -9,10 +9,12 @@ const variants = createPersistentStore<Readonly<Record<string, string>>>("esp-va
 export type CodePlatform = "arduino" | "micropython";
 export const isCodePlatform = (value: string | null): value is CodePlatform =>
   value === "arduino" || value === "micropython";
+/** The platform a new visitor starts on, until they pick one. */
+export const DEFAULT_CODE_PLATFORM: CodePlatform = "micropython";
 const lastOpened = lastLesson.get();
 const previousPlatform = (lastOpened ? variants.get()[lastOpened] : undefined)
-  ?? variants.get()["00"] ?? variants.get()["01"] ?? variants.get()["02"] ?? "arduino";
-const codePlatform = createPersistentStore<string>("esp-code-platform", isCodePlatform(previousPlatform) ? previousPlatform : "arduino");
+  ?? variants.get()["00"] ?? variants.get()["01"] ?? variants.get()["02"] ?? DEFAULT_CODE_PLATFORM;
+const codePlatform = createPersistentStore<string>("esp-code-platform", isCodePlatform(previousPlatform) ? previousPlatform : DEFAULT_CODE_PLATFORM);
 
 export const progress = {
   ticks,
@@ -34,5 +36,5 @@ export const useTicks = () => useStore(ticks);
 export const useVariants = () => useStore(variants);
 export const useCodePlatform = (): CodePlatform => {
   const value = useStore(codePlatform);
-  return isCodePlatform(value) ? value : "arduino";
+  return isCodePlatform(value) ? value : DEFAULT_CODE_PLATFORM;
 };

@@ -55,12 +55,6 @@ function ArduinoLessonWorkspace({ lessonId, filename, source }: { lessonId: stri
   const [connected, setConnected] = useState(false);
   return (
     <div className={styles.workspace}>
-      <LessonCodeGuide
-        lessonId={lessonId}
-        variant="arduino"
-        connected={connected}
-        onCommand={(command) => terminalRef.current?.sendCommand(command) ?? Promise.reject(new Error("Serial console unavailable."))}
-      />
       <ArduinoSketchEditor filename={filename} source={source} />
       <SerialTerminal
         ref={terminalRef}
@@ -69,6 +63,12 @@ function ArduinoLessonWorkspace({ lessonId, filename, source }: { lessonId: stri
         onConnectedChange={setConnected}
         flashHint={false}
         sidecar
+      />
+      <LessonCodeGuide
+        lessonId={lessonId}
+        variant="arduino"
+        connected={connected}
+        onCommand={(command) => terminalRef.current?.sendCommand(command) ?? Promise.reject(new Error("Serial console unavailable."))}
       />
     </div>
   );

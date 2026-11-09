@@ -147,9 +147,11 @@ export class SerialSession {
   /** Run a complete script via MicroPython's paste mode, preserving indentation. */
   async runPython(code: string): Promise<void> {
     await this.stopPython();
-    await this.expectAfter("=== ", () => this.send("\x05", "none"));
+    // Paste mode only echoes what it is sent, so an echoed `except ValueError:` is code, not an error.
+    // The script's own errors appear in the terminal once Ctrl+D runs it.
+    await this.expectAfter("=== ", () => this.send("\x05", "none"), 5000, false);
     const lines = code.replace(/\r\n/g, "\n").replace(/\n$/, "").split("\n");
-    for (const line of lines) await this.expectAfter("=== ", () => this.send(`${line}\r`, "none"));
+    for (const line of lines) await this.expectAfter("=== ", () => this.send(`${line}\r`, "none"), 5000, false);
     await this.send("\x04", "none");
   }
 

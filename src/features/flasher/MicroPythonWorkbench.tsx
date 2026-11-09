@@ -27,6 +27,15 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
   const [flashWorking, setFlashWorking] = useState(false);
   const [serialError, setSerialError] = useState("");
   const focusedExampleId = FIRST_EXAMPLE[lessonId];
+  // The code guide follows the workspace in a lesson; on 00 it leads into the console.
+  const guide = focusedExampleId || lessonId === "00" ? (
+    <LessonCodeGuide
+      lessonId={lessonId}
+      variant="micropython"
+      connected={connected && !flashWorking}
+      onCommand={(command) => terminalRef.current?.runPython(command) ?? Promise.reject(new Error("Serial console unavailable."))}
+    />
+  ) : null;
   return (
     <div className={styles.workbench}>
       {lessonId === "00" ? <FirmwareFlasher
@@ -38,12 +47,7 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
         microPythonSetup
         embedded
       /> : null}
-      {focusedExampleId || lessonId === "00" ? <LessonCodeGuide
-        lessonId={lessonId}
-        variant="micropython"
-        connected={connected && !flashWorking}
-        onCommand={(command) => terminalRef.current?.runPython(command) ?? Promise.reject(new Error("Serial console unavailable."))}
-      /> : null}
+      {lessonId === "00" ? guide : null}
       {lessonId !== "00" ? <MicroPythonEditor
         initialId={FIRST_EXAMPLE[lessonId] ?? "gpio"}
         focusedExampleId={focusedExampleId}
@@ -66,6 +70,7 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
         sidecar={lessonId !== "00"}
         stopPythonOnConnect
       />
+      {lessonId === "00" ? null : guide}
     </div>
   );
 }

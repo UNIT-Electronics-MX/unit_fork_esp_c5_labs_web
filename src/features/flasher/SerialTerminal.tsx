@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useImperativeHandle, useRef, useState, type FormEvent, type Ref } from "react";
+import { useEffect, useImperativeHandle, useRef, useState, type FormEvent, type Ref } from "react";
 import { useTranslation } from "react-i18next";
 import { recordBrowserBenchAction } from "@/features/bench/browser-log";
-import { REPL_INTERRUPT_FAILED, SerialSession, type LineEnding, type TerminalPort } from "./serial-session";
+import { serialConnection, useSerialConnection } from "./serial-connection";
+import { REPL_INTERRUPT_FAILED, type LineEnding, type TerminalPort } from "./serial-session";
 import styles from "./SerialTerminal.module.css";
 
 type SerialNavigator = Navigator & { serial?: { requestPort(): Promise<TerminalPort> } };
-type TerminalState = "ready" | "connecting" | "connected" | "disconnecting" | "disconnected" | "error";
 const BAUD_RATES = [9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600] as const;
-const MAX_OUTPUT = 100_000;
 
 export interface SerialTerminalHandle {
   connect(): Promise<void>;
@@ -19,6 +18,7 @@ export interface SerialTerminalHandle {
   sendCommand(command: string, ending?: LineEnding): Promise<void>;
 }
 
+/** A view of the app's one serial connection: unmounting it leaves the board connected. */
 export function SerialTerminal({
   ref,
   blocked,
@@ -45,175 +45,71 @@ export function SerialTerminal({
   stopPythonOnConnect?: boolean;
 }) {
   const { t } = useTranslation();
-  const [baudRate, setBaudRate] = useState(115200);
+  const { state, output, baudRate, operation, error: connectionError } = useSerialConnection();
   const [ending, setEnding] = useState<LineEnding>(initialEnding);
-  const [state, setState] = useState<TerminalState>("ready");
-  const [output, setOutput] = useState("");
   const [command, setCommand] = useState("");
-  const [error, setError] = useState("");
+  const [sendError, setSendError] = useState("");
   const [sending, setSending] = useState(false);
-  const [operation, setOperation] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
-  const sessionRef = useRef<SerialSession | null>(null);
-  const portRef = useRef<TerminalPort | null>(null);
-  const activeRef = useRef(false);
-  const operationRef = useRef(false);
-  const mountedRef = useRef(true);
   const outputRef = useRef<HTMLPreElement>(null);
   const serial = (navigator as SerialNavigator).serial;
   const supported = window.isSecureContext !== false && Boolean(serial);
   const connected = state === "connected";
   const active = state === "connecting" || state === "connected" || state === "disconnecting";
+  const error = sendError || (connectionError ? describeError(connectionError) : "");
 
-  function describeError(cause: unknown): string {
-    const detail = cause instanceof Error ? cause.message : String(cause);
+  function describeError(detail: string): string {
     if (detail === "noReadable") return t("flasher.serial.noReadable");
     if (detail === "notWritable") return t("flasher.serial.notWritable");
     if (detail === REPL_INTERRUPT_FAILED) return t("flasher.serial.replInterruptFailed");
     return detail;
   }
 
-  useEffect(() => {
-    mountedRef.current = true;
-    return () => {
-      mountedRef.current = false;
-      void sessionRef.current?.close();
-      onActiveChange(false);
-      onConnectedChange(false);
-      onOperationChange?.(false);
-    };
-  }, [onActiveChange, onConnectedChange, onOperationChange]);
+  // The parent mirrors the shared connection, also when this view mounts onto an open one.
+  useEffect(() => onActiveChange(active), [active, onActiveChange]);
+  useEffect(() => onConnectedChange(connected), [connected, onConnectedChange]);
+  useEffect(() => onOperationChange?.(operation), [operation, onOperationChange]);
+  const reportedError = connectionError ? describeError(connectionError) : "";
+  useEffect(() => onErrorChange?.(reportedError), [reportedError, onErrorChange]);
 
   useEffect(() => {
     if (autoScroll && outputRef.current) outputRef.current.scrollTop = outputRef.current.scrollHeight;
   }, [output, autoScroll]);
 
-  function appendOutput(text: string) {
-    if (mountedRef.current && text) setOutput((previous) => (previous + text).slice(-MAX_OUTPUT));
-  }
-
-  const disconnect = useCallback(async (): Promise<boolean> => {
-    const session = sessionRef.current;
-    if (!session) return true;
-    setState("disconnecting");
-    try {
-      return await session.close();
-    } catch (cause) {
-      if (mountedRef.current) {
-        setState("error");
-        setError(cause instanceof Error ? cause.message : String(cause));
-      }
-      return false;
-    }
-  }, []);
-
-  async function pythonOperation(task: (session: SerialSession) => Promise<void>): Promise<void> {
-    const session = sessionRef.current;
-    if (!session || !connected) throw new Error("Connect the serial console first.");
-    if (operationRef.current) throw new Error("A MicroPython action is already running.");
-    operationRef.current = true;
-    setOperation(true);
-    onOperationChange?.(true);
-    try {
-      await task(session);
-    } finally {
-      operationRef.current = false;
-      if (mountedRef.current) setOperation(false);
-      onOperationChange?.(false);
-    }
-  }
-
   useImperativeHandle(ref, () => ({
     connect,
-    disconnect,
-    takePortForFlashing: async () => {
-      const port = portRef.current;
-      if (!port || !sessionRef.current || !await disconnect()) return null;
-      portRef.current = null;
-      return port;
-    },
-    runPython: (code) => pythonOperation((session) => session.runPython(code)),
-    savePython: (filename, code) => pythonOperation((session) => session.savePython(filename, code)),
-    stopPython: async () => {
-      const session = sessionRef.current;
-      if (!session || !connected) throw new Error("Connect the serial console first.");
-      await session.stopPython();
-    },
+    disconnect: () => serialConnection.disconnect(),
+    takePortForFlashing: () => serialConnection.takePort(),
+    runPython: (code) => serialConnection.runPython(code),
+    savePython: (filename, code) => serialConnection.savePython(filename, code),
+    stopPython: () => serialConnection.stopPython(),
     sendCommand,
   }));
 
   async function connect() {
-    if (!serial || blocked || activeRef.current) return;
-    activeRef.current = true;
-    onActiveChange(true);
-    setState("connecting");
-    setError("");
-    onErrorChange?.("");
+    if (!serial || blocked) return;
+    setSendError("");
     try {
-      // Keep requestPort in the user gesture before any other await.
-      const port = await serial.requestPort();
-      if (!mountedRef.current) return;
-      portRef.current = port;
-      const session = new SerialSession(
-        port,
-        appendOutput,
-        (cause) => {
-          if (sessionRef.current !== session) return;
-          sessionRef.current = null;
-          portRef.current = null;
-          activeRef.current = false;
-          onActiveChange(false);
-          onConnectedChange(false);
-          if (!mountedRef.current) return;
-          setState(cause ? "error" : "disconnected");
-          if (cause) {
-            const detail = describeError(cause);
-            setError(detail);
-            onErrorChange?.(detail);
-          }
-        },
-      );
-      sessionRef.current = session;
-      await session.open(baudRate);
-      if (stopPythonOnConnect) await session.stopPython();
-      if (sessionRef.current === session && mountedRef.current) {
-        setState("connected");
-        onConnectedChange(true);
+      // requestPort is the store's first call, inside this click's user activation.
+      if (await serialConnection.connect(() => serial.requestPort(), stopPythonOnConnect)) {
         recordBrowserBenchAction({
           types: ["observe"], title: "Serial console connected", where: "Browser serial",
-          why: "Opened the board's serial port.", result: `Connected at ${baudRate} baud.`,
+          why: "Opened the board's serial port.", result: `Connected at ${serialConnection.getSnapshot().baudRate} baud.`,
         });
       }
-    } catch (cause) {
-      if (sessionRef.current) await sessionRef.current.close();
-      portRef.current = null;
-      activeRef.current = false;
-      onActiveChange(false);
-      onConnectedChange(false);
-      if (!mountedRef.current) return;
-      if (cause instanceof Error && cause.name === "NotFoundError") {
-        setState("ready");
-      } else {
-        setState("error");
-        const detail = describeError(cause);
-        setError(detail);
-        onErrorChange?.(detail);
-        recordBrowserBenchAction({
-          types: ["failed"], title: "Serial connection failed", where: "Browser serial",
-          why: "The board's serial port could not be opened.", result: "Check the terminal for details.",
-        });
-      }
+    } catch {
+      recordBrowserBenchAction({
+        types: ["failed"], title: "Serial connection failed", where: "Browser serial",
+        why: "The board's serial port could not be opened.", result: "Check the terminal for details.",
+      });
     }
   }
 
   async function sendCommand(text: string, lineEnding: LineEnding = "lf") {
-    const session = sessionRef.current;
-    if (!session || !connected) throw new Error("Connect the serial console first.");
-    if (sending || operationRef.current) throw new Error("Serial console is busy.");
+    if (sending) throw new Error("Serial console is busy.");
     setSending(true);
     try {
-      await session.send(text, lineEnding);
-      appendOutput(`\n› ${text}\n`);
+      await serialConnection.send(text, lineEnding);
       recordBrowserBenchAction({
         types: ["read"], title: "Serial command sent", where: "Browser serial",
         why: "Sent a command to the connected board.", result: "Command sent; its text and output were not saved here.",
@@ -232,11 +128,12 @@ export function SerialTerminal({
   async function send(event?: FormEvent) {
     event?.preventDefault();
     if (!command.trim()) return;
+    setSendError("");
     try {
       await sendCommand(command, ending);
       setCommand("");
     } catch (cause) {
-      setError(describeError(cause));
+      setSendError(describeError(cause instanceof Error ? cause.message : String(cause)));
     }
   }
 
@@ -255,7 +152,7 @@ export function SerialTerminal({
       <div className={styles.toolbar}>
         <label>
           <span>{t("flasher.serial.baudRate")}</span>
-          <select value={baudRate} disabled={active || blocked} onChange={(event) => setBaudRate(Number(event.target.value))}>
+          <select value={baudRate} disabled={active || blocked} onChange={(event) => serialConnection.setBaudRate(Number(event.target.value))}>
             {BAUD_RATES.map((rate) => <option key={rate} value={rate}>{rate}</option>)}
           </select>
         </label>
@@ -269,13 +166,13 @@ export function SerialTerminal({
           </select>
         </label>
         {!docked ? connected ? (
-          <button type="button" onClick={() => void disconnect()}>{t("flasher.serial.disconnect")}</button>
+          <button type="button" onClick={() => void serialConnection.disconnect()}>{t("flasher.serial.disconnect")}</button>
         ) : (
           <button type="button" disabled={!supported || blocked || active} onClick={() => void connect()}>
             {t("flasher.serial.connect")}
           </button>
         ) : null}
-        <button type="button" disabled={!output} onClick={() => setOutput("")}>{t("flasher.serial.clear")}</button>
+        <button type="button" disabled={!output} onClick={() => serialConnection.clearOutput()}>{t("flasher.serial.clear")}</button>
       </div>
 
       {blocked ? <p className={styles.note}>{t("flasher.serial.waitFlash")}</p> : null}

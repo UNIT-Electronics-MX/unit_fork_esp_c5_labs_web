@@ -35,13 +35,6 @@ export const TRACKS: readonly Track[] = [
     lessonIds: ["W1", "W2", "W3", "W4", "W5"],
   },
   {
-    id: "rfid",
-    title: "RFID & NFC",
-    blurb: "Cards, tags and the 13.56 MHz field",
-    color: "--rfid",
-    lessonIds: ["R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8"],
-  },
-  {
     id: "sensors",
     title: "Sensors",
     blurb: "Temperature, air, motion over I2C",
@@ -71,6 +64,14 @@ export const TRACKS: readonly Track[] = [
     blurb: "Listen, pair, control: phones, keyboards, music",
     color: "--ble",
     lessonIds: ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"],
+  },
+  // RFID and Sound come last: they are Arduino-only, with no MicroPython support yet.
+  {
+    id: "rfid",
+    title: "RFID & NFC",
+    blurb: "Cards, tags and the 13.56 MHz field",
+    color: "--rfid",
+    lessonIds: ["R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8"],
   },
   {
     id: "sound",
