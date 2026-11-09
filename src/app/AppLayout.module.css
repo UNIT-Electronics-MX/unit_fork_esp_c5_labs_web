@@ -120,11 +120,34 @@
   background: var(--ink);
   color: var(--surface);
 }
-/* Phones: the bar is brand + icons on one line, the bench pill on its own line under it. */
+/* Keep the same three header rows at every phone width. */
 @media (max-width: 559px) {
+  .top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+    margin: 0;
+  }
+  .top > :last-child {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .sections {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    min-width: 0;
+  }
   .top > :nth-child(2) {
-    order: 3;
-    flex: 1 1 100%;
+    grid-column: 1 / -1;
+    grid-row: 3;
+    width: 100%;
   }
   /* Icons only, but the label stays for screen readers. */
   .navLabel {
@@ -136,7 +159,10 @@
     white-space: nowrap;
   }
   .sections a {
-    padding: 0 10px;
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+    padding: 0 6px;
   }
   .eyebrow {
     display: none;

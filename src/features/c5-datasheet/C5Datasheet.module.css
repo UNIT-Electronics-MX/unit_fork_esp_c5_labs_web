@@ -239,6 +239,14 @@
 }
 
 @media (max-width: 650px) {
+  .nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: visible;
+    padding-block-end: 10px;
+  }
+  .nav a { text-align: center; }
+  .nav a:last-child { grid-column: 1 / -1; }
   .twoColumns {
     grid-template-columns: 1fr;
   }
@@ -248,9 +256,11 @@
   }
 
   .metric {
-    min-height: 138px;
+    min-height: 120px;
     padding: 14px;
   }
+  .chapters a span:first-child { min-width: 0; overflow-wrap: anywhere; }
+  .pdf { display: none; }
 }
 
 @media (min-width: 651px) and (max-width: 1050px) {

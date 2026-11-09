@@ -33,7 +33,9 @@ export function AppLayout() {
   // S3-era lessons carry a notice until they are ported; the Pulsar C5 tracks do not.
   const lessonId = /^\/lessons\/([^/]+)/.exec(pathname)?.[1];
   const legacyLesson = lessonId !== undefined && boardOfLesson(lessonId) === "devkitc-s3";
-  const wideWorkspace = pathname === "/" || pathname === "/lessons" || /^\/lessons\/[^/]+(?:\/code)?$/.test(pathname) || pathname === "/pinout";
+  const wideWorkspace = pathname === "/" || pathname === "/lessons" || /^\/lessons\/[^/]+(?:\/code)?$/.test(pathname)
+    || pathname === "/pinout" || pathname === "/flash" || pathname.startsWith("/datasheet")
+    || pathname === "/log" || pathname === "/settings";
   return (
     <div className={`${styles.wrap} ${wideWorkspace ? styles.wide : ""}`}>
       {/* The hash router owns location.hash, so the skip link moves focus itself. */}

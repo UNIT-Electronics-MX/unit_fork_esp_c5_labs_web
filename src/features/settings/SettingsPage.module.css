@@ -179,6 +179,13 @@
   border: 1px solid var(--line);
   color: var(--ink);
 }
+@media (max-width: 559px) {
+  .page { gap: 12px; min-width: 0; }
+  .section { padding: 14px; }
+  .level { padding: 12px; }
+  .level[aria-checked="true"] { padding: 11px; }
+  .previewCode { height: 260px; }
+}
 
 .views {
   display: grid;

@@ -282,10 +282,10 @@ export function FirmwareFlasher({
       {embedded ? <details className={styles.console}>
         <summary>{t("flasher.log")}</summary>
         <pre role="log" aria-live="off">{log || t("flasher.logEmpty")}</pre>
-      </details> : <section className={styles.console} aria-labelledby="flash-log">
-        <h2 id="flash-log">{t("flasher.log")}</h2>
+      </details> : <details className={styles.console} open={phase !== "ready"}>
+        <summary>{t("flasher.log")}</summary>
         <pre role="log" aria-live="off">{log || t("flasher.logEmpty")}</pre>
-      </section>}
+      </details>}
     </div>
   );
 }

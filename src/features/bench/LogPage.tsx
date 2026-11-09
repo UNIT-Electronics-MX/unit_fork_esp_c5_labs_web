@@ -87,7 +87,7 @@ export function LogPage() {
                     {table.rows.map((row) => (
                       <tr key={row.join("|")}>
                         {row.map((cell, i) => (
-                          <td key={i} className={table.mono.includes(i) ? styles.mono : undefined}>
+                          <td key={i} data-label={table.head[i]} className={table.mono.includes(i) ? styles.mono : undefined}>
                             {cell}
                           </td>
                         ))}

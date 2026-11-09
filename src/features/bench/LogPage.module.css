@@ -269,3 +269,20 @@
   padding-inline: 12px 0;
   margin: 12px 0 0;
 }
+@media (max-width: 620px) {
+  .timeline ol { grid-template-columns: repeat(auto-fill, minmax(30px, 1fr)); }
+  .timeline button { height: 32px; }
+  .table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .table tbody { display: grid; gap: 8px; }
+  .table tr { display: grid; padding: 4px 10px; border: 1px solid var(--line); border-radius: var(--radius-s); }
+  .table td {
+    display: grid;
+    grid-template-columns: minmax(78px, 35%) minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .table td:last-child { border-bottom: 0; }
+  .table td::before { content: attr(data-label); color: var(--muted); font: 650 11px var(--font-mono); }
+}
