@@ -35,19 +35,8 @@
   margin: 0;
 }
 
-.diagramScroll {
-  overflow-x: auto;
-  padding: 12px;
-  border-radius: var(--radius-s);
-  background: #f5f5f0;
-}
-
-.diagram img {
-  display: block;
-  width: 100%;
-  min-width: 440px;
-  height: auto;
-  margin-inline: auto;
+.legend {
+  margin-top: 10px;
 }
 
 .diagram figcaption {

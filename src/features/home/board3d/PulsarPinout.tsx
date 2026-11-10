@@ -1,9 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { isGpio, PULSAR_HEADER } from "@/domain/pulsar";
-import { PULSAR_DIAGRAM as DIAGRAM, PULSAR_SOURCE as SOURCE } from "@/features/board/pulsar-assets";
+import { BoardPinout } from "@/features/board/BoardPinout";
+import { PadLegend } from "@/features/board/PadLegend";
+import { PULSAR_SOURCE as SOURCE } from "@/features/board/pulsar-assets";
 import styles from "./PulsarPinout.module.css";
-
 
 export function PulsarPinout({ defaultOpen = false }: { defaultOpen?: boolean }) {
   const { t } = useTranslation();
@@ -16,15 +17,9 @@ export function PulsarPinout({ defaultOpen = false }: { defaultOpen?: boolean })
       </p>
       <div className={styles.content}>
         <figure className={styles.diagram}>
-          <div className={styles.diagramScroll}>
-            <img
-              src={DIAGRAM}
-              alt={t("board.pulsar.alt")}
-              width="498"
-              height="455"
-              loading="lazy"
-            />
-          </div>
+          {/* Drawn from the same header data as the interactive pinout, so the two always agree. */}
+          <BoardPinout pins={[]} usb={false} boot={false} detailed reference />
+          <PadLegend className={styles.legend} />
           <figcaption>
             <Link to="/pinout">{t("board.pulsar.open")}</Link>
           </figcaption>
@@ -44,7 +39,7 @@ export function PulsarPinout({ defaultOpen = false }: { defaultOpen?: boolean })
                 <tr key={i}>
                   <th scope="row">{i + 1}</th>
                   <td>{p.label}</td>
-                  <td>{isGpio(p.pin) ? `${p.pin}${p.unverified ? "*" : ""}` : "—"}</td>
+                  <td>{isGpio(p.pin) ? p.pin : "—"}</td>
                   <td>{t(`board.pulsar.use.${p.use}`)}</td>
                 </tr>
               ))}

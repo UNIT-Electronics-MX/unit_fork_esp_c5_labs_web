@@ -69,7 +69,7 @@
       "Send <code>rgb 255 0 0</code>, <code>rgb 0 255 0</code> and <code>rgb 0 0 255</code> to compare the primary colours.",
       "Send <code>rgb 255 80 0</code>, then <code>level 20</code> and <code>level 100</code>. Compare colour and brightness; send <code>off</code> when done."
     ],
-    "note": "No colour? The schematic wires the LED's data line to GPIO0, but UNIT's board artwork labels it GPIO8. Try <code>RGB_PIN = 8</code> and tell us which one your board uses.",
+    "note": "No colour? Check that <code>RGB_PIN</code> is 0: the LED's data line is GPIO0, the D2/RGB pad.",
     "variants": {
       "arduino": {
         "label": "Arduino",
@@ -90,7 +90,7 @@
           "In the terminal, send <code>rgb 255 0 0</code>, <code>rgb 0 255 0</code> and <code>rgb 0 0 255</code> to compare the primary colours.",
           "Send <code>rgb 255 80 0</code>, then <code>level 20</code> and <code>level 100</code>. Send <code>off</code> and press <b>Stop</b> when finished."
         ],
-        "note": "The schematic uses GPIO0 for the RGB data line; some board artwork says GPIO8. Change <code>RGB_PIN</code> to 8 if your LED stays dark."
+        "note": "The RGB data line is GPIO0 (D2/RGB). If the LED stays dark, check that <code>RGB_PIN</code> is 0."
       }
     }
   },

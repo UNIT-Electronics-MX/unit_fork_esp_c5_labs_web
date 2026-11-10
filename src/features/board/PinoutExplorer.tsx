@@ -5,9 +5,14 @@ import { Link } from "react-router";
 import { trackLessonsQuery } from "@/content/queries";
 import { trackOfLesson } from "@/content/tracks";
 import { isActive, resolveLesson } from "@/domain/lesson";
-import { isGpio, PULSAR_HEADER, pulsarPadClass, pulsarSilk, pulsarUsage } from "@/domain/pulsar";
+import type { PinSide } from "@/domain/lesson";
+import { isGpio, PULSAR_HEADER, pulsarPadClass, pulsarSide, pulsarSilk, pulsarUsage } from "@/domain/pulsar";
 import { useLocale } from "@/i18n/use-locale";
 import { BoardPinout } from "./BoardPinout";
+import { PAD_COLOUR } from "./pad-classes";
+import { padsBySide } from "./pad-directory";
+import { PadDetail } from "./PadDetail";
+import { PadLegend } from "./PadLegend";
 import { PULSAR_SOURCE } from "./pulsar-assets";
 import styles from "./PinoutExplorer.module.css";
 
@@ -20,13 +25,18 @@ export function PinoutExplorer({ lessonId, variant, initialPin }: { lessonId: st
   const lesson = base && isActive(base) ? resolveLesson(base, variant ?? undefined) : null;
   const usage = pulsarUsage(lesson?.pins ?? []);
   const pinNumber = Number(initialPin);
-  const [selected, setSelected] = useState<number | null>(
-    initialPin && Number.isInteger(pinNumber) && pinNumber >= 1 && pinNumber <= PULSAR_HEADER.length ? pinNumber - 1 : null,
-  );
+  const initialIndex =
+    initialPin && Number.isInteger(pinNumber) && pinNumber >= 1 && pinNumber <= PULSAR_HEADER.length ? pinNumber - 1 : null;
+  const [selected, setSelected] = useState<number | null>(initialIndex);
+  // The table shows one edge of the board at a time; picking a pad elsewhere turns to its edge.
+  const [side, setSide] = useState<PinSide>(initialIndex === null ? "L" : pulsarSide(initialIndex));
+  const selectPad = (index: number) => {
+    setSelected(index);
+    setSide(pulsarSide(index));
+  };
   const [hovered, setHovered] = useState<number | null>(null);
   const [search, setSearch] = useState("");
   const active = hovered ?? selected;
-  const pad = active === null ? null : PULSAR_HEADER[active];
   const uses = active === null ? [] : usage.get(active) ?? [];
   const needle = search.trim().toLocaleLowerCase(locale);
   const visible = PULSAR_HEADER.map((position, index) => ({ position, index })).filter(({ position, index }) =>
@@ -37,6 +47,8 @@ export function PinoutExplorer({ lessonId, variant, initialPin }: { lessonId: st
       t(`board.pulsar.use.${position.use}`),
     ].some((value) => value.toLocaleLowerCase(locale).includes(needle)),
   );
+  // A search looks along both edges; otherwise only the chosen edge is listed.
+  const groups = padsBySide(visible.map(({ index }) => index)).filter((group) => needle || group.side === side);
   const lessonHref = lesson ? `/lessons/${lesson.id}${lesson.variantKey ? `?variant=${encodeURIComponent(lesson.variantKey)}` : ""}` : null;
 
   return (
@@ -59,7 +71,7 @@ export function PinoutExplorer({ lessonId, variant, initialPin }: { lessonId: st
           </div>
           <div className={styles.lessonPins}>
             {[...usage].map(([index, roles]) => (
-              <button type="button" key={index} aria-pressed={active === index} onClick={() => setSelected(index)}>
+              <button type="button" key={index} aria-pressed={active === index} onClick={() => selectPad(index)}>
                 {pulsarSilk(PULSAR_HEADER[index]!)} · {roles.map((role) => role.role).join(" / ")}
               </button>
             ))}
@@ -75,25 +87,27 @@ export function PinoutExplorer({ lessonId, variant, initialPin }: { lessonId: st
             usb={Boolean(lesson?.usb)}
             boot={Boolean(lesson?.boot)}
             selectedPosition={active}
-            onSelectPosition={setSelected}
+            onSelectPosition={selectPad}
             onHoverPosition={setHovered}
+            detailed
           />
           <p className={styles.help}>{t("board.explorer.help")}</p>
         </section>
 
         <div className={styles.side}>
-          <section className={styles.detail} aria-live="polite">
+          <section className={styles.detail}>
             <p className={styles.eyebrow}>{t("board.explorer.detail")}</p>
-            {pad && active !== null ? (
-              <>
-                <h2>{pulsarSilk(pad)} <span>{isGpio(pad.pin) ? `GPIO${pad.pin}` : pad.pin}</span></h2>
-                <p>{t(`board.pulsar.use.${pad.use}`)}</p>
-                <p className={styles.position}>{t("board.explorer.position", { number: active + 1, label: pad.label })}</p>
-                {uses.length ? <p className={styles.inLesson}>{t("board.explorer.usedAs", { roles: uses.map((item) => item.role).join(" · ") })}</p> : null}
-                {pad.unverified ? <p className={styles.caution}>{t("board.explorer.unverified")}</p> : null}
-                {pulsarPadClass(pad.pin) === "avoid" ? <p className={styles.caution}>{t("board.explorer.avoid")}</p> : null}
-              </>
-            ) : <p>{t("board.explorer.choose")}</p>}
+            {/* Every pad's detail sits hidden in the same cell, so the panel always has the height of
+                the longest one and moving between pads never shifts the table below. */}
+            <div className={styles.detailStack}>
+              <div className={styles.sizer} aria-hidden="true">
+                {PULSAR_HEADER.map((_, index) => <PadDetail key={index} index={index} uses={usage.get(index) ?? []} />)}
+                <p>{t("board.explorer.choose")}</p>
+              </div>
+              <div aria-live="polite">
+                {active !== null ? <PadDetail index={active} uses={uses} /> : <p className={styles.choose}>{t("board.explorer.choose")}</p>}
+              </div>
+            </div>
           </section>
 
           <section className={styles.directory} aria-label={t("board.explorer.directory")}>
@@ -104,6 +118,16 @@ export function PinoutExplorer({ lessonId, variant, initialPin }: { lessonId: st
                 <input type="search" value={search} placeholder={t("board.explorer.search")} onChange={(event) => setSearch(event.target.value)} />
               </label>
             </div>
+            <PadLegend className={styles.legend} />
+            {!needle ? (
+              <div className={styles.sides} role="group" aria-label={t("board.explorer.sides")}>
+                {(["L", "R"] as const).map((edge) => (
+                  <button key={edge} type="button" aria-pressed={side === edge} onClick={() => setSide(edge)}>
+                    {t(edge === "L" ? "board.explorer.tabLeft" : "board.explorer.tabRight")}
+                  </button>
+                ))}
+              </div>
+            ) : null}
             <div className={styles.tableScroll}>
               <table>
                 <thead><tr>
@@ -112,16 +136,28 @@ export function PinoutExplorer({ lessonId, variant, initialPin }: { lessonId: st
                   <th scope="col">{t("board.pulsar.gpio")}</th>
                   <th scope="col">{t("board.pulsar.mainUse")}</th>
                 </tr></thead>
-                <tbody>
-                  {visible.map(({ position, index }) => (
-                    <tr key={index} data-active={active === index || undefined} data-used={usage.has(index) || undefined} onMouseEnter={() => setHovered(index)} onMouseLeave={() => setHovered(null)}>
-                      <th scope="row"><button type="button" aria-label={t("board.explorer.select", { number: index + 1, label: position.label })} aria-pressed={active === index} onFocus={() => setHovered(index)} onBlur={() => setHovered(null)} onClick={() => setSelected(index)}>{index + 1}</button></th>
-                      <td>{position.label}{position.unverified ? <span className={styles.mark} title={t("board.explorer.unverified")}>*</span> : null}</td>
-                      <td>{isGpio(position.pin) ? position.pin : "—"}</td>
-                      <td>{t(`board.pulsar.use.${position.use}`)}</td>
+                {groups.map(({ side: edge, positions }) => (
+                  <tbody key={edge}>
+                    <tr className={styles.sideRow}>
+                      <th scope="colgroup" colSpan={4}>{t(edge === "L" ? "board.explorer.sideLeft" : "board.explorer.sideRight")}</th>
                     </tr>
-                  ))}
-                </tbody>
+                    {positions.map((index) => {
+                      const position = PULSAR_HEADER[index];
+                      if (!position) return null;
+                      return (
+                        <tr key={index} data-active={active === index || undefined} data-used={usage.has(index) || undefined} onMouseEnter={() => setHovered(index)} onMouseLeave={() => setHovered(null)}>
+                          <th scope="row"><button type="button" aria-label={t("board.explorer.select", { number: index + 1, label: position.label })} aria-pressed={active === index} onFocus={() => setHovered(index)} onBlur={() => setHovered(null)} onClick={() => selectPad(index)}>{index + 1}</button></th>
+                          <td>
+                            <i className={styles.dot} style={{ background: PAD_COLOUR[pulsarPadClass(position.pin)] }} aria-hidden="true" />
+                            {position.label}
+                          </td>
+                          <td>{isGpio(position.pin) ? position.pin : "—"}</td>
+                          <td>{t(`board.pulsar.use.${position.use}`)}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                ))}
               </table>
               {!visible.length ? <p className={styles.empty}>{t("board.explorer.noResults")}</p> : null}
             </div>

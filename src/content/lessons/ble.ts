@@ -1,6 +1,7 @@
 // Lessons of the "ble" track. Strings may carry the inline markup RichText understands:
 // <b>, <i>, <code> and <span class="snd-parts|need|opt">.
 import type { LessonEntry } from "@/domain/lesson";
+import { c5BleLesson } from "./c5-wireless";
 
 export const bleLessons = [
   {
@@ -1577,4 +1578,5 @@ export const bleLessons = [
       widget: "ble",
     },
   },
+  c5BleLesson,
 ] as const satisfies readonly LessonEntry[];

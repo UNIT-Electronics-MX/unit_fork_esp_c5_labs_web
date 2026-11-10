@@ -63,7 +63,7 @@
       "Mira cómo el LED RGB integrado recorre los colores.",
       "Cierra el monitor antes de cargar otro sketch."
     ],
-    "note": "El esquema sitúa el LED RGB en GPIO0, mientras que la ilustración de UNIT indica GPIO8. Si no enciende, prueba a cambiar RGB_PIN a 8.",
+    "note": "El LED RGB de la placa es un WS2812 en GPIO0, el pad D2/RGB, así que el sketch fija RGB_PIN en 0.",
     "variants": {
       "arduino": {
         "label": "Arduino",
@@ -85,7 +85,7 @@
           "Pulsa <b>Ejecutar en la placa</b> y observa cómo cambia de color el LED RGB.",
           "Pulsa <b>Detener</b> para volver al indicador <code>&gt;&gt;&gt;</code> y prueba un comando Python en la consola serie."
         ],
-        "note": "El esquema usa GPIO0 para RGB; la ilustración de UNIT indica GPIO8. Cambia RGB_PIN en el editor si el LED no enciende."
+        "note": "La línea de datos del LED RGB es GPIO0 (D2/RGB): deja RGB_PIN en 0 en el editor."
       }
     }
   },

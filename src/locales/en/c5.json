@@ -64,7 +64,7 @@
   },
   "pins": {
     "twoMapsTitle": "Board labels and chip GPIOs",
-    "twoMapsText": "The board map below follows UNIT's Pulsar C5 hardware reference, revision V1.2.3. The chip datasheet describes GPIO capabilities and boot strapping. Some board artwork conflicts with the schematic at D2/RGB, so that signal remains marked as unverified.",
+    "twoMapsText": "The board map below follows UNIT's Pulsar C5 hardware reference, revision V1.2.3. The chip datasheet describes GPIO capabilities and boot strapping. D2/RGB is GPIO0.",
     "bootNote": "GPIO26, GPIO27 and GPIO28 are strapping pins. The board's D3/BOOT label maps to GPIO28; check the boot-state requirements before attaching a circuit."
   },
   "groups": {

@@ -125,7 +125,6 @@
       "label": "圖例",
       "used": "本課用到",
       "safe": "可放心使用的 GPIO",
-      "avoid": "避免使用",
       "power": "電源",
       "ground": "地",
       "button": "按鍵輸入",

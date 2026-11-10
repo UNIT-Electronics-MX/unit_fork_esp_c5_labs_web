@@ -56,7 +56,7 @@ export function LessonTabs({
   const env = envOfCommand(lesson.cmd);
   const { data: index } = useQuery({ ...firmwareIndexQuery(), enabled: !!env });
   const progress = useAllProgress();
-  if (!env && lesson.track !== "intro" && lesson.track !== "pulsar" && lesson.id !== "D2" && lesson.id !== "O1") return null;
+  if (!env && lesson.track !== "intro" && lesson.track !== "pulsar" && lesson.id !== "D2" && lesson.id !== "O1" && lesson.id !== "I1" && lesson.id !== "I2") return null;
   const files = env ? index?.envs.find((e) => e.env === env)?.files ?? [] : [];
   const own = files.filter((f) => f.role === "lab");
   const lines = own.reduce((n, f) => n + f.lines, 0);
@@ -123,11 +123,11 @@ export function LessonTabs({
                 ? t("tabs.codeSubMicroPython")
                 : lesson.track === "pulsar" && lesson.variantKey === "micropython"
                 ? t("tabs.codeSubMicroPython")
-                : (lesson.id === "D2" || lesson.id === "O1") && lesson.variantKey === "micropython"
+                : (lesson.id === "D2" || lesson.id === "O1" || lesson.id === "I1" || lesson.id === "I2") && lesson.variantKey === "micropython"
                 ? t("tabs.codeSubMicroPython")
                 : lesson.track === "pulsar"
                 ? t("tabs.codeSubArduino")
-                : lesson.id === "D2" || lesson.id === "O1"
+                : lesson.id === "D2" || lesson.id === "O1" || lesson.id === "I1" || lesson.id === "I2"
                 ? t("tabs.codeSubArduino")
                 : t("tabs.codeSubEmpty")}
           </span>

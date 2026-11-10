@@ -51,27 +51,45 @@ describe("content", () => {
     expect(ids.length).toBe(new Set(ids).size);
   });
 
-  it.each(TRACKS.filter((t) => t.board === "pulsar-c5" && !t.planned))(
-    "places every $id pin on the Pulsar C5 header, on the side and position it names",
-    async (track) => {
-      const lessons = await trackLessonsQuery(track.id, "en").queryFn!({} as never);
-      const misplaced = lessons
-        .flatMap((l) => (l.kind === "lesson" ? (l.pins ?? []).map((p) => ({ id: l.id, p })) : []))
-        .filter(({ p }) => {
-          const at = pulsarPosition(p);
-          return at < 0 || pulsarSide(at) !== p.side || (p.idx !== undefined && p.idx !== at);
-        });
-      expect(misplaced).toEqual([]);
-    },
-  );
+  it("places every C5 lesson pin on the Pulsar header", async () => {
+    const tracks = TRACKS.filter((track) => !track.planned);
+    const contents = await Promise.all(tracks.map((track) => trackLessonsQuery(track.id, "en").queryFn!({} as never)));
+    const misplaced = contents.flat()
+      .filter((lesson) => lesson.kind === "lesson" && boardOfLesson(lesson.id) === "pulsar-c5")
+      .flatMap((lesson) => (lesson.kind === "lesson" ? (lesson.pins ?? []).map((p) => ({ id: lesson.id, p })) : []))
+      .filter(({ p }) => {
+        const at = pulsarPosition(p);
+        return at < 0 || pulsarSide(at) !== p.side || (p.idx !== undefined && p.idx !== at);
+      });
+    expect(misplaced).toEqual([]);
+  });
 
   it("knows which board each lesson is wired on", () => {
     expect(boardOfLesson("00")).toBe("pulsar-c5");
     expect(boardOfLesson("01")).toBe("pulsar-c5");
     expect(boardOfLesson("02")).toBe("pulsar-c5");
     expect(boardOfLesson("P4")).toBe("pulsar-c5");
+    expect(boardOfLesson("I1")).toBe("pulsar-c5");
+    expect(boardOfLesson("I2")).toBe("pulsar-c5");
+    expect(boardOfLesson("W1")).toBe("devkitc-s3");
+    expect(boardOfLesson("B1")).toBe("devkitc-s3");
     expect(boardOfLesson("R1")).toBe("devkitc-s3");
     expect(boardOfLesson("nope")).toBe("devkitc-s3");
+  });
+
+  it.each([
+    { track: "wifi" as const, id: "I1" },
+    { track: "ble" as const, id: "I2" },
+  ])("keeps the C5 $id example and both code variants in $track", async ({ track, id }) => {
+    const lessons = await trackLessonsQuery(track, "es").queryFn!({} as never);
+    const lesson = lessons.find((entry) => entry.id === id);
+    expect(lesson && isActive(lesson)).toBe(true);
+    if (!lesson || !isActive(lesson)) return;
+    expect(lesson.track).toBe(track);
+    expect(lesson.variants?.map((variant) => variant.key)).toEqual(["arduino", "micropython"]);
+    expect(resolveLesson(lesson, "arduino").cmd).toContain("arduino-cli");
+    expect(resolveLesson(lesson, "micropython").cmd).toBe("");
+    expect(lesson.title).not.toBe(track === "wifi" ? "Wi-Fi to the cloud" : "Bluetooth LE touch");
   });
 
   it("keeps Arduino and MicroPython variants through the three C5 intro lessons", async () => {

@@ -1,7 +1,7 @@
 // Intro 01: identify the Pulsar C5 and cycle its on-board RGB LED.
 #include <Arduino.h>
 
-constexpr uint8_t RGB_PIN = 0;  // The schematic says GPIO0; try 8 if your board differs.
+constexpr uint8_t RGB_PIN = 0;  // D2/RGB pad: the WS2812 data line.
 constexpr uint8_t BRIGHTNESS = 40;
 
 void wheel(uint8_t pos, uint8_t& r, uint8_t& g, uint8_t& b) {

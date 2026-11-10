@@ -72,7 +72,7 @@ export const introLessons = [
       "Watch the on-board RGB LED cycle through colours.",
       "Close the monitor before uploading another sketch.",
     ],
-    note: "The schematic puts the RGB LED on GPIO0, while UNIT's board artwork says GPIO8. If it stays dark, try changing RGB_PIN to 8.",
+    note: "The on-board RGB LED is a WS2812 on GPIO0, the D2/RGB pad, so the sketch sets RGB_PIN to 0.",
     variants: [
       { key: "arduino", label: "Arduino", short: "Sketch and serial monitor" },
       {
@@ -86,7 +86,7 @@ export const introLessons = [
           "Press <b>Run on board</b> and watch the RGB LED cycle through colours.",
           "Press <b>Stop</b> to return to the <code>&gt;&gt;&gt;</code> prompt, then try a Python command in the serial console.",
         ],
-        note: "The schematic uses GPIO0 for RGB; UNIT's artwork says GPIO8. Change RGB_PIN in the editor if the LED stays dark.",
+        note: "The RGB LED's data line is GPIO0 (D2/RGB): keep RGB_PIN at 0 in the editor.",
       },
     ],
     panels: [],

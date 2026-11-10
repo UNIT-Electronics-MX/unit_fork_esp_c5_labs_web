@@ -127,6 +127,27 @@ describe("SerialSession", () => {
     expect(writes.at(-1)).toBe("\x04");
   });
 
+  it("keeps the paste-mode upload out of the terminal but shows the script's output", async () => {
+    let input!: ReadableStreamDefaultController<Uint8Array>;
+    const shown: string[] = [];
+    const encoder = new TextEncoder();
+    const readable = new ReadableStream<Uint8Array>({ start(controller) { input = controller; } });
+    const writable = new WritableStream<Uint8Array>({ write(chunk) {
+      const text = new TextDecoder().decode(chunk);
+      if (text.includes("\x03")) input.enqueue(encoder.encode(">>> "));
+      else if (text === "\x05") input.enqueue(encoder.encode("paste mode; Ctrl-C to cancel, Ctrl-D to finish\r\n=== "));
+      else if (text.endsWith("\r")) input.enqueue(encoder.encode(`${text.slice(0, -1)}\r\n=== `));
+      else if (text === "\x04") input.enqueue(encoder.encode("\r\nhi\r\n>>> "));
+    } });
+    const session = new SerialSession({ readable, writable, open: async () => undefined, close: async () => undefined }, (text) => shown.push(text), () => undefined);
+    await session.open(115200);
+
+    await session.runPython("print('hi')\n");
+    await vi.waitFor(() => expect(shown.join("")).toContain("hi\r\n>>> "));
+    expect(shown.join("")).toBe("\r\nhi\r\n>>> ");
+    await session.close();
+  });
+
   it("confirms the REPL prompt before reporting that a program stopped", async () => {
     let input!: ReadableStreamDefaultController<Uint8Array>;
     let wrote!: () => void;

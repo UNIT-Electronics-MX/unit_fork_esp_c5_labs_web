@@ -4,17 +4,8 @@ import type { ResolvedLesson } from "@/domain/lesson";
 import { pulsarMissing } from "@/domain/pulsar";
 import { useLocaleInfo } from "@/i18n/use-locale";
 import { BoardPinout } from "./BoardPinout";
+import { LegendDot, PadLegend } from "./PadLegend";
 import styles from "./BoardCard.module.css";
-
-const LEGEND = [
-  ["--copper", "used"],
-  ["--pad", "safe"],
-  ["--danger", "avoid"],
-  ["--power", "power"],
-  ["--gnd", "ground"],
-  ["--w-btn", "button"],
-  ["--rfid", "rfid"],
-] as const;
 
 const BETWEEN = ["unplug", "rewire", "check", "flash"] as const;
 
@@ -47,14 +38,16 @@ export function BoardCard({ lesson }: { lesson: ResolvedLesson | null }) {
           })}
         </p>
       ) : null}
-      <ul className={styles.legend} aria-label={t("board.legend.label")}>
-        {LEGEND.map(([color, key]) => (
-          <li key={key}>
-            <i style={{ background: `var(${color})` }} aria-hidden="true" />
-            {t(`board.legend.${key}`)}
-          </li>
-        ))}
-      </ul>
+      <PadLegend
+        className={styles.legend}
+        before={<LegendDot colour="var(--copper)">{t("board.legend.used")}</LegendDot>}
+        after={
+          <>
+            <LegendDot colour="var(--w-btn)">{t("board.legend.button")}</LegendDot>
+            <LegendDot colour="var(--rfid)">{t("board.legend.rfid")}</LegendDot>
+          </>
+        }
+      />
       <p className={styles.strapping}>
         {t("board.pulsar.strapping")}{" "}
         <Link to={pinoutHref}>{t("board.pulsar.open")}</Link>

@@ -225,5 +225,68 @@
   },
   "W5": {
     "title": "Diario de hardware"
+  },
+  "I1": {
+    "title": "Wi-Fi a la nube",
+    "heading": "Publica lecturas en ThingSpeak",
+    "goal": "Conéctate a tu red Wi-Fi, de 2,4 GHz o 5 GHz, y envía la temperatura y la humedad de un DHT11 a un canal de ThingSpeak cada 20 segundos.",
+    "learn": [
+      "modo estación",
+      "Wi-Fi de doble banda",
+      "HTTP GET",
+      "claves de API",
+      "límites de frecuencia"
+    ],
+    "wiring": {
+      "rows": [
+        [
+          "A2 (GPIO4)",
+          "DHT11 KY-015 S / DATA",
+          ""
+        ],
+        [
+          "3V3",
+          "DHT11 VCC",
+          ""
+        ],
+        [
+          "GND",
+          "DHT11 GND",
+          ""
+        ]
+      ]
+    },
+    "steps": [
+      "Crea un canal gratuito de ThingSpeak con dos campos y copia su <b>Write API Key</b>.",
+      "Instala <code>DHT sensor library</code> desde el gestor de librerías.",
+      "Escribe el nombre de tu red, la contraseña y la clave en las tres constantes del principio del sketch.",
+      "Desconecta el USB, cablea el DHT11, conecta y ejecuta el comando.",
+      "El monitor imprime la IP, el canal y la banda, y luego <code>HTTP 200</code> cada 20 segundos. Mira cómo se llenan las gráficas del canal."
+    ],
+    "note": "A diferencia de la C6, la C5 también se conecta a redes de <b>5 GHz</b>: canal 36 en adelante. Nunca subas un sketch con tu contraseña o clave reales.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Sketch y monitor serial"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script, dht y requests",
+        "goal": "Conéctate a tu red Wi-Fi, de 2,4 GHz o 5 GHz, desde MicroPython y envía la temperatura y la humedad del DHT11 a ThingSpeak cada 20 segundos.",
+        "learn": [
+          "network.WLAN",
+          "Wi-Fi de doble banda",
+          "módulo dht",
+          "HTTP GET con requests"
+        ],
+        "steps": [
+          "Crea un canal gratuito de ThingSpeak con dos campos y copia su <b>Write API Key</b>.",
+          "Desconecta el USB, cablea el DHT11 y vuelve a conectar. Abre <b>Código</b> y conecta la consola REPL.",
+          "En <code>thingspeak_dht.py</code>, escribe el nombre de tu red, la contraseña y la clave en las tres constantes del principio.",
+          "Pulsa <b>Ejecutar en la placa</b>. La terminal imprime la IP, el canal y la banda, y luego <code>HTTP 200</code> cada 20 segundos. Pulsa <b>Detener</b> al terminar."
+        ],
+        "note": "Los módulos <code>dht</code> y <code>requests</code> de MicroPython vienen con el firmware del ESP32-C5: no hay que instalar nada. Nunca guardes ni compartas el script con tu contraseña o clave reales."
+      }
+    }
   }
 }

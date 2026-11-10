@@ -1,5 +1,5 @@
 // P2 · RGB mixer: control the on-board WS2812 from the serial monitor.
-// The schematic puts its data line on GPIO0; UNIT's artwork labels it GPIO8 (see the lesson).
+// Its data line is GPIO0, the D2/RGB pad.
 #include <Arduino.h>
 
 constexpr uint8_t RGB_PIN = 0;

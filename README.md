@@ -87,13 +87,13 @@ The guide is in English, French, Spanish, Italian, German, Polish, Turkish, Chin
 | ----------------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------- |
 | **Intro**         | 00 Setup · 01 Hello · 02 First circuit                                                     | The toolchain, your first program, an LED you command   |
 | **Display & input** | 03 Display · 03b Showcase                                                                | The 1.9″ TFT and the buttons                            |
-| **Wi-Fi**         | W1 Scan & join · W2 Phone control · W3 Internet & AI · *W4, W5 planned*                    | Scanning, a web page on the board, APIs over HTTPS      |
+| **Wi-Fi**         | W1 Scan & join · W2 Phone control · W3 Internet & AI · *W4, W5 planned* · I1 C5 cloud     | Scanning, web pages, APIs and C5 sensor readings        |
 | **RFID & NFC**    | R1 Wire & talk → R8 Card friends                                                           | The 13.56 MHz field, card memory, a door with card admin |
-| **Bluetooth LE**  | B1 Listen → B8 Host                                                                        | Advertising, pairing, a phone app, a keyboard, music    |
+| **Bluetooth LE**  | B1 Listen → B8 Host · I2 C5 touch                                                         | Advertising, pairing, a phone app and C5 touch events  |
 | **Sound**         | S1 Hear → S8 Voice FX                                                                      | Loudness, clap control, a recorder, a spectrum, a speaker |
 | **Sensors**       | *planned*                                                                                  | Temperature, air and motion over I2C                    |
 
-The firmware for every lab is a standalone PlatformIO project in [esp-labs](https://github.com/agharsallah/esp-labs). Each lesson links to its folder on GitHub.
+The S3 labs use standalone PlatformIO projects in [esp-labs](https://github.com/agharsallah/esp-labs). The Pulsar C5 examples I1 and I2 use the Arduino sketches in [`sketches/pulsar-c5`](sketches/pulsar-c5), with MicroPython versions in the Code tab.
 
 ## Quick start
 

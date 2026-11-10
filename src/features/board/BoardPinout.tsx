@@ -1,10 +1,10 @@
+import { useId } from "react";
 import { useTranslation } from "react-i18next";
 import type { PinUse } from "@/domain/lesson";
 import {
   isGpio,
   PULSAR_HEADER,
   pulsarPadClass,
-  type PulsarPadClass,
   pulsarRow,
   pulsarSilk,
   pulsarUsage,
@@ -12,6 +12,8 @@ import {
 import { useLocaleInfo } from "@/i18n/use-locale";
 import { useRgbState } from "./board-signals";
 import { roleFill } from "./pin-colour";
+import { PAD_COLOUR } from "./pad-classes";
+import { LABEL_REACH, pinoutMargin, tagWidth } from "./pinout-margin";
 import styles from "./BoardPinout.module.css";
 
 // Geometry of the UNIT Pulsar C5, top view with USB-C up, from its Gerbers (header holes at
@@ -21,21 +23,23 @@ const BX = 178;
 const BY = 18;
 const BW = 17.78 * S;
 const BH = 43.18 * S;
-const VBW = BX * 2 + BW;
 const VBH = BY + BH + 18;
 const TAG_H = 15;
-const TAG_CHAR_W = 6.2; // IBM Plex Mono, 10px semibold
+/** How far out from the board edge a pad's silk name and its "GP27" are set. */
+const NAME_OUT = 7;
+const GPIO_OUT = 40;
+/** Room a printed label takes past where it is set: the widest are "GP27" and "VBAT". */
+const LABEL_W = LABEL_REACH - GPIO_OUT;
+/** Function boxes ("SCK", "USB D+"), set just past the printed labels in the detailed drawing. */
+const FN_OUT = LABEL_REACH + 4;
+const FN_W = 52;
+const FN_H = 15;
+/** The Qwiic connector's pins, drawn under the board in the detailed drawing. */
+const QWIIC_EXTRA = 46;
 
 const mx = (mm: number) => BX + mm * S;
 const my = (mm: number) => BY + mm * S;
 const rowY = (row: number) => my(3.81 + 2.54 * row);
-
-const PAD_FILL: Record<PulsarPadClass, string> = {
-  safe: "var(--pad)",
-  avoid: "var(--danger)",
-  power: "var(--power)",
-  gnd: "var(--gnd)",
-};
 
 /** Outlines of the parts on the board, from its pick-and-place file: [x, y, w, h] in mm. */
 const PARTS = [
@@ -68,11 +72,17 @@ interface BoardPinoutProps {
   selectedPosition?: number | null;
   onSelectPosition?: (position: number) => void;
   onHoverPosition?: (position: number | null) => void;
+  /** Also draw each pad's function box and the Qwiic connector's pins, like the reference pinout. */
+  detailed?: boolean;
+  /** Drawn as the board reference, outside any lesson: describe the board, not a lesson's pins. */
+  reference?: boolean;
 }
 
 /** The UNIT Pulsar C5 as a live pinout: header pads a lesson uses are tagged with their role. */
-export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPosition, onHoverPosition }: BoardPinoutProps) {
+export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPosition, onHoverPosition, detailed = false, reference = false }: BoardPinoutProps) {
   const { t } = useTranslation();
+  // Two drawings can share a page (the lesson card and a pinout), so their ids must differ.
+  const id = useId();
   const { tag } = useLocaleInfo();
   const usage = pulsarUsage(pins);
   const uses = new Intl.ListFormat(tag, { type: "unit" }).format(
@@ -80,29 +90,38 @@ export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPositio
       on.map((p) => t("board.pinout.use", { role: p.role, pin: padName(at) })),
     ),
   );
+  // Only as much room beside the board as its labels and role tags need, so the text stays legible.
+  const margin = pinoutMargin([...usage.values()].map(roleLabel), detailed ? FN_OUT + FN_W : LABEL_REACH);
+  const height = detailed ? VBH + QWIIC_EXTRA : VBH;
 
   return (
     <svg
       className={styles.board}
-      viewBox={`0 0 ${VBW} ${VBH}`}
+      viewBox={`${BX - margin} 0 ${BW + 2 * margin} ${height}`}
       // The board has a physical left and right: it never mirrors.
       direction="ltr"
       role={onSelectPosition ? "group" : "img"}
-      aria-labelledby="board-title board-desc"
+      aria-labelledby={`${id}-title ${id}-desc`}
     >
-      <title id="board-title">{t("board.pinout.title")}</title>
-      <desc id="board-desc">
-        {usage.size ? t("board.pinout.uses", { uses }) : t("board.pinout.none")}
+      <title id={`${id}-title`}>{t("board.pinout.title")}</title>
+      <desc id={`${id}-desc`}>
+        {reference ? t("board.pinout.reference") : usage.size ? t("board.pinout.uses", { uses }) : t("board.pinout.none")}
       </desc>
       <Board usb={usb} boot={boot} />
+      {detailed ? <QwiicPins /> : null}
       {PULSAR_HEADER.map((pad, at) => {
         const on = usage.get(at);
         const { side, row } = pulsarRow(at);
         const left = side === "L";
         const y = rowY(row);
         const silk = pulsarSilk(pad);
-        const nameX = left ? BX - 7 : BX + BW + 7;
-        const gpioX = left ? BX - 40 : BX + BW + 40;
+        const out = (distance: number) => (left ? BX - distance : BX + BW + distance);
+        const nameX = out(NAME_OUT);
+        const gpioX = out(GPIO_OUT);
+        const fn = detailed ? pad.fn : undefined;
+        const fnX = left ? out(FN_OUT) - FN_W : out(FN_OUT);
+        // Where this pad's printed labels end, away from the board: the role tag starts past it.
+        const labelEnd = fn ? out(FN_OUT + FN_W) : out((isGpio(pad.pin) ? GPIO_OUT : NAME_OUT) + LABEL_W);
         const anchor = left ? "end" : "start";
         const active = selectedPosition === at;
         return (
@@ -141,14 +160,20 @@ export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPositio
                 {`GP${pad.pin}`}
               </text>
             ) : null}
+            {fn ? (
+              <g>
+                <rect x={fnX} y={y - FN_H / 2} width={FN_W} height={FN_H} rx={3} className={styles.fnBox} />
+                <text x={fnX + FN_W / 2} y={y + 3} textAnchor="middle" className={styles.fn}>{fn}</text>
+              </g>
+            ) : null}
             {on ? (
-              <RoleTag left={left} y={y} edge={isGpio(pad.pin) ? gpioX : nameX} uses={on} />
+              <RoleTag left={left} y={y} labelEnd={labelEnd} uses={on} margin={margin} />
             ) : null}
             <circle
               cx={left ? mx(1.27) : mx(16.51)}
               cy={y}
               r={on ? 6 : 4.4}
-              fill={PAD_FILL[pulsarPadClass(pad.pin)]}
+              fill={PAD_COLOUR[pulsarPadClass(pad.pin)]}
               stroke={active || on ? "var(--copper)" : "var(--pcb)"}
               strokeWidth={active ? 4 : on ? 3 : 1.5}
             />
@@ -166,25 +191,33 @@ function padName(at: number) {
   return isGpio(pad.pin) ? `${pulsarSilk(pad)} · GPIO ${pad.pin}` : pulsarSilk(pad);
 }
 
+/** "SDA · LED": every role a pad has in the lesson. */
+const roleLabel = (uses: readonly PinUse[]) => uses.map((u) => u.role).join(" · ");
+
 function RoleTag({
   left,
   y,
-  edge,
+  labelEnd,
   uses,
+  margin,
 }: {
   left: boolean;
   y: number;
   /** Where the pad's printed labels end, away from the board. */
-  edge: number;
+  labelEnd: number;
   uses: readonly PinUse[];
+  /** The drawing's room beside the board, from pinoutMargin. */
+  margin: number;
 }) {
-  const label = uses.map((u) => u.role).join(" · ");
+  const label = roleLabel(uses);
   const fill = roleFill(uses[0]?.kind);
-  const room = left ? edge - 30 - 6 : VBW - 6 - (edge + 30);
-  const w = Math.min(room, Math.max(52, label.length * TAG_CHAR_W + 12));
-  const gx = left ? 6 : VBW - 6 - w;
-  const x1 = left ? gx + w + 3 : edge + 30;
-  const x2 = left ? edge - 30 : gx - 3;
+  const outerLeft = BX - margin;
+  const outerRight = BX + BW + margin;
+  const room = left ? labelEnd - 4 - 6 - outerLeft : outerRight - 6 - (labelEnd + 4);
+  const w = Math.min(room, tagWidth(label));
+  const gx = left ? outerLeft + 6 : outerRight - 6 - w;
+  const x1 = left ? gx + w + 3 : labelEnd + 4;
+  const x2 = left ? labelEnd - 4 : gx - 3;
   return (
     <g>
       <rect x={gx} y={y - TAG_H / 2} width={w} height={TAG_H} rx={3} fill={fill} />
@@ -194,6 +227,41 @@ function RoleTag({
       <text x={gx + w / 2} y={y + 3.5} textAnchor="middle" className={styles.role}>
         {label}
       </text>
+    </g>
+  );
+}
+
+/** The Qwiic connector's four pins, led out under the board: [name, pad class, GPIO]. */
+const QWIIC_PINS = [
+  ["GND", "gnd", null],
+  ["3V3", "power", null],
+  ["SDA", "safe", "1"],
+  ["SCL", "safe", "6"],
+] as const;
+
+function QwiicPins() {
+  const cx = mx(11.56);
+  const top = BY + BH + 24;
+  return (
+    <g>
+      {QWIIC_PINS.map(([name, pad, gpio], i) => {
+        const x = cx + (i - 1.5) * 40;
+        return (
+          <g key={name}>
+            <polyline
+              points={`${cx + (i - 1.5) * 9},${my(42.6)} ${cx + (i - 1.5) * 9},${BY + BH + 8} ${x},${top}`}
+              className={styles.qwiicLead}
+            />
+            <rect x={x - 17} y={top} width={34} height={15} rx={7.5} fill={PAD_COLOUR[pad]} />
+            <text x={x} y={top + 10.5} textAnchor="middle" className={pad === "gnd" ? styles.qwiicPinLight : styles.qwiicPin}>
+              {name}
+            </text>
+            {gpio ? (
+              <text x={x} y={top + 28} textAnchor="middle" className={styles.gpio}>{`GP${gpio}`}</text>
+            ) : null}
+          </g>
+        );
+      })}
     </g>
   );
 }

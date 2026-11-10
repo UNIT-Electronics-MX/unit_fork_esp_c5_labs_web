@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   PULSAR_EDGE,
   PULSAR_HEADER,
+  pulsarAvoidReason,
   pulsarMissing,
   pulsarPadClass,
   pulsarPosition,
@@ -60,10 +61,27 @@ describe("drawing helpers", () => {
 
   it("names and classes pads", () => {
     expect(PULSAR_HEADER.map(pulsarSilk).slice(0, 3)).toEqual(["D13", "3V3", "EN"]);
-    expect(pulsarPadClass("27")).toBe("avoid");
+    expect(pulsarPadClass("27")).toBe("strapping");
+    expect(pulsarPadClass("13")).toBe("bus");
+    expect(pulsarPadClass("11")).toBe("bus");
+    expect(pulsarPadClass("RST")).toBe("control");
+    expect(pulsarPadClass("0")).toBe("neopixel");
+    expect(pulsarPadClass("DOUT")).toBe("neopixel");
     expect(pulsarPadClass("4")).toBe("safe");
     expect(pulsarPadClass("VIN")).toBe("power");
     expect(pulsarPadClass("GND")).toBe("gnd");
+  });
+
+  it("gives every pad that needs care its own reason", () => {
+    expect(pulsarAvoidReason("27")).toBe("strapping");
+    expect(pulsarAvoidReason("13")).toBe("usb");
+    expect(pulsarAvoidReason("11")).toBe("uart");
+    expect(pulsarAvoidReason("EN")).toBe("control");
+    expect(pulsarAvoidReason("4")).toBeNull();
+    for (const { pin } of PULSAR_HEADER) {
+      const careful = ["strapping", "bus", "control"].includes(pulsarPadClass(pin));
+      expect(pulsarAvoidReason(pin) !== null).toBe(careful);
+    }
   });
 });
 

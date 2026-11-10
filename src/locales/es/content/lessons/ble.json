@@ -1037,5 +1037,71 @@
       "Explora tu altavoz JBL: <code>connect &lt;n&gt;</code>. Mira por qué no muestra nada de audio."
     ],
     "note": "Explore solo se conecta a los dispositivos que eliges y solo lee los valores públicos estándar (nombre, apariencia, fabricante, modelo, firmware, batería, PnP ID); nunca escribe en un dispositivo, salvo los dos ajustes HID estándar de un teclado o ratón que alojas (el CCCD para suscribirse, Protocol Mode para boot). Conéctate solo a tus propios dispositivos. Un enlace cada vez: desconecta antes de conectar con el siguiente dispositivo. Un teclado vinculado a la placa puede dejar de funcionar con el Mac en ese canal hasta que lo vuelvas a emparejar allí. La vista keyboard usa la fuente integrada de la pantalla, que tiene ä ö ü Ä Ö Ü ß pero no €. BLE deja el ID del informe fuera de la notificación: vive en el descriptor Report Reference (2908), por eso los bytes de la vista reports empiezan con los datos."
+  },
+  "I2": {
+    "title": "Toque por Bluetooth LE",
+    "heading": "Avisa al teléfono cuando tocas un sensor",
+    "goal": "Convierte la Pulsar C5 en un periférico Bluetooth LE con un servicio y una característica que notifica <code>touched</code> o <code>released</code> desde un sensor táctil TTP223B.",
+    "learn": [
+      "servidor GATT",
+      "servicios y características",
+      "notificaciones",
+      "anuncios (advertising)"
+    ],
+    "pins": {
+      "1": {
+        "role": "TOQUE"
+      }
+    },
+    "wiring": {
+      "rows": [
+        [
+          "A3 (GPIO5)",
+          "TTP223B OUT",
+          "en ALTO mientras lo tocas"
+        ],
+        [
+          "3V3",
+          "TTP223B VCC",
+          ""
+        ],
+        [
+          "GND",
+          "TTP223B GND",
+          ""
+        ]
+      ]
+    },
+    "steps": [
+      "Desconecta el USB, cablea el sensor táctil, conecta y ejecuta el comando.",
+      "En el teléfono, abre nRF Connect o LightBlue y conéctate a <code>PulsarC5-BLE</code>.",
+      "Abre el servicio y suscríbete a las notificaciones de la característica.",
+      "Toca el sensor: el teléfono muestra <code>touched</code> y luego <code>released</code>."
+    ],
+    "note": "La versión de la C6 notificaba cuatro veces por segundo aunque nada cambiara; esta solo notifica cuando hay un cambio, lo que mantiene la radio en silencio.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Sketch y monitor serial"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Servidor GATT con bluetooth",
+        "goal": "Convierte la Pulsar C5 en un periférico Bluetooth LE desde MicroPython: un servicio, una característica y una notificación cada vez que cambia el sensor táctil TTP223B.",
+        "learn": [
+          "bluetooth.BLE",
+          "servicios GATT",
+          "notificaciones",
+          "paquetes de anuncio"
+        ],
+        "steps": [
+          "Desconecta el USB, cablea el sensor táctil y vuelve a conectar. Abre <b>Código</b> y conecta la consola REPL.",
+          "Ejecuta <code>ble_touch.py</code>. La terminal imprime <code>Advertising as PulsarC5-BLE</code>.",
+          "En el teléfono, abre nRF Connect o LightBlue, conéctate a <code>PulsarC5-BLE</code> y suscríbete a las notificaciones de la característica.",
+          "Toca el sensor: el teléfono y la terminal muestran <code>touched</code> y luego <code>released</code>. Pulsa <b>Detener</b> para apagar la radio."
+        ],
+        "note": "Los UUID del servicio y de la característica coinciden con los del sketch de Arduino, así que el teléfono ve el mismo dispositivo uses el lenguaje que uses. Tras una desconexión, el script vuelve a anunciarse solo."
+      }
+    }
   }
 }

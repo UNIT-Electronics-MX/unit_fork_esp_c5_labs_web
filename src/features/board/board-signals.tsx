@@ -55,9 +55,12 @@ function useSignals(): BoardSignals {
   return signals;
 }
 
-/** For the board drawing: the RGB LED's current state. */
+/** No simulator drives the LED outside a lesson (home, datasheet): it stays dark. */
+const IDLE = new BoardSignals();
+
+/** For the board drawing: the RGB LED's current state, or null when it is dark. */
 export function useRgbState(): RgbState | null {
-  const s = useSignals();
+  const s = use(BoardSignalsContext) ?? IDLE;
   return useSyncExternalStore(s.subscribe, s.getRgb, s.getRgb);
 }
 

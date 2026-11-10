@@ -1,6 +1,6 @@
 # Pulsar C5 sketches
 
-Arduino sketches for the Pulsar C5 lessons (tracks `intro`, `pulsar`, `sensors`, `iot` and `zigbee`),
+Arduino sketches for the Pulsar C5 lessons (tracks `intro`, `pulsar`, `sensors`, `wifi`, `ble` and `zigbee`),
 ported from the UNIT DevLab ESP32-C6 course. Each folder is one sketch.
 
 Board: **ESP32C5 Dev Module** from the Espressif core (`esp32:esp32` ≥ 3.3), with USB CDC On

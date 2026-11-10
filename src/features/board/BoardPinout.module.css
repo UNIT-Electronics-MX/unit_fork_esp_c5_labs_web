@@ -57,3 +57,29 @@
   font-weight: 600;
   fill: var(--surface);
 }
+.fnBox {
+  fill: var(--bg);
+  stroke: var(--line);
+  stroke-width: 0.8;
+}
+.fn {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 600;
+  fill: var(--muted);
+}
+.qwiicLead {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 0.8;
+}
+.qwiicPin,
+.qwiicPinLight {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  fill: var(--pcb);
+}
+.qwiicPinLight {
+  fill: var(--card-white);
+}

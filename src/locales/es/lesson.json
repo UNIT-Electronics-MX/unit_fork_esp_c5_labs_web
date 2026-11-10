@@ -141,7 +141,7 @@
     "note": {
       "userLed": "GPIO27 controla el LED de usuario soldado en la placa. También sirve de reloj para la microSD cuando se usa la tarjeta.",
       "boot": "El botón BOOT lleva GPIO28 a nivel bajo al presionarlo. No lo mantengas presionado durante el reinicio salvo que quieras entrar en modo de descarga.",
-      "rgb": "El esquema asigna los datos RGB a GPIO0. Algunos dibujos de la placa indican GPIO8; comprueba qué pin funciona en tu placa.",
+      "rgb": "GPIO0 lleva los datos del LED RGB de la placa (WS2812). En la cabecera es el pad D2/RGB.",
       "potGround": "Conecta la pata exterior restante del potenciómetro a GND.",
       "sda": "GPIO2 lleva los datos a los sensores I²C integrados. El conector QWIIC usa otro bus.",
       "scl": "GPIO3 proporciona el reloj del bus de sensores. Las resistencias pull-up ya están montadas.",

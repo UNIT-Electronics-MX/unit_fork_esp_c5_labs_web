@@ -125,7 +125,6 @@
       "label": "Açıklama",
       "used": "bu derste kullanılıyor",
       "safe": "güvenli GPIO",
-      "avoid": "kaçın",
       "power": "güç",
       "ground": "toprak",
       "button": "düğme girişi",

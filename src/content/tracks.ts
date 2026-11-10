@@ -30,9 +30,9 @@ export const TRACKS: readonly Track[] = [
   {
     id: "wifi",
     title: "Wi-Fi",
-    blurb: "Scan, join, serve pages, update over the air",
+    blurb: "Scan, join, serve pages, and send C5 sensor readings to the cloud",
     color: "--w-sda",
-    lessonIds: ["W1", "W2", "W3", "W4", "W5"],
+    lessonIds: ["W1", "W2", "W3", "I1", "W4", "W5"],
   },
   {
     id: "sensors",
@@ -40,14 +40,6 @@ export const TRACKS: readonly Track[] = [
     blurb: "Temperature, air, motion over I2C",
     color: "--w-dc",
     lessonIds: ["D1", "D2", "D3"],
-    board: "pulsar-c5",
-  },
-  {
-    id: "iot",
-    title: "Wi-Fi & BLE on the C5",
-    blurb: "Dual-band Wi-Fi to the cloud, Bluetooth LE to a phone",
-    color: "--fam-connectivity",
-    lessonIds: ["I1", "I2"],
     board: "pulsar-c5",
   },
   {
@@ -61,9 +53,9 @@ export const TRACKS: readonly Track[] = [
   {
     id: "ble",
     title: "Bluetooth LE",
-    blurb: "Listen, pair, control: phones, keyboards, music",
+    blurb: "Listen, pair, control, and send C5 touch notifications to a phone",
     color: "--ble",
-    lessonIds: ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"],
+    lessonIds: ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "I2"],
   },
   // RFID and Sound come last: they are Arduino-only, with no MicroPython support yet.
   {
@@ -86,9 +78,11 @@ export const DEFAULT_LESSON_ID = "00";
 
 export const findTrack = (id: string) => TRACKS.find((t) => t.id === id);
 
-/** The board a lesson is wired on; tracks without one still use the original ESP32-S3. */
+/** The board a lesson is wired on; the Wi-Fi and BLE tracks contain both boards. */
 export const boardOfLesson = (lessonId: string): BoardId =>
-  lessonId === "O1" ? "pulsar-c5" : TRACKS.find((t) => t.lessonIds.includes(lessonId))?.board ?? "devkitc-s3";
+  lessonId === "O1" || lessonId === "I1" || lessonId === "I2"
+    ? "pulsar-c5"
+    : TRACKS.find((t) => t.lessonIds.includes(lessonId))?.board ?? "devkitc-s3";
 
 /** The track a lesson id belongs to, or undefined for an unknown id. */
 export const trackOfLesson = (lessonId: string): TrackId | undefined =>

@@ -2,6 +2,7 @@ import { Suspense, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { findTrack } from "@/content/tracks";
+import { neighbours } from "@/domain/progress";
 import { CodeReader, ReaderSkeleton } from "@/features/code/reader/CodeReader";
 import { ArduinoSketchEditor } from "@/features/code/ArduinoSketchEditor";
 import { LessonCodeGuide } from "@/features/code/LessonCodeGuide";
@@ -27,6 +28,8 @@ import microsdSource from "../../../sketches/pulsar-c5/p5-microsd/p5-microsd.ino
 import uartSource from "../../../sketches/pulsar-c5/p6-uart/p6-uart.ino?raw";
 import oledLightSource from "../../../sketches/pulsar-c5/d2-oled-light/d2-oled-light.ino?raw";
 import oledOnlySource from "../../../sketches/pulsar-c5/o1-oled/o1-oled.ino?raw";
+import wifiCloudSource from "../../../sketches/pulsar-c5/i1-wifi-http/i1-wifi-http.ino?raw";
+import bleTouchSource from "../../../sketches/pulsar-c5/i2-ble-touch/i2-ble-touch.ino?raw";
 
 // "/lessons/:lessonId/code": an editable workspace for C5 sketches and a guided reader for older labs.
 // The code screen loads only when a lesson opens it.
@@ -48,6 +51,8 @@ const ARDUINO_SKETCHES: Readonly<Record<string, { filename: string; source: stri
   P6: { filename: "p6-uart.ino", source: uartSource },
   D2: { filename: "d2-oled-light.ino", source: oledLightSource },
   O1: { filename: "o1-oled.ino", source: oledOnlySource },
+  I1: { filename: "i1-wifi-http.ino", source: wifiCloudSource },
+  I2: { filename: "i2-ble-touch.ino", source: bleTouchSource },
 };
 
 function ArduinoLessonWorkspace({ lessonId, filename, source }: { lessonId: string; filename: string; source: string }) {
@@ -78,9 +83,9 @@ export function Component() {
   const { lesson, lessons, trackId, chooseVariant } = useRouteLesson();
   const env = envOfCommand(lesson.cmd);
   const isIntro = lesson.track === "intro";
-  const hasWorkspace = isIntro || lesson.track === "pulsar" || lesson.id === "D2" || lesson.id === "O1";
+  const hasWorkspace = isIntro || lesson.track === "pulsar" || lesson.id === "I1" || lesson.id === "I2" || lesson.id === "D2" || lesson.id === "O1";
   const arduinoSketch = ARDUINO_SKETCHES[lesson.id];
-  const nextId = lessons[lessons.findIndex((entry) => entry.id === lesson.id) + 1]?.id ?? (lesson.id === "02" ? "P1" : undefined);
+  const nextId = neighbours(lessons, lesson.id).next?.id ?? (lesson.id === "02" ? "P1" : undefined);
   const { t } = useTranslation();
   const lessonHref = `/lessons/${lesson.id}${lesson.variantKey ? `?variant=${encodeURIComponent(lesson.variantKey)}` : ""}`;
   return (
@@ -101,7 +106,7 @@ export function Component() {
           <span className={styles.id}>{lesson.id}</span> {lesson.heading}
         </p>
         <div className={styles.actions}>
-          {lesson.variants && !hasWorkspace ? (
+          {lesson.variants && (!hasWorkspace || lesson.id === "I1" || lesson.id === "I2") ? (
             <VariantSwitch
               variants={lesson.variants}
               current={lesson.variantKey}

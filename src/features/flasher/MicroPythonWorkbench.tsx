@@ -16,6 +16,8 @@ const FIRST_EXAMPLE: Readonly<Record<string, string>> = {
   P6: "uart-loopback",
   D2: "oled-light",
   O1: "oled",
+  I1: "wifi-thingspeak",
+  I2: "ble-touch",
 };
 
 /** One Web Serial connection shared by the Python editor and its live REPL. */

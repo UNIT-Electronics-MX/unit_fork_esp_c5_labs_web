@@ -14,7 +14,6 @@ export const TRACK_PART: Record<TrackId, PartName> = {
   sensors: "sensor",
   ble: "bluetooth",
   sound: "speaker",
-  iot: "cloud",
   zigbee: "antenna",
 };
 

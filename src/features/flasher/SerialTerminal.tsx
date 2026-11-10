@@ -1,6 +1,7 @@
 import { useEffect, useImperativeHandle, useRef, useState, type FormEvent, type Ref } from "react";
 import { useTranslation } from "react-i18next";
 import { recordBrowserBenchAction } from "@/features/bench/browser-log";
+import { splitReplOutput } from "./repl-output";
 import { serialConnection, useSerialConnection } from "./serial-connection";
 import { REPL_INTERRUPT_FAILED, type LineEnding, type TerminalPort } from "./serial-session";
 import styles from "./SerialTerminal.module.css";
@@ -80,7 +81,7 @@ export function SerialTerminal({
     connect,
     disconnect: () => serialConnection.disconnect(),
     takePortForFlashing: () => serialConnection.takePort(),
-    runPython: (code) => serialConnection.runPython(code),
+    runPython: (code) => serialConnection.runPython(code, t("flasher.serial.running")),
     savePython: (filename, code) => serialConnection.savePython(filename, code),
     stopPython: () => serialConnection.stopPython(),
     sendCommand,
@@ -181,7 +182,11 @@ export function SerialTerminal({
       {error ? <p className={styles.error} role="alert">{t("flasher.serial.error", { detail: error })}</p> : null}
 
       <pre className={styles.output} ref={outputRef} role="log" aria-label={t("flasher.serial.output")} aria-live="off">
-        {output || t("flasher.serial.empty")}
+        {output
+          ? splitReplOutput(output).map((segment, index) => (
+            <span key={index} className={styles.segment} data-tone={segment.tone}>{segment.text}</span>
+          ))
+          : t("flasher.serial.empty")}
       </pre>
 
       <form className={styles.command} onSubmit={(event) => void send(event)}>

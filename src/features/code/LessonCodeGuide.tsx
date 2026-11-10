@@ -25,6 +25,10 @@ const FOCUS: Record<string, string> = {
   "micropython:P6": "UART(1,",
   "micropython:D2": "ddp_read(0x60, 2)",
   "micropython:O1": "SSD1306_I2C(WIDTH",
+  "arduino:I1": "const char* WIFI_SSID",
+  "arduino:I2": "touch->notify()",
+  "micropython:I1": "WIFI_SSID = ",
+  "micropython:I2": "ble.gatts_notify(connection",
 };
 const COMMANDS: Record<string, readonly string[]> = {
   "arduino:02": ["blink 200", "blink 800"],
@@ -54,6 +58,10 @@ const GUIDE_KEYS = {
   "micropython:P6": ["codeRoute.guide.micropython.P6.title", "codeRoute.guide.micropython.P6.try", "codeRoute.guide.micropython.P6.expect"],
   "micropython:D2": ["codeRoute.guide.micropython.D2.title", "codeRoute.guide.micropython.D2.try", "codeRoute.guide.micropython.D2.expect"],
   "micropython:O1": ["codeRoute.guide.micropython.O1.title", "codeRoute.guide.micropython.O1.try", "codeRoute.guide.micropython.O1.expect"],
+  "arduino:I1": ["codeRoute.guide.arduino.I1.title", "codeRoute.guide.arduino.I1.try", "codeRoute.guide.arduino.I1.expect"],
+  "arduino:I2": ["codeRoute.guide.arduino.I2.title", "codeRoute.guide.arduino.I2.try", "codeRoute.guide.arduino.I2.expect"],
+  "micropython:I1": ["codeRoute.guide.micropython.I1.title", "codeRoute.guide.micropython.I1.try", "codeRoute.guide.micropython.I1.expect"],
+  "micropython:I2": ["codeRoute.guide.micropython.I2.title", "codeRoute.guide.micropython.I2.try", "codeRoute.guide.micropython.I2.expect"],
 } as const;
 
 /** A single experiment next to the editable source, separate from the wiring guide. */

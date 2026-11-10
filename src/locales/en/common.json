@@ -56,6 +56,7 @@
       "send": "Send",
       "sendHint": "Use Send or Ctrl+Enter. The selected line ending is appended to the text.",
       "autoScroll": "Follow new output",
+      "running": "Running your code on the board…",
       "waitFlash": "Wait for firmware writing to finish before opening the terminal.",
       "disconnectToFlash": "The terminal will disconnect automatically when you flash firmware.",
       "error": "Serial connection: {{detail}}",
@@ -232,6 +233,16 @@
           "title": "Turn on the OLED",
           "try": "Upload o1-oled.ino with only the SSD1306 connected to QWIIC.",
           "expect": "The screen shows Pulsar C5 and OLED ready."
+        },
+        "I1": {
+          "title": "Post to ThingSpeak",
+          "try": "Fill in WIFI_SSID, WIFI_PASS and THINGSPEAK_API_KEY, upload the sketch and open the monitor.",
+          "expect": "The monitor shows the IP, channel and band, then a reading with HTTP 200 every 20 seconds."
+        },
+        "I2": {
+          "title": "Notify the phone",
+          "try": "Upload the sketch, connect to PulsarC5-BLE from nRF Connect, subscribe and touch the pad.",
+          "expect": "The phone receives touched and released, and the monitor prints the same."
         }
       },
       "micropython": {
@@ -289,6 +300,16 @@
           "title": "Turn on the OLED",
           "try": "Install ssd1306.py, then run oled.py with only the display connected.",
           "expect": "The screen shows Pulsar C5 and MicroPython."
+        },
+        "I1": {
+          "title": "Post to ThingSpeak",
+          "try": "Fill in WIFI_SSID, WIFI_PASS and THINGSPEAK_API_KEY in thingspeak_dht.py and run it.",
+          "expect": "The terminal shows the IP, channel and band, then a reading with HTTP 200 every 20 seconds."
+        },
+        "I2": {
+          "title": "Notify the phone",
+          "try": "Run ble_touch.py, connect to PulsarC5-BLE from nRF Connect, subscribe and touch the pad.",
+          "expect": "The phone and the terminal show touched and released; Stop switches the radio off."
         }
       }
     },
@@ -330,7 +351,7 @@
     },
     "wifi": {
       "title": "Wi-Fi",
-      "blurb": "Scan, join, serve pages, update over the air"
+      "blurb": "Scan, join, serve pages, and send C5 sensor readings to the cloud"
     },
     "rfid": {
       "title": "RFID & NFC",
@@ -342,7 +363,7 @@
     },
     "ble": {
       "title": "Bluetooth LE",
-      "blurb": "Listen, pair, control: phones, keyboards, music"
+      "blurb": "Listen, pair, control, and send C5 touch notifications to a phone"
     },
     "sound": {
       "title": "Sound",
@@ -351,10 +372,6 @@
     "pulsar": {
       "title": "On-board hardware",
       "blurb": "Arduino experiments with BOOT, RGB controls, ADC, I²C sensors, microSD and UART"
-    },
-    "iot": {
-      "title": "Wi-Fi & BLE on the C5",
-      "blurb": "Dual-band Wi-Fi to the cloud, Bluetooth LE to a phone"
     },
     "zigbee": {
       "title": "Zigbee",
@@ -404,7 +421,10 @@
       "label": "Legend",
       "used": "used in this lesson",
       "safe": "safe GPIO",
-      "avoid": "avoid",
+      "strapping": "strapping",
+      "bus": "USB / UART0",
+      "control": "control",
+      "neopixel": "NeoPixel",
       "power": "power",
       "ground": "ground",
       "button": "button input",
@@ -423,7 +443,8 @@
       "title": "UNIT Pulsar C5 pinout",
       "use": "{{role}} on {{pin}}",
       "uses": "This lesson uses: {{uses}}.",
-      "none": "This lesson uses no header pins."
+      "none": "This lesson uses no header pins.",
+      "reference": "Top view with USB-C up: the 30 header pads with their GPIO and function, and the Qwiic connector pins."
     },
     "explorer": {
       "pageTitle": "Interactive pinout · Pulsar C5 Labs",
@@ -440,10 +461,19 @@
       "detail": "Pin details",
       "position": "Position {{number}} · {{label}}",
       "usedAs": "In this lesson: {{roles}}",
-      "unverified": "D2/RGB: the schematic says GPIO0, but UNIT's artwork says GPIO8. Check your board.",
-      "avoid": "This pad is involved in boot or a dedicated interface. Check its function before wiring it.",
+      "avoidWhy": {
+        "strapping": "Strapping pin: the chip reads its level at reset to choose how it boots. You can use it, but avoid strong pull-ups or pull-downs and don't hold it high or low while the board restarts.",
+        "usb": "Native USB data line (D−/D+): the serial console and flashing go through it. Using it for something else cuts the USB connection.",
+        "uart": "UART0, the boot serial console. Use it only if you don't need that console.",
+        "control": "A board control pin, not a GPIO: pulling it to GND switches the chip off or resets it."
+      },
       "choose": "Select a pin to see its details.",
       "directory": "All 30 header pads",
+      "sideLeft": "Left side · top to bottom",
+      "sideRight": "Right side · top to bottom",
+      "sides": "Board edge",
+      "tabLeft": "Left · pads 1–15",
+      "tabRight": "Right · pads 16–30",
       "search": "Search pad, GPIO or function",
       "select": "View position {{number}}: {{label}}",
       "noResults": "No pins match this search.",
@@ -483,8 +513,7 @@
         "spiMosi": "SPI MOSI",
         "spiMiso": "SPI MISO"
       },
-      "note": "Documented map for revision V1.2.3. This diagram shows D2/RGB as GPIO0 according to the schematic; UNIT's reference artwork labels it GPIO8. Verify the board before using that pin.",
-      "alt": "Top view of the Pulsar C5 pinout with GPIO pins and Qwiic connector",
+      "note": "Documented map for revision V1.2.3. D2/RGB is GPIO0, the data line of the on-board RGB LED.",
       "open": "Open full-size diagram",
       "source": "Source: official UNIT Electronics reference",
       "strapping": "GPIO 2, 3, 7, 25, 26, 27 and 28 are strapping pins: keep them free of strong pull-ups or pull-downs at reset.",

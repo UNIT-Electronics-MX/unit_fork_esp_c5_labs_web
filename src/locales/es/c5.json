@@ -64,7 +64,7 @@
   },
   "pins": {
     "twoMapsTitle": "Etiquetas de la placa y GPIO del chip",
-    "twoMapsText": "El mapa de la placa sigue la referencia de hardware Pulsar C5 de UNIT, revisión V1.2.3. La hoja de datos del chip describe las funciones GPIO y la configuración de arranque. La ilustración de la placa contradice al esquema en D2/RGB, así que esa señal se marca como no verificada.",
+    "twoMapsText": "El mapa de la placa sigue la referencia de hardware Pulsar C5 de UNIT, revisión V1.2.3. La hoja de datos del chip describe las funciones GPIO y la configuración de arranque. D2/RGB es GPIO0.",
     "bootNote": "GPIO26, GPIO27 y GPIO28 son pines de configuración de arranque. La etiqueta D3/BOOT de la placa corresponde a GPIO28; consulta los estados de arranque antes de conectar un circuito."
   },
   "groups": {

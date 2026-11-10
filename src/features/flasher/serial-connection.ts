@@ -140,9 +140,15 @@ export class SerialConnection {
     }
   }
 
-  /** Stops whatever runs on the board (Ctrl+C) and runs `code` in its place. */
-  runPython(code: string): Promise<void> {
-    return this.operate((session) => session.runPython(code));
+  /**
+   * Stops whatever runs on the board (Ctrl+C) and runs `code` in its place. The upload itself is
+   * not echoed, so `notice` (already translated) is printed to show that the script started.
+   */
+  runPython(code: string, notice: string): Promise<void> {
+    return this.operate((session) => {
+      this.append(`\n▶ ${notice}\n`);
+      return session.runPython(code);
+    });
   }
 
   savePython(filename: string, code: string): Promise<void> {

@@ -125,7 +125,6 @@
       "label": "Legende",
       "used": "in dieser Lektion genutzt",
       "safe": "sicherer GPIO",
-      "avoid": "meiden",
       "power": "Strom",
       "ground": "Masse",
       "button": "Taster-Eingang",

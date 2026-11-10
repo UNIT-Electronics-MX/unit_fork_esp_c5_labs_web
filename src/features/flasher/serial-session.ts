@@ -41,6 +41,8 @@ export class SerialSession {
   private readonly onClose: (error?: unknown) => void;
   private received = "";
   private promptWaiters = new Set<PromptWaiter>();
+  /** While set, received text still answers prompt waiters but is not shown in the terminal. */
+  private muted = false;
 
   constructor(
     port: TerminalPort,
@@ -98,7 +100,7 @@ export class SerialSession {
 
   private receive(text: string) {
     this.received += text;
-    this.onText(text);
+    if (!this.muted) this.onText(text);
     for (const waiter of this.promptWaiters) {
       if (!this.received.slice(waiter.start).includes(waiter.marker)) continue;
       clearTimeout(waiter.timeout);
@@ -144,14 +146,23 @@ export class SerialSession {
     }
   }
 
-  /** Run a complete script via MicroPython's paste mode, preserving indentation. */
+  /**
+   * Run a complete script via MicroPython's paste mode, preserving indentation. The interrupt
+   * prompts, the paste-mode banner and its `=== ` echo of every line stay out of the terminal:
+   * only what the script prints after Ctrl+D reaches it.
+   */
   async runPython(code: string): Promise<void> {
-    await this.stopPython();
-    // Paste mode only echoes what it is sent, so an echoed `except ValueError:` is code, not an error.
-    // The script's own errors appear in the terminal once Ctrl+D runs it.
-    await this.expectAfter("=== ", () => this.send("\x05", "none"), 5000, false);
-    const lines = code.replace(/\r\n/g, "\n").replace(/\n$/, "").split("\n");
-    for (const line of lines) await this.expectAfter("=== ", () => this.send(`${line}\r`, "none"), 5000, false);
+    this.muted = true;
+    try {
+      await this.stopPython();
+      // Paste mode only echoes what it is sent, so an echoed `except ValueError:` is code, not an error.
+      // The script's own errors appear in the terminal once Ctrl+D runs it.
+      await this.expectAfter("=== ", () => this.send("\x05", "none"), 5000, false);
+      const lines = code.replace(/\r\n/g, "\n").replace(/\n$/, "").split("\n");
+      for (const line of lines) await this.expectAfter("=== ", () => this.send(`${line}\r`, "none"), 5000, false);
+    } finally {
+      this.muted = false;
+    }
     await this.send("\x04", "none");
   }
 

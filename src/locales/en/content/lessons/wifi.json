@@ -220,6 +220,80 @@
     ],
     "note": "Provider keys stay in the gateway's .env on your Mac. The board only stores the gateway's own key (NVS, never printed: the log shows its last 4 characters), and <code>ai key forget</code> erases it. On your Wi-Fi the board talks plain http to the gateway; for anywhere, put the gateway behind https (a tunnel or a server, as in W2 variation 2). Set a spend limit at each provider; the board asks at most once per 10 s and never by itself."
   },
+  "I1": {
+    "title": "Wi-Fi to the cloud",
+    "heading": "Publish readings to ThingSpeak",
+    "goal": "Join your Wi-Fi network, 2.4 GHz or 5 GHz, and post temperature and humidity from a DHT11 to a ThingSpeak channel every 20 seconds.",
+    "learn": [
+      "station mode",
+      "dual-band Wi-Fi",
+      "HTTP GET",
+      "API keys",
+      "rate limits"
+    ],
+    "pins": {
+      "0": {
+        "role": "VCC"
+      },
+      "1": {
+        "role": "DATA"
+      },
+      "2": {
+        "role": "GND"
+      }
+    },
+    "wiring": {
+      "rows": [
+        [
+          "A2 (GPIO4)",
+          "DHT11 KY-015 S / DATA",
+          ""
+        ],
+        [
+          "3V3",
+          "DHT11 VCC",
+          ""
+        ],
+        [
+          "GND",
+          "DHT11 GND",
+          ""
+        ]
+      ]
+    },
+    "steps": [
+      "Create a free ThingSpeak channel with two fields and copy its <b>Write API Key</b>.",
+      "Install <code>DHT sensor library</code> from the Library Manager.",
+      "Put your network name, password and key into the three constants at the top of the sketch.",
+      "Unplug USB, wire the DHT11, plug in and run the command.",
+      "The monitor prints the IP, channel and band, then <code>HTTP 200</code> every 20 seconds. Watch the channel's charts fill."
+    ],
+    "note": "Unlike the C6, the C5 also joins <b>5 GHz</b> networks: channel 36 and up. Never commit a sketch with your real password or key.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Sketch and serial monitor"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script, dht and requests",
+        "goal": "Join your Wi-Fi network, 2.4 GHz or 5 GHz, from MicroPython and post the DHT11's temperature and humidity to ThingSpeak every 20 seconds.",
+        "learn": [
+          "network.WLAN",
+          "dual-band Wi-Fi",
+          "dht module",
+          "HTTP GET with requests"
+        ],
+        "steps": [
+          "Create a free ThingSpeak channel with two fields and copy its <b>Write API Key</b>.",
+          "Unplug USB, wire the DHT11 and plug in again. Open <b>Code</b> and connect the serial REPL.",
+          "In <code>thingspeak_dht.py</code>, put your network name, password and key into the three constants at the top.",
+          "Press <b>Run on board</b>. The terminal prints the IP, channel and band, then <code>HTTP 200</code> every 20 seconds. Press <b>Stop</b> when you are done."
+        ],
+        "note": "MicroPython's <code>dht</code> and <code>requests</code> modules come with the ESP32-C5 firmware: nothing to install. Never save or share the script with your real password or key."
+      }
+    }
+  },
   "W4": {
     "title": "Radio lab (bonus)"
   },

@@ -30,13 +30,16 @@ describe("ESP32-C5 datasheet routes", () => {
     expect(within(screen.getByRole("main")).queryByText(/ESP32-S3/)).toBeNull();
   });
 
-  it("shows the board's C5 GPIO map with the D2 discrepancy", async () => {
+  it("shows the board's C5 GPIO map with D2/RGB on GPIO0", async () => {
     await openApp("#/datasheet/pins?lang=en");
     expect(await screen.findByRole("heading", { level: 1, name: "Pulsar C5 pins and power" }, LOAD)).toBeTruthy();
     expect(screen.getByText("D2 / RGB")).toBeTruthy();
-    expect(screen.getByText(/shows D2\/RGB as GPIO0 according to the schematic/)).toBeTruthy();
-    expect(screen.getByRole("img", { name: /Top view of the Pulsar C5 pinout/ }).getAttribute("src"))
-      .toContain("pulsar-c5-pinout/pulsar_c5_pinout.svg");
+    expect(screen.getByText(/D2\/RGB is GPIO0, the data line of the on-board RGB LED/)).toBeTruthy();
+    // The reference pinout is drawn from the header data, with each pad's function and the Qwiic pins.
+    const pinout = screen.getByRole("img", { name: /^UNIT Pulsar C5 pinout/ });
+    expect(within(pinout).getByText("USB D+")).toBeTruthy();
+    expect(within(pinout).getByText("NEO IN")).toBeTruthy();
+    expect(within(pinout).getAllByText("GP6").length).toBe(2);
     expect(screen.getByText(/GPIO26, GPIO27 and GPIO28 are strapping pins/)).toBeTruthy();
   });
 

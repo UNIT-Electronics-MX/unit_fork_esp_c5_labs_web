@@ -1037,5 +1037,77 @@
       "Explore your JBL speaker: <code>connect &lt;n&gt;</code>. See why it shows nothing about audio."
     ],
     "note": "Explore only connects to devices you pick and only reads the standard public values (name, appearance, maker, model, firmware, battery, PnP ID); it never writes to a device, except the two standard HID settings on a keyboard or mouse you host (the CCCD to subscribe, Protocol Mode for boot). Only connect to your own devices. One link at a time: disconnect before connecting to the next device. A keyboard bonded to the board may stop working with the Mac on that channel until you pair it there again. The keyboard view uses the screen's built-in font, which has ä ö ü Ä Ö Ü ß but no €. BLE keeps the report ID out of the notification: it lives in the Report Reference descriptor (2908), which is why the bytes on the reports view start with the data."
+  },
+  "I2": {
+    "title": "Bluetooth LE touch",
+    "heading": "Notify a phone when you touch a pad",
+    "goal": "Turn the Pulsar C5 into a Bluetooth LE peripheral with one service and one characteristic that notifies <code>touched</code> or <code>released</code> from a TTP223B touch pad.",
+    "learn": [
+      "GATT server",
+      "services & characteristics",
+      "notifications",
+      "advertising"
+    ],
+    "pins": {
+      "0": {
+        "role": "VCC"
+      },
+      "1": {
+        "role": "TOUCH"
+      },
+      "2": {
+        "role": "GND"
+      }
+    },
+    "wiring": {
+      "rows": [
+        [
+          "A3 (GPIO5)",
+          "TTP223B OUT",
+          "HIGH while touched"
+        ],
+        [
+          "3V3",
+          "TTP223B VCC",
+          ""
+        ],
+        [
+          "GND",
+          "TTP223B GND",
+          ""
+        ]
+      ]
+    },
+    "steps": [
+      "Unplug USB, wire the touch pad, plug in and run the command.",
+      "On your phone, open nRF Connect or LightBlue and connect to <code>PulsarC5-BLE</code>.",
+      "Open the service and subscribe to the characteristic's notifications.",
+      "Touch the pad: the phone shows <code>touched</code>, then <code>released</code>."
+    ],
+    "note": "The C6 version notified four times a second whether or not anything changed; this one notifies only on a change, which keeps the radio quiet.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Sketch and serial monitor"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "GATT server with bluetooth",
+        "goal": "Turn the Pulsar C5 into a Bluetooth LE peripheral from MicroPython: one service, one characteristic, and a notification each time the TTP223B touch pad changes.",
+        "learn": [
+          "bluetooth.BLE",
+          "GATT services",
+          "notifications",
+          "advertising payloads"
+        ],
+        "steps": [
+          "Unplug USB, wire the touch pad and plug in again. Open <b>Code</b> and connect the serial REPL.",
+          "Run <code>ble_touch.py</code>. The terminal prints <code>Advertising as PulsarC5-BLE</code>.",
+          "On your phone, open nRF Connect or LightBlue, connect to <code>PulsarC5-BLE</code> and subscribe to the characteristic's notifications.",
+          "Touch the pad: the phone and the terminal show <code>touched</code>, then <code>released</code>. Press <b>Stop</b> to switch the radio off."
+        ],
+        "note": "The service and characteristic UUIDs match the Arduino sketch, so the phone sees the same device whichever language you use. After a disconnect the script advertises again by itself."
+      }
+    }
   }
 }

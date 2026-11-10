@@ -14,31 +14,37 @@
 .grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(360px, .85fr); gap: 16px; min-width: 0; align-items: start; }
 .diagram, .detail, .directory { min-width: 0; border: 1px solid var(--line); border-radius: var(--radius-l); background: var(--surface); }
 .diagram { position: sticky; top: 12px; padding: 14px; }
-.diagram svg { max-height: min(78vh, 780px); }
+/* Fit the board below the page header so the whole header is visible without scrolling. */
+.diagram svg { max-height: min(780px, max(420px, calc(100vh - 340px))); max-height: min(780px, max(420px, calc(100dvh - 340px))); }
 .help { margin: 5px 0 0; color: var(--muted); font-size: 12px; text-align: center; }
 .side { display: grid; gap: 12px; min-width: 0; }
-.detail { min-height: 170px; padding: 17px 19px; }
-.detail h2 { display: flex; align-items: baseline; gap: 10px; margin: 7px 0 8px; font: 800 26px var(--font-display); }
-.detail h2 span { color: var(--muted); font: 700 14px var(--font-mono); }
-.detail > p:not(.eyebrow) { margin: 7px 0 0; line-height: 1.45; }
-.position { color: var(--muted); font: 12px var(--font-mono); }
-.inLesson { padding: 8px 10px; border-inline-start: 3px solid var(--ink); background: var(--bg); }
-.caution { color: var(--danger); }
+.detail { padding: 17px 19px; }
+/* One grid cell: the hidden sizers and the shown detail overlap, so the tallest sets the height. */
+.detailStack { display: grid; }
+.detailStack > *, .sizer > * { grid-area: 1 / 1; }
+.sizer { display: contents; visibility: hidden; }
+.choose { margin: 7px 0 0; line-height: 1.45; }
 .directory { overflow: hidden; }
 .directoryHead { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 13px 15px; border-bottom: 1px solid var(--line); }
 .directoryHead h2 { margin: 0; font: 750 16px var(--font-display); }
 .directoryHead input { width: min(100%, 220px); min-height: 34px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--bg); font: 12px var(--font-mono); }
-.tableScroll { max-height: min(60vh, 610px); overflow: auto; }
+/* The whole table shows at once (no inner scroll): it reads beside the sticky board. */
+.tableScroll { overflow-x: auto; }
 .tableScroll table { width: 100%; border-collapse: collapse; text-align: start; }
 .tableScroll thead { position: sticky; top: 0; z-index: 1; background: var(--surface); }
-.tableScroll th, .tableScroll td { padding: 7px 9px; border-bottom: 1px solid var(--line); text-align: start; font-size: 12px; }
+.tableScroll th, .tableScroll td { padding: 3px 9px; border-bottom: 1px solid var(--line); text-align: start; font-size: 12.5px; }
 .tableScroll thead th { color: var(--muted); font: 700 10px var(--font-mono); text-transform: uppercase; }
 .tableScroll tbody th { width: 52px; }
-.tableScroll tbody th button { width: 32px; height: 27px; border: 1px solid transparent; border-radius: 4px; color: var(--ink); background: transparent; cursor: pointer; font: 700 12px var(--font-mono); }
+.tableScroll tbody th button { width: 30px; height: 24px; border: 1px solid transparent; border-radius: 4px; color: var(--ink); background: transparent; cursor: pointer; font: 700 12px var(--font-mono); }
 .tableScroll tbody tr:hover, .tableScroll tbody tr[data-active] { background: var(--bg); }
 .tableScroll tbody tr[data-used] th button { border-color: var(--ink); }
 .tableScroll tbody tr[data-active] th button { color: var(--surface); background: var(--ink); }
-.mark { margin-inline-start: 3px; color: var(--danger); font-weight: 800; }
+.tableScroll .sideRow th { width: auto; padding: 8px 9px 5px; color: var(--muted); background: var(--bg); font: 700 10.5px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+.dot { display: inline-block; width: 9px; height: 9px; margin-inline-end: 7px; border-radius: 50%; vertical-align: 1px; }
+.legend { gap: 4px 14px; padding: 8px 15px; border-bottom: 1px solid var(--line); font-size: 11px; }
+.sides { display: flex; gap: 6px; padding: 9px 15px; border-bottom: 1px solid var(--line); }
+.sides button { flex: 1; min-height: 34px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 5px; color: var(--ink); background: var(--bg); cursor: pointer; font: 700 12.5px var(--font-display); }
+.sides button[aria-pressed="true"] { border-color: var(--ink); color: var(--surface); background: var(--ink); }
 .empty { margin: 0; padding: 15px; color: var(--muted); font-size: 13px; }
 .note { margin: 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-m); color: var(--muted); background: var(--surface); font-size: 12px; line-height: 1.5; }
 .source { width: fit-content; }

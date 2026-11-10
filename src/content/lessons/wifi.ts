@@ -1,6 +1,7 @@
 // Lessons of the "wifi" track. Strings may carry the inline markup RichText understands:
 // <b>, <i>, <code> and <span class="snd-parts|need|opt">.
 import type { LessonEntry } from "@/domain/lesson";
+import { c5WifiLesson } from "./c5-wireless";
 
 export const wifiLessons = [
   {
@@ -334,6 +335,7 @@ export const wifiLessons = [
       widget: "weather",
     },
   },
+  c5WifiLesson,
   {
     kind: "planned",
     id: "W4",

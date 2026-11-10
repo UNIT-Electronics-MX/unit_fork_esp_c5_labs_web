@@ -56,6 +56,7 @@
       "send": "Enviar",
       "sendHint": "Usa Enviar o Ctrl+Enter. Se agrega el fin de línea seleccionado al texto.",
       "autoScroll": "Seguir la salida nueva",
+      "running": "Ejecutando tu código en la placa…",
       "waitFlash": "Espera a que termine la carga del firmware antes de abrir el terminal.",
       "disconnectToFlash": "El terminal se desconectará automáticamente al cargar firmware.",
       "error": "Conexión serial: {{detail}}",
@@ -232,6 +233,16 @@
           "title": "Enciende la OLED",
           "try": "Carga o1-oled.ino con solo la SSD1306 conectada a QWIIC.",
           "expect": "La pantalla muestra Pulsar C5 y OLED ready."
+        },
+        "I1": {
+          "title": "Publica en ThingSpeak",
+          "try": "Completa WIFI_SSID, WIFI_PASS y THINGSPEAK_API_KEY, sube el sketch y abre el monitor.",
+          "expect": "El monitor muestra la IP, el canal y la banda, y luego una lectura con HTTP 200 cada 20 segundos."
+        },
+        "I2": {
+          "title": "Avisa al teléfono",
+          "try": "Sube el sketch, conéctate a PulsarC5-BLE desde nRF Connect, suscríbete y toca el sensor.",
+          "expect": "El teléfono recibe touched y released, y el monitor imprime lo mismo."
         }
       },
       "micropython": {
@@ -289,6 +300,16 @@
           "title": "Enciende la OLED",
           "try": "Instala ssd1306.py y ejecuta oled.py con solo la pantalla conectada.",
           "expect": "La pantalla muestra Pulsar C5 y MicroPython."
+        },
+        "I1": {
+          "title": "Publica en ThingSpeak",
+          "try": "Completa WIFI_SSID, WIFI_PASS y THINGSPEAK_API_KEY en thingspeak_dht.py y ejecútalo.",
+          "expect": "La terminal muestra la IP, el canal y la banda, y luego una lectura con HTTP 200 cada 20 segundos."
+        },
+        "I2": {
+          "title": "Avisa al teléfono",
+          "try": "Ejecuta ble_touch.py, conéctate a PulsarC5-BLE desde nRF Connect, suscríbete y toca el sensor.",
+          "expect": "El teléfono y la terminal muestran touched y released; Detener apaga la radio."
         }
       }
     },
@@ -330,7 +351,7 @@
     },
     "wifi": {
       "title": "Wi-Fi",
-      "blurb": "Escanear, conectar, servir páginas, actualizar por el aire"
+      "blurb": "Escanear, conectar, servir páginas y enviar lecturas de la C5 a la nube"
     },
     "rfid": {
       "title": "RFID y NFC",
@@ -342,7 +363,7 @@
     },
     "ble": {
       "title": "Bluetooth LE",
-      "blurb": "Escuchar, emparejar, controlar: móviles, teclados, música"
+      "blurb": "Escuchar, emparejar y enviar avisos táctiles de la C5 al teléfono"
     },
     "sound": {
       "title": "Sonido",
@@ -351,10 +372,6 @@
     "pulsar": {
       "title": "Hardware de la Pulsar C5",
       "blurb": "Experimentos Arduino con BOOT, control RGB, ADC, sensores I²C, microSD y UART"
-    },
-    "iot": {
-      "title": "Wi-Fi y BLE en la C5",
-      "blurb": "Wi-Fi de doble banda a la nube, Bluetooth LE al teléfono"
     },
     "zigbee": {
       "title": "Zigbee",
@@ -404,7 +421,10 @@
       "label": "Leyenda",
       "used": "usado en esta lección",
       "safe": "GPIO seguro",
-      "avoid": "evitar",
+      "strapping": "strapping",
+      "bus": "USB / UART0",
+      "control": "control",
+      "neopixel": "NeoPixel",
       "power": "alimentación",
       "ground": "masa",
       "button": "entrada de botón",
@@ -423,7 +443,8 @@
       "title": "Pinout de la UNIT Pulsar C5",
       "use": "{{role}} en {{pin}}",
       "uses": "Esta lección usa: {{uses}}.",
-      "none": "Esta lección no usa pines de la tira."
+      "none": "Esta lección no usa pines de la tira.",
+      "reference": "Vista superior con el USB-C arriba: los 30 pads de la cabecera con su GPIO y función, y los pines del conector Qwiic."
     },
     "explorer": {
       "pageTitle": "Pinout interactivo · Pulsar C5 Labs",
@@ -440,10 +461,19 @@
       "detail": "Detalle del pin",
       "position": "Posición {{number}} · {{label}}",
       "usedAs": "En esta lección: {{roles}}",
-      "unverified": "D2/RGB: el esquema indica GPIO0, pero la ilustración de UNIT indica GPIO8. Verifica tu placa.",
-      "avoid": "Este pad interviene en el arranque o una interfaz dedicada. Revisa su función antes de conectarlo.",
+      "avoidWhy": {
+        "strapping": "Pin de arranque (strapping): el chip lee su nivel al reiniciar para decidir cómo arranca. Puedes usarlo, pero sin pull-ups ni pull-downs fuertes y sin forzarlo alto o bajo mientras la placa reinicia.",
+        "usb": "Línea de datos del USB nativo (D−/D+): por ahí pasan la consola serie y la carga del firmware. Si lo usas para otra cosa, se corta la conexión USB.",
+        "uart": "UART0, la consola serie de arranque. Úsalo solo si no necesitas esa consola.",
+        "control": "Pin de control de la placa, no un GPIO: llevarlo a GND apaga el chip o lo reinicia."
+      },
       "choose": "Selecciona un pin para ver sus datos.",
       "directory": "Los 30 pads de la cabecera",
+      "sideLeft": "Lado izquierdo · de arriba abajo",
+      "sideRight": "Lado derecho · de arriba abajo",
+      "sides": "Lado de la placa",
+      "tabLeft": "Izquierda · pads 1–15",
+      "tabRight": "Derecha · pads 16–30",
       "search": "Buscar pad, GPIO o función",
       "select": "Ver posición {{number}}: {{label}}",
       "noResults": "No hay pines que coincidan con la búsqueda.",
@@ -483,8 +513,7 @@
         "spiMosi": "SPI MOSI",
         "spiMiso": "SPI MISO"
       },
-      "note": "Mapa documentado para la revisión V1.2.3. El diagrama muestra D2/RGB como GPIO0 según el esquema; la ilustración de referencia de UNIT indica GPIO8. Comprueba la placa antes de usar ese pin.",
-      "alt": "Pinout de Pulsar C5 visto desde arriba, con pines GPIO y conector Qwiic",
+      "note": "Mapa documentado para la revisión V1.2.3. D2/RGB es GPIO0, la línea de datos del LED RGB de la placa.",
       "open": "Abrir diagrama en tamaño completo",
       "source": "Fuente: referencia oficial de UNIT Electronics",
       "strapping": "GPIO 2, 3, 7, 25, 26, 27 y 28 son pines de arranque (strapping): no les pongas pull-ups ni pull-downs fuertes durante el reinicio.",

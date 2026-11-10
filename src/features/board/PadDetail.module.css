@@ -1,0 +1,6 @@
+.detail h2 { display: flex; align-items: baseline; gap: 10px; margin: 7px 0 8px; font: 800 26px var(--font-display); }
+.detail h2 span { color: var(--muted); font: 700 14px var(--font-mono); }
+.detail p { margin: 7px 0 0; line-height: 1.45; }
+.position { color: var(--muted); font: 12px var(--font-mono); }
+.inLesson { padding: 8px 10px; border-inline-start: 3px solid var(--ink); background: var(--bg); }
+.detail .why { margin-top: 9px; padding: 8px 10px; border-inline-start: 3px solid var(--warn); border-radius: var(--radius-s); background: var(--bg); }

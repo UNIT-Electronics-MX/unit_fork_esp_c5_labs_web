@@ -32,6 +32,7 @@ import type { RouteErrorReason } from "../route-errors";
 export const trackLoader =
   (queryClient: QueryClient) =>
   async ({ params, request }: LoaderFunctionArgs) => {
+    if (params.trackId === "iot") return redirect("/lessons/I1");
     const track = findTrack(params.trackId ?? "");
     if (!track || track.planned) throw data({ reason: "noTheme", id: params.trackId ?? "" } satisfies RouteErrorReason, {
         status: 404,

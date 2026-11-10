@@ -54,7 +54,7 @@
       "Envía <code>rgb 255 0 0</code>, <code>rgb 0 255 0</code> y <code>rgb 0 0 255</code> para comparar los colores primarios.",
       "Envía <code>rgb 255 80 0</code>, luego <code>level 20</code> y <code>level 100</code>. Compara color y brillo; envía <code>off</code> al terminar."
     ],
-    "note": "¿No hay color? El esquema conecta la línea de datos del LED a GPIO0, pero la ilustración de UNIT la marca como GPIO8. Prueba <code>RGB_PIN = 8</code> y cuéntanos cuál usa tu placa.",
+    "note": "¿No hay color? Comprueba que <code>RGB_PIN</code> sea 0: la línea de datos del LED es GPIO0, el pad D2/RGB.",
     "variants": {
       "arduino": {
         "short": "Sketch y comandos serie"
@@ -73,7 +73,7 @@
           "En el terminal, envía <code>rgb 255 0 0</code>, <code>rgb 0 255 0</code> y <code>rgb 0 0 255</code> para comparar los colores primarios.",
           "Envía <code>rgb 255 80 0</code>, luego <code>level 20</code> y <code>level 100</code>. Envía <code>off</code> y pulsa <b>Detener</b> al terminar."
         ],
-        "note": "El esquema usa GPIO0 para la línea de datos RGB; algunas ilustraciones indican GPIO8. Cambia <code>RGB_PIN</code> a 8 si el LED no se enciende."
+        "note": "La línea de datos RGB es GPIO0 (D2/RGB). Si el LED no enciende, comprueba que <code>RGB_PIN</code> sea 0."
       }
     }
   },

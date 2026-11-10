@@ -15,6 +15,9 @@
 .note { margin: 0; color: var(--warn); font-size: 13px; }
 .error { margin: 0; color: var(--danger); font-size: 13px; overflow-wrap: anywhere; }
 .output { min-height: 220px; max-height: 380px; margin: 0; padding: 12px; overflow: auto; border-radius: var(--radius-s); background: var(--term-bg); color: var(--term-ink); white-space: pre-wrap; overflow-wrap: anywhere; font: 12px / 1.5 var(--font-mono); }
+.segment[data-tone="text"] { color: var(--term-info); }
+.segment[data-tone="prompt"] { color: var(--scope-blue); font-weight: 700; }
+.segment[data-tone="error"] { color: var(--term-err); }
 .command { display: grid; gap: 6px; }
 .command label { color: var(--muted); font: 650 12px var(--font-mono); }
 .command > div { display: flex; gap: 8px; align-items: stretch; }
@@ -31,6 +34,9 @@
 .docked .toolbar select, .docked .toolbar button, .docked .command textarea { border-color: var(--line); color: var(--ink); background: var(--surface); }
 .docked .toolbar button:hover:not(:disabled) { border-color: var(--muted); }
 .docked .output { min-height: 130px; max-height: 300px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--ink); }
+.docked .segment[data-tone="text"] { color: var(--syn-string); }
+.docked .segment[data-tone="prompt"] { color: var(--syn-fn); }
+.docked .segment[data-tone="error"] { color: var(--danger); }
 .docked .command button { border-color: var(--ink); color: var(--surface); background: var(--ink); }
 .docked .command textarea::placeholder { color: var(--muted); }
 .sidecar { align-content: start; height: 100%; border-radius: var(--radius-l); border-top: 1px solid var(--line); }

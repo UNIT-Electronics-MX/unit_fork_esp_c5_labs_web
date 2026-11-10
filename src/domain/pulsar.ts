@@ -38,58 +38,78 @@ export interface PulsarPosition {
   /** GPIO number as lessons write it ("27"), or the rail name ("3V3", "GND") for non-GPIO pins. */
   readonly pin: string;
   readonly use: PulsarUse;
-  /** The schematic and the board artwork disagree on this GPIO (D2: GPIO0 vs GPIO8). */
-  readonly unverified?: boolean;
+  /** Function printed in a box beside the pad on the reference pinout ("SCK", "USB D+"): a symbol. */
+  readonly fn?: string;
 }
 
 export const PULSAR_HEADER: readonly PulsarPosition[] = [
-  { label: "D13 / SCK / LED", pin: "27", use: "sck" },
+  { label: "D13 / SCK / LED", fn: "SCK", pin: "27", use: "sck" },
   { label: "3V3", pin: "3V3", use: "v3" },
   { label: "EN", pin: "EN", use: "en" },
   { label: "VBAT", pin: "VBAT", use: "vbat" },
-  { label: "A1 / D15", pin: "1", use: "qwiicSda" },
-  { label: "A2 / D16", pin: "4", use: "analogMtck" },
-  { label: "A3 / D17", pin: "5", use: "analogMtdo" },
-  { label: "SDA / D18", pin: "2", use: "sensorSda" },
-  { label: "SCL / D19", pin: "3", use: "sensorScl" },
-  { label: "A6 / D21", pin: "6", use: "qwiicScl" },
-  { label: "RGB / NEOPIXEL DOUT", pin: "DOUT", use: "rgbOut" },
+  { label: "A1 / D15", fn: "A1", pin: "1", use: "qwiicSda" },
+  { label: "A2 / D16", fn: "A2", pin: "4", use: "analogMtck" },
+  { label: "A3 / D17", fn: "A3", pin: "5", use: "analogMtdo" },
+  { label: "SDA / D18", fn: "SDA", pin: "2", use: "sensorSda" },
+  { label: "SCL / D19", fn: "SCL", pin: "3", use: "sensorScl" },
+  { label: "A6 / D21", fn: "A6", pin: "6", use: "qwiicScl" },
+  { label: "RGB / NEOPIXEL DOUT", fn: "NEO OUT", pin: "DOUT", use: "rgbOut" },
   { label: "VUSB", pin: "VUSB", use: "vusb" },
   { label: "GND", pin: "GND", use: "gnd" },
   { label: "GND", pin: "GND", use: "gnd" },
   { label: "VIN", pin: "VIN", use: "vin" },
-  { label: "TX0 / D1", pin: "11", use: "uartTx" },
-  { label: "RX0 / D0", pin: "12", use: "uartRx" },
+  { label: "TX0 / D1", fn: "TX", pin: "11", use: "uartTx" },
+  { label: "RX0 / D0", fn: "RX", pin: "12", use: "uartRx" },
   { label: "RST", pin: "RST", use: "reset" },
   { label: "GND", pin: "GND", use: "gnd" },
-  { label: "D2 / RGB", pin: "0", use: "rgbData", unverified: true },
-  { label: "D3 / BOOT", pin: "28", use: "boot" },
+  { label: "D2 / RGB", fn: "NEO IN", pin: "0", use: "rgbData" },
+  { label: "D3 / BOOT", fn: "BOOT", pin: "28", use: "boot" },
   { label: "D4", pin: "9", use: "io" },
   { label: "D5", pin: "23", use: "sdCs" },
   { label: "D6", pin: "24", use: "io" },
   { label: "D7", pin: "25", use: "io" },
-  { label: "D8", pin: "13", use: "usbDm" },
-  { label: "D9", pin: "14", use: "usbDp" },
-  { label: "D10 / SS", pin: "10", use: "spiSs" },
-  { label: "D11 / MOSI", pin: "7", use: "spiMosi" },
-  { label: "D12 / MISO", pin: "26", use: "spiMiso" },
+  { label: "D8", fn: "USB D−", pin: "13", use: "usbDm" },
+  { label: "D9", fn: "USB D+", pin: "14", use: "usbDp" },
+  { label: "D10 / SS", fn: "SS", pin: "10", use: "spiSs" },
+  { label: "D11 / MOSI", fn: "MOSI", pin: "7", use: "spiMosi" },
+  { label: "D12 / MISO", fn: "MISO", pin: "26", use: "spiMiso" },
 ];
 
 /** The silkscreen name printed beside a pad: the label's first part ("A2 / D16" → "A2"). */
 export const pulsarSilk = (p: PulsarPosition) => p.label.split(" / ")[0] ?? p.label;
 
-export type PulsarPadClass = "power" | "gnd" | "avoid" | "safe";
+/** The reference pinout's colour classes: free GPIO, the reasons to be careful, rails and ground. */
+export type PulsarPadClass = "safe" | "strapping" | "bus" | "control" | "neopixel" | "power" | "gnd";
+
+/** Why a pad is best left alone: each reason has its own explanation in the interface. */
+export type PulsarAvoidReason = "strapping" | "usb" | "uart" | "control";
 
 const RAILS = new Set(["3V3", "VBAT", "VUSB", "VIN"]);
+/** The on-board NeoPixel chain: its data in (D2, GPIO0) and the header's DOUT. */
+const NEOPIXEL = new Set(["0", "DOUT"]);
 /** Strapping pins (GPIO 2, 3, 7, 25–28), native USB, UART0 and the control pins. */
-const AVOID = new Set(["2", "3", "7", "25", "26", "27", "28", "11", "12", "13", "14", "EN", "RST"]);
+const AVOID: ReadonlyMap<string, PulsarAvoidReason> = new Map([
+  ...["2", "3", "7", "25", "26", "27", "28"].map((pin) => [pin, "strapping"] as const),
+  ["13", "usb"],
+  ["14", "usb"],
+  ["11", "uart"],
+  ["12", "uart"],
+  ["EN", "control"],
+  ["RST", "control"],
+]);
 
-/** How a pad is drawn: a rail, ground, best left alone, or a free GPIO. */
+/** How a pad is coloured, as on the reference pinout. */
 export function pulsarPadClass(pin: string): PulsarPadClass {
   if (RAILS.has(pin)) return "power";
   if (pin === "GND") return "gnd";
-  return AVOID.has(pin) ? "avoid" : "safe";
+  if (NEOPIXEL.has(pin)) return "neopixel";
+  const reason = AVOID.get(pin);
+  if (reason === "usb" || reason === "uart") return "bus";
+  return reason ?? "safe";
 }
+
+/** Why a pad needs care before wiring, or null when it is free to use. */
+export const pulsarAvoidReason = (pin: string): PulsarAvoidReason | null => AVOID.get(pin) ?? null;
 
 /**
  * Where a position sits in the top-view drawing (USB-C at the top): the left edge runs 1–15
