@@ -108,7 +108,7 @@ export function LessonHeader({
           {lesson.pins.length || lesson.usb ? (
             <div>
               <p className={styles.label}>{t("header.onBoard")}</p>
-              <PinsUsed pins={lesson.pins} usb={Boolean(lesson.usb)} />
+              <PinsUsed pins={lesson.pins} usb={Boolean(lesson.usb)} adc={Boolean(lesson.adcMap)} />
             </div>
           ) : null}
           {lesson.learn.length ? (

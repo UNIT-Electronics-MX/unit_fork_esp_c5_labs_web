@@ -24,3 +24,11 @@
   background: var(--pin);
   color: var(--surface);
 }
+/* The ADC channel a pin reaches, in the analog colour of the board drawing's channel boxes. */
+.adc {
+  font: 700 11px var(--font-mono);
+  padding: 1px 6px;
+  border: 1px solid var(--fam-analog);
+  border-radius: 4px;
+  color: var(--ink);
+}

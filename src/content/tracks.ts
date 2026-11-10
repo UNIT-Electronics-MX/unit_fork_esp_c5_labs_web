@@ -1,7 +1,8 @@
 import type { TrackId } from "@/domain/lesson";
 import type { BoardId, Track } from "@/domain/track";
 
-// The table of contents. Adding a theme = one entry here + a lessons file + one loader below.
+// The table of contents, in the order a learner follows: the board first, then sensors and
+// radios. Adding a theme = one entry here + a lessons file + one loader below.
 // Lesson content itself is code-split per track and loaded on demand (see ./queries.ts).
 export const TRACKS: readonly Track[] = [
   {
@@ -28,26 +29,11 @@ export const TRACKS: readonly Track[] = [
     lessonIds: ["O1", "03", "03b"],
   },
   {
-    id: "wifi",
-    title: "Wi-Fi",
-    blurb: "Scan, join, serve pages, and send C5 sensor readings to the cloud",
-    color: "--w-sda",
-    lessonIds: ["W1", "W2", "W3", "I1", "W4", "W5"],
-  },
-  {
     id: "sensors",
     title: "Sensors",
     blurb: "Temperature, air, motion over I2C",
     color: "--w-dc",
     lessonIds: ["D1", "D2", "D3"],
-    board: "pulsar-c5",
-  },
-  {
-    id: "zigbee",
-    title: "Zigbee",
-    blurb: "An 802.15.4 network between two boards",
-    color: "--part-teal",
-    lessonIds: ["Z1"],
     board: "pulsar-c5",
   },
   {
@@ -57,7 +43,14 @@ export const TRACKS: readonly Track[] = [
     color: "--ble",
     lessonIds: ["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "I2"],
   },
-  // RFID and Sound come last: they are Arduino-only, with no MicroPython support yet.
+  {
+    id: "wifi",
+    title: "Wi-Fi",
+    blurb: "Scan, join, serve pages, and send C5 sensor readings to the cloud",
+    color: "--w-sda",
+    lessonIds: ["W1", "W2", "W3", "I1", "W4", "W5"],
+  },
+  // RFID and Sound are Arduino-only, with no MicroPython support yet.
   {
     id: "rfid",
     title: "RFID & NFC",
@@ -71,6 +64,14 @@ export const TRACKS: readonly Track[] = [
     blurb: "Hear, measure, clap, record, see pitch, play",
     color: "--sound",
     lessonIds: ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"],
+  },
+  {
+    id: "zigbee",
+    title: "Zigbee",
+    blurb: "An 802.15.4 network between two boards",
+    color: "--part-teal",
+    lessonIds: ["Z1"],
+    board: "pulsar-c5",
   },
 ];
 

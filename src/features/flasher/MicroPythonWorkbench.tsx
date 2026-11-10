@@ -1,24 +1,10 @@
 import { useRef, useState } from "react";
 import { LessonCodeGuide } from "@/features/code/LessonCodeGuide";
 import { FirmwareFlasher } from "./FirmwareFlasher";
+import { lessonExamples } from "./lesson-examples";
 import { MicroPythonEditor } from "./MicroPythonEditor";
 import { SerialTerminal, type SerialTerminalHandle } from "./SerialTerminal";
 import styles from "./MicroPythonWorkbench.module.css";
-
-const FIRST_EXAMPLE: Readonly<Record<string, string>> = {
-  "01": "neopixel",
-  "02": "external-led",
-  P1: "gpio",
-  P2: "rgb-mixer",
-  P3: "adc",
-  P4: "i2c-scan",
-  P5: "microsd",
-  P6: "uart-loopback",
-  D2: "oled-light",
-  O1: "oled",
-  I1: "wifi-thingspeak",
-  I2: "ble-touch",
-};
 
 /** One Web Serial connection shared by the Python editor and its live REPL. */
 export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
@@ -28,9 +14,10 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
   const [serialOperation, setSerialOperation] = useState(false);
   const [flashWorking, setFlashWorking] = useState(false);
   const [serialError, setSerialError] = useState("");
-  const focusedExampleId = FIRST_EXAMPLE[lessonId];
-  // The code guide follows the workspace in a lesson; on 00 it leads into the console.
-  const guide = focusedExampleId || lessonId === "00" ? (
+  const exampleIds = lessonExamples(lessonId);
+  const multiExample = exampleIds.length > 3;
+  // Larger lessons show the guide before the scripts; smaller ones keep it after the editor.
+  const guide = exampleIds.length || lessonId === "00" ? (
     <LessonCodeGuide
       lessonId={lessonId}
       variant="micropython"
@@ -39,7 +26,7 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
     />
   ) : null;
   return (
-    <div className={styles.workbench}>
+    <div className={styles.workbench} data-multi-example={multiExample || undefined}>
       {lessonId === "00" ? <FirmwareFlasher
         terminalRef={terminalRef}
         terminalActive={terminalActive}
@@ -49,10 +36,10 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
         microPythonSetup
         embedded
       /> : null}
-      {lessonId === "00" ? guide : null}
+      {lessonId === "00" || multiExample ? guide : null}
       {lessonId !== "00" ? <MicroPythonEditor
-        initialId={FIRST_EXAMPLE[lessonId] ?? "gpio"}
-        focusedExampleId={focusedExampleId}
+        initialId={exampleIds[0] ?? "gpio"}
+        lessonExampleIds={exampleIds}
         terminalRef={terminalRef}
         connected={connected}
         connectionError={serialError}
@@ -72,7 +59,7 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
         sidecar={lessonId !== "00"}
         stopPythonOnConnect
       />
-      {lessonId === "00" ? null : guide}
+      {lessonId === "00" || multiExample ? null : guide}
     </div>
   );
 }

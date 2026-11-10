@@ -3,6 +3,8 @@
   gap: 12px;
   min-width: 0;
 }
+.workbench[data-multi-example="true"] { align-items: start; }
+.workbench[data-multi-example="true"] > [aria-labelledby="serial-terminal-title"] { height: auto; }
 @media (min-width: 1120px) {
   .workbench { grid-template-columns: minmax(0, 1fr) minmax(300px, 340px); align-items: stretch; }
   .workbench > [data-workspace-guide] { grid-column: 1 / -1; }

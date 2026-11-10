@@ -106,7 +106,7 @@
           "cualquiera de las dos"
         ],
         [
-          "A2 (GPIO4)",
+          "A2 (GPIO4 · ADC1_CH3)",
           "pata central del potenciómetro",
           "el cursor"
         ],
@@ -123,7 +123,7 @@
       "Gira el mando de extremo a extremo: el valor crudo va de unos 0 a 4095 y los milivoltios de unos 0 a 3100.",
       "Abre <b>Herramientas → Serial Plotter</b> para ver moverse las dos líneas."
     ],
-    "note": "Los pines de la cabecera con ADC son A1 (GPIO1), A2 (GPIO4), A3 (GPIO5) y A6 (GPIO6). Nunca les metas más de 3,3 V.",
+    "note": "El dibujo de la placa marca los seis canales del ADC. Para tus sensores usa A2 (GPIO4) y A3 (GPIO5); A1 y A6 también sirven si no hay nada conectado a QWIIC. Nunca les apliques más de 3,3 V.",
     "variants": {
       "arduino": {
         "short": "Sketch ADC de 12 bits"
@@ -202,20 +202,21 @@
         "short": "Escáner de bus Wire"
       },
       "micropython": {
-        "short": "Escáner de bus I²C",
-        "goal": "Usa MicroPython para escanear el bus de sensores integrado de la Pulsar C5 e identificar los dispositivos I²C que responden.",
+        "short": "Escáner del bus y un script por sensor",
+        "goal": "Usa MicroPython para escanear el bus de sensores integrado de la Pulsar C5 y luego lee cada uno de los cinco sensores con su propio controlador.",
         "learn": [
           "machine.I2C",
           "scan()",
           "direcciones I²C",
-          "resistencias pull-up"
+          "controladores de sensores"
         ],
         "steps": [
           "No hay nada que cablear: los cinco sensores y las resistencias pull-up están en la placa.",
-          "Abre <b>Código</b>, conecta el REPL serie y ejecuta <code>i2c_scan.py</code>.",
-          "Compara las direcciones que aparecen cada cinco segundos con la tabla. Pulsa <b>Detener</b> al terminar."
+          "Abre <b>Código</b>, conecta el REPL serie y ejecuta <code>i2c_scan.py</code>. Compara las direcciones con la tabla.",
+          "Elige la pestaña de un sensor: <code>mmc5603_compass.py</code>, <code>max17048_battery.py</code>, <code>fht40_temp_humidity.py</code>, <code>lps22hb_pressure.py</code> o <code>vcnl4040_light_prox.py</code>.",
+          "Pulsa <b>Instalar</b> una vez para su controlador y luego <b>Ejecutar en la placa</b>. Echa el aliento sobre la placa, tapa el sensor de luz o acércala a un imán y mira cómo cambian los valores. Pulsa <b>Detener</b> al terminar."
         ],
-        "note": "Este bus integrado usa GPIO2/GPIO3. El conector QWIIC usa otro bus en GPIO1/GPIO6."
+        "note": "Este bus integrado usa GPIO2/GPIO3. El conector QWIIC usa otro bus en GPIO1/GPIO6. El script de la batería necesita una celda LiPo conectada."
       }
     }
   },

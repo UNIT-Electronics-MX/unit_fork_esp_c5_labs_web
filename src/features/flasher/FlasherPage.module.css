@@ -32,8 +32,8 @@
 .eraseOption input:disabled { cursor: wait; }
 .warning { padding: 12px; border-radius: var(--radius-s); color: var(--warn); background: color-mix(in oklab, var(--warn) 9%, var(--surface)); font-size: 13px; line-height: 1.45; }
 .error { color: var(--danger); font-weight: 700; }
-.flash { width: 100%; padding: 13px 18px; color: var(--surface); background: var(--pcb); border: 1px solid var(--pcb-edge); }
-.flash:not(:disabled):hover { background: var(--copper); }
+.flash { width: 100%; padding: 13px 18px; color: var(--surface); background: var(--ink); border: 1px solid var(--ink); }
+.flash:not(:disabled):hover { color: var(--bg); background: var(--copper); border-color: var(--copper); }
 .status { min-height: 1.5em; margin: 12px 0 0; color: var(--ink); font-weight: 650; }
 .chip { color: var(--muted); font: 12px var(--font-mono); }
 .progress { display: flex; align-items: center; gap: 10px; font: 700 12px var(--font-mono); }

@@ -7,6 +7,7 @@ import { fetchJson } from "@/lib/http";
 import type { SerialTerminalHandle } from "./SerialTerminal";
 import { REPL_INTERRUPT_FAILED, validPythonFilename } from "./serial-session";
 import { EditorActionIcon } from "./EditorActionIcon";
+import { pickExamples } from "./lesson-examples";
 import { highlightPython } from "./python-highlight";
 import styles from "./MicroPythonEditor.module.css";
 
@@ -63,7 +64,7 @@ export function MicroPythonEditor({
   toolbarAtTop = false,
   docked = false,
   blocked = false,
-  focusedExampleId,
+  lessonExampleIds = [],
 }: {
   initialId?: string;
   terminalRef?: RefObject<SerialTerminalHandle | null>;
@@ -72,7 +73,8 @@ export function MicroPythonEditor({
   toolbarAtTop?: boolean;
   docked?: boolean;
   blocked?: boolean;
-  focusedExampleId?: string;
+  /** In a lesson: only these examples, with a file list for larger sets. */
+  lessonExampleIds?: readonly string[];
 }) {
   const { t, i18n } = useTranslation();
   const spanish = i18n.resolvedLanguage?.startsWith("es") ?? false;
@@ -110,8 +112,10 @@ export function MicroPythonEditor({
     try { localStorage.setItem(FILENAMES_KEY, JSON.stringify(filenames)); } catch { /* Storage may be unavailable. */ }
   }, [filenames]);
 
-  const visibleExamples = focusedExampleId ? data?.examples.filter((example) => example.id === focusedExampleId) : data?.examples;
+  const inLesson = lessonExampleIds.length > 0;
+  const visibleExamples = data && inLesson ? pickExamples(data.examples, lessonExampleIds) : data?.examples;
   const selected = visibleExamples?.find((example) => example.id === selectedId) ?? visibleExamples?.[0];
+  const showLessonExplorer = inLesson && (visibleExamples?.length ?? 0) > 3;
   const requiredLibraries = selected ? data?.libraries?.filter((library) => library.examples.includes(selected.id)) ?? [] : [];
   const code = selected ? drafts[selected.id] ?? selected.code : "";
   const edited = selected ? code !== selected.code : false;
@@ -122,6 +126,13 @@ export function MicroPythonEditor({
   function describeSerialError(cause: unknown) {
     const detail = cause instanceof Error ? cause.message : String(cause);
     return detail === REPL_INTERRUPT_FAILED ? t("flasher.serial.replInterruptFailed") : detail;
+  }
+
+  function selectExample(id: string) {
+    setSelectedId(id);
+    setLoadedFile(false);
+    setNotice("");
+    resetViewport();
   }
 
   function resetViewport() {
@@ -307,7 +318,7 @@ export function MicroPythonEditor({
         ) : null}
       </div>
       <div className={styles.toolGroup}>
-        {focusedExampleId ? (
+        {inLesson ? (
           <label className={styles.openFile}>
             <EditorActionIcon name="folder" />{t("flasher.examples.openFile")}
             <input type="file" accept=".py,text/x-python" aria-label={t("flasher.examples.openFile")} onChange={(event) => {
@@ -355,7 +366,14 @@ export function MicroPythonEditor({
   ) : null;
 
   return (
-    <section className={styles.editor} data-docked={docked} data-lesson={Boolean(focusedExampleId)} aria-labelledby="micropython-title">
+    <section
+      className={styles.editor}
+      data-docked={docked}
+      data-lesson={inLesson}
+      data-lesson-navigation={showLessonExplorer || undefined}
+      aria-label={inLesson ? t("flasher.examples.workspace") : undefined}
+      aria-labelledby={inLesson ? undefined : "micropython-title"}
+    >
       {toolbarAtTop && toolbar ? (
         <div className={styles.lessonActions}>
           {toolbar}
@@ -363,7 +381,7 @@ export function MicroPythonEditor({
           {operation || notice ? <p className={styles.actionNotice} role="status">{operation ? t("flasher.examples.working") : notice}</p> : null}
         </div>
       ) : null}
-      {focusedExampleId ? null : intro}
+      {inLesson ? null : intro}
       {error ? (
         <div className={styles.underbar}>
           <p className={styles.error} role="alert">{t("flasher.examples.unavailable")}</p>
@@ -374,7 +392,7 @@ export function MicroPythonEditor({
       {!data && !error ? <p role="status">{t("flasher.examples.loading")}</p> : null}
       {data && selected ? (
         <>
-          {focusedExampleId ? null : details}
+          {inLesson ? null : details}
           <div className={styles.ide}>
             <div className={styles.windowBar}>
               <div className={styles.windowIdentity}>
@@ -388,9 +406,12 @@ export function MicroPythonEditor({
               </span>
             </div>
             {!toolbarAtTop ? toolbar : null}
-            <div className={styles.body} data-focused={Boolean(focusedExampleId)}>
-              {!focusedExampleId ? <aside className={styles.explorer} aria-label={t("flasher.examples.choose")}>
-                <div className={styles.explorerHeading}><EditorActionIcon name="folder" />{t("flasher.examples.choose")}</div>
+            <div className={styles.body} data-focused={inLesson && !showLessonExplorer}>
+              {!inLesson || showLessonExplorer ? <aside className={styles.explorer} aria-label={t("flasher.examples.choose")}>
+                <div className={styles.explorerHeading}>
+                  <EditorActionIcon name="folder" />{t("flasher.examples.choose")}
+                  {showLessonExplorer ? <span className={styles.exampleProgress}>{(visibleExamples?.findIndex((example) => example.id === selected.id) ?? 0) + 1} / {visibleExamples?.length}</span> : null}
+                </div>
                 <div className={styles.exampleList}>
                   {visibleExamples?.map((example) => (
                     <button
@@ -399,12 +420,7 @@ export function MicroPythonEditor({
                       key={example.id}
                       data-active={selected.id === example.id}
                       aria-current={selected.id === example.id ? "true" : undefined}
-                      onClick={() => {
-                        setSelectedId(example.id);
-                        setLoadedFile(false);
-                        setNotice("");
-                        resetViewport();
-                      }}
+                      onClick={() => selectExample(example.id)}
                     >
                       <span className={styles.pyFile} aria-hidden="true">{PY_MARK}</span>
                       <span>{spanish ? example.title : example.titleEn}<small>{filenames[example.id] || example.file}</small></span>
@@ -412,18 +428,32 @@ export function MicroPythonEditor({
                     </button>
                   ))}
                 </div>
-                <label className={styles.openFile}>
+                {!inLesson ? <label className={styles.openFile}>
                   <EditorActionIcon name="folder" />{t("flasher.examples.openFile")}
                   <input type="file" accept=".py,text/x-python" aria-label={t("flasher.examples.openFile")} onChange={(event) => {
                     const file = event.currentTarget.files?.[0];
                     event.currentTarget.value = "";
                     void openFile(file);
                   }} />
-                </label>
+                </label> : null}
               </aside> : null}
               <div className={styles.mainPane}>
                 <div className={styles.tabBar}>
-                  <div className={styles.activeTab}><span className={styles.pyFile} aria-hidden="true">{PY_MARK}</span><span>{outputName}</span>{edited ? <span className={styles.dirty} aria-label={t("flasher.examples.modified")} /> : null}</div>
+                  {inLesson && !showLessonExplorer && visibleExamples && visibleExamples.length > 1 ? (
+                    <div className={styles.tabs} role="group" aria-label={t("flasher.examples.choose")}>
+                      {visibleExamples.map((example) => {
+                        const active = example.id === selected.id;
+                        const dirty = active ? edited : drafts[example.id] !== undefined && drafts[example.id] !== example.code;
+                        return (
+                          <button key={example.id} type="button" className={styles.activeTab} data-active={active} aria-current={active ? "true" : undefined} title={spanish ? example.title : example.titleEn} onClick={() => selectExample(example.id)}>
+                            <span className={styles.pyFile} aria-hidden="true">{PY_MARK}</span><span>{active ? outputName : filenames[example.id] || example.file}</span>{dirty ? <span className={styles.dirty} aria-label={t("flasher.examples.modified")} /> : null}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className={styles.activeTab}><span className={styles.pyFile} aria-hidden="true">{PY_MARK}</span><span>{outputName}</span>{edited ? <span className={styles.dirty} aria-label={t("flasher.examples.modified")} /> : null}</div>
+                  )}
                   <span className={styles.tabHint}>{PYTHON_LABEL}</span>
                 </div>
                 <div className={styles.fileInfo}>
@@ -437,7 +467,7 @@ export function MicroPythonEditor({
                   <div className={styles.sourceArea}>
                     <pre className={styles.highlight} ref={sourceRef} aria-hidden="true">{highlightPython(code)}{"\n"}</pre>
                     <textarea
-                      data-lesson-code={focusedExampleId ? true : undefined}
+                      data-lesson-code={inLesson ? true : undefined}
                       id="micropython-code"
                       ref={textareaRef}
                       className={styles.code}
@@ -467,10 +497,9 @@ export function MicroPythonEditor({
               </div>
             </div>
           </div>
-          {focusedExampleId ? details : null}
+          {inLesson ? details : null}
         </>
       ) : null}
-      {focusedExampleId ? intro : null}
     </section>
   );
 }

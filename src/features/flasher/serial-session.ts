@@ -13,6 +13,8 @@ export const validPythonFilename = (name: string): boolean =>
 
 export const REPL_INTERRUPT_FAILED = "replInterruptFailed";
 const REPL_TIMEOUT = "MicroPython REPL did not answer. Check the firmware and serial port.";
+// Keep each REPL line short enough for the board's input buffer while reducing round trips.
+const FILE_CHUNK_BYTES = 120;
 
 const ENDINGS: Record<LineEnding, string> = {
   none: "",
@@ -166,17 +168,24 @@ export class SerialSession {
     await this.send("\x04", "none");
   }
 
-  /** Save a script in small REPL writes so Web Serial cannot overrun the interpreter's input. */
+  /** Save a script in prompt-acknowledged REPL writes without overrunning the interpreter. */
   async savePython(filename: string, code: string): Promise<void> {
     if (!validPythonFilename(filename)) throw new Error("Invalid Python filename");
     await this.stopPython();
-    await this.expectAfter(">>> ", () => this.send(`f=open(${JSON.stringify(filename)},'wb')\r`, "none"));
-    const bytes = new TextEncoder().encode(code);
-    for (let at = 0; at < bytes.length; at += 32) {
-      const chunk = bytes.subarray(at, at + 32);
-      await this.expectAfter(">>> ", () => this.send(`f.write(bytes((${[...chunk].join(",")})))\r`, "none"));
+    this.muted = true;
+    try {
+      await this.expectAfter(">>> ", () => this.send("import binascii\r", "none"));
+      await this.expectAfter(">>> ", () => this.send(`f=open(${JSON.stringify(filename)},'wb')\r`, "none"));
+      const bytes = new TextEncoder().encode(code);
+      for (let at = 0; at < bytes.length; at += FILE_CHUNK_BYTES) {
+        const chunk = bytes.subarray(at, at + FILE_CHUNK_BYTES);
+        const encoded = btoa(String.fromCharCode(...chunk));
+        await this.expectAfter(">>> ", () => this.send(`f.write(binascii.a2b_base64('${encoded}'))\r`, "none"));
+      }
+      await this.expectAfter(">>> ", () => this.send("f.close()\r", "none"));
+    } finally {
+      this.muted = false;
     }
-    await this.expectAfter(">>> ", () => this.send("f.close()\r", "none"));
   }
 
   async stopPython(): Promise<void> {

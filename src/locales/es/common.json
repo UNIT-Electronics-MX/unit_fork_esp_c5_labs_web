@@ -224,6 +224,11 @@
           "try": "Une TX0 con RX0, carga el sketch y envía hello UART. Retira el cable y vuelve a enviarlo.",
           "expect": "El primer mensaje vuelve como loopback: hello UART; el segundo ya no vuelve."
         },
+        "D1": {
+          "title": "Comprueba que es un BMI270",
+          "try": "Conecta el BMI270 a QWIIC, sube el sketch y abre el monitor.",
+          "expect": "El monitor muestra found 0x68 (o 0x69) y luego chip ID 0x24 (BMI270)."
+        },
         "D2": {
           "title": "Observa cómo se crea la gráfica de luz",
           "try": "Busca DevLabDDP::Master en el sketch y sigue la lectura ADC hasta drawGraph().",
@@ -290,6 +295,11 @@
           "title": "Prueba el retorno UART",
           "try": "Une GPIO11 con GPIO12, ejecuta uart_loopback.py y envía hello UART desde el terminal.",
           "expect": "El script muestra loopback: hello UART; sin el puente indica que no hubo respuesta."
+        },
+        "D1": {
+          "title": "Comprueba que es un BMI270",
+          "try": "Conecta el BMI270 a QWIIC y ejecuta bmi270_id.py.",
+          "expect": "La terminal muestra found 0x68 (o 0x69) y luego chip ID 0x24 (BMI270)."
         },
         "D2": {
           "title": "Grafica la luz en la OLED",
@@ -429,6 +439,20 @@
       "ground": "masa",
       "button": "entrada de botón",
       "rfid": "RC522"
+    },
+    "adc": {
+      "title": "Canales ADC en el conector",
+      "channel": "Canal",
+      "pad": "Pin",
+      "state": "¿Se puede usar?",
+      "position": "posición {{number}}",
+      "states": {
+        "free": "Sí, libre",
+        "qwiic": "Solo si no hay nada en QWIIC",
+        "sensorBus": "No: bus de sensores de la placa"
+      },
+      "note": "El ESP32-C5 tiene un ADC de 12 bits (ADC1) con seis canales, en GPIO1–GPIO6. Sigue funcionando con el Wi-Fi encendido. SDA y SCL ya llevan los sensores de la placa y sus pull-ups de 4,7 kΩ, así que sus lecturas no sirven.",
+      "drawn": "Cada canal de ADC1 aparece en un recuadro junto a su pin."
     },
     "between": {
       "title": "Entre lecciones",

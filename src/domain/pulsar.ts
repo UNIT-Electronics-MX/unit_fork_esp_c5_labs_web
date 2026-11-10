@@ -112,6 +112,38 @@ export function pulsarPadClass(pin: string): PulsarPadClass {
 export const pulsarAvoidReason = (pin: string): PulsarAvoidReason | null => AVOID.get(pin) ?? null;
 
 /**
+ * The ESP32-C5 has one 12-bit SAR ADC, ADC1, with six channels on GPIO1–GPIO6 (datasheet pin
+ * overview; board reference §A4.3). All six reach the Pulsar header.
+ */
+const ADC1_CHANNEL: ReadonlyMap<string, number> = new Map([
+  ["1", 0], ["2", 1], ["3", 2], ["4", 3], ["5", 4], ["6", 5],
+]);
+
+/** Whether an ADC pad is free for a sensor: QWIIC and the sensor bus already have wires and pull-ups. */
+export type PulsarAdcState = "free" | "qwiic" | "sensorBus";
+
+export interface PulsarAdcChannel {
+  /** 0-based header position. */
+  readonly position: number;
+  readonly pad: PulsarPosition;
+  /** ADC1 channel number: 0 for ADC1_CH0. */
+  readonly channel: number;
+  readonly state: PulsarAdcState;
+}
+
+/** The ADC1 channel on a GPIO, or null when that pin has none. */
+export const pulsarAdcChannel = (pin: string): number | null => ADC1_CHANNEL.get(pin) ?? null;
+
+const adcState = (use: PulsarUse): PulsarAdcState =>
+  use === "qwiicSda" || use === "qwiicScl" ? "qwiic" : use === "sensorSda" || use === "sensorScl" ? "sensorBus" : "free";
+
+/** Every ADC1 channel on the header, in channel order. */
+export const PULSAR_ADC: readonly PulsarAdcChannel[] = PULSAR_HEADER.flatMap((pad, position) => {
+  const channel = pulsarAdcChannel(pad.pin);
+  return channel === null ? [] : [{ position, pad, channel, state: adcState(pad.use) }];
+}).sort((a, b) => a.channel - b.channel);
+
+/**
  * Where a position sits in the top-view drawing (USB-C at the top): the left edge runs 1–15
  * downwards, the right edge 16–30 upwards, so position 30 (D12) faces position 1 (D13).
  */

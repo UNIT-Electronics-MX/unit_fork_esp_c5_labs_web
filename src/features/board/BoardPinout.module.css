@@ -68,6 +68,18 @@
   font-weight: 600;
   fill: var(--muted);
 }
+/* ADC channel boxes: the analog colour, so they read apart from the function boxes. */
+.adcBox {
+  fill: var(--surface);
+  stroke: var(--fam-analog);
+  stroke-width: 1.2;
+}
+.adc {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  fill: var(--ink);
+}
 .qwiicLead {
   fill: none;
   stroke: var(--muted);

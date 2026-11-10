@@ -34,6 +34,7 @@
 .body[data-focused="true"] { grid-template-columns: minmax(0, 1fr); }
 .explorer { display: flex; flex-direction: column; min-width: 0; border-inline-end: 1px solid var(--line); background: var(--bg); }
 .explorerHeading { display: flex; align-items: center; gap: 7px; padding: 12px 11px 8px; color: var(--muted); font: 700 10px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+.exampleProgress { margin-inline-start: auto; color: var(--ink); letter-spacing: 0; }
 .exampleList { display: grid; align-content: start; gap: 1px; padding: 0 5px 10px; }
 .example { display: flex; align-items: center; gap: 7px; width: 100%; min-width: 0; padding: 7px 6px; border: 0; border-inline-start: 2px solid transparent; border-radius: 4px; color: var(--ink); background: transparent; text-align: start; cursor: pointer; font: 650 12px/1.2 var(--font-display); }
 .example:hover { background: var(--surface); }
@@ -54,12 +55,25 @@
 .activeTab { display: flex; align-items: center; gap: 7px; min-width: 0; max-width: 75%; padding: 6px 11px; border-inline-end: 1px solid var(--line); border-top: 2px solid var(--ink); color: var(--ink); background: var(--surface); font: 650 12px var(--font-mono); }
 .activeTab > span:nth-child(2) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .activeTab .pyFile { width: 21px; height: 18px; }
+/* A lesson with several scripts: one tab per file, wrapping so every file stays visible. */
+.tabs { display: flex; flex-wrap: wrap; min-width: 0; }
+.tabs .activeTab { flex: none; max-width: none; margin: 0; border-block: 0; border-top: 2px solid transparent; border-radius: 0; color: var(--muted); background: transparent; cursor: pointer; }
+.tabs .activeTab:hover { color: var(--ink); }
+.tabs .activeTab[data-active="true"] { border-top-color: var(--ink); color: var(--ink); background: var(--surface); }
 .tabHint { align-self: center; padding-inline: 12px; color: var(--muted); font: 11px var(--font-mono); }
 .fileInfo { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 6px 11px; border-bottom: 1px solid var(--line); color: var(--muted); font: 11px var(--font-mono); }
 .fileInfo label { flex: none; }
 .fileInfo input { width: min(100%, 260px); min-width: 0; padding: 4px 6px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: var(--surface); font: 11px var(--font-mono); }
 .codeViewport { display: grid; grid-template-columns: 44px minmax(0, 1fr); min-width: 0; height: clamp(290px, 42vw, 440px); background: var(--surface); }
 .editor[data-lesson="true"] .codeViewport { height: clamp(520px, 68vh, 800px); }
+.editor[data-lesson-navigation="true"] .codeViewport { height: clamp(480px, 62vh, 680px); }
+.editor[data-lesson-navigation="true"] .body { grid-template-columns: minmax(180px, 230px) minmax(0, 1fr); }
+.editor[data-lesson-navigation="true"] .explorer { border-inline-end: 1px solid var(--line); }
+.editor[data-lesson-navigation="true"] .exampleList { gap: 5px; padding: 4px 8px 12px; }
+.editor[data-lesson-navigation="true"] .example { gap: 9px; padding: 10px 8px; border-inline-start-width: 3px; line-height: 1.35; }
+.editor[data-lesson-navigation="true"] .example[data-active="true"] { border-inline-start-color: var(--copper); }
+.editor[data-lesson-navigation="true"] .toolbar { gap: 8px 16px; padding: 10px 12px; }
+.editor[data-lesson-navigation="true"] .toolGroup { gap: 6px; }
 .gutter { overflow: hidden; padding-block: 16px; border-inline-end: 1px solid var(--line); color: var(--muted); background: var(--surface); text-align: end; user-select: none; font: 12px/21px var(--font-mono); }
 .gutter > div { height: 21px; padding-inline-end: 8px; }
 .gutter > div[data-current="true"] { color: var(--ink); }
@@ -96,6 +110,13 @@
   .openFile { align-self: start; margin: 0 10px 9px; padding: 6px 9px; }
   .codeViewport { height: 340px; }
   .editor[data-lesson="true"] .codeViewport { height: clamp(420px, 58vh, 640px); }
+}
+@container (max-width: 850px) {
+  .editor[data-lesson-navigation="true"] .body { grid-template-columns: minmax(0, 1fr); }
+  .editor[data-lesson-navigation="true"] .explorer { border-inline-end: 0; border-bottom: 1px solid var(--line); }
+  .editor[data-lesson-navigation="true"] .exampleList { display: flex; gap: 6px; overflow-x: auto; padding: 4px 8px 10px; }
+  .editor[data-lesson-navigation="true"] .example { flex: 0 0 185px; width: 185px; max-width: none; align-items: start; }
+  .editor[data-lesson-navigation="true"] .example small { display: block; }
 }
 @container (max-width: 480px) {
   .toolbar button { padding: 6px 8px; font-size: 11px; }

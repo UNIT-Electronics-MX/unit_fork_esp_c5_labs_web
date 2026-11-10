@@ -224,6 +224,11 @@
           "try": "Join TX0 to RX0, upload the sketch and send hello UART. Then remove the jumper and send it again.",
           "expect": "The first message returns as loopback: hello UART; the second no longer returns."
         },
+        "D1": {
+          "title": "Prove it is a BMI270",
+          "try": "Plug the BMI270 into QWIIC, upload the sketch and open the monitor.",
+          "expect": "The monitor lists found 0x68 (or 0x69), then chip ID 0x24 (BMI270)."
+        },
         "D2": {
           "title": "See how the light graph is built",
           "try": "Find DevLabDDP::Master in the sketch, then follow the ADC reading into drawGraph().",
@@ -290,6 +295,11 @@
           "title": "Test the UART loopback",
           "try": "Bridge GPIO11 to GPIO12, run uart_loopback.py and send hello UART in the terminal.",
           "expect": "The script prints loopback: hello UART; without the jumper it reports no response."
+        },
+        "D1": {
+          "title": "Prove it is a BMI270",
+          "try": "Plug the BMI270 into QWIIC and run bmi270_id.py.",
+          "expect": "The terminal lists found 0x68 (or 0x69), then chip ID 0x24 (BMI270)."
         },
         "D2": {
           "title": "Plot light on the OLED",
@@ -429,6 +439,20 @@
       "ground": "ground",
       "button": "button input",
       "rfid": "RC522"
+    },
+    "adc": {
+      "title": "ADC channels on the header",
+      "channel": "Channel",
+      "pad": "Pad",
+      "state": "Can you use it?",
+      "position": "position {{number}}",
+      "states": {
+        "free": "Yes, free",
+        "qwiic": "Only if nothing is on QWIIC",
+        "sensorBus": "No: on-board sensor bus"
+      },
+      "note": "The ESP32-C5 has one 12-bit ADC (ADC1) with six channels, on GPIO1–GPIO6. It keeps working while Wi-Fi is on. SDA and SCL already carry the on-board sensors and their 4.7 kΩ pull-ups, so their readings are not usable.",
+      "drawn": "Each ADC1 channel is boxed beside its pad."
     },
     "between": {
       "title": "Between lessons",

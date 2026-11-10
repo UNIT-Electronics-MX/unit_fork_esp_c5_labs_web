@@ -1,0 +1,54 @@
+.channels {
+  margin: 12px 0 0;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.channels figcaption {
+  margin-bottom: 6px;
+  color: var(--muted);
+  font: 600 11.5px var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.channels table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.channels th,
+.channels td {
+  padding: 5px 6px;
+  border-bottom: 1px solid var(--line);
+  text-align: start;
+  vertical-align: top;
+}
+.channels thead th {
+  color: var(--muted);
+  font: 600 11px var(--font-mono);
+}
+.channels tbody th {
+  border-inline-start: 3px solid var(--fam-analog);
+  font-weight: 400;
+  white-space: nowrap;
+}
+.channels tbody tr:not([data-state="free"]) td:last-child {
+  color: var(--muted);
+}
+.channels tbody tr[data-state="free"] td:last-child {
+  font-weight: 650;
+}
+.gpio {
+  color: var(--muted);
+  font: 11.5px var(--font-mono);
+}
+.position {
+  display: block;
+  color: var(--muted);
+  font-size: 11.5px;
+}
+.note {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.45;
+}

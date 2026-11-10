@@ -96,15 +96,42 @@ describe("SerialSession", () => {
     expect(writes).toContain("    print(n)\r");
     expect(writes).toContain("\x04");
     await session.savePython("hello.py", "print('café')\n");
+    expect(writes).toContain("import binascii\r");
     expect(writes).toContain('f=open("hello.py",\'wb\')\r');
-    const byteCommands = writes.filter((write) => write.startsWith("f.write(bytes("));
-    expect(byteCommands.length).toBeGreaterThan(0);
-    expect(byteCommands.join(" ")).toContain("195,169");
+    const byteCommands = writes.filter((write) => write.startsWith("f.write(binascii.a2b_base64("));
+    expect(byteCommands).toHaveLength(1);
+    const encoded = /a2b_base64\('([^']+)'\)/.exec(byteCommands[0] ?? "")?.[1] ?? "";
+    expect([...atob(encoded)].map((character) => character.charCodeAt(0)))
+      .toEqual([...new TextEncoder().encode("print('café')\n")]);
     await session.savePython("hello.py", "print(2)\n");
     expect(writes.filter((write) => write === 'f=open("hello.py",\'wb\')\r')).toHaveLength(2);
+    const beforeLargeSave = writes.length;
+    await session.savePython("large.py", "x".repeat(481));
+    const largeCommands = writes.slice(beforeLargeSave).filter((write) => write.startsWith("f.write(binascii.a2b_base64("));
+    expect(largeCommands).toHaveLength(5);
+    expect(largeCommands.every((command) => command.length < 200)).toBe(true);
+    expect(largeCommands.map((command) => atob(/a2b_base64\('([^']+)'\)/.exec(command)?.[1] ?? "")).join(""))
+      .toBe("x".repeat(481));
     await session.stopPython();
     expect(writes.at(-1)).toBe("\x03\x03\r");
     expect(await session.close()).toBe(true);
+  });
+
+  it("keeps file-transfer commands out of the visible terminal", async () => {
+    let input!: ReadableStreamDefaultController<Uint8Array>;
+    const shown: string[] = [];
+    const encoder = new TextEncoder();
+    const readable = new ReadableStream<Uint8Array>({ start(controller) { input = controller; } });
+    const writable = new WritableStream<Uint8Array>({ write(chunk) {
+      const command = new TextDecoder().decode(chunk);
+      input.enqueue(encoder.encode(command.includes("\x03") ? ">>> " : `${command}>>> `));
+    } });
+    const session = new SerialSession({ readable, writable, open: async () => undefined, close: async () => undefined }, (text) => shown.push(text), () => undefined);
+    await session.open(115200);
+
+    await session.savePython("driver.py", "print('ready')\n");
+    expect(shown.join("")).toBe(">>> ");
+    await session.close();
   });
 
   it("pastes a script whose echoed lines name an exception", async () => {

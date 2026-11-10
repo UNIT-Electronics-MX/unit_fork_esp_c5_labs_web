@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import type { ResolvedLesson } from "@/domain/lesson";
 import { pulsarMissing } from "@/domain/pulsar";
 import { useLocaleInfo } from "@/i18n/use-locale";
+import { AdcChannels } from "./AdcChannels";
 import { BoardPinout } from "./BoardPinout";
 import { LegendDot, PadLegend } from "./PadLegend";
 import styles from "./BoardCard.module.css";
@@ -28,6 +29,7 @@ export function BoardCard({ lesson }: { lesson: ResolvedLesson | null }) {
         pins={lesson?.pins ?? []}
         usb={Boolean(lesson?.usb || lesson?.preview)}
         boot={Boolean(lesson?.boot)}
+        adc={Boolean(lesson?.adcMap)}
       />
       {missing.length ? (
         <p className={styles.missing}>
@@ -48,6 +50,7 @@ export function BoardCard({ lesson }: { lesson: ResolvedLesson | null }) {
           </>
         }
       />
+      {lesson?.adcMap ? <AdcChannels /> : null}
       <p className={styles.strapping}>
         {t("board.pulsar.strapping")}{" "}
         <Link to={pinoutHref}>{t("board.pulsar.open")}</Link>

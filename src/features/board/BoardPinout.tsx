@@ -1,9 +1,10 @@
 import { useId } from "react";
 import { useTranslation } from "react-i18next";
-import type { PinUse } from "@/domain/lesson";
+import type { PinSide, PinUse } from "@/domain/lesson";
 import {
   isGpio,
   PULSAR_HEADER,
+  pulsarAdcChannel,
   pulsarPadClass,
   pulsarRow,
   pulsarSilk,
@@ -76,10 +77,12 @@ interface BoardPinoutProps {
   detailed?: boolean;
   /** Drawn as the board reference, outside any lesson: describe the board, not a lesson's pins. */
   reference?: boolean;
+  /** Box each ADC1 channel ("CH3") beside its pad, where the detailed drawing puts the function. */
+  adc?: boolean;
 }
 
 /** The UNIT Pulsar C5 as a live pinout: header pads a lesson uses are tagged with their role. */
-export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPosition, onHoverPosition, detailed = false, reference = false }: BoardPinoutProps) {
+export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPosition, onHoverPosition, detailed = false, reference = false, adc = false }: BoardPinoutProps) {
   const { t } = useTranslation();
   // Two drawings can share a page (the lesson card and a pinout), so their ids must differ.
   const id = useId();
@@ -90,14 +93,17 @@ export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPositio
       on.map((p) => t("board.pinout.use", { role: p.role, pin: padName(at) })),
     ),
   );
-  // Only as much room beside the board as its labels and role tags need, so the text stays legible.
-  const margin = pinoutMargin([...usage.values()].map(roleLabel), detailed ? FN_OUT + FN_W : LABEL_REACH);
+  // Only as much room on each side as that side's labels and role tags need, so the text stays legible.
+  const margin = {
+    L: sideMargin("L", usage, detailed, adc),
+    R: sideMargin("R", usage, detailed, adc),
+  };
   const height = detailed ? VBH + QWIIC_EXTRA : VBH;
 
   return (
     <svg
       className={styles.board}
-      viewBox={`${BX - margin} 0 ${BW + 2 * margin} ${height}`}
+      viewBox={`${BX - margin.L} 0 ${BW + margin.L + margin.R} ${height}`}
       // The board has a physical left and right: it never mirrors.
       direction="ltr"
       role={onSelectPosition ? "group" : "img"}
@@ -106,6 +112,7 @@ export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPositio
       <title id={`${id}-title`}>{t("board.pinout.title")}</title>
       <desc id={`${id}-desc`}>
         {reference ? t("board.pinout.reference") : usage.size ? t("board.pinout.uses", { uses }) : t("board.pinout.none")}
+        {adc ? ` ${t("board.adc.drawn")}` : null}
       </desc>
       <Board usb={usb} boot={boot} />
       {detailed ? <QwiicPins /> : null}
@@ -118,7 +125,8 @@ export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPositio
         const out = (distance: number) => (left ? BX - distance : BX + BW + distance);
         const nameX = out(NAME_OUT);
         const gpioX = out(GPIO_OUT);
-        const fn = detailed ? pad.fn : undefined;
+        const channel = adc ? pulsarAdcChannel(pad.pin) : null;
+        const fn = channel !== null ? `ADC CH${channel}` : detailed ? pad.fn : undefined;
         const fnX = left ? out(FN_OUT) - FN_W : out(FN_OUT);
         // Where this pad's printed labels end, away from the board: the role tag starts past it.
         const labelEnd = fn ? out(FN_OUT + FN_W) : out((isGpio(pad.pin) ? GPIO_OUT : NAME_OUT) + LABEL_W);
@@ -162,12 +170,12 @@ export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPositio
             ) : null}
             {fn ? (
               <g>
-                <rect x={fnX} y={y - FN_H / 2} width={FN_W} height={FN_H} rx={3} className={styles.fnBox} />
-                <text x={fnX + FN_W / 2} y={y + 3} textAnchor="middle" className={styles.fn}>{fn}</text>
+                <rect x={fnX} y={y - FN_H / 2} width={FN_W} height={FN_H} rx={3} className={channel !== null ? styles.adcBox : styles.fnBox} />
+                <text x={fnX + FN_W / 2} y={y + 3} textAnchor="middle" className={channel !== null ? styles.adc : styles.fn}>{fn}</text>
               </g>
             ) : null}
             {on ? (
-              <RoleTag left={left} y={y} labelEnd={labelEnd} uses={on} margin={margin} />
+              <RoleTag left={left} y={y} labelEnd={labelEnd} uses={on} margin={margin[side]} />
             ) : null}
             <circle
               cx={left ? mx(1.27) : mx(16.51)}
@@ -191,6 +199,18 @@ function padName(at: number) {
   return isGpio(pad.pin) ? `${pulsarSilk(pad)} · GPIO ${pad.pin}` : pulsarSilk(pad);
 }
 
+/** Does any pad on this side get a box past its labels: a function, or an ADC channel? */
+const boxedSide = (side: PinSide, detailed: boolean, adc: boolean) =>
+  PULSAR_HEADER.some((pad, at) =>
+    pulsarRow(at).side === side && ((detailed && pad.fn) || (adc && pulsarAdcChannel(pad.pin) !== null)),
+  );
+
+/** The room beside one edge of the board: its printed labels, boxes and the role tags on that side. */
+function sideMargin(side: PinSide, usage: ReadonlyMap<number, readonly PinUse[]>, detailed: boolean, adc: boolean) {
+  const tags = [...usage].filter(([at]) => pulsarRow(at).side === side).map(([, on]) => roleLabel(on));
+  return pinoutMargin(tags, boxedSide(side, detailed, adc) ? FN_OUT + FN_W : LABEL_REACH);
+}
+
 /** "SDA · LED": every role a pad has in the lesson. */
 const roleLabel = (uses: readonly PinUse[]) => uses.map((u) => u.role).join(" · ");
 
@@ -206,16 +226,16 @@ function RoleTag({
   /** Where the pad's printed labels end, away from the board. */
   labelEnd: number;
   uses: readonly PinUse[];
-  /** The drawing's room beside the board, from pinoutMargin. */
+  /** The drawing's room beside the board on this pad's side, from pinoutMargin. */
   margin: number;
 }) {
   const label = roleLabel(uses);
   const fill = roleFill(uses[0]?.kind);
-  const outerLeft = BX - margin;
-  const outerRight = BX + BW + margin;
-  const room = left ? labelEnd - 4 - 6 - outerLeft : outerRight - 6 - (labelEnd + 4);
+  // The drawing's outer edge on this pad's side.
+  const outer = left ? BX - margin : BX + BW + margin;
+  const room = left ? labelEnd - 4 - 6 - outer : outer - 6 - (labelEnd + 4);
   const w = Math.min(room, tagWidth(label));
-  const gx = left ? outerLeft + 6 : outerRight - 6 - w;
+  const gx = left ? outer + 6 : outer - 6 - w;
   const x1 = left ? gx + w + 3 : labelEnd + 4;
   const x2 = left ? labelEnd - 4 : gx - 3;
   return (

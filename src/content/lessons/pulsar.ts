@@ -94,17 +94,18 @@ export const pulsarLessons = [
     wiring: {
       rows: [
         ["3V3", "potentiometer outer leg", "either side"],
-        ["A2 (GPIO4)", "potentiometer middle leg", "the wiper"],
+        ["A2 (GPIO4 · ADC1_CH3)", "potentiometer middle leg", "the wiper"],
         ["GND", "potentiometer other outer leg", ""],
       ],
     },
+    adcMap: true,
     steps: [
       "Unplug USB, then wire the potentiometer as shown in the diagram.",
       "Plug in and run the command.",
       "Turn the knob end to end: raw goes from about 0 to 4095, millivolts from about 0 to 3100.",
       "Open <b>Tools → Serial Plotter</b> to see both lines move.",
     ],
-    note: "Analog-capable header pins are A1 (GPIO1), A2 (GPIO4), A3 (GPIO5) and A6 (GPIO6). Never feed more than 3.3 V into them.",
+    note: "The board drawing boxes all six ADC channels. For your own sensors use A2 (GPIO4) and A3 (GPIO5); A1 and A6 work too when nothing is plugged into QWIIC. Never feed more than 3.3 V into them.",
     variants: [
       { key: "arduino", label: "Arduino", short: "12-bit ADC sketch" },
       {
@@ -156,16 +157,17 @@ export const pulsarLessons = [
     variants: [
       { key: "arduino", label: "Arduino", short: "Wire bus scanner" },
       {
-        key: "micropython", label: "MicroPython", short: "I²C bus scanner",
-        goal: "Use MicroPython to scan the Pulsar C5's on-board sensor bus and identify which I²C devices answer.",
-        learn: ["machine.I2C", "scan()", "I²C addresses", "pull-up resistors"],
+        key: "micropython", label: "MicroPython", short: "Bus scanner and one script per sensor",
+        goal: "Use MicroPython to scan the Pulsar C5's on-board sensor bus, then read each of the five sensors with its own driver.",
+        learn: ["machine.I2C", "scan()", "I²C addresses", "sensor drivers"],
         cmd: "",
         steps: [
           "Nothing to wire: the five sensors and pull-up resistors are on the board.",
-          "Open <b>Code</b>, connect the serial REPL and run <code>i2c_scan.py</code>.",
-          "Compare the addresses listed every five seconds with the table. Press <b>Stop</b> when finished.",
+          "Open <b>Code</b>, connect the serial REPL and run <code>i2c_scan.py</code>. Compare the addresses with the table.",
+          "Pick a sensor tab: <code>mmc5603_compass.py</code>, <code>max17048_battery.py</code>, <code>fht40_temp_humidity.py</code>, <code>lps22hb_pressure.py</code> or <code>vcnl4040_light_prox.py</code>.",
+          "Press <b>Install</b> for its driver once, then <b>Run on board</b>. Breathe on the board, cover the light sensor or turn it near a magnet and watch the values change. Press <b>Stop</b> when finished.",
         ],
-        note: "This on-board bus uses GPIO2/GPIO3. The QWIIC connector uses a separate bus on GPIO1/GPIO6.",
+        note: "This on-board bus uses GPIO2/GPIO3. The QWIIC connector uses a separate bus on GPIO1/GPIO6. The battery script needs a LiPo cell connected.",
       },
     ],
     panels: [],

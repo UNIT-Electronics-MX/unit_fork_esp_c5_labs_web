@@ -14,7 +14,8 @@
 @media (min-width: 880px) {
   .grid {
     --dock-clearance: 80px;
-    grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
+    /* The pinout column grows with the window, so the board's labels stay readable. */
+    grid-template-columns: minmax(0, clamp(400px, 34vw, 480px)) minmax(0, 1fr);
     gap: 20px;
   }
   .grid > :first-child {

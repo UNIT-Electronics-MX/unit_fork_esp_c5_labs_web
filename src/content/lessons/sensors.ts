@@ -35,6 +35,21 @@ export const sensorsLessons = [
       "Check the last line: <code>chip ID 0x24 (BMI270)</code>.",
     ],
     note: "The Pulsar C5 has <b>no pull-ups on QWIIC</b>. Most sensor boards carry their own; with a bare chip, add 4.7 kΩ from SDA and SCL to 3V3. On the C6 this lab used GPIO6/7.",
+    variants: [
+      { key: "arduino", label: "Arduino", short: "Wire scan and chip ID sketch" },
+      {
+        key: "micropython", label: "MicroPython", short: "QWIIC scan and chip ID script",
+        goal: "Plug a BMI270 motion sensor into the QWIIC connector, scan the bus from MicroPython and read its chip ID register to prove it is the part you think it is.",
+        learn: ["QWIIC connector", "machine.I2C", "readfrom_mem()", "chip ID checks"],
+        cmd: "",
+        steps: [
+          "Unplug USB and connect the BMI270 with a QWIIC cable, or with jumpers to the header pins in the table.",
+          "Reconnect USB, open <b>Code</b>, connect the serial REPL and run <code>bmi270_id.py</code>.",
+          "The terminal prints <code>found 0x68</code> (or <code>0x69</code>), then <code>chip ID 0x24 (BMI270)</code>.",
+        ],
+        note: "No driver to install: <code>readfrom_mem()</code> sends the register number and reads it back with a repeated start, the same transfer as the Arduino sketch. The QWIIC connector has no pull-ups on the Pulsar C5, so the sensor board must carry them.",
+      },
+    ],
     panels: [],
   },
   {

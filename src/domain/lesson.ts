@@ -92,6 +92,8 @@ export interface LessonBody {
   readonly boot?: boolean;
   readonly cmd: string;
   readonly wiring?: WiringTable;
+  /** Mark the ADC1 channels on the board drawing and list them beside it. */
+  readonly adcMap?: boolean;
   readonly commands?: readonly CommandStep[];
   readonly panels?: readonly PanelSpec[];
   readonly steps: readonly Rich[];

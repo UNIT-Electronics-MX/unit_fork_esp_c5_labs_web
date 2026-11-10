@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
+  PULSAR_ADC,
+  pulsarAdcChannel,
   PULSAR_EDGE,
   PULSAR_HEADER,
   pulsarAvoidReason,
@@ -95,5 +97,26 @@ describe("ESP32-S3 lesson pins", () => {
     ] as const;
     expect(pins.map(pulsarPosition)).toEqual([5, 11, 12, -1]);
     expect(pulsarMissing(pins).map((p) => p.pin)).toEqual(["48"]);
+  });
+});
+
+describe("ADC1 channels", () => {
+  it("maps GPIO1–GPIO6 to ADC1_CH0–CH5 and nothing else", () => {
+    expect(pulsarAdcChannel("1")).toBe(0);
+    expect(pulsarAdcChannel("4")).toBe(3);
+    expect(pulsarAdcChannel("6")).toBe(5);
+    expect(pulsarAdcChannel("7")).toBeNull();
+    expect(pulsarAdcChannel("GND")).toBeNull();
+  });
+
+  it("lists all six on the header, in channel order, with what already uses them", () => {
+    expect(PULSAR_ADC.map((c) => [c.channel, c.pad.label.split(" / ")[0], c.state])).toEqual([
+      [0, "A1", "qwiic"],
+      [1, "SDA", "sensorBus"],
+      [2, "SCL", "sensorBus"],
+      [3, "A2", "free"],
+      [4, "A3", "free"],
+      [5, "A6", "qwiic"],
+    ]);
   });
 });

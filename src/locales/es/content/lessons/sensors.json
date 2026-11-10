@@ -33,7 +33,30 @@
       "Ejecuta el comando. El escaneo imprime <code>found 0x68</code> (o <code>0x69</code>).",
       "Revisa la última línea: <code>chip ID 0x24 (BMI270)</code>."
     ],
-    "note": "La Pulsar C5 <b>no tiene pull-ups en QWIIC</b>. La mayoría de las placas de sensores traen las suyas; con un chip suelto, añade 4,7 kΩ de SDA y SCL a 3V3. En la C6 esta práctica usaba GPIO6/7."
+    "note": "La Pulsar C5 <b>no tiene pull-ups en QWIIC</b>. La mayoría de las placas de sensores traen las suyas; con un chip suelto, añade 4,7 kΩ de SDA y SCL a 3V3. En la C6 esta práctica usaba GPIO6/7.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Sketch de escaneo Wire e ID de chip"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script de escaneo QWIIC e ID de chip",
+        "goal": "Conecta un sensor de movimiento BMI270 al conector QWIIC, escanea el bus desde MicroPython y lee su registro de ID de chip para comprobar que es la pieza que crees.",
+        "learn": [
+          "conector QWIIC",
+          "machine.I2C",
+          "readfrom_mem()",
+          "comprobación del ID de chip"
+        ],
+        "steps": [
+          "Desconecta el USB y conecta el BMI270 con un cable QWIIC, o con cables a los pines del conector que indica la tabla.",
+          "Vuelve a conectar el USB, abre <b>Código</b>, conecta el REPL serie y ejecuta <code>bmi270_id.py</code>.",
+          "La terminal imprime <code>found 0x68</code> (o <code>0x69</code>) y luego <code>chip ID 0x24 (BMI270)</code>."
+        ],
+        "note": "No hay controlador que instalar: <code>readfrom_mem()</code> envía el número de registro y lo lee con un inicio repetido, la misma transferencia que el sketch de Arduino. El conector QWIIC de la Pulsar C5 no tiene pull-ups, así que la placa del sensor debe traerlos."
+      }
+    }
   },
   "D2": {
     "title": "Gráfica de luz en OLED",

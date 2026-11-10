@@ -26,6 +26,7 @@ import analogSource from "../../../sketches/pulsar-c5/p3-analog/p3-analog.ino?ra
 import sensorsSource from "../../../sketches/pulsar-c5/p4-i2c-scan/p4-i2c-scan.ino?raw";
 import microsdSource from "../../../sketches/pulsar-c5/p5-microsd/p5-microsd.ino?raw";
 import uartSource from "../../../sketches/pulsar-c5/p6-uart/p6-uart.ino?raw";
+import imuSource from "../../../sketches/pulsar-c5/d1-bmi270/d1-bmi270.ino?raw";
 import oledLightSource from "../../../sketches/pulsar-c5/d2-oled-light/d2-oled-light.ino?raw";
 import oledOnlySource from "../../../sketches/pulsar-c5/o1-oled/o1-oled.ino?raw";
 import wifiCloudSource from "../../../sketches/pulsar-c5/i1-wifi-http/i1-wifi-http.ino?raw";
@@ -49,6 +50,7 @@ const ARDUINO_SKETCHES: Readonly<Record<string, { filename: string; source: stri
   P4: { filename: "p4-i2c-scan.ino", source: sensorsSource },
   P5: { filename: "p5-microsd.ino", source: microsdSource },
   P6: { filename: "p6-uart.ino", source: uartSource },
+  D1: { filename: "d1-bmi270.ino", source: imuSource },
   D2: { filename: "d2-oled-light.ino", source: oledLightSource },
   O1: { filename: "o1-oled.ino", source: oledOnlySource },
   I1: { filename: "i1-wifi-http.ino", source: wifiCloudSource },
@@ -83,7 +85,7 @@ export function Component() {
   const { lesson, lessons, trackId, chooseVariant } = useRouteLesson();
   const env = envOfCommand(lesson.cmd);
   const isIntro = lesson.track === "intro";
-  const hasWorkspace = isIntro || lesson.track === "pulsar" || lesson.id === "I1" || lesson.id === "I2" || lesson.id === "D2" || lesson.id === "O1";
+  const hasWorkspace = isIntro || lesson.track === "pulsar" || lesson.id === "I1" || lesson.id === "I2" || lesson.id === "D1" || lesson.id === "D2" || lesson.id === "O1";
   const arduinoSketch = ARDUINO_SKETCHES[lesson.id];
   const nextId = neighbours(lessons, lesson.id).next?.id ?? (lesson.id === "02" ? "P1" : undefined);
   const { t } = useTranslation();
