@@ -41,7 +41,8 @@ export function AppLayout() {
   const requestedPlatform = searchParams.get("variant");
   const selectedPlatform = platformRoute && isCodePlatform(requestedPlatform) ? requestedPlatform : codePlatform;
   // S3-era lessons carry a notice until they are ported; the Pulsar C5 tracks do not.
-  const legacyLesson = lessonId !== undefined && boardOfLesson(lessonId) === "devkitc-s3";
+  const legacyLesson = lessonId !== undefined
+    && boardOfLesson(lessonId, platformRoute ? selectedPlatform : undefined) === "devkitc-s3";
   const wideWorkspace = pathname === "/" || pathname === "/lessons" || /^\/lessons\/[^/]+(?:\/code)?$/.test(pathname)
     || pathname === "/pinout" || pathname === "/flash" || pathname.startsWith("/datasheet")
     || pathname === "/log" || pathname === "/settings";

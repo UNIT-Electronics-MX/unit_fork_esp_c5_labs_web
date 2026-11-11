@@ -40,6 +40,28 @@ describe("resolveLesson", () => {
     expect(l.steps).toHaveLength(2);
   });
 
+  it("leaves out the panels and preview a variant hides", () => {
+    const lab: ActiveLesson = {
+      ...base,
+      panels: [
+        { title: "radio", widget: "bleRadio" },
+        { title: "screen", widget: "bleScreens" },
+      ],
+      preview: { widget: "ble" },
+      variants: [
+        { key: "arduino", label: "Arduino", short: "lab" },
+        { key: "micropython", label: "MicroPython", short: "script", hideWidgets: ["bleScreens", "ble"] },
+      ],
+    };
+    const arduino = resolveLesson(lab, "arduino");
+    expect(arduino.panels.map((p) => p.widget)).toEqual(["bleRadio", "bleScreens"]);
+    expect(arduino.preview).toEqual({ widget: "ble" });
+    const micropython = resolveLesson(lab, "micropython");
+    expect(micropython.panels.map((p) => p.widget)).toEqual(["bleRadio"]);
+    expect(micropython).not.toHaveProperty("preview");
+    expect(micropython).not.toHaveProperty("hideWidgets");
+  });
+
   it("falls back to the first variant for an unknown key", () => {
     expect(resolveLesson(base, "nope").variantKey).toBe("boot");
   });

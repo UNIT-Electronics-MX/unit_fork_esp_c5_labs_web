@@ -97,6 +97,7 @@ The guide is about the labs, so every screen puts them first and everything else
 - `src/content/lessons/<track>.ts` holds the lessons (`LessonEntry` in `src/domain/lesson.ts`). Text fields may carry `<b>`, `<i>`, `<code>` and `<span class="snd-parts|need|opt">`; `RichText` turns them into React elements from an allow-list (no `dangerouslySetInnerHTML`).
 - A lesson names its explainers in `panels: [{ title, widget, intro?, view?, flows? }]` and its simulator in `preview: { widget, view? }`. Widget ids are type-checked against the registry.
 - Variants (03b, W2) override any body field; the URL `?variant=` wins, then your last choice.
+- A variant's `hideWidgets` leaves out the explainer panels and the preview drawn by those widgets: the MicroPython variants of B1–B8 run on the Pulsar C5, which has no screen, so they hide `bleScreens` and the `ble` preview.
 
 ## Widgets
 

@@ -17,6 +17,14 @@ const LESSON_EXAMPLES: Readonly<Record<string, readonly string[]>> = {
   O3: ["st7735-showcase"],
   I1: ["wifi-thingspeak"],
   I2: ["ble-touch"],
+  B1: ["ble-b1-listen"],
+  B2: ["ble-b2-beacon"],
+  B3: ["ble-b3-gatt"],
+  B4: ["ble-b4-pair"],
+  B5: ["ble-b5-app"],
+  B6: ["ble-b6-keyboard"],
+  B7: ["ble-b7-midi"],
+  B8: ["ble-b8-host"],
 };
 
 export const lessonExamples = (lessonId: string): readonly string[] => LESSON_EXAMPLES[lessonId] ?? [];

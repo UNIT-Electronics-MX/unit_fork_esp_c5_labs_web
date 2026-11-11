@@ -73,3 +73,29 @@ describe("collectMicroPython ST7735", () => {
     }
   });
 });
+
+describe("collectMicroPython UART loopback", () => {
+  it("keeps the generic C5 UART0 REPL pins out of the loopback example", () => {
+    const root = mkdtempSync(join(tmpdir(), "c5-uart-loopback-"));
+    const dir = join(root, "examples", "micropython", "pulsar-c5");
+    try {
+      mkdirSync(dir, { recursive: true });
+      writeFileSync(join(dir, "uart_loopback.py"), "UART(1, tx=Pin(11), rx=Pin(12))\n");
+      writeFileSync(join(dir, "manifest.json"), JSON.stringify({
+        board: "UNIT Pulsar ESP32-C5",
+        examples: [{
+          id: "uart-loopback", title: "UART", titleEn: "UART", file: "uart_loopback.py",
+          description: "TX0/RX0", descriptionEn: "TX0/RX0",
+          requires: ["GPIO11/GPIO12"], requiresEn: ["GPIO11/GPIO12"],
+        }],
+      }));
+
+      const example = collectMicroPython(root)?.examples[0];
+      expect(example?.code).toContain("tx=Pin(4), rx=Pin(5)");
+      expect(example?.code).not.toContain("tx=Pin(11), rx=Pin(12)");
+      expect(example?.requires).toContain("Un puente entre A2 (GPIO4) y A3 (GPIO5)");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+});

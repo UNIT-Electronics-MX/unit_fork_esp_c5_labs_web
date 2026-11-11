@@ -126,7 +126,7 @@
       "P3": "Potenciómetro",
       "P4": "Sensores integrados",
       "P5": "Ranura microSD",
-      "P6": "Pin RX0 del conector"
+      "P6": "Pin de entrada UART del conector"
     },
     "target": {
       "userLed": "LED de usuario",
@@ -149,7 +149,7 @@
       "sdMosi": "GPIO7 lleva datos del ESP32-C5 a la tarjeta.",
       "sdMiso": "GPIO26 devuelve datos de la tarjeta al ESP32-C5.",
       "sdSelect": "GPIO23 selecciona la tarjeta microSD para cada transferencia SPI.",
-      "uart": "Con el USB desconectado, coloca un puente de TX0 (GPIO11) a RX0 (GPIO12). La consola USB permanece separada."
+      "uart": "Con el USB desconectado, une los dos pines del diagrama. Para MicroPython, usa A2/GPIO4 y A3/GPIO5; nunca unas TX0 con RX0."
     }
   },
   "variants": {

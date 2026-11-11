@@ -1,5 +1,9 @@
 import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+/** Local MicroPython scripts and drivers used to supplement or correct the firmware checkout. */
+const OWN_SCRIPTS = join(dirname(fileURLToPath(import.meta.url)), "micropython");
 
 export interface MicroPythonExample {
   readonly id: string;
@@ -55,7 +59,7 @@ export function collectMicroPython(root: string): MicroPythonExamples | null {
       throw new Error(`${index} has an invalid or duplicate example`);
     }
     seen.add(item.id);
-    return {
+    const example = {
       id: item.id,
       title: item.title,
       titleEn: item.titleEn,
@@ -66,8 +70,19 @@ export function collectMicroPython(root: string): MicroPythonExamples | null {
       requiresEn: item.requiresEn as string[],
       code: readFileSync(join(dir, item.file), "utf8"),
     };
+    if (example.id === "uart-loopback") {
+      return {
+        ...example,
+        description: "Envía texto por UART1 con un puente entre A2/GPIO4 y A3/GPIO5.",
+        descriptionEn: "Send text over UART1 with a jumper between A2/GPIO4 and A3/GPIO5.",
+        requires: ["Un puente entre A2 (GPIO4) y A3 (GPIO5)"],
+        requiresEn: ["A jumper between A2 (GPIO4) and A3 (GPIO5)"],
+        code: readFileSync(join(OWN_SCRIPTS, "uart_loopback.py"), "utf8"),
+      };
+    }
+    return example;
   });
-  // Bundle the D1 motion follow-up alongside the ID check supplied by the firmware checkout.
+  // Bundle the D1 motion follow-up and its driver alongside the ID check supplied by the firmware checkout.
   const motionExampleId = "imu-bmi270-motion";
   if (seen.has("imu-bmi270") && !seen.has(motionExampleId)) {
     seen.add(motionExampleId);
@@ -80,7 +95,7 @@ export function collectMicroPython(root: string): MicroPythonExamples | null {
       descriptionEn: "Read BMI270 acceleration and angular velocity over QWIIC.",
       requires: ["BMI270 en QWIIC", "bmi270.py guardado en la placa"],
       requiresEn: ["BMI270 on QWIIC", "bmi270.py saved on the board"],
-      code: readFileSync(new URL("./micropython/bmi270_motion.py", import.meta.url), "utf8"),
+      code: readFileSync(join(OWN_SCRIPTS, "bmi270_motion.py"), "utf8"),
     });
   }
   // ST7735 display and showcase scripts come directly from the firmware manifest.
@@ -125,7 +140,7 @@ export function collectMicroPython(root: string): MicroPythonExamples | null {
         source: "https://github.com/UNIT-Electronics-MX/unit_devlab_micropython_libraries/blob/main/software/bmi270/bmi270.py",
         license: "MIT",
         examples: bmi270Examples,
-        code: readFileSync(new URL("./micropython/bmi270.py", import.meta.url), "utf8"),
+        code: readFileSync(join(OWN_SCRIPTS, "bmi270.py"), "utf8"),
       });
     }
   }

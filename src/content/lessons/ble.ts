@@ -1,6 +1,7 @@
 // Lessons of the "ble" track. Strings may carry the inline markup RichText understands:
 // <b>, <i>, <code> and <span class="snd-parts|need|opt">.
 import type { LessonEntry } from "@/domain/lesson";
+import { bleVariants } from "./ble-micropython";
 import { c5BleLesson } from "./c5-wireless";
 
 export const bleLessons = [
@@ -194,6 +195,7 @@ export const bleLessons = [
     preview: {
       widget: "ble",
     },
+    variants: bleVariants.B1,
   },
   {
     kind: "lesson",
@@ -395,6 +397,7 @@ export const bleLessons = [
     preview: {
       widget: "ble",
     },
+    variants: bleVariants.B2,
   },
   {
     kind: "lesson",
@@ -585,6 +588,7 @@ export const bleLessons = [
     preview: {
       widget: "ble",
     },
+    variants: bleVariants.B3,
   },
   {
     kind: "lesson",
@@ -789,6 +793,7 @@ export const bleLessons = [
     preview: {
       widget: "ble",
     },
+    variants: bleVariants.B4,
   },
   {
     kind: "lesson",
@@ -981,6 +986,7 @@ export const bleLessons = [
     preview: {
       widget: "ble",
     },
+    variants: bleVariants.B5,
   },
   {
     kind: "lesson",
@@ -1169,6 +1175,7 @@ export const bleLessons = [
     preview: {
       widget: "ble",
     },
+    variants: bleVariants.B6,
   },
   {
     kind: "lesson",
@@ -1349,6 +1356,7 @@ export const bleLessons = [
     preview: {
       widget: "ble",
     },
+    variants: bleVariants.B7,
   },
   {
     kind: "lesson",
@@ -1577,6 +1585,7 @@ export const bleLessons = [
     preview: {
       widget: "ble",
     },
+    variants: bleVariants.B8,
   },
   c5BleLesson,
 ] as const satisfies readonly LessonEntry[];

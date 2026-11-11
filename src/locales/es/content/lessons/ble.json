@@ -124,7 +124,42 @@
       "Prueba <code>mode passive</code> / <code>mode active</code> y <code>timing 100 30</code> / <code>timing 100 100</code> mirando la vista <b>air</b>.",
       "Opcional: <code>calib</code> con el móvil a 1 m, luego ve al otro lado de la habitación y mira el radar."
     ],
-    "note": "Todo lo de aquí es lo que los dispositivos emiten para cualquiera; la placa nunca se conecta a ellos. Aun así, la lista son los aparatos de tus vecinos: no publiques sus direcciones (se quedan fuera de los registros que se suben). Los móviles cambian su dirección privada cada 15 minutos más o menos, así que el mismo móvil puede aparecer dos veces. Las distancias son estimaciones a partir de la intensidad de la señal, buenas con un factor de dos. El ESP32-S3 solo tiene Bluetooth LE: el Bluetooth Classic (la mayoría del streaming de audio, teclados antiguos) le resulta invisible."
+    "note": "Todo lo de aquí es lo que los dispositivos emiten para cualquiera; la placa nunca se conecta a ellos. Aun así, la lista son los aparatos de tus vecinos: no publiques sus direcciones (se quedan fuera de los registros que se suben). Los móviles cambian su dirección privada cada 15 minutos más o menos, así que el mismo móvil puede aparecer dos veces. Las distancias son estimaciones a partir de la intensidad de la señal, buenas con un factor de dos. El ESP32-S3 solo tiene Bluetooth LE: el Bluetooth Classic (la mayoría del streaming de audio, teclados antiguos) le resulta invisible.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Laboratorio PlatformIO y pantalla"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script escáner y comandos serie",
+        "goal": "Convierte la Pulsar C5 en un oyente Bluetooth LE con el módulo <code>bluetooth</code> de MicroPython. <code>ble_b1_listen.py</code> escanea sin parar, adivina qué es cada dispositivo y desmonta un paquete byte a byte, todo desde la consola serie.",
+        "goalLine": "Encuentra tu propio móvil entre los dispositivos cercanos, lee sus paquetes byte a byte y mide cada cuánto se anuncia.",
+        "goalCheck": [
+          "<code>list</code> imprime una tabla de dispositivos con un tipo (phone, audio, keyboard…), el más fuerte primero.",
+          "Elegiste tu propio móvil y <code>bytes</code> muestra sus estructuras AD: Flags y luego los datos del fabricante.",
+          "<code>watch</code> imprime una línea por paquete de tu móvil, y puedes leer su intervalo de advertising en los huecos <code>+… ms</code>.",
+          "<code>mode passive</code> hace desaparecer la respuesta de escaneo; <code>mode active</code> la trae de vuelta."
+        ],
+        "learn": [
+          "bluetooth.BLE",
+          "gap_scan()",
+          "estructuras AD",
+          "escaneo activo y pasivo",
+          "RSSI → distancia",
+          "direcciones privadas"
+        ],
+        "steps": [
+          "Abre <b>Código</b>, conecta el REPL serie y pulsa <b>Instalar ble_kit.py</b> una vez: todos los laboratorios Bluetooth lo importan.",
+          "Ejecuta <code>ble_b1_listen.py</code>. <b>Punto de control 1:</b> <code>+ active scan, 100/100 ms</code> y el LED RGB parpadeando en azul.",
+          "Escribe <code>list</code>. <b>Punto de control 2:</b> una tabla de dispositivos con tipos y fabricantes.",
+          "Acerca tu móvil desbloqueado a la placa, escribe <code>pick 1</code> y luego <code>bytes</code>. <b>Punto de control 3:</b> sus estructuras AD y el tipo de dirección <i>private (RPA)</i>.",
+          "Escribe <code>watch</code> durante diez segundos y luego <code>watch off</code>. <b>Punto de control 4:</b> sabes decir el intervalo de advertising de tu móvil.",
+          "Prueba <code>mode passive</code> / <code>mode active</code> y <code>timing 100 30</code>, y luego <code>stats</code> para ver paquetes por segundo. BOOT: clic = siguiente dispositivo, doble clic = bytes, pulsación larga = pausa."
+        ],
+        "note": "Todo esto es lo que los dispositivos emiten para cualquiera; la placa nunca se conecta a ellos. No publiques las direcciones de tus vecinos. Pulsa <b>Detener</b> antes de ejecutar otro script: el script apaga la radio al salir."
+      }
+    }
   },
   "B2": {
     "title": "Déjate ver",
@@ -259,7 +294,40 @@
       "<code>connectable off</code>, <code>scanresp off</code>. <b>Punto de control 4:</b> ADV_NONCONN_IND, sin botón Connect en el móvil.",
       "Pasa a <b>air</b> y <b>budget</b>, y prueba <code>interval 1000</code> y <code>power -12</code>. <b>Punto de control 5:</b> puedes decir qué cuesta cada uno y qué compra."
     ],
-    "note": "Cualquiera cerca puede leer lo que emite la placa: nunca pongas nada privado en un anuncio. 0xFFFF es el ID de empresa que el Bluetooth SIG reserva para pruebas, bien en un banco, no para un producto. Las apps de iPhone no pueden ver tramas iBeacon en absoluto (iOS las quita de los escaneos), así que prueba ese modo en Android o con B1 en una segunda placa. La vista budget es una estimación para un chip beacon típico de pila de botón con sus supuestos indicados: esta placa ESP32-S3 consume por sí sola unos 80 mA con la pantalla encendida, muchísimo para una pila de botón. La única radio no puede oírse a sí misma, así que en este laboratorio el escáner es el móvil."
+    "note": "Cualquiera cerca puede leer lo que emite la placa: nunca pongas nada privado en un anuncio. 0xFFFF es el ID de empresa que el Bluetooth SIG reserva para pruebas, bien en un banco, no para un producto. Las apps de iPhone no pueden ver tramas iBeacon en absoluto (iOS las quita de los escaneos), así que prueba ese modo en Android o con B1 en una segunda placa. La vista budget es una estimación para un chip beacon típico de pila de botón con sus supuestos indicados: esta placa ESP32-S3 consume por sí sola unos 80 mA con la pantalla encendida, muchísimo para una pila de botón. La única radio no puede oírse a sí misma, así que en este laboratorio el escáner es el móvil.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Laboratorio PlatformIO y pantalla"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script beacon y comandos serie",
+        "goal": "Haz de la Pulsar C5 un <b>beacon</b> desde MicroPython: <code>ble_b2_beacon.py</code> empaqueta las pulsaciones del botón, la temperatura del chip y el tiempo encendida en su propio anuncio de 31 bytes; después el mismo presupuesto lleva un iBeacon, una Eddystone-URL o solo un nombre.",
+        "goalLine": "Lee valores en vivo de la placa en un móvil sin conectarte nunca, y luego cambia el formato del paquete.",
+        "goalCheck": [
+          "nRF Connect muestra <b>Bench B2</b> con datos de fabricante <code>FFFF 01 …</code> que cambian al hacer doble clic en BOOT.",
+          "<code>bytes</code> imprime los dos paquetes y cuántos de los 31 bytes usa cada uno.",
+          "<code>mode ibeacon</code> y <code>mode url</code> cambian lo que muestra el móvil."
+        ],
+        "learn": [
+          "gap_advertise()",
+          "contenido del anuncio",
+          "datos de fabricante",
+          "iBeacon",
+          "Eddystone-URL",
+          "intervalo de advertising"
+        ],
+        "steps": [
+          "Abre <b>Código</b>, conecta el REPL serie y pulsa <b>Instalar ble_kit.py</b> una vez: todos los laboratorios Bluetooth lo importan.",
+          "Ejecuta <code>ble_b2_beacon.py</code>. <b>Punto de control 1:</b> <code>+ bench ADV_NONCONN/SCAN_IND every 100 ms, 24+7 B</code>.",
+          "Escanea con nRF Connect o LightBlue y abre <b>Bench B2</b>. Haz doble clic en BOOT y vuelve a escanear: sube el contador de pulsaciones en los datos de fabricante.",
+          "Escribe <code>bytes</code> y luego <code>mode ibeacon</code>, <code>mode url</code> y <code>mode name</code>. Un clic en BOOT también recorre los modos.",
+          "Prueba <code>interval 1000</code>: el móvil ve menos paquetes. <code>adv off</code> (o una pulsación larga) silencia la placa."
+        ],
+        "note": "Cualquiera cerca puede leer lo que emite la placa: nunca pongas nada privado en un anuncio. Las apps de iPhone no ven tramas iBeacon, así que prueba ese modo en Android. MicroPython no puede ajustar la potencia TX: el paquete solo la indica."
+      }
+    }
   },
   "B3": {
     "title": "Conectar y hablar",
@@ -383,7 +451,39 @@
       "Pasa a la vista <b>link</b> y prueba <code>params slow</code> / <code>params fast</code> y <code>phy 2m</code>. <b>Punto de control 5:</b> el intervalo cambia en pantalla.",
       "Escribe <code>led auto</code> para devolver el LED al estado de la radio y luego <code>disconnect</code>."
     ],
-    "note": "Cualquiera cerca puede conectarse a Bench B3 y cambiar el LED: aún no hay emparejamiento, todo viaja en texto plano. Eso es B4. Los iPhone guardan en caché la tabla GATT de un dispositivo: si un laboratorio posterior cambia la tabla y el iPhone muestra filas antiguas, apaga y enciende el Bluetooth. El ESP32-S3 tiene una sola radio: B3 no usa Wi-Fi, así que no hay coexistencia de la que preocuparse."
+    "note": "Cualquiera cerca puede conectarse a Bench B3 y cambiar el LED: aún no hay emparejamiento, todo viaja en texto plano. Eso es B4. Los iPhone guardan en caché la tabla GATT de un dispositivo: si un laboratorio posterior cambia la tabla y el iPhone muestra filas antiguas, apaga y enciende el Bluetooth. El ESP32-S3 tiene una sola radio: B3 no usa Wi-Fi, así que no hay coexistencia de la que preocuparse.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Laboratorio PlatformIO y pantalla"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script servidor GATT",
+        "goal": "Ejecuta el servicio GATT Bench desde MicroPython con <code>ble_b3_gatt.py</code>: desde nRF Connect o LightBlue cambia el color del LED RGB, escribe un mensaje, lee la temperatura del chip y suscríbete al botón BOOT.",
+        "goalLine": "Conéctate desde tu móvil y controla la placa a través de su propia tabla GATT.",
+        "goalCheck": [
+          "nRF Connect se conecta a <b>Bench B3</b> y lista el servicio Bench con cinco características con nombre, más Device Information y Battery.",
+          "Escribir <code>FF0000</code> en LED pone el LED RGB en rojo, y la consola imprime <code>&lt; write LED FF 00 00</code>.",
+          "Tras suscribirte a Button, cada gesto de BOOT llega como notificación."
+        ],
+        "learn": [
+          "gatts_register_services()",
+          "características y descriptores",
+          "leer, escribir, notificar",
+          "valores little-endian"
+        ],
+        "steps": [
+          "Abre <b>Código</b>, conecta el REPL serie y pulsa <b>Instalar ble_kit.py</b> una vez: todos los laboratorios Bluetooth lo importan.",
+          "Ejecuta <code>ble_b3_gatt.py</code>. <b>Punto de control 1:</b> <code>Advertising as Bench B3</code> y el LED parpadeando en azul.",
+          "Conéctate desde nRF Connect o LightBlue. <b>Punto de control 2:</b> el LED se pone verde y la consola imprime <code>+ connected</code>.",
+          "Escribe 3 bytes en LED (<code>FF0000</code> y luego <code>0000FF</code>) y algo de texto en Message.",
+          "Suscríbete a Button y Temperature. Haz clic, doble clic y mantén BOOT: el móvil recibe el gesto y la cuenta.",
+          "Escribe <code>message hola</code> y lee Message desde el móvil. <code>led auto</code> devuelve el LED a la radio."
+        ],
+        "note": "MicroPython no le dice al script quién se suscribió, así que notifica a todos los móviles conectados. Tampoco puede pedir otros parámetros de conexión ni el PHY 2M, así que <code>params</code> y <code>phy</code> se quedan en el laboratorio Arduino."
+      }
+    }
   },
   "B4": {
     "title": "Emparejar y confiar",
@@ -518,7 +618,39 @@
       "Olvida otra vez en ambos lados, <code>pair compare</code>, lee el Vault y haz clic para confirmar. <b>Punto de control 5:</b> autenticado y vinculado.",
       "<code>allow bonded</code>. <b>Punto de control 6:</b> tu móvil se conecta; tras olvidarlo en el móvil, no puede. Termina con <code>allow anyone</code>."
     ],
-    "note": "El emparejamiento tiene dos mitades: cada vez que hagas <code>forget</code> en la placa, olvida también la placa en el móvil (iPhone: Ajustes → Bluetooth → ⓘ → Omitir este dispositivo; Android: Bluetooth → engranaje → Desvincular; macOS: Ajustes del Sistema → Bluetooth → clic derecho → Olvidar), o la siguiente conexión falla con “key missing”. Si solo olvidó el móvil, NimBLE acepta el nuevo emparejamiento y reemplaza el vínculo antiguo por sí misma (repeat pairing). El método y los ajustes de lock y allow se guardan en la flash (namespace b4) y sobreviven a los reinicios. NimBLE no informa una a una de las fases de características, método e intercambio de claves: la vista ceremony las dibuja como inferidas (un anillo) cuando una fase posterior demuestra que ocurrieron. La placa viene con el secreto “the bench's secret: 42”; <code>vault &lt;text&gt;</code> lo cambia hasta el siguiente reinicio."
+    "note": "El emparejamiento tiene dos mitades: cada vez que hagas <code>forget</code> en la placa, olvida también la placa en el móvil (iPhone: Ajustes → Bluetooth → ⓘ → Omitir este dispositivo; Android: Bluetooth → engranaje → Desvincular; macOS: Ajustes del Sistema → Bluetooth → clic derecho → Olvidar), o la siguiente conexión falla con “key missing”. Si solo olvidó el móvil, NimBLE acepta el nuevo emparejamiento y reemplaza el vínculo antiguo por sí misma (repeat pairing). El método y los ajustes de lock y allow se guardan en la flash (namespace b4) y sobreviven a los reinicios. NimBLE no informa una a una de las fases de características, método e intercambio de claves: la vista ceremony las dibuja como inferidas (un anillo) cuando una fase posterior demuestra que ocurrieron. La placa viene con el secreto “the bench's secret: 42”; <code>vault &lt;text&gt;</code> lo cambia hasta el siguiente reinicio.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Laboratorio PlatformIO y pantalla"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script de emparejamiento y vínculos",
+        "goal": "Añade una Bóveda al servicio Bench con <code>ble_b4_pair.py</code>: solo un enlace cifrado y autenticado puede leerla. Tócala desde el móvil y empieza el emparejamiento; confirma los seis dígitos con BOOT, y la placa guarda el vínculo en <code>ble_bonds.json</code>.",
+        "goalLine": "Empareja con comparación numérica, lee la Bóveda y comprueba que el vínculo sobrevive a un reinicio.",
+        "goalCheck": [
+          "Leer Vault inicia el emparejamiento, y la consola imprime <code>* COMPARE …</code> con los mismos seis dígitos que el móvil.",
+          "Tras hacer clic en BOOT, la consola imprime <code>link encrypted, authenticated (MITM-safe), bonded</code> y la Bóveda se abre.",
+          "Ejecuta el script de nuevo: <code>bonds</code> sigue contando el móvil."
+        ],
+        "learn": [
+          "bond, le_secure, mitm, io",
+          "comparación numérica",
+          "características cifradas",
+          "_IRQ_GET_SECRET / _IRQ_SET_SECRET"
+        ],
+        "steps": [
+          "Abre <b>Código</b>, conecta el REPL serie y pulsa <b>Instalar ble_kit.py</b> una vez: todos los laboratorios Bluetooth lo importan.",
+          "Ejecuta <code>ble_b4_pair.py</code> y conéctate a <b>Bench B4</b> desde nRF Connect o LightBlue.",
+          "Lee la característica Vault. <b>Punto de control 1:</b> el móvil pide emparejar y ambos lados muestran seis dígitos.",
+          "Si coinciden, haz clic en BOOT (o escribe <code>yes</code>). <b>Punto de control 2:</b> el enlace está cifrado y vinculado, y la Bóveda dice <code>nothing here yet</code>.",
+          "Escribe en la Bóveda, desconecta, pulsa <b>Detener</b> y ejecuta el script otra vez. <b>Punto de control 3:</b> el móvil se reconecta sin preguntar.",
+          "Prueba <code>allow bonded</code> y luego <code>forget</code>: olvida también la placa en el móvil antes de volver a emparejar."
+        ],
+        "note": "Pon <code>LOCK_CONTROLS = True</code> al principio del script para exigir cifrado también en LED y Message. Una pulsación larga (o <code>no</code>) rechaza un emparejamiento."
+      }
+    }
   },
   "B5": {
     "title": "App para el móvil",
@@ -642,7 +774,38 @@
       "Speed: ejecuta 50 kB y luego Fast interval + 2M PHY + Long packets y ejecuta otra vez. <b>Punto de control 5:</b> dos barras; anota ambas cifras de kB/s y el intervalo que usó cada prueba.",
       "Opcional: <code>pnpm tunnel</code> y repite desde tu móvil (Chrome en Android, Bluefy en iPhone). Compara su velocidad con la del Mac."
     ],
-    "note": "Sigue sin haber emparejamiento: cualquiera cerca puede conectarse, dibujar y leer los sensores. El bloqueo de B4 funciona igual aquí si los combinas. La app solo ve las placas que eliges en el selector del navegador, y el navegador oculta a propósito algunos servicios estándar a las páginas web. Los iPhone y los Mac guardan en caché la tabla GATT de un dispositivo por su dirección: si el explorador muestra las filas antiguas de B3, apaga y enciende el Bluetooth. El caudal depende sobre todo del central: la misma placa suele ir 2-4× más rápido con un Mac que con un móvil."
+    "note": "Sigue sin haber emparejamiento: cualquiera cerca puede conectarse, dibujar y leer los sensores. El bloqueo de B4 funciona igual aquí si los combinas. La app solo ve las placas que eliges en el selector del navegador, y el navegador oculta a propósito algunos servicios estándar a las páginas web. Los iPhone y los Mac guardan en caché la tabla GATT de un dispositivo por su dirección: si el explorador muestra las filas antiguas de B3, apaga y enciende el Bluetooth. El caudal depende sobre todo del central: la misma placa suele ir 2-4× más rápido con un Mac que con un móvil.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Laboratorio PlatformIO y pantalla"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script para la app Web Bluetooth",
+        "goal": "Ejecuta <code>ble_b5_app.py</code> y habla con la placa desde la app Web Bluetooth de esp-labs: el servicio Bench más Canvas, Sensors y una prueba de velocidad, sin Wi-Fi ni servidor.",
+        "goalLine": "Conecta la app, dibuja, mira los sensores en vivo y mide cuántos bytes por segundo lleva el enlace.",
+        "goalCheck": [
+          "La app se conecta a <b>Bench B5</b> y lista el servicio Bench con las características Canvas, Sensors, Speed y Link.",
+          "Dibujar en la app enciende el LED RGB con el último color y la consola cuenta los comandos del lienzo.",
+          "La prueba de velocidad termina con un resumen como <code>Speed: 50000 bytes in … ms</code>."
+        ],
+        "learn": [
+          "Web Bluetooth",
+          "escritura sin respuesta",
+          "caudal de notificaciones",
+          "MTU"
+        ],
+        "steps": [
+          "Abre <b>Código</b>, conecta el REPL serie y pulsa <b>Instalar ble_kit.py</b> una vez: todos los laboratorios Bluetooth lo importan.",
+          "Ejecuta <code>ble_b5_app.py</code>. Abre la ble-app en Chrome (o Bluefy en iPhone) y conéctate a <b>Bench B5</b>.",
+          "Dibuja en la pestaña de dibujo. <b>Punto de control 1:</b> el LED RGB toma el color con el que dibujaste; <code>canvas</code> imprime los contadores.",
+          "Abre la pestaña en vivo. <b>Punto de control 2:</b> la temperatura, la lectura de A2 y la memoria libre se actualizan cinco veces por segundo.",
+          "Lanza la prueba de velocidad desde la app o escribe <code>speed 50000</code>. <b>Punto de control 3:</b> un resumen con bytes, milisegundos y MTU."
+        ],
+        "note": "La Pulsar C5 no tiene pantalla, así que los comandos de dibujo se cuentan en vez de dibujarse. El ESP32-C5 no tiene sensor táctil: la línea touch lleva la lectura de A2 (GPIO4). MicroPython no informa del RSSI ni de los parámetros de conexión, así que el RSSI se queda en 0 y las peticiones de Link solo se registran."
+      }
+    }
   },
   "B6": {
     "title": "Teclado y multimedia",
@@ -766,7 +929,40 @@
       "Mantén el botón 2 s para llegar a slides, abre una presentación y pasa las diapositivas con clics.",
       "Pasa a la vista keys y lee una pulsación: bits de modificador, número de tecla y luego la liberación."
     ],
-    "note": "Mientras un iPhone o iPad está conectado a un teclado físico, su teclado en pantalla se oculta: desconecta la placa (o apaga el Bluetooth) para recuperarlo. Para desemparejar, olvida la placa en ambos lados (<code>forget</code> aquí, “Omitir este dispositivo” allí). El ESP32-S3 solo tiene Bluetooth LE: no puede transmitir audio a un altavoz o auriculares (eso es Bluetooth Classic, A2DP), así que la placa controla el móvil y el móvil reproduce en tu JBL. Las teclas de volumen y pista van a la app que tenga el foco de audio. Los equipos no se ponen de acuerdo sobre dónde están los caracteres de Option/AltGr, así que la tabla alemana solo escribe lo que puede escribir igual en Mac y Windows."
+    "note": "Mientras un iPhone o iPad está conectado a un teclado físico, su teclado en pantalla se oculta: desconecta la placa (o apaga el Bluetooth) para recuperarlo. Para desemparejar, olvida la placa en ambos lados (<code>forget</code> aquí, “Omitir este dispositivo” allí). El ESP32-S3 solo tiene Bluetooth LE: no puede transmitir audio a un altavoz o auriculares (eso es Bluetooth Classic, A2DP), así que la placa controla el móvil y el móvil reproduce en tu JBL. Las teclas de volumen y pista van a la app que tenga el foco de audio. Los equipos no se ponen de acuerdo sobre dónde están los caracteres de Option/AltGr, así que la tabla alemana solo escribe lo que puede escribir igual en Mac y Windows.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Laboratorio PlatformIO y pantalla"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script de teclado HID",
+        "goal": "Haz de la Pulsar C5 un teclado Bluetooth LE con teclas multimedia desde MicroPython: <code>ble_b6_keyboard.py</code> registra el servicio HID estándar, envía informes de teclas y de medios, y se vincula con Just Works.",
+        "goalLine": "Empareja la placa como cualquier teclado, escribe texto en tu móvil u ordenador y controla su música.",
+        "goalCheck": [
+          "<b>Bench B6</b> aparece en los ajustes Bluetooth del móvil u ordenador como teclado y se empareja sin código.",
+          "<code>type hello</code> escribe <i>hello</i> en un campo de texto del dispositivo emparejado.",
+          "Un clic en BOOT reproduce o pausa la música; un doble clic salta a la siguiente pista."
+        ],
+        "learn": [
+          "HID sobre GATT",
+          "Report Map",
+          "informes de entrada",
+          "consumer control",
+          "vínculo Just Works"
+        ],
+        "steps": [
+          "Abre <b>Código</b>, conecta el REPL serie y pulsa <b>Instalar ble_kit.py</b> una vez: todos los laboratorios Bluetooth lo importan.",
+          "Ejecuta <code>ble_b6_keyboard.py</code>. Empareja <b>Bench B6</b> desde los ajustes Bluetooth, no desde nRF Connect.",
+          "<b>Punto de control 1:</b> la consola imprime <code>link encrypted, Just Works, bonded</code>.",
+          "Abre una app de notas y escribe <code>type Hola desde la C5</code> en la consola serie. <b>Punto de control 2:</b> aparece el texto.",
+          "Prueba <code>key enter</code>, <code>key cmd+space</code> (Mac) o <code>key ctrl+alt+t</code>, y <code>media up</code>.",
+          "Pon música: clic en BOOT = reproducir/pausa, doble clic = siguiente pista, pulsación larga = silencio."
+        ],
+        "note": "El script escribe con distribución US: en un ordenador con otra distribución algunos símbolos cambian. Usa <code>forget</code>, y olvida también la placa en el dispositivo, antes de emparejarla en otro sitio."
+      }
+    }
   },
   "B7": {
     "title": "Música",
@@ -884,7 +1080,39 @@
       "Toca el teclado del sintetizador. <b>Punto de control 4:</b> teclas azules y un LED de color en la placa.",
       "Abre la vista link y lee tu intervalo. Prueba <code>bpm 200</code> con la batería y escucha: ¿sigue sonando preciso?"
     ],
-    "note": "MIDI son instrucciones, no audio: la placa nunca hace sonido por sí misma (no tiene altavoz). El audio del sintetizador puede ir a donde pueda reproducirse, tu JBL incluido, por el propio Bluetooth del móvil o del Mac. Los equipos de Apple suelen conceder intervalos de conexión de 11,25-15 ms para MIDI, así que una nota espera hasta un intervalo; las marcas de tiempo dentro de cada paquete permiten a un buen sintetizador mantener el ritmo de todos modos. Si el Mac pide emparejar, acepta: la placa permite la vinculación Just Works. Solo hay melodías de dominio público incluidas."
+    "note": "MIDI son instrucciones, no audio: la placa nunca hace sonido por sí misma (no tiene altavoz). El audio del sintetizador puede ir a donde pueda reproducirse, tu JBL incluido, por el propio Bluetooth del móvil o del Mac. Los equipos de Apple suelen conceder intervalos de conexión de 11,25-15 ms para MIDI, así que una nota espera hasta un intervalo; las marcas de tiempo dentro de cada paquete permiten a un buen sintetizador mantener el ritmo de todos modos. Si el Mac pide emparejar, acepta: la placa permite la vinculación Just Works. Solo hay melodías de dominio público incluidas.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Laboratorio PlatformIO y pantalla"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script BLE-MIDI",
+        "goal": "Convierte la Pulsar C5 en un instrumento MIDI Bluetooth con <code>ble_b7_midi.py</code>: el servicio BLE-MIDI estándar, notas desde BOOT y la consola, melodías y una caja de ritmos. GarageBand, una app de sintetizador o la ble-app ponen el sonido.",
+        "goalLine": "Toca notas desde la placa en una app de sintetizador y mira cómo las notas de la app encienden el LED RGB.",
+        "goalCheck": [
+          "GarageBand (Avanzado → Dispositivos MIDI Bluetooth) o la ble-app se conecta a <b>Bench B7</b>.",
+          "Los clics en BOOT tocan la escala; un doble clic toca un acorde.",
+          "Las notas tocadas en la app imprimen <code>&lt; note on …</code> y encienden el LED."
+        ],
+        "learn": [
+          "BLE-MIDI",
+          "note on / note off",
+          "marcas de tiempo",
+          "running status",
+          "batería en el canal 10"
+        ],
+        "steps": [
+          "Abre <b>Código</b>, conecta el REPL serie y pulsa <b>Instalar ble_kit.py</b> una vez: todos los laboratorios Bluetooth lo importan.",
+          "Ejecuta <code>ble_b7_midi.py</code> y conéctate a <b>Bench B7</b> desde GarageBand, una app de sintetizador o la pestaña Music de la ble-app.",
+          "Haz clic en BOOT unas cuantas veces. <b>Punto de control 1:</b> la app toca las notas de la escala pentatónica.",
+          "Escribe <code>tune twinkle</code>, luego <code>seq rock</code> y <code>bpm 120</code>. <code>stop</code> (o una pulsación larga) lo silencia todo.",
+          "Toca en el teclado de la app. <b>Punto de control 2:</b> la consola imprime las notas y el LED cambia de color."
+        ],
+        "note": "MIDI lleva notas, no sonido: la placa nunca suena por sí misma. El ESP32-C5 no tiene sensor táctil, así que las teclas táctiles del laboratorio Arduino se quedan fuera."
+      }
+    }
   },
   "B8": {
     "title": "Anfitrión (Host)",
@@ -1036,7 +1264,40 @@
       "Desconecta y vuelve a conectar la placa y luego pulsa una tecla del teclado. <b>Punto de control 5:</b> se reconecta y aloja sin clave.",
       "Explora tu altavoz JBL: <code>connect &lt;n&gt;</code>. Mira por qué no muestra nada de audio."
     ],
-    "note": "Explore solo se conecta a los dispositivos que eliges y solo lee los valores públicos estándar (nombre, apariencia, fabricante, modelo, firmware, batería, PnP ID); nunca escribe en un dispositivo, salvo los dos ajustes HID estándar de un teclado o ratón que alojas (el CCCD para suscribirse, Protocol Mode para boot). Conéctate solo a tus propios dispositivos. Un enlace cada vez: desconecta antes de conectar con el siguiente dispositivo. Un teclado vinculado a la placa puede dejar de funcionar con el Mac en ese canal hasta que lo vuelvas a emparejar allí. La vista keyboard usa la fuente integrada de la pantalla, que tiene ä ö ü Ä Ö Ü ß pero no €. BLE deja el ID del informe fuera de la notificación: vive en el descriptor Report Reference (2908), por eso los bytes de la vista reports empiezan con los datos."
+    "note": "Explore solo se conecta a los dispositivos que eliges y solo lee los valores públicos estándar (nombre, apariencia, fabricante, modelo, firmware, batería, PnP ID); nunca escribe en un dispositivo, salvo los dos ajustes HID estándar de un teclado o ratón que alojas (el CCCD para suscribirse, Protocol Mode para boot). Conéctate solo a tus propios dispositivos. Un enlace cada vez: desconecta antes de conectar con el siguiente dispositivo. Un teclado vinculado a la placa puede dejar de funcionar con el Mac en ese canal hasta que lo vuelvas a emparejar allí. La vista keyboard usa la fuente integrada de la pantalla, que tiene ä ö ü Ä Ö Ü ß pero no €. BLE deja el ID del informe fuera de la notificación: vive en el descriptor Report Reference (2908), por eso los bytes de la vista reports empiezan con los datos.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Laboratorio PlatformIO y pantalla"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script central: explorar y alojar",
+        "goal": "Cambia los papeles con <code>ble_b8_host.py</code>: la Pulsar C5 se convierte en la central. Escanea, se conecta, explora la tabla GATT de cualquier dispositivo (solo lo básico y público) y luego se empareja con tu teclado o ratón BLE y decodifica sus informes.",
+        "goalLine": "Explora los servicios de un dispositivo y luego escribe en un teclado Bluetooth y lee el texto en la consola.",
+        "goalCheck": [
+          "<code>connect 1</code> imprime los servicios y características del dispositivo, y luego su nombre, fabricante y batería.",
+          "<code>host</code> se empareja con un teclado: escribes en él la clave impresa y luego Intro.",
+          "Las teclas pulsadas en el teclado aparecen como líneas <code>&lt; key report … | texto</code>."
+        ],
+        "learn": [
+          "papel de central",
+          "gap_connect()",
+          "descubrimiento GATT",
+          "suscripciones CCCD",
+          "informes HID"
+        ],
+        "steps": [
+          "Abre <b>Código</b>, conecta el REPL serie y pulsa <b>Instalar ble_kit.py</b> una vez: todos los laboratorios Bluetooth lo importan.",
+          "Ejecuta <code>ble_b8_host.py</code>. Pon un teclado o ratón BLE en modo de emparejamiento y escribe <code>list</code>.",
+          "Escribe <code>connect 1</code> (el número de la lista). <b>Punto de control 1:</b> sus servicios, características y datos básicos.",
+          "Escribe <code>host</code>. Un teclado muestra <code>* PASSKEY …</code>: escribe esos dígitos en el teclado y luego Intro.",
+          "<b>Punto de control 2:</b> las teclas que pulsas imprimen informes y el texto hasta ahora; un ratón imprime botones y movimiento.",
+          "<code>disconnect</code> (o una pulsación larga) cuelga y vuelve a escanear."
+        ],
+        "note": "Explorar solo lee características estándar, nunca datos del fabricante. El script decodifica teclados que envían informes de 8 bytes e imprime cualquier otro informe en hexadecimal. Los vínculos se guardan en <code>ble_host_bonds.json</code>; <code>forget</code> los borra."
+      }
+    }
   },
   "I2": {
     "title": "Toque por Bluetooth LE",

@@ -23,7 +23,7 @@
     "stepCable": "Conecta la placa con un cable USB de datos y cierra cualquier otro monitor serie.",
     "stepPort": "Pulsa Cargar firmware y elige el puerto serie de la placa.",
     "stepBoot": "Si no conecta, mantén BOOT, pulsa RESET, suelta RESET y después BOOT; vuelve a intentarlo.",
-    "warning": "La carga borra los sectores cubiertos por estas imágenes. No desconectes la placa mientras se escribe.",
+    "warning": "Sin borrado completo, solo se borran los sectores cubiertos por las imágenes. Los demás datos de la flash permanecen. No desconectes la placa mientras se escribe.",
     "eraseAll": "Borrar toda la flash antes de cargar",
     "eraseAllWarning": "Se borrará toda la flash, incluidos los scripts .py y datos guardados. Después se escribirá el firmware seleccionado. No desconectes la placa durante el proceso.",
     "unsupported": "Esta página requiere HTTPS o localhost y un navegador con Web Serial, como Chrome o Edge en una computadora.",
@@ -34,7 +34,7 @@
     "detected": "Detectado: {{chip}}",
     "unknownChip": "chip desconocido",
     "cancelled": "Se canceló la selección del puerto.",
-    "success": "Firmware escrito. La placa se reinició.",
+    "success": "Firmware escrito. Si la placa sigue en modo BOOT, pulsa RESET para iniciarla.",
     "successManualReset": "Firmware escrito. Pulsa RESET en la placa para iniciarlo.",
     "log": "Registro de conexión",
     "logEmpty": "Aquí aparecerá el registro de conexión.",
@@ -300,7 +300,7 @@
         },
         "P6": {
           "title": "Prueba el retorno UART",
-          "try": "Une GPIO11 con GPIO12, ejecuta uart_loopback.py y envía hello UART desde el terminal.",
+          "try": "Une A2/GPIO4 con A3/GPIO5, ejecuta uart_loopback.py y envía hello UART desde el terminal.",
           "expect": "El script muestra loopback: hello UART; sin el puente indica que no hubo respuesta."
         },
         "D1": {

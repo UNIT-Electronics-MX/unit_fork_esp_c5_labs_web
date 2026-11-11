@@ -351,20 +351,37 @@
       "micropython": {
         "label": "MicroPython",
         "short": "UART loopback script",
-        "goal": "Send a line from the USB REPL through UART1 on GPIO11 and read it back on GPIO12 with one jumper.",
+        "goal": "Send a line from the USB REPL through UART1 on A2/GPIO4 and read it back on A3/GPIO5 with one jumper.",
         "learn": [
           "machine.UART",
           "TX and RX",
           "baud rate",
           "loopback testing"
         ],
+        "pins": {
+          "0": {
+            "role": "TX"
+          },
+          "1": {
+            "role": "RX"
+          }
+        },
+        "wiring": {
+          "rows": [
+            [
+              "A2 (GPIO4)",
+              "A3 (GPIO5)",
+              "one jumper wire"
+            ]
+          ]
+        },
         "steps": [
-          "Disconnect USB and bridge TX0 (GPIO11) to RX0 (GPIO12) with one jumper, then reconnect USB.",
+          "Disconnect USB, remove any TX0–RX0 jumper, and bridge A2/GPIO4 to A3/GPIO5 instead. Then reconnect USB.",
           "Open <b>Code</b>, connect the serial REPL and run <code>uart_loopback.py</code>.",
           "Type <code>hello UART</code> in the terminal and send it. The script prints <code>loopback: hello UART</code>.",
           "Remove the jumper and send another line: the script reports no response. Press <b>Stop</b> when done."
         ],
-        "note": "The USB REPL stays separate from UART1. For another board, cross TX and RX and connect grounds."
+        "note": "The generic MicroPython firmware also enables a REPL on UART0. Bridging TX0/GPIO11 to RX0/GPIO12 feeds its output back into its input and floods the console. Use A2/A3 for this MicroPython test. For another board, cross TX and RX and connect grounds."
       }
     }
   }

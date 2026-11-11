@@ -106,6 +106,11 @@ export interface LessonVariant extends Partial<LessonBody> {
   readonly short: string;
   /** Passed to the preview widget as `mode`. */
   readonly previewMode?: string;
+  /**
+   * Explainer panels and the preview whose widget this variant leaves out, e.g. the simulated
+   * screen of a lab that runs on a board without one.
+   */
+  readonly hideWidgets?: readonly WidgetId[];
 }
 
 interface LessonHead {
@@ -161,18 +166,21 @@ export function resolveLesson(base: ActiveLesson, variantKey?: string): Resolved
     label: _label,
     short: _short,
     previewMode,
+    hideWidgets = [],
     ...overrides
   } = variant ?? ({} as Partial<LessonVariant>);
-  const merged = { ...base, ...overrides };
+  const { preview, ...merged } = { ...base, ...overrides };
+  const shown = (spec: { readonly widget: WidgetId }) => !hideWidgets.includes(spec.widget);
   return {
     ...merged,
+    ...(preview && shown(preview) ? { preview } : {}),
     goal: merged.goal ?? "",
     learn: merged.learn ?? [],
     pins: merged.pins ?? [],
     cmd: merged.cmd ?? "",
     steps: merged.steps ?? [],
     note: merged.note ?? "",
-    panels: merged.panels ?? [],
+    panels: (merged.panels ?? []).filter(shown),
     ...(key ? { variantKey: key } : {}),
     ...(previewMode ? { previewMode } : {}),
   };

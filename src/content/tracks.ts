@@ -87,15 +87,19 @@ export const LANGUAGE_LESSON_IDS: ReadonlySet<string> = new Set([
   "O1",
   "D1", "D2", "D3",
   "I1", "I2",
+  "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8",
 ]);
+
+/** Lessons whose MicroPython variant already runs on the Pulsar C5 while the Arduino one is an S3 lab. */
+const C5_MICROPYTHON_PORTS: ReadonlySet<string> = new Set(["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"]);
 
 export const DEFAULT_LESSON_ID = "00";
 
 export const findTrack = (id: string) => TRACKS.find((t) => t.id === id);
 
-/** The board a lesson is wired on; the Wi-Fi and BLE tracks contain both boards. */
-export const boardOfLesson = (lessonId: string): BoardId =>
-  lessonId === "I1" || lessonId === "I2"
+/** The board a lesson (in that language variant) is wired on; the Wi-Fi and BLE tracks contain both boards. */
+export const boardOfLesson = (lessonId: string, variantKey?: string): BoardId =>
+  lessonId === "I1" || lessonId === "I2" || (variantKey === "micropython" && C5_MICROPYTHON_PORTS.has(lessonId))
     ? "pulsar-c5"
     : TRACKS.find((t) => t.lessonIds.includes(lessonId))?.board ?? "devkitc-s3";
 

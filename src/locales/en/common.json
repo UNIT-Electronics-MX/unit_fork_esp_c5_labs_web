@@ -23,7 +23,7 @@
     "stepCable": "Connect the board with a USB data cable and close any other serial monitor.",
     "stepPort": "Press Flash firmware and choose the board's serial port.",
     "stepBoot": "If connection fails, hold BOOT, press RESET, release RESET, then release BOOT and try again.",
-    "warning": "Flashing erases the sectors covered by these images. Do not unplug the board while writing.",
+    "warning": "Without a full erase, only the sectors covered by the images are erased. Other flash data remains. Do not unplug the board while writing.",
     "eraseAll": "Erase entire flash before writing",
     "eraseAllWarning": "The entire flash will be erased, including saved .py scripts and board data. The selected firmware will then be written. Do not unplug the board during this process.",
     "unsupported": "This page needs HTTPS or localhost and a browser with Web Serial, such as Chrome or Edge on a desktop computer.",
@@ -34,7 +34,7 @@
     "detected": "Detected: {{chip}}",
     "unknownChip": "unknown chip",
     "cancelled": "Port selection cancelled.",
-    "success": "Firmware written. The board was reset.",
+    "success": "Firmware written. If the board remains in BOOT mode, press RESET to start it.",
     "successManualReset": "Firmware written. Press RESET on the board to start it.",
     "log": "Connection log",
     "logEmpty": "The connection log will appear here.",
@@ -300,7 +300,7 @@
         },
         "P6": {
           "title": "Test the UART loopback",
-          "try": "Bridge GPIO11 to GPIO12, run uart_loopback.py and send hello UART in the terminal.",
+          "try": "Bridge A2/GPIO4 to A3/GPIO5, run uart_loopback.py and send hello UART in the terminal.",
           "expect": "The script prints loopback: hello UART; without the jumper it reports no response."
         },
         "D1": {

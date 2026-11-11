@@ -124,7 +124,7 @@
       "P3": "Potentiometer",
       "P4": "On-board sensors",
       "P5": "microSD slot",
-      "P6": "RX0 header pin"
+      "P6": "UART input header pin"
     },
     "target": {
       "userLed": "User LED",
@@ -147,7 +147,7 @@
       "sdMosi": "GPIO7 carries data from the ESP32-C5 to the card.",
       "sdMiso": "GPIO26 carries data from the card back to the ESP32-C5.",
       "sdSelect": "GPIO23 selects the microSD card for each SPI transfer.",
-      "uart": "With USB unplugged, place one jumper from TX0 (GPIO11) to RX0 (GPIO12). The USB console stays separate."
+      "uart": "With USB unplugged, place one jumper between the two pins shown. For MicroPython, use A2/GPIO4 and A3/GPIO5; never bridge TX0 and RX0."
     }
   },
   "variants": {

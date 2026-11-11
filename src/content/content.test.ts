@@ -63,8 +63,10 @@ describe("content", () => {
     const tracks = TRACKS.filter((track) => !track.planned);
     const contents = await Promise.all(tracks.map((track) => trackLessonsQuery(track.id, "en").queryFn!({} as never)));
     const misplaced = contents.flat()
-      .filter((lesson) => lesson.kind === "lesson" && boardOfLesson(lesson.id) === "pulsar-c5")
-      .flatMap((lesson) => (lesson.kind === "lesson" ? (lesson.pins ?? []).map((p) => ({ id: lesson.id, p })) : []))
+      .filter(isActive)
+      .flatMap((lesson) => [undefined, ...(lesson.variants ?? []).map((variant) => variant.key)]
+        .filter((key) => boardOfLesson(lesson.id, key) === "pulsar-c5")
+        .flatMap((key) => resolveLesson(lesson, key).pins.map((p) => ({ id: `${lesson.id}.${key ?? ""}`, p }))))
       .filter(({ p }) => {
         const at = pulsarPosition(p);
         return at < 0 || pulsarSide(at) !== p.side || (p.idx !== undefined && p.idx !== at);
@@ -83,8 +85,28 @@ describe("content", () => {
     expect(boardOfLesson("I2")).toBe("pulsar-c5");
     expect(boardOfLesson("W1")).toBe("devkitc-s3");
     expect(boardOfLesson("B1")).toBe("devkitc-s3");
+    expect(boardOfLesson("B1", "arduino")).toBe("devkitc-s3");
+    expect(boardOfLesson("B8", "micropython")).toBe("pulsar-c5");
+    expect(boardOfLesson("W1", "micropython")).toBe("devkitc-s3");
     expect(boardOfLesson("R1")).toBe("devkitc-s3");
     expect(boardOfLesson("nope")).toBe("devkitc-s3");
+  });
+
+  it("runs B1-B8 as MicroPython scripts on the C5 without the S3 screen", async () => {
+    const lessons = (await trackLessonsQuery("ble", "es").queryFn!({} as never)).filter(isActive);
+    const ported = lessons.filter((lesson) => /^B[1-8]$/.test(lesson.id));
+    expect(ported).toHaveLength(8);
+    for (const lesson of ported) {
+      const arduino = resolveLesson(lesson, "arduino");
+      const micropython = resolveLesson(lesson, "micropython");
+      expect(arduino.cmd).toContain(`ble-lab-${lesson.id.toLowerCase()}`);
+      expect(arduino.panels.some((panel) => panel.widget === "bleScreens")).toBe(true);
+      expect(micropython.cmd).toBe("");
+      expect(micropython.commands).toEqual([]);
+      expect(micropython.panels.some((panel) => panel.widget === "bleScreens")).toBe(false);
+      expect(micropython.preview).toBeUndefined();
+      expect(micropython.steps.join(" ")).toContain(`ble_${lesson.id.toLowerCase()}_`);
+    }
   });
 
   it.each([

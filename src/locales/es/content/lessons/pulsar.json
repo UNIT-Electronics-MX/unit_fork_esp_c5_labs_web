@@ -296,20 +296,37 @@
       },
       "micropython": {
         "short": "Script de retorno UART",
-        "goal": "Envía una línea desde el REPL USB por UART1 en GPIO11 y recíbela en GPIO12 mediante un solo puente.",
+        "goal": "Envía una línea desde el REPL USB por UART1 en A2/GPIO4 y recíbela en A3/GPIO5 mediante un solo puente.",
         "learn": [
           "machine.UART",
           "TX y RX",
           "baudios",
           "prueba de retorno"
         ],
+        "pins": {
+          "0": {
+            "role": "TX"
+          },
+          "1": {
+            "role": "RX"
+          }
+        },
+        "wiring": {
+          "rows": [
+            [
+              "A2 (GPIO4)",
+              "A3 (GPIO5)",
+              "un cable puente"
+            ]
+          ]
+        },
         "steps": [
-          "Desconecta el USB y une TX0 (GPIO11) con RX0 (GPIO12) mediante un puente; después vuelve a conectar el USB.",
+          "Desconecta el USB, quita cualquier puente entre TX0 y RX0 y une A2/GPIO4 con A3/GPIO5. Después vuelve a conectar el USB.",
           "Abre <b>Código</b>, conecta el REPL serie y ejecuta <code>uart_loopback.py</code>.",
           "Escribe <code>hello UART</code> en el terminal y envíalo. El script muestra <code>loopback: hello UART</code>.",
           "Quita el puente y envía otra línea: el script indica que no recibió respuesta. Pulsa <b>Detener</b> al terminar."
         ],
-        "note": "El REPL USB permanece separado de UART1. Para comunicarte con otra placa, cruza TX y RX y conecta las tierras."
+        "note": "El firmware MicroPython genérico también activa un REPL en UART0. Unir TX0/GPIO11 con RX0/GPIO12 devuelve su salida a la entrada y llena la consola de errores. Usa A2/A3 para esta prueba. Para comunicarte con otra placa, cruza TX y RX y conecta las tierras."
       }
     }
   }
