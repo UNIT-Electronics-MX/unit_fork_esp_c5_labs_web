@@ -88,6 +88,7 @@
       "fileLoaded": "{{file}} abierto en el editor.",
       "requires": "Necesita: {{items}}",
       "reset": "Restaurar ejemplo",
+      "tftDraft": "Tienes un borrador local. Restaura el ejemplo actualizado si aún usa CS_PIN = 1: CS de la TFT ahora va a D4 / GPIO9. También recuperas las correcciones de TFTColor y width.",
       "download": "Descargar .py",
       "hint": "Un archivo .py es un script, no un firmware .bin. Puedes ejecutarlo por serial o guardarlo en la placa desde este editor.",
       "run": "Ejecutar en la placa",
@@ -95,7 +96,8 @@
       "save": "Guardar en la placa",
       "installLibrary": "Instalar {{file}}",
       "libraryHint": "Instala {{file}} en la placa una vez antes de ejecutar este ejemplo. Si lo instalas de nuevo, reemplaza ese archivo.",
-      "librarySource": "Fuente UNIT · {{license}}",
+      "librarySource": "Fuente · {{license}}",
+      "licenseUnspecified": "licencia no indicada",
       "libraryInstalled": "{{file}} guardado en la placa. Ya puedes ejecutar el ejemplo.",
       "stop": "Detener",
       "connectFirst": "Conecta la consola serie para ejecutar o guardar el script en la placa.",
@@ -234,6 +236,11 @@
           "try": "Busca DevLabDDP::Master en el sketch y sigue la lectura ADC hasta drawGraph().",
           "expect": "La OLED grafica las últimas 126 muestras y el monitor serie imprime los valores."
         },
+        "D3": {
+          "title": "Mira cómo trabaja el filtro",
+          "try": "Conecta el TMP235 a A2, sube el sketch y abre el Serial Plotter.",
+          "expect": "Unos 750 mV y 25 °C a temperatura ambiente; aprieta el sensor con los dedos y la línea filtrada sube suavemente."
+        },
         "O1": {
           "title": "Enciende la OLED",
           "try": "Carga o1-oled.ino con solo la SSD1306 conectada a QWIIC.",
@@ -297,14 +304,19 @@
           "expect": "El script muestra loopback: hello UART; sin el puente indica que no hubo respuesta."
         },
         "D1": {
-          "title": "Comprueba que es un BMI270",
-          "try": "Conecta el BMI270 a QWIIC y ejecuta bmi270_id.py.",
-          "expect": "La terminal muestra found 0x68 (o 0x69) y luego chip ID 0x24 (BMI270)."
+          "title": "Identifica y mueve el BMI270",
+          "try": "Ejecuta bmi270_id.py; después instala bmi270.py y ejecuta bmi270_motion.py.",
+          "expect": "La terminal confirma el ID 0x24 y muestra aceleración y giro en los tres ejes."
         },
         "D2": {
           "title": "Grafica la luz en la OLED",
           "try": "Instala ssd1306.py, ejecuta oled_light.py y cubre e ilumina el TEMT6000.",
           "expect": "El terminal identifica el dispositivo 0x0102 y la gráfica OLED sigue la luz."
+        },
+        "D3": {
+          "title": "Mira cómo trabaja el filtro",
+          "try": "Conecta el TMP235 a A2 y ejecuta tmp235_temperature.py.",
+          "expect": "Unos 750 mV y 25 °C a temperatura ambiente; aprieta el sensor con los dedos y la columna filtrada sube suavemente."
         },
         "O1": {
           "title": "Enciende la OLED",
@@ -357,7 +369,7 @@
     },
     "display": {
       "title": "Pantalla y entrada",
-      "blurb": "OLED de Pulsar C5, pantalla de 1,9″ y botones"
+      "blurb": "OLED y TFT ST7735 de 80×160 en Pulsar C5"
     },
     "wifi": {
       "title": "Wi-Fi",

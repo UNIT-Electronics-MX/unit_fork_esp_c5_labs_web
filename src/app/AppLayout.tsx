@@ -1,7 +1,7 @@
 /* eslint-disable i18next/no-literal-string -- hardware and repository names stay the same in every locale. */
 import { Trans, useTranslation } from "react-i18next";
 import { Link, Outlet, ScrollRestoration, useLocation, useNavigation, useSearchParams } from "react-router";
-import { boardOfLesson } from "@/content/tracks";
+import { boardOfLesson, LANGUAGE_LESSON_IDS } from "@/content/tracks";
 import { BenchPill } from "@/features/bench/BenchPill";
 import { LanguageMenu } from "@/features/language/LanguageMenu";
 import { isCodePlatform, progress, useCodePlatform } from "@/features/progress/progress-store";
@@ -33,12 +33,14 @@ export function AppLayout() {
   const [searchParams, setSearchParams] = useSearchParams();
   const codePlatform = useCodePlatform();
   const { t } = useTranslation();
-  const platformRoute = /^\/lessons\/(?:00|01|02|P[1-6]|D2|O1)(?:\/code)?$/.test(pathname);
+  const lessonId = /^\/lessons\/([^/]+)/.exec(pathname)?.[1];
+  // Lessons in both languages follow the choice made here, so the bar offers it on them.
+  const platformRoute = lessonId !== undefined && LANGUAGE_LESSON_IDS.has(lessonId)
+    && /^\/lessons\/[^/]+(?:\/code)?$/.test(pathname);
   const showCodePlatform = pathname === "/" || pathname === "/lessons" || platformRoute;
   const requestedPlatform = searchParams.get("variant");
   const selectedPlatform = platformRoute && isCodePlatform(requestedPlatform) ? requestedPlatform : codePlatform;
   // S3-era lessons carry a notice until they are ported; the Pulsar C5 tracks do not.
-  const lessonId = /^\/lessons\/([^/]+)/.exec(pathname)?.[1];
   const legacyLesson = lessonId !== undefined && boardOfLesson(lessonId) === "devkitc-s3";
   const wideWorkspace = pathname === "/" || pathname === "/lessons" || /^\/lessons\/[^/]+(?:\/code)?$/.test(pathname)
     || pathname === "/pinout" || pathname === "/flash" || pathname.startsWith("/datasheet")

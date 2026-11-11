@@ -29,7 +29,7 @@ export function BoardCard({ lesson }: { lesson: ResolvedLesson | null }) {
         pins={lesson?.pins ?? []}
         usb={Boolean(lesson?.usb || lesson?.preview)}
         boot={Boolean(lesson?.boot)}
-        adc={Boolean(lesson?.adcMap)}
+        showRoleTags={false}
       />
       {missing.length ? (
         <p className={styles.missing}>

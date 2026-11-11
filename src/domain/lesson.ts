@@ -139,6 +139,18 @@ export interface ResolvedLesson extends LessonHead, LessonBody {
   readonly previewMode?: string;
 }
 
+/** The variant keys that are programming languages, chosen once in the top bar for every lesson. */
+const LANGUAGE_KEYS: ReadonlySet<string> = new Set(["arduino", "micropython"]);
+
+/**
+ * A lesson whose variants are just Arduino and MicroPython follows the language picked in the top
+ * bar instead of showing its own switch. Variants of another kind (W2's lan/remote) keep theirs.
+ */
+export const followsCodePlatform = (lesson: { readonly variants?: readonly { readonly key: string }[] }): boolean => {
+  const variants = lesson.variants ?? [];
+  return variants.length > 0 && variants.every((variant) => LANGUAGE_KEYS.has(variant.key));
+};
+
 export const isActive = (l: LessonEntry): l is ActiveLesson => l.kind === "lesson";
 
 /** Applies a variant over its base lesson. Unknown keys fall back to the first variant. */

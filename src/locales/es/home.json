@@ -2,7 +2,7 @@
   "hero": {
     "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
     "title": "Pulsar <part>C5 Labs</part>",
-    "legacyNotice": "Introducción (00–02), Hardware de la Pulsar C5, Sensores, Wi-Fi y BLE en la C5 y Zigbee están escritos para esta placa. Los demás temas aún se están migrando: revisa sus conexiones antes de montar.",
+    "legacyNotice": "Introducción (00–02), Hardware, prácticas de Pantalla para C5, Sensores, Wi-Fi y BLE en la C5 y Zigbee están escritos para esta placa. Otras prácticas aún se están migrando: revisa sus conexiones antes de montar.",
     "motto": {
       "wire": "Cablea",
       "flash": "Flashea",
@@ -54,6 +54,7 @@
     "items": {
       "led": "LED + resistencia de 220–330 Ω",
       "tft": "Pantalla ST7789 de 1,9″",
+      "st7735": "Pantalla TFT ST7735 de 0,96″ y 80×160",
       "button": "Pulsador",
       "rc522": "Lector de tarjetas RC522",
       "tags": "Tarjeta MIFARE y llavero",

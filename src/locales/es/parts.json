@@ -11,11 +11,7 @@
     "potImageAlt": "Dibujo Fritzing de un potenciómetro giratorio de tres terminales",
     "potLesson": "Ver el diagrama de conexiones P3",
     "fritzingSource": "SVG original de Fritzing",
-    "displayTitle": "Pantalla Adafruit ST7789 de 1,9 pulgadas",
-    "displayDescription": "Referencia visual de una TFT de 320 × 170. Este módulo tiene 11 pines, así que su pinout difiere del módulo de ocho cables de la lección 03.",
-    "displayImageAlt": "Dibujo Fritzing de Adafruit de una pantalla TFT ST7789 de 1,9 pulgadas",
-    "adafruitSource": "Pieza original de Adafruit",
-    "license": "Estas dos imágenes de referencia se atribuyen a Fritzing y Adafruit y se distribuyen bajo"
+    "license": "Este dibujo de referencia de Fritzing se distribuye bajo"
   },
   "names": {
     "devkit": "placa UNIT Pulsar C5",

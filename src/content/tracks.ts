@@ -24,9 +24,10 @@ export const TRACKS: readonly Track[] = [
   {
     id: "display",
     title: "Display & input",
-    blurb: "Pulsar C5 OLED, the 1.9″ screen and buttons",
+    blurb: "Pulsar C5 OLED and 80×160 ST7735 TFT",
     color: "--copper",
-    lessonIds: ["O1", "03", "03b"],
+    lessonIds: ["O1", "O2", "O3"],
+    board: "pulsar-c5",
   },
   {
     id: "sensors",
@@ -75,13 +76,26 @@ export const TRACKS: readonly Track[] = [
   },
 ];
 
+/**
+ * Lessons offered in both Arduino and MicroPython: they follow the language picked in the top bar.
+ * The top bar is drawn before any lesson file loads, so the list lives here; a content test keeps
+ * it equal to the lessons whose variants are just those two (followsCodePlatform).
+ */
+export const LANGUAGE_LESSON_IDS: ReadonlySet<string> = new Set([
+  "00", "01", "02",
+  "P1", "P2", "P3", "P4", "P5", "P6",
+  "O1",
+  "D1", "D2", "D3",
+  "I1", "I2",
+]);
+
 export const DEFAULT_LESSON_ID = "00";
 
 export const findTrack = (id: string) => TRACKS.find((t) => t.id === id);
 
 /** The board a lesson is wired on; the Wi-Fi and BLE tracks contain both boards. */
 export const boardOfLesson = (lessonId: string): BoardId =>
-  lessonId === "O1" || lessonId === "I1" || lessonId === "I2"
+  lessonId === "I1" || lessonId === "I2"
     ? "pulsar-c5"
     : TRACKS.find((t) => t.lessonIds.includes(lessonId))?.board ?? "devkitc-s3";
 

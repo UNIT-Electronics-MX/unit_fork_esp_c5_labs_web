@@ -67,6 +67,23 @@ export function collectMicroPython(root: string): MicroPythonExamples | null {
       code: readFileSync(join(dir, item.file), "utf8"),
     };
   });
+  // Bundle the D1 motion follow-up alongside the ID check supplied by the firmware checkout.
+  const motionExampleId = "imu-bmi270-motion";
+  if (seen.has("imu-bmi270") && !seen.has(motionExampleId)) {
+    seen.add(motionExampleId);
+    examples.push({
+      id: motionExampleId,
+      title: "QWIIC · movimiento BMI270",
+      titleEn: "QWIIC · BMI270 motion",
+      file: "bmi270_motion.py",
+      description: "Lee aceleración y velocidad angular del BMI270 por QWIIC.",
+      descriptionEn: "Read BMI270 acceleration and angular velocity over QWIIC.",
+      requires: ["BMI270 en QWIIC", "bmi270.py guardado en la placa"],
+      requiresEn: ["BMI270 on QWIIC", "bmi270.py saved on the board"],
+      code: readFileSync(new URL("./micropython/bmi270_motion.py", import.meta.url), "utf8"),
+    });
+  }
+  // ST7735 display and showcase scripts come directly from the firmware manifest.
   const seenLibraries = new Set<string>();
   const libraries = ("libraries" in manifest && Array.isArray(manifest.libraries) ? manifest.libraries : []).map((item: unknown) => {
     if (!item || typeof item !== "object" || !("id" in item) || typeof item.id !== "string"
@@ -78,7 +95,7 @@ export function collectMicroPython(root: string): MicroPythonExamples | null {
       || !/^[a-z][a-z0-9-]*$/.test(item.id)
       || !/^[a-z][a-z0-9_]*\.py$/.test(item.file)
       || !/^https:\/\/github\.com\/.+/.test(item.source)
-      || item.license !== "MIT"
+      || (item.license !== "MIT" && !(item.id === "st7735" && item.license === "Not specified"))
       || seenLibraries.has(item.id)
       || !existsSync(join(dir, "libraries", item.file))) {
       throw new Error(`${index} has an invalid MicroPython library`);
@@ -93,5 +110,46 @@ export function collectMicroPython(root: string): MicroPythonExamples | null {
       code: readFileSync(join(dir, "libraries", item.file), "utf8"),
     };
   });
+  if (seen.has(motionExampleId)) {
+    const bmi270Examples = ["imu-bmi270", motionExampleId];
+    const existing = libraries.findIndex((library) => library.id === "bmi270");
+    if (existing >= 0) {
+      libraries[existing] = {
+        ...libraries[existing],
+        examples: [...new Set([...libraries[existing].examples, ...bmi270Examples])],
+      };
+    } else {
+      libraries.push({
+        id: "bmi270",
+        file: "bmi270.py",
+        source: "https://github.com/UNIT-Electronics-MX/unit_devlab_micropython_libraries/blob/main/software/bmi270/bmi270.py",
+        license: "MIT",
+        examples: bmi270Examples,
+        code: readFileSync(new URL("./micropython/bmi270.py", import.meta.url), "utf8"),
+      });
+    }
+  }
+  const st7735Examples = ["st7735-display", "st7735-showcase"].filter((id) => seen.has(id));
+  const st7735Path = join(dir, "libraries", "st7735.py");
+  if (st7735Examples.length && existsSync(st7735Path)) {
+    // The firmware checkout has this driver even when its license is not listed
+    // in the manifest. Do not describe the upstream boochow driver as MIT.
+    const existing = libraries.findIndex((library) => library.id === "st7735");
+    if (existing >= 0) {
+      libraries[existing] = {
+        ...libraries[existing],
+        examples: [...new Set([...libraries[existing].examples, ...st7735Examples])],
+      };
+    } else {
+      libraries.push({
+        id: "st7735",
+        file: "st7735.py",
+        source: "https://github.com/boochow/MicroPython-ST7735",
+        license: "Not specified",
+        examples: st7735Examples,
+        code: readFileSync(st7735Path, "utf8"),
+      });
+    }
+  }
   return { board: manifest.board, examples, libraries };
 }

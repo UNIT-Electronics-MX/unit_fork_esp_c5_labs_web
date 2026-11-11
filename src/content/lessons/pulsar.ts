@@ -210,7 +210,13 @@ export const pulsarLessons = [
         note: "This MicroPython example imports UNIT's <code>sdcard.py</code> from the board filesystem. Install it once from the code workspace before running. GPIO27 is shared with the user LED, which may flicker during card access.",
       },
     ],
-    panels: [],
+    panels: [
+      {
+        title: "How the microSD is wired",
+        widget: "wiringExamples",
+        view: 1,
+      },
+    ],
   },
   {
     kind: "lesson",

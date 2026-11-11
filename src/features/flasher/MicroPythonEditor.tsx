@@ -119,6 +119,7 @@ export function MicroPythonEditor({
   const requiredLibraries = selected ? data?.libraries?.filter((library) => library.examples.includes(selected.id)) ?? [] : [];
   const code = selected ? drafts[selected.id] ?? selected.code : "";
   const edited = selected ? code !== selected.code : false;
+  const tftDraft = selected && (selected.id === "st7735-display" || selected.id === "st7735-showcase") && edited;
   const outputName = selected ? filenames[selected.id] || selected.file : "script.py";
   const customLoaded = loadedFile || (selected ? Boolean(filenames[selected.id] && filenames[selected.id] !== selected.file) : false);
   const lineCount = code.split("\n").length;
@@ -352,7 +353,7 @@ export function MicroPythonEditor({
       {!customLoaded && (spanish ? selected.requires : selected.requiresEn).length ? (
         <p className={styles.requirements}>{t("flasher.examples.requires", { items: (spanish ? selected.requires : selected.requiresEn).join(" · ") })}</p>
       ) : null}
-      {requiredLibraries.map((library) => <p key={library.id} className={styles.libraryHint}>{t("flasher.examples.libraryHint", { file: library.file })} <a href={library.source} target="_blank" rel="noreferrer">{t("flasher.examples.librarySource", { license: library.license })}</a></p>)}
+      {requiredLibraries.map((library) => <p key={library.id} className={styles.libraryHint}>{t("flasher.examples.libraryHint", { file: library.file })} <a href={library.source} target="_blank" rel="noreferrer">{t("flasher.examples.librarySource", { license: library.license === "Not specified" ? t("flasher.examples.licenseUnspecified") : library.license })}</a></p>)}
       {terminalRef && !connected ? <p>{t("flasher.examples.connectFirst")}</p> : null}
       {terminalRef && !serialSupported ? <p className={styles.error}>{t("flasher.unsupported")}</p> : null}
       {!toolbarAtTop && (operation || notice) ? <p role="status">{operation ? t("flasher.examples.working") : notice}</p> : null}
@@ -393,6 +394,10 @@ export function MicroPythonEditor({
       {data && selected ? (
         <>
           {inLesson ? null : details}
+          {tftDraft ? <p className={styles.draftWarning} role="status">
+            {t("flasher.examples.tftDraft")}
+            <button type="button" onClick={resetExample}>{t("flasher.examples.reset")}</button>
+          </p> : null}
           <div className={styles.ide}>
             <div className={styles.windowBar}>
               <div className={styles.windowIdentity}>

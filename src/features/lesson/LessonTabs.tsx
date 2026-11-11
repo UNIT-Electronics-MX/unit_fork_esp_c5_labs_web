@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import { type CSSProperties, type ReactNode, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router";
 import { findTrack } from "@/content/tracks";
-import type { ResolvedLesson } from "@/domain/lesson";
+import { followsCodePlatform, type ResolvedLesson } from "@/domain/lesson";
+import { lessonExamples } from "@/features/flasher/lesson-examples";
 import { useAllProgress } from "@/features/code/code-progress";
 import { envOfCommand, firmwareIndexQuery } from "@/features/code/queries";
 import { useScrollChrome } from "@/lib/use-scroll-chrome";
@@ -56,7 +57,9 @@ export function LessonTabs({
   const env = envOfCommand(lesson.cmd);
   const { data: index } = useQuery({ ...firmwareIndexQuery(), enabled: !!env });
   const progress = useAllProgress();
-  if (!env && lesson.track !== "intro" && lesson.track !== "pulsar" && lesson.id !== "D2" && lesson.id !== "O1" && lesson.id !== "I1" && lesson.id !== "I2") return null;
+  const sharedLanguage = followsCodePlatform(lesson);
+  const pythonOnly = !lesson.variants?.length && lessonExamples(lesson.id).length > 0;
+  if (!env && !sharedLanguage && !pythonOnly) return null;
   const files = env ? index?.envs.find((e) => e.env === env)?.files ?? [] : [];
   const own = files.filter((f) => f.role === "lab");
   const lines = own.reduce((n, f) => n + f.lines, 0);
@@ -117,17 +120,9 @@ export function LessonTabs({
                 ? t("tabs.consoleSub")
               : lesson.id === "00"
                 ? t("tabs.codeSubSetup")
-                : lesson.track === "intro" && lesson.variantKey === "arduino"
-                ? t("tabs.codeSubArduino")
-                : lesson.track === "intro" && lesson.variantKey === "micropython"
+                : (sharedLanguage && lesson.variantKey === "micropython") || pythonOnly
                 ? t("tabs.codeSubMicroPython")
-                : lesson.track === "pulsar" && lesson.variantKey === "micropython"
-                ? t("tabs.codeSubMicroPython")
-                : (lesson.id === "D2" || lesson.id === "O1" || lesson.id === "I1" || lesson.id === "I2") && lesson.variantKey === "micropython"
-                ? t("tabs.codeSubMicroPython")
-                : lesson.track === "pulsar"
-                ? t("tabs.codeSubArduino")
-                : lesson.id === "D2" || lesson.id === "O1" || lesson.id === "I1" || lesson.id === "I2"
+                : sharedLanguage
                 ? t("tabs.codeSubArduino")
                 : t("tabs.codeSubEmpty")}
           </span>

@@ -33,6 +33,11 @@ export const router = createHashRouter([
           // P0 repeated Intro 00; keep old links pointed at the shared setup lesson.
           { path: "lessons/P0", loader: ({ request }) => redirect(`/lessons/00${new URL(request.url).search}`) },
           { path: "lessons/P0/code", loader: ({ request }) => redirect(`/lessons/00/code${new URL(request.url).search}`) },
+          // The old S3 TFT lessons now lead to their Pulsar C5 ST7735 equivalents.
+          { path: "lessons/03", loader: ({ request }) => redirect(`/lessons/O2${new URL(request.url).search}`) },
+          { path: "lessons/03/code", loader: ({ request }) => redirect(`/lessons/O2/code${new URL(request.url).search}`) },
+          { path: "lessons/03b", loader: ({ request }) => redirect(`/lessons/O3${new URL(request.url).search}`) },
+          { path: "lessons/03b/code", loader: ({ request }) => redirect(`/lessons/O3/code${new URL(request.url).search}`) },
           { path: "lessons/:lessonId", loader: lessonLoader(queryClient), Component: LessonRoute },
           {
             path: "pinout",

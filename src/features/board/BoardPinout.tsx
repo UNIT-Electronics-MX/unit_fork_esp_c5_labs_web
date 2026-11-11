@@ -79,10 +79,12 @@ interface BoardPinoutProps {
   reference?: boolean;
   /** Box each ADC1 channel ("CH3") beside its pad, where the detailed drawing puts the function. */
   adc?: boolean;
+  /** Keep the lesson card's board at the same scale by showing pin roles outside this drawing. */
+  showRoleTags?: boolean;
 }
 
 /** The UNIT Pulsar C5 as a live pinout: header pads a lesson uses are tagged with their role. */
-export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPosition, onHoverPosition, detailed = false, reference = false, adc = false }: BoardPinoutProps) {
+export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPosition, onHoverPosition, detailed = false, reference = false, adc = false, showRoleTags = true }: BoardPinoutProps) {
   const { t } = useTranslation();
   // Two drawings can share a page (the lesson card and a pinout), so their ids must differ.
   const id = useId();
@@ -95,8 +97,8 @@ export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPositio
   );
   // Only as much room on each side as that side's labels and role tags need, so the text stays legible.
   const margin = {
-    L: sideMargin("L", usage, detailed, adc),
-    R: sideMargin("R", usage, detailed, adc),
+    L: sideMargin("L", usage, detailed, adc, showRoleTags),
+    R: sideMargin("R", usage, detailed, adc, showRoleTags),
   };
   const height = detailed ? VBH + QWIIC_EXTRA : VBH;
 
@@ -174,7 +176,7 @@ export function BoardPinout({ pins, usb, boot, selectedPosition, onSelectPositio
                 <text x={fnX + FN_W / 2} y={y + 3} textAnchor="middle" className={channel !== null ? styles.adc : styles.fn}>{fn}</text>
               </g>
             ) : null}
-            {on ? (
+            {on && showRoleTags ? (
               <RoleTag left={left} y={y} labelEnd={labelEnd} uses={on} margin={margin[side]} />
             ) : null}
             <circle
@@ -206,8 +208,8 @@ const boxedSide = (side: PinSide, detailed: boolean, adc: boolean) =>
   );
 
 /** The room beside one edge of the board: its printed labels, boxes and the role tags on that side. */
-function sideMargin(side: PinSide, usage: ReadonlyMap<number, readonly PinUse[]>, detailed: boolean, adc: boolean) {
-  const tags = [...usage].filter(([at]) => pulsarRow(at).side === side).map(([, on]) => roleLabel(on));
+function sideMargin(side: PinSide, usage: ReadonlyMap<number, readonly PinUse[]>, detailed: boolean, adc: boolean, showRoleTags: boolean) {
+  const tags = showRoleTags ? [...usage].filter(([at]) => pulsarRow(at).side === side).map(([, on]) => roleLabel(on)) : [];
   return pinoutMargin(tags, boxedSide(side, detailed, adc) ? FN_OUT + FN_W : LABEL_REACH);
 }
 

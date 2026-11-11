@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { type ActiveLesson, resolveLesson, stepKey } from "./lesson";
+import { type ActiveLesson, followsCodePlatform, resolveLesson, stepKey } from "./lesson";
 
 const base: ActiveLesson = {
   kind: "lesson",
@@ -47,5 +47,14 @@ describe("resolveLesson", () => {
   it("keys ticks per variant, like the original guide", () => {
     expect(stepKey(resolveLesson(base, "button"), 1)).toBe("03b.button-1");
     expect(stepKey({ id: "R1" }, 0)).toBe("R1-0");
+  });
+});
+
+describe("followsCodePlatform", () => {
+  it("is true only when every variant is a programming language", () => {
+    expect(followsCodePlatform({ variants: [{ key: "arduino" }, { key: "micropython" }] })).toBe(true);
+    expect(followsCodePlatform({ variants: [{ key: "lan" }, { key: "remote" }] })).toBe(false);
+    expect(followsCodePlatform({ variants: [{ key: "arduino" }, { key: "boot" }] })).toBe(false);
+    expect(followsCodePlatform({})).toBe(false);
   });
 });

@@ -9,9 +9,12 @@ const LESSON_EXAMPLES: Readonly<Record<string, readonly string[]>> = {
   P4: ["i2c-scan", "mmc5603-compass", "max17048-battery", "fht40-temp-humidity", "lps22hb-pressure", "vcnl4040-light-prox"],
   P5: ["microsd"],
   P6: ["uart-loopback"],
-  D1: ["imu-bmi270"],
+  D1: ["imu-bmi270", "imu-bmi270-motion"],
   D2: ["oled-light"],
+  D3: ["tmp235-temperature"],
   O1: ["oled"],
+  O2: ["st7735-display"],
+  O3: ["st7735-showcase"],
   I1: ["wifi-thingspeak"],
   I2: ["ble-touch"],
 };

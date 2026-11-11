@@ -9,7 +9,7 @@ import {
 } from "react-router";
 import { trackLessonsQuery } from "@/content/queries";
 import { DEFAULT_LESSON_ID, findTrack, trackOfLesson } from "@/content/tracks";
-import { isActive, resolveLesson } from "@/domain/lesson";
+import { followsCodePlatform, isActive, resolveLesson } from "@/domain/lesson";
 import { lessonSections } from "@/domain/lesson-sections";
 import { entryLesson, stepsTicked } from "@/domain/progress";
 import { BoardSignalsProvider } from "@/features/board/board-signals";
@@ -62,7 +62,7 @@ export const lessonLoader =
         status: 404,
       });
     const requestedPlatform = new URL(request.url).searchParams.get("variant");
-    if ((trackId === "intro" || trackId === "pulsar" || lessonId === "D2" || lessonId === "O1") && isCodePlatform(requestedPlatform)
+    if (followsCodePlatform(lesson) && isCodePlatform(requestedPlatform)
       && progress.codePlatform.get() !== requestedPlatform) {
       progress.setCodePlatform(requestedPlatform);
     }
@@ -100,12 +100,13 @@ export function useRouteLesson() {
   const base = lessons.find((l) => l.id === lessonId);
   if (!base || !isActive(base)) throw new Error(`Lesson ${lessonId} vanished from the cache`);
   const requestedVariant = params.get("variant");
-  const lesson = resolveLesson(base, trackId === "intro" || trackId === "pulsar" || lessonId === "D2" || lessonId === "O1"
+  const sharedLanguage = followsCodePlatform(base);
+  const lesson = resolveLesson(base, sharedLanguage
     ? (isCodePlatform(requestedVariant) ? requestedVariant : codePlatform)
     : requestedVariant ?? variants[lessonId]);
 
   function chooseVariant(key: string) {
-    if ((trackId === "intro" || trackId === "pulsar" || lessonId === "D2" || lessonId === "O1") && isCodePlatform(key)) progress.setCodePlatform(key);
+    if (sharedLanguage && isCodePlatform(key)) progress.setCodePlatform(key);
     else progress.setVariant(lessonId, key);
     setParams(
       (p) => {

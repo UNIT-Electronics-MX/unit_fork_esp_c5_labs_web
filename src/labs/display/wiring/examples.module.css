@@ -1,0 +1,76 @@
+/* Wiring examples: the turned Pulsar C5 with an OLED over QWIIC or a card in its microSD slot. */
+.examples {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.stage {
+  background: var(--bg);
+  border-radius: var(--radius-m);
+  overflow-x: auto;
+}
+.stage svg {
+  display: block;
+  width: 100%;
+  min-width: 520px;
+  height: auto;
+  font-family: var(--font-mono);
+}
+
+/* The board */
+.board { fill: var(--pcb); stroke: var(--pcb-edge); stroke-width: 1.5; }
+.part { fill: var(--plastic); stroke: var(--pcb-edge); stroke-width: 0.8; }
+.metal { fill: var(--metal); stroke: var(--metal-dark); stroke-width: 0.8; }
+.slot { fill: var(--metal); stroke: var(--metal-dark); stroke-width: 0.8; }
+.hole { fill: var(--bg); }
+.chip { fill: var(--silk-dim); font-size: 6.5px; letter-spacing: 0.04em; }
+.qwiicPort { fill: var(--card-white); stroke: var(--line); }
+.qwiicText { fill: var(--pcb); font-size: 6.5px; font-weight: 700; }
+.pad { fill: var(--pad); }
+.padOn { fill: var(--copper); }
+.padMetal { fill: var(--pad); }
+.name { fill: var(--muted); font-size: 10px; font-weight: 600; }
+.nameOn { fill: var(--ink); font-size: 10px; font-weight: 700; }
+.gpio { fill: var(--muted); font-size: 8.5px; }
+.caption { fill: var(--muted); font-size: 10px; letter-spacing: 0.1em; }
+
+/* QWIIC cable, hub and OLED */
+.strand { fill: none; stroke-width: 4.5; stroke-linecap: round; }
+.strandShade { fill: none; stroke: var(--pcb); stroke-width: 6.5; stroke-linecap: round; opacity: 0.5; }
+.hub { fill: var(--pcb); stroke: var(--pcb-edge); stroke-width: 1.5; }
+.header { fill: var(--plastic); stroke: var(--pcb-edge); stroke-width: 0.8; }
+.socket { fill: var(--term-bg); }
+.jst { fill: var(--card-white); stroke: var(--line); }
+.silk { fill: var(--silk-dim); font-size: 7.5px; letter-spacing: 0.04em; }
+.hubName { fill: var(--silk); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; }
+.pin { fill: var(--metal); }
+.oled { fill: var(--part-blue); stroke: var(--pcb-edge); stroke-width: 1.5; }
+.oledPin { fill: var(--silk); font-size: 9.5px; font-weight: 600; }
+.oledName { fill: var(--silk); font-size: 9px; letter-spacing: 0.08em; }
+.screen { fill: var(--term-bg); stroke: var(--pcb-edge); }
+.screenText { fill: var(--term-info); font-size: 17px; font-weight: 700; letter-spacing: 0.04em; }
+
+/* Card, callouts and leads */
+.card { fill: var(--metal-dark); }
+.cardLabel { fill: var(--part-red); }
+.cardText { fill: var(--card-white); font-size: 8px; font-weight: 700; }
+.ring { fill: none; stroke: var(--copper); stroke-width: 1.8; }
+.lead { fill: none; stroke: var(--copper); stroke-width: 1.1; stroke-dasharray: 3 3; }
+.tag { fill: var(--copper); }
+.tagText { fill: var(--surface); font-size: 9.5px; font-weight: 700; }
+.callout { fill: var(--surface); stroke: var(--line); }
+.calloutTitle { fill: var(--muted); font-size: 10px; letter-spacing: 0.1em; }
+.calloutKey { fill: var(--ink); font-size: 11px; font-weight: 600; }
+.calloutValue { fill: var(--muted); font-size: 10px; }
+
+/* TEMT6000 and BMI270 modules, and D2's light graph */
+.tinySilk { fill: var(--silk-dim); font-size: 5.5px; letter-spacing: 0.03em; }
+.goldRing { fill: var(--pad); }
+.sensor { fill: var(--part-green); }
+.sensorDie { fill: var(--part-yellow); }
+.graph { fill: none; stroke: var(--term-info); stroke-width: 2.5; stroke-linejoin: round; }

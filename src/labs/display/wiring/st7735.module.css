@@ -1,0 +1,20 @@
+.wiring { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.count { margin-inline-start: auto; color: var(--muted); font-family: var(--font-mono); font-size: 12px; }
+.scrollHint { display: none; margin: 0; color: var(--muted); font-size: 12px; }
+.stage { background: var(--bg); border-radius: var(--radius-m); overflow-x: auto; }
+.stage svg { display: block; width: 100%; min-width: 660px; height: auto; font-family: var(--font-mono); }
+.heading { fill: var(--ink); font-size: 12px; font-weight: 700; }
+.wire { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.wire[data-active="true"] { stroke-width: 6; }
+.module { fill: var(--part-blue); stroke: var(--pcb-edge); stroke-width: 2; }
+.screen { fill: var(--term-bg); stroke: var(--pcb-edge); }
+.screenText { fill: var(--term-info); font-size: 17px; font-weight: 700; }
+.size { fill: var(--term-info); font-size: 11px; }
+.pad { fill: var(--pad); }
+.padOn { fill: var(--copper); }
+.pin, .pinOn { font-size: 11px; font-weight: 600; }
+.pin { fill: var(--silk-dim); }
+.pinOn { fill: var(--silk); }
+.orientation { fill: var(--muted); font-size: 10px; }
+@media (max-width: 600px) { .scrollHint { display: block; } }

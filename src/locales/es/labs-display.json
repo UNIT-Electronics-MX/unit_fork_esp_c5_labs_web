@@ -1,4 +1,26 @@
 {
+  "st7735": {
+    "controls": "Cables de la pantalla ST7735",
+    "aria": "Diagrama de los ocho cables entre la TFT ST7735 de 80 por 160 y la Pulsar C5",
+    "board": "PULSAR C5",
+    "display": "TFT ST7735 · 80 × 160",
+    "scrollHint": "Desliza el diagrama hacia la derecha para ver la pantalla.",
+    "wire": "Cable {{number}}: {{display}} → {{board}}",
+    "start": {
+      "title": "Desconecta el USB antes de cablear",
+      "text": "Pulsa Sig. para ver dónde va cada cable, o Ver todo para mostrar las conexiones juntas."
+    },
+    "notes": {
+      "GND": "Une las masas de la pantalla y de la placa.",
+      "VCC": "Alimenta la TFT desde 3V3; no uses 5 V.",
+      "SCL": "SCL es el reloj SPI de la pantalla. Conéctalo a D13 / GPIO27, no al SCL de QWIIC.",
+      "SDA": "SDA es la entrada SPI MOSI de la pantalla. Conéctala a D11 / GPIO7, no al SDA de QWIIC.",
+      "CS": "Selección de la pantalla: D4 / GPIO9. Así A1 / GPIO1 queda libre para SDA de QWIIC.",
+      "DC": "Selección entre datos y comandos: A2 / GPIO4.",
+      "RES": "Reinicio de la pantalla: A3 / GPIO5.",
+      "BLK": "Comparte 3V3 con VCC, por ejemplo con una protoboard, para encender la luz de fondo. Déjalo libre si tu módulo ya la conecta internamente."
+    }
+  },
   "press": {
     "label": "PULSAR",
     "aria": "Pulsar el botón dibujado"
@@ -209,6 +231,34 @@
     "button": {
       "aria": "Pulsador: clic para la escena siguiente, doble clic para la anterior, mantén para el ciclo automático",
       "caption": "Haz clic en BUTTON para la escena siguiente, doble clic para la anterior y mantén 0,6 s para activar o desactivar el ciclo automático, igual que tu pulsador. El panel de aquí usa números de ejemplo; tu placa muestra su temperatura, memoria y tiempos de fotograma reales."
+    }
+  },
+  "examples": {
+    "label": "Ejemplos de conexión",
+    "cable": "CABLE QWIIC · JST SH 4 PINES",
+    "oled": {
+      "tab": "OLED por QWIIC",
+      "aria": "La Pulsar C5 girada con el USB-C abajo. Un cable QWIIC va de su puerto QWIIC al hub QWIIC Bus de UNIT, y la OLED SSD1306 se conecta al hub: SDA en GPIO1, SCL en GPIO6, 3,3 V y tierra. A1 y A6 del conector llevan los mismos SDA y SCL.",
+      "title": "Conectar y listo: un cable lleva todo",
+      "text": "El cable QWIIC lleva 3,3 V, tierra y el par I²C (SDA en GPIO1, SCL en GPIO6) hasta el hub, y la OLED responde en 0x3C. A1 y A6 del conector son las mismas dos líneas, por si conectas con cables sueltos."
+    },
+    "sd": {
+      "tab": "microSD por SPI",
+      "aria": "La Pulsar C5 girada con el USB-C abajo y una tarjeta en su ranura microSD. La ranura usa cuatro pines del conector: CS en D5 (GPIO23), MOSI en D11 (GPIO7), MISO en D12 (GPIO26) y SCK en D13 (GPIO27).",
+      "title": "Ya está cableada en la placa",
+      "text": "La ranura está conectada a estos cuatro pines por debajo de la placa: no hay nada que cablear. Mientras uses una tarjeta, deja libres D5, D11, D12 y D13, porque lo que conectes ahí comparte las líneas SPI de la tarjeta."
+    },
+    "imu": {
+      "tab": "IMU por QWIIC",
+      "aria": "La Pulsar C5 girada con el USB-C abajo. Un cable QWIIC sale de su puerto QWIIC, rodea por la izquierda y sube al conector QWIIC de la parte inferior de la placa BMI270: SDA en GPIO1, SCL en GPIO6, 3,3 V y tierra. Los pines del borde son ASDx, ASCx, INT1, INT2, OCSB y OSDO a la izquierda, y GND, VCC, SDA, SCL, SDO y CS a la derecha.",
+      "title": "Un cable, sin soldar",
+      "text": "El cable QWIIC se conecta directo a la placa BMI270, que responde en 0x68 (0x69 si su pin SDO está a nivel alto). Los pines del borde son para SPI, interrupciones y un sensor extra: D1 no usa ninguno."
+    },
+    "light": {
+      "tab": "OLED y luz",
+      "aria": "La Pulsar C5 girada con el USB-C abajo. Un cable QWIIC va al hub QWIIC Bus de UNIT. La OLED SSD1306 se conecta a los pines del hub y muestra una gráfica de luz, y un cable QWIIC corto va del otro puerto del hub a la placa TEMT6000 de DevLab.",
+      "title": "Dos piezas, un bus",
+      "text": "La TFT puede permanecer conectada con CS en D4/GPIO9. Si tu montaje anterior tiene CS en A1/GPIO1, desconecta el USB y mueve solo ese cable a D4. QWIIC usa GPIO1 para SDA y GPIO6 para SCL; la OLED responde en 0x3C y el TEMT6000 DDP en 0x20."
     }
   }
 }

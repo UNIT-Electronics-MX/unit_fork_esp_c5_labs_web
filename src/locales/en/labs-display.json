@@ -1,4 +1,26 @@
 {
+  "st7735": {
+    "controls": "ST7735 display wires",
+    "aria": "Diagram of eight wires between the 80 by 160 ST7735 TFT and the Pulsar C5",
+    "board": "PULSAR C5",
+    "display": "ST7735 TFT · 80 × 160",
+    "scrollHint": "Swipe the diagram to the right to see the display.",
+    "wire": "Wire {{number}}: {{display}} → {{board}}",
+    "start": {
+      "title": "Unplug USB before wiring",
+      "text": "Press Next to see each connection, or Show all to display them together."
+    },
+    "notes": {
+      "GND": "Connect the screen and board grounds.",
+      "VCC": "Power the TFT from 3V3; do not use 5 V.",
+      "SCL": "SCL is the screen's SPI clock. Connect it to D13 / GPIO27, not QWIIC SCL.",
+      "SDA": "SDA is the screen's SPI MOSI input. Connect it to D11 / GPIO7, not QWIIC SDA.",
+      "CS": "Display chip select: D4 / GPIO9. This leaves A1 / GPIO1 free for QWIIC SDA.",
+      "DC": "Data or command select: A2 / GPIO4.",
+      "RES": "Display reset: A3 / GPIO5.",
+      "BLK": "Share the 3V3 rail with VCC, for example on a breadboard, to power the backlight. Leave BLK open if your module already connects it internally."
+    }
+  },
   "press": {
     "label": "PRESS",
     "aria": "Press the drawn button"
@@ -206,6 +228,34 @@
     "button": {
       "aria": "Push button: click for next scene, double-click for previous, hold for auto-cycle",
       "caption": "Click BUTTON for the next scene, double-click for the previous one, hold 0.6 s to toggle auto-cycle, just like your push button. The dashboard here uses placeholder numbers; your board shows its real temperature, memory and frame times."
+    }
+  },
+  "examples": {
+    "label": "Wiring examples",
+    "cable": "QWIIC CABLE · JST SH 4-PIN",
+    "oled": {
+      "tab": "OLED over QWIIC",
+      "aria": "The Pulsar C5 turned with USB-C down. A QWIIC cable runs from its QWIIC port to the UNIT QWIIC Bus hub, and the SSD1306 OLED plugs into the hub: SDA on GPIO1, SCL on GPIO6, 3.3 V and ground. A1 and A6 on the header carry the same SDA and SCL.",
+      "title": "Plug and play: one cable carries everything",
+      "text": "The QWIIC cable brings 3.3 V, ground and the I²C pair (SDA on GPIO1, SCL on GPIO6) to the hub, and the OLED answers at 0x3C. A1 and A6 on the header are the same two lines, if you wire with jumpers instead."
+    },
+    "sd": {
+      "tab": "microSD over SPI",
+      "aria": "The Pulsar C5 turned with USB-C down and a card in its microSD slot. The slot uses four header pads: CS on D5 (GPIO23), MOSI on D11 (GPIO7), MISO on D12 (GPIO26) and SCK on D13 (GPIO27).",
+      "title": "Already wired on the board",
+      "text": "The slot is connected to these four pads under the board: there is nothing to wire. While a card is in use, keep D5, D11, D12 and D13 free, because anything you connect to them shares the card's SPI lines."
+    },
+    "imu": {
+      "tab": "IMU over QWIIC",
+      "aria": "The Pulsar C5 turned with USB-C down. A QWIIC cable runs from its QWIIC port, round the left and up into the QWIIC connector at the bottom of the BMI270 breakout: SDA on GPIO1, SCL on GPIO6, 3.3 V and ground. The breakout's edge pads are ASDx, ASCx, INT1, INT2, OCSB and OSDO on the left, GND, VCC, SDA, SCL, SDO and CS on the right.",
+      "title": "One cable, no soldering",
+      "text": "The QWIIC cable plugs straight into the BMI270 breakout, which answers at 0x68 (0x69 if its SDO pad is tied high). Its edge pads are for SPI, interrupts and an extra sensor: D1 needs none of them."
+    },
+    "light": {
+      "tab": "OLED and light",
+      "aria": "The Pulsar C5 turned with USB-C down. A QWIIC cable runs to the UNIT QWIIC Bus hub. The SSD1306 OLED plugs into the hub's pins and shows a light graph, and a short QWIIC cable from the hub's other port goes to the DevLab TEMT6000 light sensor board.",
+      "title": "Two parts, one bus",
+      "text": "The TFT can stay connected with CS on D4/GPIO9. If your older hookup has CS on A1/GPIO1, unplug USB and move that one wire to D4. QWIIC then uses GPIO1 for SDA and GPIO6 for SCL; the OLED answers at 0x3C and the TEMT6000 DDP at 0x20."
     }
   }
 }

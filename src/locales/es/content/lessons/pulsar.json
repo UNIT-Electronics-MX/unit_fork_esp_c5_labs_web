@@ -257,6 +257,11 @@
         ],
         "note": "Este ejemplo MicroPython importa <code>sdcard.py</code> de la memoria de la placa. Instálalo una vez desde el workspace de código antes de ejecutar. GPIO27 se comparte con el LED de usuario, que puede parpadear al acceder a la tarjeta."
       }
+    },
+    "panels": {
+      "0": {
+        "title": "Cómo se cablea la microSD"
+      }
     }
   },
   "P6": {

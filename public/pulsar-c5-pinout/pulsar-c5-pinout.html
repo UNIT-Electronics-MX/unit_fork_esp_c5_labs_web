@@ -81,7 +81,7 @@ pre{margin:0;background:var(--chip);border:1px solid var(--line);border-radius:7
       </div>
       <div id="pinout"></div>
       <ul class="legend" id="legend"></ul>
-      <div class="detail" id="detail" aria-live="polite"><span class="k">Ejemplo: pantalla ST7789 por SPI. Toca o pasa el cursor por un pin.</span></div>
+      <div class="detail" id="detail" aria-live="polite"><span class="k">Ejemplo: pantalla ST7735 de 80×160 por SPI. Toca o pasa el cursor por un pin.</span></div>
     </div>
 
     <div class="side">
@@ -381,7 +381,7 @@ pre{margin:0;background:var(--chip);border:1px solid var(--line);border-radius:7
 <script>
 (function(){
   const P = PulsarPinout;
-  const LESSON = { '3V3':'VCC', GND1:'GND', D13:'SCL', D11:'SDA', D5:'RES', D4:'DC', D10:'CS', D6:'BLK' };
+  const LESSON = { '3V3':'VCC / BLK', GND1:'GND', D13:'SCL / SCK', D11:'SDA / MOSI', A1:'CS', A2:'DC', A3:'RES' };
   const host = document.getElementById('pinout');
   let mode = 'lesson';
   const all = [...P.LEFT, ...P.RIGHT];

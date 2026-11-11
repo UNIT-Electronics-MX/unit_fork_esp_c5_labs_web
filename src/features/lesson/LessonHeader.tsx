@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { lessonPart } from "@/content/icons";
-import type { ResolvedLesson } from "@/domain/lesson";
+import { followsCodePlatform, type ResolvedLesson } from "@/domain/lesson";
 import type { LessonState } from "@/domain/progress";
 import { StateBadge } from "@/features/progress/LessonState";
 import { goToSection } from "@/lib/active-section";
@@ -71,7 +71,7 @@ export function LessonHeader({
         <StateBadge state={state} />
       </div>
 
-      {lesson.variants && lesson.track !== "intro" && lesson.track !== "pulsar" ? (
+      {lesson.variants && !followsCodePlatform(lesson) ? (
         <VariantSwitch
           variants={lesson.variants}
           current={lesson.variantKey}

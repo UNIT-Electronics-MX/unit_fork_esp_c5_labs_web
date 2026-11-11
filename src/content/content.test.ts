@@ -9,8 +9,8 @@ import { pulsarPosition, pulsarSide } from "@/domain/pulsar";
 import { LESSON_PART } from "./icons";
 import { LESSON_KIT } from "./kit";
 import { trackLessonsQuery } from "./queries";
-import { boardOfLesson, TRACKS } from "./tracks";
-import { isActive, resolveLesson } from "@/domain/lesson";
+import { boardOfLesson, LANGUAGE_LESSON_IDS, TRACKS } from "./tracks";
+import { followsCodePlatform, isActive, resolveLesson } from "@/domain/lesson";
 
 describe("content", () => {
   it.each(TRACKS.filter((t) => !t.planned))(
@@ -37,6 +37,14 @@ describe("content", () => {
     const open = lessons.flat().filter((l) => l.kind === "lesson").map((l) => l.id);
     expect(open.filter((id) => !LESSON_KIT[id])).toEqual([]);
     expect(Object.keys(LESSON_KIT).filter((id) => !open.includes(id))).toEqual([]);
+  });
+
+  it("lists exactly the lessons that follow the top bar's Arduino/MicroPython choice", async () => {
+    const lessons = await Promise.all(
+      TRACKS.filter((t) => !t.planned).map((t) => trackLessonsQuery(t.id, "en").queryFn!({} as never)),
+    );
+    const following = lessons.flat().filter((l) => isActive(l) && followsCodePlatform(l)).map((l) => l.id);
+    expect(following.sort()).toEqual([...LANGUAGE_LESSON_IDS].sort());
   });
 
   it("has no widget id registered by two tracks", () => {
@@ -69,6 +77,8 @@ describe("content", () => {
     expect(boardOfLesson("01")).toBe("pulsar-c5");
     expect(boardOfLesson("02")).toBe("pulsar-c5");
     expect(boardOfLesson("P4")).toBe("pulsar-c5");
+    expect(boardOfLesson("O2")).toBe("pulsar-c5");
+    expect(boardOfLesson("O3")).toBe("pulsar-c5");
     expect(boardOfLesson("I1")).toBe("pulsar-c5");
     expect(boardOfLesson("I2")).toBe("pulsar-c5");
     expect(boardOfLesson("W1")).toBe("devkitc-s3");

@@ -1,5 +1,7 @@
 .editor { display: grid; gap: 10px; min-width: 0; }
 .editor p { margin: 0; }
+.draftWarning { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 9px 12px; border: 1px solid var(--copper); border-radius: var(--radius-m); color: var(--ink); background: var(--bg); font-size: 12px; }
+.draftWarning button { padding: 5px 8px; border: 1px solid var(--copper); border-radius: 5px; color: var(--ink); background: var(--surface); cursor: pointer; font: 700 12px var(--font-display); }
 .introduction { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
 .introduction h2 { margin: 2px 0 3px; font: 750 clamp(18px, 2vw, 22px)/1.2 var(--font-display); }
 .introduction p:not(.eyebrow) { color: var(--muted); font-size: 13px; line-height: 1.45; }

@@ -38,19 +38,26 @@ export const sensorsLessons = [
     variants: [
       { key: "arduino", label: "Arduino", short: "Wire scan and chip ID sketch" },
       {
-        key: "micropython", label: "MicroPython", short: "QWIIC scan and chip ID script",
-        goal: "Plug a BMI270 motion sensor into the QWIIC connector, scan the bus from MicroPython and read its chip ID register to prove it is the part you think it is.",
-        learn: ["QWIIC connector", "machine.I2C", "readfrom_mem()", "chip ID checks"],
+        key: "micropython", label: "MicroPython", short: "QWIIC ID check and motion readings",
+        goal: "Identify a BMI270 on QWIIC, then use its driver to read acceleration and angular velocity with MicroPython.",
+        learn: ["QWIIC connector", "machine.I2C", "readfrom_mem()", "acceleration and gyroscope"],
         cmd: "",
         steps: [
           "Unplug USB and connect the BMI270 with a QWIIC cable, or with jumpers to the header pins in the table.",
           "Reconnect USB, open <b>Code</b>, connect the serial REPL and run <code>bmi270_id.py</code>.",
           "The terminal prints <code>found 0x68</code> (or <code>0x69</code>), then <code>chip ID 0x24 (BMI270)</code>.",
+          "Install <code>bmi270.py</code> from the code workspace, select <code>bmi270_motion.py</code> and run it. Move the sensor to change the acceleration and gyroscope readings.",
         ],
-        note: "No driver to install: <code>readfrom_mem()</code> sends the register number and reads it back with a repeated start, the same transfer as the Arduino sketch. The QWIIC connector has no pull-ups on the Pulsar C5, so the sensor board must carry them.",
+        note: "The ID check uses <code>readfrom_mem()</code> directly; only the motion example needs <code>bmi270.py</code>. The QWIIC connector has no pull-ups on the Pulsar C5, so the sensor board must carry them.",
       },
     ],
-    panels: [],
+    panels: [
+      {
+        title: "How the sensor is wired",
+        widget: "wiringExamples",
+        view: 2,
+      },
+    ],
   },
   {
     kind: "lesson",
@@ -74,11 +81,11 @@ export const sensorsLessons = [
     },
     steps: [
       "Install <code>Adafruit SSD1306</code>, <code>Adafruit GFX Library</code> and <code>DevLabDDP</code> from the Library Manager.",
-      "Unplug USB and wire both boards in parallel, or chain them with QWIIC cables.",
+      "Unplug USB and move any older ST7735 CS wire from A1/GPIO1 to D4/GPIO9. Then connect the OLED and TEMT6000 DDP in parallel or chain them with QWIIC cables; the TFT may remain connected.",
       "Run the command. The monitor confirms a TEMT6000 with ID <code>0x0102</code> at <code>0x20</code>.",
       "Cover the sensor, then shine a light on it: the graph drops and climbs.",
     ],
-    note: "The reading is a relative 12-bit level, not lux: calibrate against a light meter before quoting units.",
+    note: "The TFT uses SPI on GPIO27/GPIO7 with CS on D4/GPIO9. The OLED and TEMT6000 DDP use I²C SDA on GPIO1 and SCL on GPIO6, so both buses can stay wired. An older TFT hookup with CS on A1/GPIO1 must be moved to D4 before using QWIIC. The reading is a relative 12-bit level, not lux.",
     variants: [
       { key: "arduino", label: "Arduino", short: "SSD1306 and DevLabDDP sketch" },
       {
@@ -87,15 +94,21 @@ export const sensorsLessons = [
         learn: ["shared I²C bus", "DDP commands", "frame buffers", "ring buffers", "steady sampling"],
         cmd: "",
         steps: [
-          "Unplug USB and connect the OLED and TEMT6000 DDP to the QWIIC bus. Use 3V3 and GND as shown.",
+          "Stop the TFT script and unplug USB. Move its CS wire from A1/GPIO1 to D4/GPIO9 if it uses the older hookup; the TFT can stay connected. Then connect the OLED and TEMT6000 DDP to QWIIC with 3V3 and GND as shown.",
           "Open <b>Code</b>, connect the serial REPL and select <b>Install ssd1306.py</b>. This saves the display driver on the board.",
           "Run <code>oled_light.py</code>. The terminal identifies the TEMT6000 as <code>0x0102</code>, and the OLED draws its readings.",
           "Cover the sensor, then shine a light on it. The graph should change; press <b>Stop</b> when finished.",
         ],
-        note: "This D2 graph needs a TEMT6000 DDP sensor. To turn on the OLED alone, use Display lesson O1. The sensor reports a relative 12-bit value, not lux. Install <code>ssd1306.py</code> once from the code workspace before running.",
+        note: "This D2 graph needs the I²C TEMT6000 DDP sensor at 0x20; an analog-only TEMT6000 with SIG/OUT will not appear in an I²C scan. The OLED should appear at 0x3C. To turn on the OLED alone, use O1. The sensor reports a relative 12-bit value, not lux. Install <code>ssd1306.py</code> once from the code workspace before running.",
       },
     ],
-    panels: [],
+    panels: [
+      {
+        title: "How the screen is wired",
+        widget: "wiringExamples",
+        view: 3,
+      },
+    ],
   },
   {
     kind: "lesson",
@@ -119,12 +132,28 @@ export const sensorsLessons = [
         ["GND", "TMP235 GND", ""],
       ],
     },
+    adcMap: true,
     steps: [
       "Unplug USB and wire the sensor as in the table.",
       "Run the command and open the Serial Plotter.",
       "Pinch the sensor: the raw line jumps, the filtered line follows smoothly.",
     ],
     note: "TMP235: Vout = 500 mV + 10 mV/°C, so 750 mV is 25 °C. <code>analogReadMilliVolts()</code> already applies the chip's factory ADC calibration.",
+    variants: [
+      { key: "arduino", label: "Arduino", short: "Calibrated ADC and filter sketch" },
+      {
+        key: "micropython", label: "MicroPython", short: "Calibrated ADC and filter script",
+        goal: "Read a TMP235 analog temperature sensor on A2 with MicroPython, convert millivolts to °C and smooth the result with a simple filter.",
+        learn: ["sensor transfer functions", "read_uv()", "exponential filter", "noise"],
+        cmd: "",
+        steps: [
+          "Unplug USB and wire the sensor as in the table.",
+          "Reconnect USB, open <b>Code</b>, connect the serial REPL and run <code>tmp235_temperature.py</code>.",
+          "Pinch the sensor: the raw column jumps, the filtered column follows smoothly. Press <b>Stop</b> when finished.",
+        ],
+        note: "TMP235: Vout = 500 mV + 10 mV/°C, so 750 mV is 25 °C. <code>read_uv()</code> applies the chip's factory ADC calibration, like <code>analogReadMilliVolts()</code> in Arduino.",
+      },
+    ],
     panels: [],
   },
 ] as const satisfies readonly LessonEntry[];

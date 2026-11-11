@@ -79,245 +79,154 @@
         ],
         "note": "No light sensor is needed. This example expects a 128 × 64 SSD1306 at 0x3C. If you have a 128 × 32 display, set HEIGHT to 32 in oled.py."
       }
+    },
+    "panels": {
+      "0": {
+        "title": "How the screen is wired"
+      }
     }
   },
-  "03": {
-    "title": "Display",
-    "heading": "The 1.9″ IPS screen",
-    "goal": "Drive the ST7789 display over SPI. Draw each frame in PSRAM, then send it in one go so nothing flickers.",
+  "O2": {
+    "title": "ST7735 TFT",
+    "heading": "Draw on the 80×160 TFT",
+    "goal": "Connect the ST7735 to the Pulsar C5 and draw colour bars, text and shapes with MicroPython.",
     "learn": [
-      "SPI bus",
+      "SPI clock and data",
       "RGB565 colour",
       "frame buffer",
-      "PSRAM"
+      "TFT pin labels"
     ],
     "pins": {
       "0": {
         "role": "VCC"
       },
       "1": {
-        "role": "BLK"
+        "role": "SCL / SCK"
       },
       "2": {
-        "role": "RES"
+        "role": "CS"
       },
       "3": {
         "role": "DC"
       },
       "4": {
-        "role": "CS"
+        "role": "RES"
       },
       "5": {
-        "role": "SDA"
+        "role": "GND"
       },
       "6": {
-        "role": "SCL"
-      },
-      "7": {
-        "role": "GND"
+        "role": "SDA / MOSI"
       }
     },
     "wiring": {
       "head": [
-        "Display pin",
-        "ESP32-S3",
-        "Role"
+        "ST7735 TFT",
+        "Pulsar C5",
+        "Purpose"
       ],
       "rows": [
         [
-          "GND",
-          "GND",
-          "ground (bottom-left pin)"
-        ],
-        [
           "VCC",
           "3V3",
-          "power (top-left pin)"
+          "3.3 V power"
+        ],
+        [
+          "GND",
+          "GND",
+          "common ground"
         ],
         [
           "SCL",
-          "GPIO 12",
-          "SPI clock"
+          "D13 / GPIO27",
+          "SPI clock, not I²C SCL"
         ],
         [
           "SDA",
-          "GPIO 11",
-          "SPI data (MOSI)"
-        ],
-        [
-          "RES",
-          "GPIO 8",
-          "reset"
-        ],
-        [
-          "DC",
-          "GPIO 9",
-          "data / command"
+          "D11 / GPIO7",
+          "SPI data (MOSI), not I²C SDA"
         ],
         [
           "CS",
-          "GPIO 10",
-          "chip select"
+          "D4 / GPIO9",
+          "chip select; leaves QWIIC SDA free"
+        ],
+        [
+          "DC",
+          "A2 / GPIO4",
+          "data or command"
+        ],
+        [
+          "RES",
+          "A3 / GPIO5",
+          "display reset"
         ],
         [
           "BLK",
-          "GPIO 7",
-          "backlight"
+          "3V3",
+          "backlight always on; leave open if your module already connects it"
         ]
       ]
     },
     "panels": {
       "0": {
-        "title": "How the screen is wired"
+        "title": "Connect the ST7735 wires"
       }
     },
     "steps": [
-      "Unplug USB. Wire the 8 display pins as in the table (female-to-male jumpers).",
-      "Double-check VCC goes to <b>3V3</b>, not 5V.",
-      "Run the command. You should see red, green and blue bars for 2.5 s.",
-      "Then the bench scope: a moving sine wave, uptime and frames per second.",
-      "Tell Claude the fps from the monitor and anything that looks off."
+      "Unplug USB and wire the 80×160 ST7735 TFT as shown. Its SDA/SCL labels are SPI, not QWIIC.",
+      "Open <b>Code</b> and connect the MicroPython REPL. Install <code>st7735.py</code> only if the board does not already have it.",
+      "Run <code>st7735_display.py</code>. Look for red, green and blue screens, then text and shapes."
     ],
-    "note": "All white or black? Check BLK and RES. Colours inverted? We switch invertDisplay. Garbage? Drop SPI to 20 MHz."
+    "note": "CS uses D4/GPIO9 so A1/GPIO1 stays free for QWIIC SDA. Move any older TFT CS wire from A1 to D4 with USB unplugged. This example uses the green-tab 80×160 ST7735 with column offset 26 and row offset 1; the onboard microSD is kept deselected on GPIO23. If your module differs, adjust xoffset/yoffset in the example."
   },
-  "03b": {
-    "title": "Showcase",
-    "heading": "Push the screen further",
-    "variants": {
-      "boot": {
-        "label": "Variation 1 · BOOT button",
-        "short": "nothing to wire",
-        "goal": "Same wiring as lesson 03. Four scenes show what the S3 can draw: real-time 3D, per-pixel effects, particles and a live dashboard of your chip. The on-board BOOT button switches scenes.",
-        "learn": [
-          "3D projection",
-          "lookup tables",
-          "particle systems",
-          "internal RAM vs PSRAM",
-          "measuring"
-        ],
-        "pins": {
-          "0": {
-            "role": "VCC"
-          },
-          "1": {
-            "role": "BLK"
-          },
-          "2": {
-            "role": "RES"
-          },
-          "3": {
-            "role": "DC"
-          },
-          "4": {
-            "role": "CS"
-          },
-          "5": {
-            "role": "SDA"
-          },
-          "6": {
-            "role": "SCL"
-          },
-          "7": {
-            "role": "GND"
-          },
-          "8": {
-            "role": "BOOT"
-          }
-        },
-        "steps": [
-          "Keep the display wired exactly as in lesson 03. Nothing new to plug in.",
-          "Flash with the command above (or tell Claude “go” and it runs it for you).",
-          "Watch the 3D torus, then press <b>BOOT</b> to step through Plasma, Fireworks and the Dashboard.",
-          "Long-press BOOT (0.6 s) to stop or restart the 12-second auto-cycle.",
-          "Open <code>uv run pio device monitor</code> and type <code>scene 2</code>, <code>hud</code>, <code>auto off</code>.",
-          "Note fps, draw ms and send ms for each scene and tell Claude. They feed the speed lesson."
-        ],
-        "note": "BOOT only matters at power-on. Don't hold it while pressing RST or plugging in, or the chip waits in flash mode. If that happens, just press RST."
+  "O3": {
+    "title": "TFT showcase",
+    "heading": "Animate the ST7735 screen",
+    "goal": "Use the same ST7735 wiring to show four animated MicroPython scenes, changing them with the on-board BOOT button.",
+    "learn": [
+      "animated drawing",
+      "SPI refresh",
+      "button input",
+      "debouncing"
+    ],
+    "pins": {
+      "0": {
+        "role": "VCC"
       },
-      "button": {
-        "label": "Variation 2 · Push button",
-        "short": "2 extra wires on GPIO 5",
-        "goal": "The same four scenes, now driven by your own push button on GPIO 5: click, double-click, long press. The screen is an output on 8 wires; the button is an input on 2. This variation shows both together.",
-        "learn": [
-          "inputs vs outputs",
-          "pull-up resistors",
-          "interrupts",
-          "debouncing",
-          "gestures"
-        ],
-        "pins": {
-          "0": {
-            "role": "VCC"
-          },
-          "1": {
-            "role": "BLK"
-          },
-          "2": {
-            "role": "RES"
-          },
-          "3": {
-            "role": "DC"
-          },
-          "4": {
-            "role": "CS"
-          },
-          "5": {
-            "role": "SDA"
-          },
-          "6": {
-            "role": "SCL"
-          },
-          "7": {
-            "role": "GND"
-          },
-          "8": {
-            "role": "BTN"
-          },
-          "9": {
-            "role": "BOOT"
-          }
-        },
-        "wiring": {
-          "title": "Button wiring (the 2 new wires)",
-          "head": [
-            "From",
-            "To",
-            "Where"
-          ],
-          "rows": [
-            [
-              "button leg A (any corner)",
-              "GPIO 5",
-              "expansion board: the socket labelled 5 (4 and 5 sit side by side, check the label). Board in a breadboard: a free hole in the pin 5 row"
-            ],
-            [
-              "button leg D (diagonal to A)",
-              "GND",
-              "any GND socket or terminal"
-            ]
-          ]
-        },
-        "panels": {
-          "0": {
-            "title": "Wiring on the ESP32: screen + button"
-          },
-          "1": {
-            "title": "Screen vs button"
-          },
-          "2": {
-            "title": "How the button is wired"
-          }
-        },
-        "steps": [
-          "Unplug USB. Keep the display wired exactly as in lesson 03.",
-          "Push the button into the breadboard so it straddles the centre gap, away from the board.",
-          "Jumper from leg A to the ESP32's <b>pin 5</b>. On an expansion board that is the socket labelled 5, two past the display's BLK wire on 7. Jumper from the <b>diagonal</b> leg D to any <b>GND</b>. Breadboard holes are not connected to the ESP32, so both wires must end on the ESP32's own sockets.",
-          "Plug in and flash with the command above (or tell Claude “go”).",
-          "Press the button: <b>click</b> = next scene, <b>double-click</b> = previous, <b>long press</b> = auto-cycle on/off. BOOT does the same.",
-          "Open <code>uv run pio device monitor</code>: every click logs how many contact bounces it filtered."
-        ],
-        "note": "Never reacts? Check the signal wire really ends on 5, not its neighbour 4, and that both wires end on the ESP32, not on breadboard holes. Always “pressed”? Use diagonally opposite legs."
+      "1": {
+        "role": "SCL / SCK"
+      },
+      "2": {
+        "role": "CS"
+      },
+      "3": {
+        "role": "DC"
+      },
+      "4": {
+        "role": "RES"
+      },
+      "5": {
+        "role": "GND"
+      },
+      "6": {
+        "role": "BOOT"
+      },
+      "7": {
+        "role": "SDA / MOSI"
       }
-    }
+    },
+    "panels": {
+      "0": {
+        "title": "Check the ST7735 wiring"
+      }
+    },
+    "steps": [
+      "Keep the ST7735 wired exactly as in O2, with CS on D4/GPIO9. No extra wires are needed.",
+      "Open <b>Code</b>, install <code>st7735.py</code> if needed, then run <code>st7735_showcase.py</code>.",
+      "Press BOOT to switch between Bars, Orbit, Waves and System. Watch the scene name in the serial terminal.",
+      "Press <b>Stop</b> in the editor when you want to return to the REPL."
+    ],
+    "note": "Press BOOT after startup; holding it during reset enters download mode. The animation uses the TFT's own SPI pins and the on-board button on GPIO28."
   }
 }
