@@ -28,6 +28,14 @@ const LESSON_EXAMPLES: Readonly<Record<string, readonly string[]>> = {
   B6: ["ble-b6-keyboard"],
   B7: ["ble-b7-midi"],
   B8: ["ble-b8-host"],
+  R1: ["rfid-r1-pn532"],
+  R2: ["rfid-r2-pn532"],
+  R3: ["rfid-r3-pn532"],
+  R4: ["rfid-r4-pn532"],
+  R5: ["rfid-r5-pn532"],
+  R6: ["rfid-r6-pn532"],
+  R7: ["rfid-r7-pn532"],
+  R8: ["rfid-r8-pn532"],
 };
 
 export const lessonExamples = (lessonId: string): readonly string[] => LESSON_EXAMPLES[lessonId] ?? [];

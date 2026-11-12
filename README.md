@@ -88,12 +88,12 @@ The guide is in English, French, Spanish, Italian, German, Polish, Turkish, Chin
 | **Intro**         | 00 Setup · 01 Hello · 02 First circuit                                                     | The toolchain, your first program, an LED you command   |
 | **Display & input** | 03 Display · 03b Showcase                                                                | The 1.9″ TFT and the buttons                            |
 | **Wi-Fi**         | W1 Scan & join · W2 Phone control · W3 Internet & AI · *W4, W5 planned* · I1 C5 cloud     | Scanning, web pages, APIs and C5 sensor readings        |
-| **RFID & NFC**    | R1 Wire & talk → R8 Card friends                                                           | The 13.56 MHz field, card memory, a door with card admin |
+| **RFID & NFC**    | R1 Wire PN532 → R8 Card friends                                                             | PN532 V3 over I²C, tag memory, a simulated door and friends |
 | **Bluetooth LE**  | B1 Listen → B8 Host · I2 C5 touch                                                         | Advertising, pairing, a phone app and C5 touch events  |
 | **Sound**         | S1 Hear → S8 Voice FX                                                                      | Loudness, clap control, a recorder, a spectrum, a speaker |
 | **Sensors**       | *planned*                                                                                  | Temperature, air and motion over I2C                    |
 
-The S3 labs use standalone PlatformIO projects in [esp-labs](https://github.com/agharsallah/esp-labs). The Pulsar C5 examples I1 and I2 use the Arduino sketches in [`sketches/pulsar-c5`](sketches/pulsar-c5), with MicroPython versions in the Code tab. Wi-Fi W1–W3 and Bluetooth LE B1–B8 also have a MicroPython variant that runs on the Pulsar C5: pick MicroPython in the lesson (W2: its third variant), then click **Install wifi_kit.py** or **Install ble_kit.py** once in the code view.
+The older S3 labs use standalone PlatformIO projects in [esp-labs](https://github.com/UNIT-Electronics-MX/unit_fork_esp_labs_c5). The Pulsar C5 examples I1 and I2 use the Arduino sketches in [`sketches/pulsar-c5`](sketches/pulsar-c5), with MicroPython versions in the Code tab. Wi-Fi W1–W3 and Bluetooth LE B1–B8 also have a MicroPython variant on the Pulsar C5. RFID R1–R8 now use PN532 V3 over I²C with MicroPython on the C5: the Code tab reads the scripts and installable `pn532.py` directly from `esp-labs/examples/micropython/pulsar-c5/`.
 
 ## Quick start
 

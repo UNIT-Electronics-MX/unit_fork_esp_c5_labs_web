@@ -6,6 +6,8 @@ import { writtenStops } from "@/domain/code/tour";
 import { isActive, type LessonEntry } from "@/domain/lesson";
 import { envOfCommand } from "@/features/code/queries";
 import { collectFirmware } from "../../../tools/firmware/collect";
+import { collectMicroPython } from "../../../tools/firmware/micropython";
+import { lessonExamples } from "@/features/flasher/lesson-examples";
 import { bleLessons } from "../lessons/ble";
 import { displayLessons } from "../lessons/display";
 import { introLessons } from "../lessons/intro";
@@ -22,6 +24,18 @@ const firmware = collectFirmware(resolve(process.cwd(), firmwareDir));
 const byEnv = new Map(firmware.map((e) => [e.env, e]));
 
 describe("code content", () => {
+  it("loads all PN532 lessons and their driver from esp-labs", () => {
+    const examples = collectMicroPython(resolve(process.cwd(), firmwareDir));
+    expect(examples).not.toBeNull();
+    const reader = examples?.libraries.find((library) => library.id === "pn532");
+    expect(reader?.file).toBe("pn532.py");
+    for (let n = 1; n <= 8; n++) {
+      const id = `rfid-r${n}-pn532`;
+      expect(lessonExamples(`R${n}`)).toEqual([id]);
+      expect(examples?.examples.find((example) => example.id === id)?.code).toContain("pn532");
+      expect(reader?.examples).toContain(id);
+    }
+  });
   it("finds the firmware of every lesson and variant that has a command", () => {
     const tracks: readonly (readonly LessonEntry[])[] = [
       introLessons,
@@ -37,7 +51,7 @@ describe("code content", () => {
       ...(l.variants ?? []).map((v) => v.cmd ?? ""),
     ]);
     const envs = commands.map(envOfCommand).filter((e): e is string => !!e);
-    expect(envs.length).toBeGreaterThan(25);
+    expect(envs.length).toBeGreaterThan(15);
     expect(envs.filter((e) => !byEnv.has(e))).toEqual([]);
   });
 

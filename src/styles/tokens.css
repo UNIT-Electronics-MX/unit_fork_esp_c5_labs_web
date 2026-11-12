@@ -100,6 +100,7 @@
 
   /* Tracks and parts */
   --rfid: #0e7490;
+  --pn532: #d7802e;
   --rc522: #1f56a8;
   --rc522-edge: #163f7c;
   --card-white: #f3f5f7;
@@ -169,6 +170,7 @@
     --w-blk: #e6ece9;
     --w-btn: #ff7aa8;
     --rfid: #4cc9e0;
+    --pn532: #d7802e;
     --rc522: #2a63b8;
     --rc522-edge: #1b4686;
     --card-white: #e8ecef;
@@ -221,6 +223,7 @@
   --w-blk: #e6ece9;
   --w-btn: #ff7aa8;
   --rfid: #4cc9e0;
+  --pn532: #d7802e;
   --rc522: #2a63b8;
   --rc522-edge: #1b4686;
   --card-white: #e8ecef;

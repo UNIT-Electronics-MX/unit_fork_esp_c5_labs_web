@@ -127,7 +127,7 @@
       "power": "güç",
       "ground": "toprak",
       "button": "düğme girişi",
-      "rfid": "RC522"
+      "rfid": "PN532"
     },
     "between": {
       "title": "Dersler arasında",

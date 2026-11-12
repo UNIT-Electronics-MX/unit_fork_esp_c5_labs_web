@@ -9,8 +9,10 @@ describe("lessonExamples", () => {
     expect(ids).toHaveLength(7);
   });
 
-  it("is empty for a lesson without MicroPython examples", () => {
-    expect(lessonExamples("R1")).toEqual([]);
+  it("opens each PN532 MicroPython script from the firmware manifest", () => {
+    for (let n = 1; n <= 8; n++) {
+      expect(lessonExamples(`R${n}`)).toEqual([`rfid-r${n}-pn532`]);
+    }
   });
 
   it("opens basic Wi-Fi scripts first and keeps the advanced W2 and W3 scripts", () => {

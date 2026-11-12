@@ -29,7 +29,7 @@
     "basics": "すべてのラボ：ボードとUSB-Cデータケーブル",
     "search": {
       "label": "部品を検索",
-      "placeholder": "検索：画面、RC522、マイク…",
+      "placeholder": "検索：画面、PN532 V3、マイク…",
       "none": "「{{query}}」に一致する部品はありません。"
     },
     "all": "全部ある",
@@ -46,7 +46,7 @@
       "led": "LED + 220–330 Ω 抵抗",
       "tft": "1.9″ ST7789 画面",
       "button": "押しボタン",
-      "rc522": "RC522 カードリーダー",
+      "pn532": "PN532 V3 カードリーダー",
       "tags": "MIFARE カードとキーホルダー",
       "wifi": "2.4 GHz Wi-Fi ネットワーク",
       "phone": "スマートフォン（Bluetooth）",

@@ -29,7 +29,7 @@
     "basics": "每個實驗：開發板和一條 USB-C 資料線",
     "search": {
       "label": "搜尋元件",
-      "placeholder": "搜尋：螢幕、RC522、麥克風…",
+      "placeholder": "搜尋：螢幕、PN532 V3、麥克風…",
       "none": "沒有與「{{query}}」相符的元件。"
     },
     "all": "我全都有",
@@ -46,7 +46,7 @@
       "led": "LED + 220–330 Ω 電阻",
       "tft": "1.9″ ST7789 螢幕",
       "button": "按鈕",
-      "rc522": "RC522 讀卡機",
+      "pn532": "PN532 V3 讀卡機",
       "tags": "MIFARE 卡和鑰匙圈",
       "wifi": "2.4 GHz Wi-Fi 網路",
       "phone": "智慧型手機（藍牙）",

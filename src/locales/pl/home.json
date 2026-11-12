@@ -29,7 +29,7 @@
     "basics": "Każde ćwiczenie: płytka i kabel USB-C do danych",
     "search": {
       "label": "Szukaj części",
-      "placeholder": "Szukaj: ekran, RC522, mikrofon…",
+      "placeholder": "Szukaj: ekran, PN532 V3, mikrofon…",
       "none": "Żadna część nie pasuje do „{{query}}”."
     },
     "all": "Mam wszystkie",
@@ -58,7 +58,7 @@
       "led": "LED + rezystor 220–330 Ω",
       "tft": "Ekran ST7789 1,9″",
       "button": "Przycisk",
-      "rc522": "Czytnik kart RC522",
+      "pn532": "Czytnik kart PN532 V3",
       "tags": "Karta MIFARE i brelok",
       "wifi": "Sieć Wi-Fi 2,4 GHz",
       "phone": "Smartfon (Bluetooth)",

@@ -116,10 +116,13 @@ export function collectMicroPython(root: string): MicroPythonExamples | null {
     // in the manifest. Do not describe the upstream boochow driver as MIT.
     const existing = libraries.findIndex((library) => library.id === "st7735");
     if (existing >= 0) {
-      libraries[existing] = {
-        ...libraries[existing],
-        examples: [...new Set([...libraries[existing].examples, ...st7735Examples])],
-      };
+      const library = libraries[existing];
+      if (library) {
+        libraries[existing] = {
+          ...library,
+          examples: [...new Set([...library.examples, ...st7735Examples])],
+        };
+      }
     } else {
       libraries.push({
         id: "st7735",

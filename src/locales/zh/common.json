@@ -127,7 +127,7 @@
       "power": "电源",
       "ground": "地",
       "button": "按键输入",
-      "rfid": "RC522"
+      "rfid": "PN532"
     },
     "between": {
       "title": "课与课之间",

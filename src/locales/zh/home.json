@@ -29,7 +29,7 @@
     "basics": "每个实验：开发板和一根 USB-C 数据线",
     "search": {
       "label": "搜索元件",
-      "placeholder": "搜索：屏幕、RC522、麦克风…",
+      "placeholder": "搜索：屏幕、PN532 V3、麦克风…",
       "none": "没有与“{{query}}”匹配的元件。"
     },
     "all": "我全都有",
@@ -46,7 +46,7 @@
       "led": "LED + 220–330 Ω 电阻",
       "tft": "1.9″ ST7789 屏幕",
       "button": "按钮",
-      "rc522": "RC522 读卡器",
+      "pn532": "PN532 V3 读卡器",
       "tags": "MIFARE 卡和钥匙扣",
       "wifi": "2.4 GHz Wi-Fi 网络",
       "phone": "智能手机（蓝牙）",

@@ -127,7 +127,7 @@
       "power": "alimentation",
       "ground": "masse",
       "button": "entrée bouton",
-      "rfid": "RC522"
+      "rfid": "PN532"
     },
     "between": {
       "title": "Entre deux leçons",

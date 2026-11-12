@@ -85,6 +85,14 @@
   background: var(--bg);
   border: 1px solid var(--line);
 }
+.explanation {
+  display: grid;
+  gap: 10px;
+  max-width: 72ch;
+  color: var(--ink);
+  line-height: 1.6;
+}
+.explanation p { margin: 0; }
 .setupLinks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .setupLinks a { display: inline-flex; align-items: center; min-height: 38px; padding: 8px 12px; border: 1px solid var(--line); border-radius: var(--radius-s); color: var(--ink); background: var(--bg); font: 700 12px var(--font-display); text-decoration: none; }
 .setupLinks a:last-child { border-color: var(--ink); color: var(--surface); background: var(--ink); }

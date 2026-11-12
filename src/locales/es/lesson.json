@@ -30,6 +30,10 @@
     },
     "board": {
       "short": "Pinout"
+    },
+    "materials": {
+      "title": "Material recomendado",
+      "short": "Material"
     }
   },
   "nav": {
@@ -192,5 +196,93 @@
   },
   "widget": {
     "loading": "Cargando…"
+  },
+  "materials": {
+    "intro": "Productos de UNIT Electronics sugeridos para esta práctica. Comprueba el conector y la variante antes de pedirlos; el precio y la disponibilidad actuales están en la página del producto.",
+    "role": {
+      "main": "Principal",
+      "extra": "Complemento opcional",
+      "adapt": "Verificar o adaptar código"
+    },
+    "action": {
+      "shop": "Ver producto en UNIT",
+      "docs": "Ver documentación de UNIT",
+      "openExample": "Abrir ejemplo MicroPython"
+    },
+    "newTab": " (se abre en una pestaña nueva)",
+    "products": {
+      "potentiometer": {
+        "name": "Potenciómetro WH148 de 3 pines",
+        "why": "La entrada analógica ajustable de P3."
+      },
+      "microsd": {
+        "name": "Memoria microSD Kingston",
+        "why": "Va en la ranura de la Pulsar C5 para P5; elige capacidad y formatéala en FAT32."
+      },
+      "ch340e": {
+        "name": "Módulo UNIT CH340E USB a TTL",
+        "why": "Para ampliar después la práctica UART. El bucle de P6 solo necesita un puente; comprueba los niveles de señal de 3,3 V antes de conectarlo."
+      },
+      "qwiicCable": {
+        "name": "Cable QWIIC / STEMMA QT de 4 pines",
+        "why": "Elige la variante QWIIC a QWIIC o QWIIC a Dupont que corresponda a tu cableado. No se conecta directamente a los pines sueltos del PN532 ni del OLED."
+      },
+      "oled": {
+        "name": "Pantalla OLED I²C 128×64 SSD1315",
+        "why": "UNIT la anuncia como SSD1315 y documenta su uso con la biblioteca SSD1306 en Arduino. O1/D2 usan código SSD1306; comprueba la dirección 0x3C y prueba la variante MicroPython."
+      },
+      "qwiicExpander": {
+        "name": "Expansor I²C QWIIC de UNIT",
+        "why": "Añade conectores QWIIC y pines para compartir el bus. Los pines header se entregan sin soldar."
+      },
+      "st7735": {
+        "name": "Pantalla TFT ST7735 de 0,96″ y 80×160",
+        "why": "La pantalla SPI de O2 y O3; sigue el cableado para Pulsar C5 de esas prácticas."
+      },
+      "bmi270": {
+        "name": "IMU BMI270 UNIT DevLab",
+        "why": "El sensor de movimiento de D1. Usa I²C y revisa el puente de soldadura I²C del módulo antes de conectarlo por QWIIC."
+      },
+      "temt600": {
+        "name": "Sensor de luz TEMT600 UNIT DevLab",
+        "why": "Es el módulo I²C de D2: su documentación confirma DDP 1.0, dirección de fábrica 0x20, ID 0x0102 y lectura ADC con 0x60. Usa esta versión DevLab; la versión solo analógica no funciona con el ejemplo."
+      },
+      "pn532": {
+        "name": "Lector NFC/RFID PN532 V3",
+        "why": "El lector I²C de R1–R8. UNIT indica que el paquete incluye una tarjeta MIFARE y un llavero."
+      },
+      "rfidCard": {
+        "name": "Tarjeta MIFARE S50 de 13,56 MHz",
+        "why": "Una tarjeta de prueba adicional. En R5, escribe solo en una tarjeta desechable cuyo contenido anterior no necesites."
+      },
+      "rfidFob": {
+        "name": "Llavero RFID/NFC de 13,56 MHz",
+        "why": "Otro UID para inventario, puerta y personajes; el paquete del PN532 ya incluye un llavero."
+      },
+      "inmp441": {
+        "name": "Micrófono I²S INMP441",
+        "why": "El micrófono digital compatible con los ejemplos actuales de sonido. S8 lo requiere y S2 lo usa para dB SPL."
+      },
+      "sph0645": {
+        "name": "Micrófono I²S SPH0645",
+        "why": "Para una adaptación futura: el firmware de sonido actual está configurado para INMP441 y no admite directamente este micrófono."
+      },
+      "ics43434": {
+        "name": "Micrófono I²S ICS-43434 UNIT DevLab",
+        "why": "Extensión de S1 para Pulsar C5: abre el ejemplo de nivel en la consola serial web. Requiere un firmware MicroPython C5 compilado con machine.I2S; la imagen genérica incluida no lo habilita. El conector I²S de 6 pines no es QWIIC."
+      },
+      "max98357": {
+        "name": "Amplificador de audio I²S MAX98357",
+        "why": "El amplificador que usan los ejemplos actuales de reproducción; acompáñalo de una bocina adecuada."
+      },
+      "speaker": {
+        "name": "Bocina de 4 Ω / 3 W",
+        "why": "Selecciona la variante de 4 Ω y 3 W para el amplificador MAX98357 de S7 y S8."
+      },
+      "es8311": {
+        "name": "Guía del códec UNIT DevLab ES8311",
+        "why": "Documentación de otro códec de audio. S7/S8 usan MAX98357; ES8311 necesita otro cableado y firmware."
+      }
+    }
   }
 }

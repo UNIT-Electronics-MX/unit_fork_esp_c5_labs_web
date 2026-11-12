@@ -1,0 +1,57 @@
+.root {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+}
+
+.caption { margin: 0; color: var(--muted); }
+
+.scene {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  min-height: 12rem;
+  padding: 1.25rem;
+  border-radius: var(--radius-m);
+  background: var(--bg);
+}
+
+.board {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: .4rem;
+  width: 9rem;
+  height: 9rem;
+  border: .45rem solid var(--rfid);
+  border-radius: var(--radius-m);
+  background: var(--pcb);
+  color: var(--silk);
+  box-shadow: 0 .4rem 1rem color-mix(in srgb, var(--model-shadow), transparent 75%);
+}
+
+.chip { font: 700 1.15rem var(--font-mono); }
+.pin { font: .8rem var(--font-mono); }
+.antenna { width: 5rem; height: 3rem; border: .3rem double var(--gold); border-radius: 40%; }
+
+.link { display: grid; gap: .2rem; font: .75rem var(--font-mono); }
+.link span { padding-inline: .5rem; border-block-end: 2px solid var(--w-vcc); }
+.link span:nth-child(2) { border-color: var(--w-gnd); }
+.link span:nth-child(3) { border-color: var(--w-sda); }
+.link span:nth-child(4) { border-color: var(--w-scl); }
+
+.host { padding: .9rem; border: 2px solid var(--pcb-edge); border-radius: var(--radius-s); background: var(--pcb); color: var(--silk); font-weight: 700; }
+.tag { position: absolute; inset-block-start: .4rem; inset-inline-start: calc(50% - 4.5rem); padding: .3rem .7rem; border: 1px solid var(--line); border-radius: var(--radius-s); background: var(--card-white); color: var(--model-ink); font-weight: 700; }
+.log { min-height: 3rem; padding: .8rem; border-radius: var(--radius-s); background: var(--term-bg); color: var(--term-ink); font: .85rem/1.5 var(--font-mono); overflow-wrap: anywhere; }
+.prompt { color: var(--term-info); }
+.controls { display: flex; align-items: center; flex-wrap: wrap; gap: .6rem; }
+.controls button { padding: .5rem .8rem; border: 1px solid var(--line); border-radius: var(--radius-s); background: var(--bg); color: var(--ink); cursor: pointer; }
+.controls button:disabled { opacity: .5; cursor: default; }
+.controls button:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
+.controls span { color: var(--muted); font-size: .85rem; }

@@ -29,7 +29,7 @@
     "basics": "Chaque labo : la carte et un câble USB-C de données",
     "search": {
       "label": "Chercher un composant",
-      "placeholder": "Chercher : écran, RC522, micro…",
+      "placeholder": "Chercher : écran, PN532 V3, micro…",
       "none": "Aucun composant ne correspond à « {{query}} »."
     },
     "all": "Je les ai tous",
@@ -54,7 +54,7 @@
       "led": "LED + résistance 220–330 Ω",
       "tft": "Écran ST7789 1,9″",
       "button": "Bouton poussoir",
-      "rc522": "Lecteur de cartes RC522",
+      "pn532": "Lecteur de cartes PN532 V3",
       "tags": "Carte MIFARE et badge",
       "wifi": "Réseau Wi-Fi 2,4 GHz",
       "phone": "Smartphone (Bluetooth)",

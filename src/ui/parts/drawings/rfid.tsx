@@ -1,4 +1,4 @@
-// RFID and NFC: the RC522 reader, cards and tags, and what you do with them.
+// RFID and NFC: a PN532 reader, cards and tags, and what you do with them.
 import { box, cylinder, disc, line, poly, project } from "../iso";
 import { Cyl, Face, type Hue, Shadow, Solid, Stroke, Wire } from "../shapes";
 import { Waves } from "./radio";

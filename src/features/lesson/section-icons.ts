@@ -4,6 +4,7 @@ import type { IconName } from "@/ui/Icon";
 /** One icon per kind of section, the same in the page and in the section nav. */
 export const SECTION_ICON: Record<SectionKind | "board", IconName> = {
   goal: "flag",
+  materials: "module",
   explain: "bulb",
   connections: "wire",
   wiring: "wire",

@@ -1027,5 +1027,66 @@
     "skipped": "El sector 2 no se abrió con la clave de fábrica, así que se saltaron los bloques 8-10: la placa nunca fuerza un sector.",
     "allCopied": "Cada bloque escrito y vuelto a leer.",
     "uidStays": "El UID sigue siendo <b>{{uid}}</b>: un toque con el llavero se busca como <b>Llavero</b>, no como tarjeta blanca. La puerta decide por el UID, y el UID no se movió."
+  },
+  "pn532": {
+    "caption": "Simulación de los pasos de la lección. Usa la pestaña Código para ejecutar MicroPython real.",
+    "boardLabel": "Diagrama del lector PN532 I2C",
+    "tag": "Etiqueta NFC",
+    "next": "Siguiente evento",
+    "reset": "Reiniciar",
+    "progress": "{{current}} de {{total}}",
+    "scenarios": {
+      "R1": [
+        "Conecta VCC, GND, SDA y SCL; elige modo I2C.",
+        "Escaneo I2C -> 0x24",
+        "GetFirmwareVersion -> IC 0x32, firmware 1.x",
+        "Tres lecturas iguales: bus listo."
+      ],
+      "R2": [
+        "El lector espera una tarjeta ISO14443-A.",
+        "Tarjeta presente -> UID 04 A1 B2 C3, ATQA y SAK.",
+        "Tarjeta quieta -> sin evento duplicado.",
+        "Tarjeta retirada -> Card removed."
+      ],
+      "R3": [
+        "El inventario comienza vacío.",
+        "Primer toque -> UID 04 A1 B2 C3.",
+        "Segunda tarjeta -> se agrega otro UID.",
+        "Primera tarjeta otra vez -> su cuenta llega a 2."
+      ],
+      "R4": [
+        "Selecciona una tarjeta de prueba.",
+        "Classic -> autentica el bloque 4; Type 2 -> selecciona página 8.",
+        "InDataExchange devuelve los bytes de usuario.",
+        "Se imprimen 16 bytes; no cambian los datos."
+      ],
+      "R5": [
+        "ARM_WRITE está en False; se leen los bytes anteriores.",
+        "Con una tarjeta de prueba, cambia ARM_WRITE a True.",
+        "Escribe el bloque 4 Classic o la página 8 Type 2.",
+        "La relectura coincide -> verified: True."
+      ],
+      "R6": [
+        "Sostén la tarjeta plana sobre la antena.",
+        "Posición 1: 10/10 aciertos.",
+        "Al alejarla, pueden bajar los aciertos.",
+        "Compara cuatro posiciones y tiempos de lectura."
+      ],
+      "R7": [
+        "UID desconocido -> DENIED.",
+        "enroll Ada -> UID guardado localmente.",
+        "check -> GRANTED.",
+        "block UID -> bloqueo guardado.",
+        "check -> DENIED."
+      ],
+      "R8": [
+        "Todavía no hay personajes asignados.",
+        "Tarjeta 1 -> FRIEND,UID,fox.",
+        "Tarjeta 2 -> FRIEND,UID,robot.",
+        "Dos toques -> TOGETHER,fox,robot."
+      ]
+    },
+    "bus": "I²C · 0x24",
+    "host": "Pulsar C5"
   }
 }

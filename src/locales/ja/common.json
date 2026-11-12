@@ -127,7 +127,7 @@
       "power": "電源",
       "ground": "グランド",
       "button": "ボタン入力",
-      "rfid": "RC522"
+      "rfid": "PN532"
     },
     "between": {
       "title": "レッスンの合間に",

@@ -192,6 +192,7 @@
       "requires": "Needs: {{items}}",
       "reset": "Restore example",
       "tftDraft": "You have a local draft. Restore the updated example if it still uses CS_PIN = 1; TFT CS now connects to D4 / GPIO9. This also restores the TFTColor and width fixes.",
+      "pn532Draft": "This saved R4/R5 draft imports CardExchangeError from an older example. Copy any changes you want to keep, then restore the updated example.",
       "download": "Download .py",
       "hint": "A .py file is a script, not a firmware .bin. Run it over serial or save it to the board from this editor.",
       "run": "Run on board",
@@ -514,8 +515,8 @@
       "hint": "confirmed on the real board"
     },
     "built": {
-      "label": "built, not flashed",
-      "hint": "the firmware compiles; try it on your board"
+      "label": "code ready, not verified",
+      "hint": "run it on your board to verify it"
     },
     "planned": {
       "label": "planned",
@@ -553,7 +554,7 @@
       "power": "power",
       "ground": "ground",
       "button": "button input",
-      "rfid": "RC522"
+      "rfid": "PN532"
     },
     "adc": {
       "title": "ADC channels on the header",
@@ -576,6 +577,7 @@
       "rewire": "Rewire while off",
       "check": "Check VCC is on 3V3, no loose ends",
       "flash": "Plug in, flash the next lesson",
+      "runScript": "Plug in and run the next MicroPython script",
       "warning": "Never unplug during <code>Writing at 0x…</code>. Pin changing from output to input? Flash first, then wire."
     },
     "pinout": {

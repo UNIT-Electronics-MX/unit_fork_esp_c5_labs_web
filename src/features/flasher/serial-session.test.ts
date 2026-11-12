@@ -98,6 +98,7 @@ describe("SerialSession", () => {
     await session.savePython("hello.py", "print('café')\n");
     expect(writes).toContain("import binascii\r");
     expect(writes).toContain('f=open("hello.py",\'wb\')\r');
+    expect(writes).toContain('import sys; sys.modules.pop("hello", None)\r');
     const byteCommands = writes.filter((write) => write.startsWith("f.write(binascii.a2b_base64("));
     expect(byteCommands).toHaveLength(1);
     const encoded = /a2b_base64\('([^']+)'\)/.exec(byteCommands[0] ?? "")?.[1] ?? "";
@@ -105,6 +106,7 @@ describe("SerialSession", () => {
       .toEqual([...new TextEncoder().encode("print('café')\n")]);
     await session.savePython("hello.py", "print(2)\n");
     expect(writes.filter((write) => write === 'f=open("hello.py",\'wb\')\r')).toHaveLength(2);
+    expect(writes.filter((write) => write === 'import sys; sys.modules.pop("hello", None)\r')).toHaveLength(2);
     const beforeLargeSave = writes.length;
     await session.savePython("large.py", "x".repeat(481));
     const largeCommands = writes.slice(beforeLargeSave).filter((write) => write.startsWith("f.write(binascii.a2b_base64("));

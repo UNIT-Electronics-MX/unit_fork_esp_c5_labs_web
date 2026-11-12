@@ -62,7 +62,7 @@ export function BoardCard({ lesson }: { lesson: ResolvedLesson | null }) {
             <Trans t={t} i18nKey="board.between.close" components={{ code: <code /> }} />
           </li>
           {BETWEEN.map((step) => (
-            <li key={step}>{t(`board.between.${step}`)}</li>
+            <li key={step}>{step === "flash" && lesson?.track === "rfid" ? t("board.between.runScript") : t(`board.between.${step}`)}</li>
           ))}
         </ol>
         <p>

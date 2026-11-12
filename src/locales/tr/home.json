@@ -29,7 +29,7 @@
     "basics": "Her deney: kart ve bir USB-C veri kablosu",
     "search": {
       "label": "Parça ara",
-      "placeholder": "Ara: ekran, RC522, mikrofon…",
+      "placeholder": "Ara: ekran, PN532 V3, mikrofon…",
       "none": "“{{query}}” ile eşleşen parça yok."
     },
     "all": "Hepsi bende",
@@ -50,7 +50,7 @@
       "led": "LED + 220–330 Ω direnç",
       "tft": "1,9″ ST7789 ekran",
       "button": "Buton",
-      "rc522": "RC522 kart okuyucu",
+      "pn532": "PN532 V3 kart okuyucu",
       "tags": "MIFARE kart ve anahtarlık",
       "wifi": "2,4 GHz Wi-Fi ağı",
       "phone": "Akıllı telefon (Bluetooth)",

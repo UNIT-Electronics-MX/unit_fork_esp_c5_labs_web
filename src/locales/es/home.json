@@ -30,7 +30,7 @@
     "basics": "Todos los laboratorios: la placa y un cable USB-C de datos",
     "search": {
       "label": "Buscar componentes",
-      "placeholder": "Busca: pantalla, RC522, micrófono…",
+      "placeholder": "Busca: pantalla, PN532 V3, micrófono…",
       "none": "Ningún componente coincide con «{{query}}»."
     },
     "all": "Los tengo todos",
@@ -56,7 +56,7 @@
       "tft": "Pantalla ST7789 de 1,9″",
       "st7735": "Pantalla TFT ST7735 de 0,96″ y 80×160",
       "button": "Pulsador",
-      "rc522": "Lector de tarjetas RC522",
+      "pn532": "Lector de tarjetas PN532 V3",
       "tags": "Tarjeta MIFARE y llavero",
       "wifi": "Red Wi-Fi de 2,4 GHz",
       "phone": "Móvil (Bluetooth)",

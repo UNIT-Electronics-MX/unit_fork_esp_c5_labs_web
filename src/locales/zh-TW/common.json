@@ -127,7 +127,7 @@
       "power": "電源",
       "ground": "地",
       "button": "按鍵輸入",
-      "rfid": "RC522"
+      "rfid": "PN532"
     },
     "between": {
       "title": "課與課之間",

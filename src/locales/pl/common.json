@@ -127,7 +127,7 @@
       "power": "zasilanie",
       "ground": "masa",
       "button": "wejście przycisku",
-      "rfid": "RC522"
+      "rfid": "PN532"
     },
     "between": {
       "title": "Między lekcjami",

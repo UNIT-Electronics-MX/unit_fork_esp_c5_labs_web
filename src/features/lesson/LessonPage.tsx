@@ -8,8 +8,10 @@ import type { LessonSection as Section } from "@/domain/lesson-sections";
 import { lessonState, stepsTicked } from "@/domain/progress";
 import { BoardCard } from "@/features/board/BoardCard";
 import { useTicks } from "@/features/progress/progress-store";
+import { RichText } from "@/ui/RichText";
 import { CommandsPanel } from "./CommandsPanel";
 import { LessonHeader } from "./LessonHeader";
+import { LessonMaterials } from "./LessonMaterials";
 import styles from "./LessonPage.module.css";
 import { LessonSection } from "./LessonSection";
 import { NextUp } from "./NextUp";
@@ -51,17 +53,28 @@ export function LessonPage({
     switch (section.kind) {
       case "goal":
         return null;
+      case "materials":
+        return <LessonMaterials lessonId={lesson.id} />;
       case "explain": {
         const panel = lesson.panels[section.panel ?? 0];
         return panel ? (
-          <div className={styles.stage}>
-            <WidgetSlot
-              widget={panel.widget}
-              lesson={lesson}
-              panel={panel}
-              name={`${lesson.id} · ${panel.title}`}
-            />
-          </div>
+          <>
+            {panel.body?.length ? (
+              <div className={styles.explanation}>
+                {panel.body.map((paragraph, index) => <p key={index}><RichText text={paragraph} /></p>)}
+              </div>
+            ) : null}
+            {panel.widget ? (
+              <div className={styles.stage}>
+                <WidgetSlot
+                  widget={panel.widget}
+                  lesson={lesson}
+                  panel={panel}
+                  name={`${lesson.id} · ${panel.title}`}
+                />
+              </div>
+            ) : null}
+          </>
         ) : null;
       }
       case "connections":
@@ -127,7 +140,7 @@ export function LessonPage({
                   s.kind === "explain"
                     ? lesson.panels[s.panel ?? 0]?.intro
                     : s.kind === "commands"
-                      ? t("commands.intro")
+                      ? lesson.commandsIntro ?? t("commands.intro")
                       : undefined
                 }
                 active={active === s.id}

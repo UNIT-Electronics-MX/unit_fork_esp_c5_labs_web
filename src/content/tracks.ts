@@ -51,13 +51,14 @@ export const TRACKS: readonly Track[] = [
     color: "--w-sda",
     lessonIds: ["W1", "W2", "W3", "I1", "W4", "W5"],
   },
-  // RFID and Sound are Arduino-only, with no MicroPython support yet.
+  // RFID runs on the C5 in MicroPython; Sound still uses the older S3 labs.
   {
     id: "rfid",
     title: "RFID & NFC",
     blurb: "Cards, tags and the 13.56 MHz field",
     color: "--rfid",
     lessonIds: ["R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8"],
+    board: "pulsar-c5",
   },
   {
     id: "sound",

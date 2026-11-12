@@ -127,6 +127,8 @@ export function MicroPythonEditor({
   const code = selected ? drafts[selected.id] ?? selected.code : "";
   const edited = selected ? code !== selected.code : false;
   const tftDraft = selected && (selected.id === "st7735-display" || selected.id === "st7735-showcase" || selected.id === "wifi-w2-display") && edited;
+  const stalePn532Draft = selected && (selected.id === "rfid-r4-pn532" || selected.id === "rfid-r5-pn532")
+    && edited && code.includes("from pn532 import CardExchangeError") && !selected.code.includes("from pn532 import CardExchangeError");
   const outputName = selected ? filenames[selected.id] || selected.file : "script.py";
   const customLoaded = loadedFile || (selected ? Boolean(filenames[selected.id] && filenames[selected.id] !== selected.file) : false);
   const lineCount = code.split("\n").length;
@@ -410,6 +412,10 @@ export function MicroPythonEditor({
           {inLesson ? null : details}
           {tftDraft ? <p className={styles.draftWarning} role="status">
             {t("flasher.examples.tftDraft")}
+            <button type="button" onClick={resetExample}>{t("flasher.examples.reset")}</button>
+          </p> : null}
+          {stalePn532Draft ? <p className={styles.draftWarning} role="status">
+            {t("flasher.examples.pn532Draft")}
             <button type="button" onClick={resetExample}>{t("flasher.examples.reset")}</button>
           </p> : null}
           <div className={styles.ide}>

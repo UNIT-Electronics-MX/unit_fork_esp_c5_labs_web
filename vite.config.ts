@@ -42,6 +42,7 @@ export default defineConfig(({ mode }) => ({
   server: { port: 5180 },
   test: {
     environment: "jsdom",
+    exclude: ["**/node_modules/**", "dist/**", "public/**"],
     setupFiles: ["./src/test/setup.ts"],
     // Route tests render whole pages and their lazy chunks; a cold run transforms them first.
     testTimeout: 15_000,

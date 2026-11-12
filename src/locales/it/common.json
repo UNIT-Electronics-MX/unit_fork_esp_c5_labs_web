@@ -127,7 +127,7 @@
       "power": "alimentazione",
       "ground": "massa",
       "button": "input del pulsante",
-      "rfid": "RC522"
+      "rfid": "PN532"
     },
     "between": {
       "title": "Tra una lezione e l'altra",

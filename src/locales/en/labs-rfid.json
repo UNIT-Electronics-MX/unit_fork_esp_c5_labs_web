@@ -1025,5 +1025,66 @@
     "skipped": "Sector 2 didn't open with the factory key, so blocks 8-10 were skipped: the board never forces a sector.",
     "allCopied": "Every block written and read back.",
     "uidStays": "UID still <b>{{uid}}</b>: a tap with the key tag is looked up as <b>Key tag</b>, not as White card. The door decides by UID, and the UID didn't move."
+  },
+  "pn532": {
+    "caption": "Simulation of the lesson steps. Use the Code tab for the real MicroPython script.",
+    "boardLabel": "PN532 I2C reader diagram",
+    "tag": "NFC tag",
+    "next": "Next event",
+    "reset": "Reset",
+    "progress": "{{current}} of {{total}}",
+    "scenarios": {
+      "R1": [
+        "Connect VCC, GND, SDA and SCL; select I2C mode.",
+        "I2C scan -> 0x24",
+        "GetFirmwareVersion -> IC 0x32, firmware 1.x",
+        "Three matching reads: bus ready."
+      ],
+      "R2": [
+        "Reader waits for an ISO14443-A target.",
+        "Tag present -> UID 04 A1 B2 C3, ATQA and SAK.",
+        "Tag held -> no duplicate event.",
+        "Tag removed -> Card removed."
+      ],
+      "R3": [
+        "Inventory starts empty.",
+        "First tap -> UID 04 A1 B2 C3.",
+        "Second card -> another UID added.",
+        "First card again -> its count becomes 2."
+      ],
+      "R4": [
+        "Select a test tag.",
+        "Classic -> authenticate block 4; Type 2 -> select page 8.",
+        "InDataExchange returns user bytes.",
+        "16 bytes printed; no data changed."
+      ],
+      "R5": [
+        "ARM_WRITE is False; old bytes are read.",
+        "With a disposable tag, set ARM_WRITE True.",
+        "Write Classic block 4 or Type 2 page 8.",
+        "Readback matches -> verified: True."
+      ],
+      "R6": [
+        "Hold the tag flat on the antenna.",
+        "Position 1: 10/10 hits.",
+        "Move it farther: the hit count may drop.",
+        "Compare four positions and scan times."
+      ],
+      "R7": [
+        "Unknown UID -> DENIED.",
+        "enroll Ada -> UID saved locally.",
+        "check -> GRANTED.",
+        "block UID -> blocked state saved.",
+        "check -> DENIED."
+      ],
+      "R8": [
+        "No friends assigned yet.",
+        "Card 1 -> FRIEND,UID,fox.",
+        "Card 2 -> FRIEND,UID,robot.",
+        "Two taps -> TOGETHER,fox,robot."
+      ]
+    },
+    "bus": "I²C · 0x24",
+    "host": "Pulsar C5"
   }
 }

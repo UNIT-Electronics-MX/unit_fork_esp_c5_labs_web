@@ -26,7 +26,7 @@ const HUES = {
   purple: "--part-purple",
   pink: "--part-pink",
   teal: "--part-teal",
-  reader: "--rc522",
+  reader: "--pn532",
   "fam-system": "--fam-system",
   "fam-memory": "--fam-memory",
   "fam-security": "--fam-security",

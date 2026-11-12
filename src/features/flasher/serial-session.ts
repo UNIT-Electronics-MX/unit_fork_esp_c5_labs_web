@@ -183,6 +183,9 @@ export class SerialSession {
         await this.expectAfter(">>> ", () => this.send(`f.write(binascii.a2b_base64('${encoded}'))\r`, "none"));
       }
       await this.expectAfter(">>> ", () => this.send("f.close()\r", "none"));
+      // A REPL import survives file replacement until the module cache is cleared.
+      const moduleName = filename.slice(0, -3);
+      await this.expectAfter(">>> ", () => this.send(`import sys; sys.modules.pop(${JSON.stringify(moduleName)}, None)\r`, "none"));
     } finally {
       this.muted = false;
     }

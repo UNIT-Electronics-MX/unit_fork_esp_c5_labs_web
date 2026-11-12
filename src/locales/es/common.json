@@ -195,6 +195,7 @@
       "requires": "Necesita: {{items}}",
       "reset": "Restaurar ejemplo",
       "tftDraft": "Tienes un borrador local. Restaura el ejemplo actualizado si aún usa CS_PIN = 1: CS de la TFT ahora va a D4 / GPIO9. También recuperas las correcciones de TFTColor y width.",
+      "pn532Draft": "Este borrador guardado de R4/R5 importa CardExchangeError de un ejemplo anterior. Copia los cambios que quieras conservar y restaura el ejemplo actualizado.",
       "download": "Descargar .py",
       "hint": "Un archivo .py es un script, no un firmware .bin. Puedes ejecutarlo por serial o guardarlo en la placa desde este editor.",
       "run": "Ejecutar en la placa",
@@ -517,8 +518,8 @@
       "hint": "confirmado en la placa real"
     },
     "built": {
-      "label": "compilado, sin flashear",
-      "hint": "el firmware compila; pruébalo en tu placa"
+      "label": "código listo, sin verificar",
+      "hint": "ejecútalo en tu placa para comprobarlo"
     },
     "planned": {
       "label": "previsto",
@@ -556,7 +557,7 @@
       "power": "alimentación",
       "ground": "masa",
       "button": "entrada de botón",
-      "rfid": "RC522"
+      "rfid": "PN532"
     },
     "adc": {
       "title": "Canales ADC en el conector",
@@ -579,6 +580,7 @@
       "rewire": "Recablea con la placa apagada",
       "check": "Comprueba que VCC esté en 3V3 y que no haya cables sueltos",
       "flash": "Conecta y flashea la siguiente lección",
+      "runScript": "Conecta y ejecuta el siguiente guion de MicroPython",
       "warning": "Nunca desconectes durante <code>Writing at 0x…</code>. ¿Un pin pasa de salida a entrada? Flashea primero y cablea después."
     },
     "pinout": {

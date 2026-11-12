@@ -2,6 +2,7 @@ import { lazyWidget, type WidgetMap } from "@/widgets/lazy-widget";
 
 // Every widget the rfid lessons reference, each in its own chunk (three.js only with the 3D panels).
 export const rfidWidgets = {
+  pn532Lab: lazyWidget(() => import("./pn532/Pn532Lab"), "Pn532Lab"),
   rfid: lazyWidget(() => import("./lab/RfidPreview"), "RfidPreview"),
   door: lazyWidget(() => import("./door/DoorPreview"), "DoorPreview"),
   friends: lazyWidget(() => import("./friends/FriendsPreview"), "FriendsPreview"),

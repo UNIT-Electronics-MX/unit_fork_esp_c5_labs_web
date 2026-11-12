@@ -127,7 +127,7 @@
       "power": "Strom",
       "ground": "Masse",
       "button": "Taster-Eingang",
-      "rfid": "RC522"
+      "rfid": "PN532"
     },
     "between": {
       "title": "Zwischen Lektionen",

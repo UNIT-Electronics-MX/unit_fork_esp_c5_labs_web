@@ -67,8 +67,10 @@ export interface CommandStep {
 /** A panel on the lesson page, rendered by the widget registered under `widget`. */
 export interface PanelSpec {
   readonly title: string;
-  readonly widget: WidgetId;
+  /** A panel may explain a process in text, show a widget, or do both. */
+  readonly widget?: WidgetId;
   readonly intro?: Rich;
+  readonly body?: readonly Rich[];
   /** Screen view to open first (screen-gallery widgets). */
   readonly view?: number;
   /** Which flows a sequence widget shows, in order. */
@@ -95,6 +97,7 @@ export interface LessonBody {
   /** Mark the ADC1 channels on the board drawing and list them beside it. */
   readonly adcMap?: boolean;
   readonly commands?: readonly CommandStep[];
+  readonly commandsIntro?: Rich;
   readonly panels?: readonly PanelSpec[];
   readonly steps: readonly Rich[];
   readonly note: Rich;
@@ -170,7 +173,7 @@ export function resolveLesson(base: ActiveLesson, variantKey?: string): Resolved
     ...overrides
   } = variant ?? ({} as Partial<LessonVariant>);
   const { preview, ...merged } = { ...base, ...overrides };
-  const shown = (spec: { readonly widget: WidgetId }) => !hideWidgets.includes(spec.widget);
+  const shown = (spec: { readonly widget?: WidgetId }) => !spec.widget || !hideWidgets.includes(spec.widget);
   return {
     ...merged,
     ...(preview && shown(preview) ? { preview } : {}),

@@ -30,6 +30,10 @@
     },
     "board": {
       "short": "Pinout"
+    },
+    "materials": {
+      "title": "Recommended materials",
+      "short": "Materials"
     }
   },
   "nav": {
@@ -188,5 +192,93 @@
   },
   "widget": {
     "loading": "Loading…"
+  },
+  "materials": {
+    "intro": "UNIT Electronics products suggested for this lab. Check the connector and product variant before ordering; current prices and availability are on the product page.",
+    "role": {
+      "main": "Main part",
+      "extra": "Optional extra",
+      "adapt": "Check or adapt code"
+    },
+    "action": {
+      "shop": "View product at UNIT",
+      "docs": "View UNIT documentation",
+      "openExample": "Open MicroPython example"
+    },
+    "newTab": " (opens in a new tab)",
+    "products": {
+      "potentiometer": {
+        "name": "3-pin WH148 potentiometer",
+        "why": "The adjustable analog input for P3."
+      },
+      "microsd": {
+        "name": "Kingston microSD card",
+        "why": "Use the card in the Pulsar C5 slot for P5; choose a capacity and format it as FAT32."
+      },
+      "ch340e": {
+        "name": "UNIT CH340E USB-to-TTL module",
+        "why": "For a later external UART experiment. P6 loopback itself only needs one jumper; check 3.3 V signal levels before connecting."
+      },
+      "qwiicCable": {
+        "name": "QWIIC / STEMMA QT 4-pin cable",
+        "why": "Select the QWIIC-to-QWIIC or QWIIC-to-Dupont variant that fits your wiring. It does not plug directly onto bare PN532 or OLED pins."
+      },
+      "oled": {
+        "name": "128×64 I²C OLED, SSD1315",
+        "why": "UNIT lists this display as SSD1315 and documents Arduino SSD1306-library use. O1/D2 use SSD1306 code; check the 0x3C address and test the MicroPython variant."
+      },
+      "qwiicExpander": {
+        "name": "UNIT I²C QWIIC expander",
+        "why": "Adds QWIIC sockets and header connections when sharing the bus. Its header pins are supplied unsoldered."
+      },
+      "st7735": {
+        "name": "0.96-inch 80×160 ST7735 TFT",
+        "why": "The SPI display used in O2 and O3; follow the Pulsar C5 wiring in those lessons."
+      },
+      "bmi270": {
+        "name": "UNIT DevLab BMI270 IMU",
+        "why": "The motion sensor for D1. Use I²C and check the module’s I²C solder bridge before wiring QWIIC."
+      },
+      "temt600": {
+        "name": "UNIT DevLab TEMT600 light sensor",
+        "why": "The I²C module for D2: UNIT documents DDP 1.0, factory address 0x20, device ID 0x0102, and ADC read command 0x60. Use this DevLab version; an analog-only version cannot run the example."
+      },
+      "pn532": {
+        "name": "PN532 NFC/RFID reader V3",
+        "why": "The I²C reader for R1–R8. UNIT says the package includes one MIFARE card and one key fob."
+      },
+      "rfidCard": {
+        "name": "13.56 MHz MIFARE S50 card",
+        "why": "An extra test card. In R5, write only to a disposable card whose old contents you do not need."
+      },
+      "rfidFob": {
+        "name": "13.56 MHz RFID/NFC key fob",
+        "why": "An extra UID for inventory, door and card-friends exercises; the PN532 package already includes one."
+      },
+      "inmp441": {
+        "name": "INMP441 I²S microphone",
+        "why": "The digital microphone supported by the current sound examples. S8 requires it, and S2 uses it for dB SPL."
+      },
+      "sph0645": {
+        "name": "SPH0645 I²S microphone",
+        "why": "For a future adaptation: the current sound firmware is configured for INMP441 and does not support this microphone directly."
+      },
+      "ics43434": {
+        "name": "UNIT DevLab ICS-43434 I²S microphone",
+        "why": "An S1 extension for Pulsar C5: open the web serial level example. It requires a C5 MicroPython build with machine.I2S enabled; the bundled generic image does not enable it. The six-pin I²S connector is not QWIIC."
+      },
+      "max98357": {
+        "name": "MAX98357 I²S audio amplifier",
+        "why": "The amplifier used by the current playback examples; pair it with a suitable speaker."
+      },
+      "speaker": {
+        "name": "4 Ω / 3 W speaker",
+        "why": "Select the 4 Ω, 3 W variant for the MAX98357 amplifier in S7 and S8."
+      },
+      "es8311": {
+        "name": "UNIT DevLab ES8311 codec guide",
+        "why": "Documentation for a different audio codec. S7/S8 use MAX98357; ES8311 requires different wiring and firmware."
+      }
+    }
   }
 }

@@ -29,7 +29,7 @@
     "basics": "Jedes Lab: das Board und ein USB-C-Datenkabel",
     "search": {
       "label": "Bauteile suchen",
-      "placeholder": "Suche: Display, RC522, Mikrofon…",
+      "placeholder": "Suche: Display, PN532 V3, Mikrofon…",
       "none": "Kein Bauteil passt zu „{{query}}“."
     },
     "all": "Ich habe alle",
@@ -50,7 +50,7 @@
       "led": "LED + 220–330-Ω-Widerstand",
       "tft": "1,9″-Display ST7789",
       "button": "Taster",
-      "rc522": "Kartenleser RC522",
+      "pn532": "Kartenleser PN532 V3",
       "tags": "MIFARE-Karte und Schlüsselanhänger",
       "wifi": "WLAN mit 2,4 GHz",
       "phone": "Smartphone (Bluetooth)",

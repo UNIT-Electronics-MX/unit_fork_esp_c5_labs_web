@@ -16,6 +16,8 @@ export const LESSON_TEXT: TextPolicy = {
     "head",
     "rows",
     "does",
+    "body",
+    "commandsIntro",
     "see",
     "fix",
     "intro",

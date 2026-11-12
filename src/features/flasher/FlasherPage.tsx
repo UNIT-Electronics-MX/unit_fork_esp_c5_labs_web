@@ -36,7 +36,7 @@ export function FlasherPage() {
     </nav>
     <div id="flash-editor-view" className={styles.viewPanel} hidden={view !== "editor"}>
       <div className={workbenchStyles.workbench}>
-        <MicroPythonEditor terminalRef={terminalRef} connected={terminalConnected} blocked={flashWorking} />
+        <MicroPythonEditor key={searchParams.get("example") ?? "gpio"} initialId={searchParams.get("example") ?? "gpio"} terminalRef={terminalRef} connected={terminalConnected} blocked={flashWorking} />
         <SerialTerminal ref={terminalRef} blocked={flashWorking} onActiveChange={setTerminalActive} onConnectedChange={setTerminalConnected} onOperationChange={setSerialOperation} sidecar />
       </div>
     </div>

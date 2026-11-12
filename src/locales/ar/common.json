@@ -127,7 +127,7 @@
       "power": "تغذية",
       "ground": "أرضي",
       "button": "دخل الزر",
-      "rfid": "RC522"
+      "rfid": "PN532"
     },
     "between": {
       "title": "بين الدروس",

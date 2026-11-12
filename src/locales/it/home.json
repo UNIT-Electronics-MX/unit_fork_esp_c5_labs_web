@@ -29,7 +29,7 @@
     "basics": "Ogni lab: la scheda e un cavo dati USB-C",
     "search": {
       "label": "Cerca i componenti",
-      "placeholder": "Cerca: schermo, RC522, microfono…",
+      "placeholder": "Cerca: schermo, PN532 V3, microfono…",
       "none": "Nessun componente corrisponde a «{{query}}»."
     },
     "all": "Li ho tutti",
@@ -54,7 +54,7 @@
       "led": "LED + resistenza da 220–330 Ω",
       "tft": "Schermo ST7789 da 1,9″",
       "button": "Pulsante",
-      "rc522": "Lettore di schede RC522",
+      "pn532": "Lettore di schede PN532 V3",
       "tags": "Scheda MIFARE e portachiavi",
       "wifi": "Rete Wi-Fi a 2,4 GHz",
       "phone": "Smartphone (Bluetooth)",

@@ -91,8 +91,20 @@ describe("content", () => {
     expect(boardOfLesson("W3", "arduino")).toBe("devkitc-s3");
     expect(boardOfLesson("W2", "micropython")).toBe("pulsar-c5");
     expect(boardOfLesson("W2", "lan")).toBe("devkitc-s3");
-    expect(boardOfLesson("R1")).toBe("devkitc-s3");
+    expect(boardOfLesson("R1")).toBe("pulsar-c5");
     expect(boardOfLesson("nope")).toBe("devkitc-s3");
+  });
+
+  it("teaches R1–R8 with PN532 I2C on the Pulsar C5", async () => {
+    const lessons = (await trackLessonsQuery("rfid", "en").queryFn!({} as never)).filter(isActive);
+    expect(lessons).toHaveLength(8);
+    for (const lesson of lessons) {
+      expect(boardOfLesson(lesson.id)).toBe("pulsar-c5");
+      expect(lesson.cmd).toBe("");
+      expect(lesson.preview?.widget).toBe("pn532Lab");
+      expect(lesson.wiring?.rows.map((row) => row[0])).toEqual(["VCC", "GND", "SDA", "SCL"]);
+      expect(lesson.steps?.join(" ")).toContain(`rfid_${lesson.id.toLowerCase()}_pn532.py`);
+    }
   });
 
   it("runs B1-B8 as MicroPython scripts on the C5 without the S3 screen", async () => {

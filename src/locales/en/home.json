@@ -30,7 +30,7 @@
     "basics": "Every lab: the board and a USB-C data cable",
     "search": {
       "label": "Search the parts",
-      "placeholder": "Search a part: screen, RC522, mic…",
+      "placeholder": "Search a part: screen, PN532 V3, mic…",
       "none": "No part matches “{{query}}”."
     },
     "all": "I have them all",
@@ -52,7 +52,7 @@
       "tft": "1.9″ ST7789 screen",
       "st7735": "0.96″ ST7735 80×160 TFT",
       "button": "Push button",
-      "rc522": "RC522 card reader",
+      "pn532": "PN532 V3 card reader",
       "tags": "MIFARE card and key fob",
       "wifi": "2.4 GHz Wi-Fi network",
       "phone": "Smartphone (Bluetooth)",

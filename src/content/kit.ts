@@ -23,8 +23,8 @@ export const KIT_ITEMS = [
   { id: "tmp235", part: "sensor" },
   { id: "keyboard", part: "keyboard" },
   { id: "pulsar2", part: "module" },
-  // Parts only the RFID and Sound themes use: Arduino-only, so they come last.
-  { id: "rc522", part: "reader" },
+  // Parts only the RFID and Sound themes use.
+  { id: "pn532", part: "reader" },
   { id: "tags", part: "cards" },
   { id: "ky037", part: "sensor" },
   { id: "inmp441", part: "mic" },
@@ -34,7 +34,7 @@ export const KIT_ITEMS = [
 export type KitItemId = (typeof KIT_ITEMS)[number]["id"];
 
 const SCREEN = ["tft"] as const;
-const READER = [SCREEN, ["rc522"], ["tags"]] as const;
+const READER = [["pn532"], ["tags"]] as const;
 const MIC = ["ky037", "inmp441"] as const;
 
 export const LESSON_KIT: Readonly<Record<string, LessonKit<KitItemId>>> = {
@@ -59,14 +59,14 @@ export const LESSON_KIT: Readonly<Record<string, LessonKit<KitItemId>>> = {
   W1: { need: [SCREEN, ["wifi"]], optional: ["button"] },
   W2: { need: [SCREEN, ["wifi"], ["phone"]], optional: ["button"] },
   W3: { need: [SCREEN, ["wifi"]], optional: ["button"] },
-  R1: { need: [SCREEN, ["rc522"]], optional: ["tags"] },
+  R1: { need: [["pn532"]], optional: ["tags"] },
   R2: { need: READER },
   R3: { need: READER },
   R4: { need: READER },
   R5: { need: READER },
   R6: { need: READER },
-  R7: { need: [...READER, ["wifi"]] },
-  R8: { need: [...READER, ["wifi"]] },
+  R7: { need: READER },
+  R8: { need: READER },
   B1: { need: [SCREEN, ["phone"]], optional: ["button"] },
   B2: { need: [SCREEN, ["phone"]], optional: ["button"] },
   B3: { need: [SCREEN, ["phone"]], optional: ["button"] },

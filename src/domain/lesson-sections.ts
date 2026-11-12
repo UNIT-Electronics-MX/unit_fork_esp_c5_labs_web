@@ -1,7 +1,8 @@
 import type { ResolvedLesson } from "./lesson";
+import { lessonMaterials } from "@/content/materials";
 
 /** The parts of a lesson page, in reading order. Each has its own icon and colour cue. */
-export type SectionKind = "goal" | "explain" | "connections" | "wiring" | "commands" | "steps" | "preview";
+export type SectionKind = "goal" | "materials" | "explain" | "connections" | "wiring" | "commands" | "steps" | "preview";
 
 export interface LessonSection {
   /** DOM id of the section, also its key in the section nav. */
@@ -24,6 +25,7 @@ export interface LessonSection {
  */
 export function lessonSections(lesson: ResolvedLesson): LessonSection[] {
   const sections: LessonSection[] = [{ id: "sec-goal", kind: "goal" }];
+  if (lessonMaterials(lesson.id).length) sections.push({ id: "sec-materials", kind: "materials" });
   lesson.panels.forEach((panel, i) =>
     sections.push({
       id: `sec-explain-${i}`,

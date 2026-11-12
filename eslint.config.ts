@@ -9,7 +9,7 @@ import tseslint from "typescript-eslint";
 // react-hooks `recommended` carries the React Compiler rules (purity, refs, set-state-in-effect,
 // immutability...), so a component that would de-opt the compiler fails lint instead.
 export default tseslint.config(
-  { ignores: ["dist", "docs-llm", "node_modules"] },
+  { ignores: ["dist", "docs-llm", "node_modules", "public/unit_microsupport_labs/esp_loader"] },
   {
     files: ["**/*.{ts,tsx}"],
     extends: [
