@@ -87,7 +87,10 @@ describe("content", () => {
     expect(boardOfLesson("B1")).toBe("devkitc-s3");
     expect(boardOfLesson("B1", "arduino")).toBe("devkitc-s3");
     expect(boardOfLesson("B8", "micropython")).toBe("pulsar-c5");
-    expect(boardOfLesson("W1", "micropython")).toBe("devkitc-s3");
+    expect(boardOfLesson("W1", "micropython")).toBe("pulsar-c5");
+    expect(boardOfLesson("W3", "arduino")).toBe("devkitc-s3");
+    expect(boardOfLesson("W2", "micropython")).toBe("pulsar-c5");
+    expect(boardOfLesson("W2", "lan")).toBe("devkitc-s3");
     expect(boardOfLesson("R1")).toBe("devkitc-s3");
     expect(boardOfLesson("nope")).toBe("devkitc-s3");
   });
@@ -107,6 +110,38 @@ describe("content", () => {
       expect(micropython.preview).toBeUndefined();
       expect(micropython.steps.join(" ")).toContain(`ble_${lesson.id.toLowerCase()}_`);
     }
+  });
+
+  it("runs W1 and basic W3 as MicroPython scripts on the C5 without the S3 screen", async () => {
+    const lessons = (await trackLessonsQuery("wifi", "es").queryFn!({} as never)).filter(isActive);
+    for (const [id, script, screen] of [["W1", "wifi_w1_scan.py", "wifi"], ["W3", "wifi_w3_basic.py", "weather"]] as const) {
+      const lesson = lessons.find((entry) => entry.id === id);
+      if (!lesson) throw new Error(`${id} is missing`);
+      const arduino = resolveLesson(lesson, "arduino");
+      const micropython = resolveLesson(lesson, "micropython");
+      expect(arduino.cmd).toContain(`wifi-lab-${id.toLowerCase()}`);
+      expect(arduino.preview?.widget).toBe(screen);
+      expect(micropython.cmd).toBe("");
+      expect(micropython.commands).toEqual([]);
+      expect(micropython.preview).toBeUndefined();
+      expect(micropython.steps.join(" ")).toContain(script);
+      if (id === "W1") expect(micropython.steps[0]).toContain("wifi_kit.py");
+    }
+  });
+
+  it("offers basic W2 beside its advanced script and two S3 variations", async () => {
+    const lessons = (await trackLessonsQuery("wifi", "es").queryFn!({} as never)).filter(isActive);
+    const w2 = lessons.find((entry) => entry.id === "W2");
+    if (!w2) throw new Error("W2 is missing");
+    expect(w2.variants?.map((variant) => variant.key)).toEqual(["lan", "remote", "micropython"]);
+    const micropython = resolveLesson(w2, "micropython");
+    expect(micropython.cmd).toBe("");
+    expect(micropython.preview).toBeUndefined();
+    expect(micropython.panels.map((panel) => panel.widget)).toEqual(["st7735Wiring", "webConcepts"]);
+    expect(micropython.steps.join(" ")).toContain("wifi_w2_display.py");
+    expect(micropython.steps.join(" ")).toContain("wifi_w2_basic.py");
+    expect(micropython.steps.join(" ")).toContain("wifi_w2_phone.py");
+    expect(resolveLesson(w2, "lan").preview?.widget).toBe("phone");
   });
 
   it.each([

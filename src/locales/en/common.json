@@ -65,6 +65,108 @@
       "replInterruptFailed": "Could not stop the program: the board did not return to >>> after Ctrl+C. Check that MicroPython is installed and press RESET before reconnecting.",
       "state": {"ready": "Ready", "connecting": "Connecting…", "connected": "Connected", "disconnecting": "Disconnecting…", "disconnected": "Disconnected", "error": "Error"}
     },
+    "imuCube": {
+      "title": "IMU cube",
+      "view": "View cube",
+      "backToCode": "Back to code",
+      "loading": "Loading cube…",
+      "boardMessages": "Board messages",
+      "noBoardMessages": "No other messages.",
+      "intro": "Run bmi270_cube.py and the cube turns with the BMI270, line by line from the serial port. Calibrate while the sensor lies still. The Processing sketch in sketches/processing/imu_cube reads the same lines.",
+      "label": "A 3D cube that turns with the BMI270 motion sensor",
+      "fallback": "The roll, pitch and yaw readings below still update.",
+      "roll": "Roll (x)",
+      "pitch": "Pitch (y)",
+      "yaw": "Yaw (z)",
+      "rate": "Lines per second",
+      "rateShort": "IMU Hz",
+      "calibrate": "Calibrate gyroscope (keep still)",
+      "calibrateShort": "Calibrate (keep still)",
+      "zeroYaw": "Zero the yaw",
+      "zeroYawShort": "Zero yaw",
+      "calibrated": "Gyroscope calibrated.",
+      "zeroed": "Yaw set to zero.",
+      "sendFailed": "Could not send the command: {{detail}}",
+      "feed": {
+        "waiting": "Waiting for IMU lines: connect the serial port and run bmi270_cube.py.",
+        "live": "Receiving IMU data.",
+        "stale": "No IMU lines for a moment: is bmi270_cube.py still running?"
+      }
+    },
+    "p4Sensors": {
+      "title": "P4 on-board sensors",
+      "view": "View sensors",
+      "backToCode": "Back to code",
+      "loading": "Loading sensor view…",
+      "boardMessages": "Board messages",
+      "noBoardMessages": "No other messages.",
+      "sceneLabel": "A 3D drone flown by the five on-board sensors",
+      "sceneFallback": "The five sensor readings remain visible.",
+      "sceneLegend": "Pressure lifts the drone · the magnetic field turns it · light moves the sun and switches the headlights · a near hand turns the radar red · the battery lights the LEDs · humidity thickens the clouds",
+      "effects": {
+        "climate": "Clouds and motor heat",
+        "pressure": "Altitude",
+        "light": "Sun, headlights and radar",
+        "battery": "Charge LEDs",
+        "magnetic": "Heading"
+      },
+      "north": "N",
+      "zeroAltitude": "Zero the altitude here",
+      "altitude": "Altitude {{value}} m",
+      "climate": "Temperature and humidity",
+      "humidity": "Humidity",
+      "pressure": "Pressure",
+      "light": "Light and proximity",
+      "proximity": "Prox.",
+      "lightLevel": {
+        "dark": "Dark",
+        "dim": "Dim",
+        "indoor": "Indoor",
+        "bright": "Bright",
+        "sun": "Sunlight"
+      },
+      "battery": "LiPo battery",
+      "batteryState": {
+        "ok": "gauge OK",
+        "low": "low battery",
+        "overRange": "gauge {{gauge}} %, using voltage",
+        "noCell": "No LiPo cell"
+      },
+      "batteryNote": "The battery gauge reads {{gauge}} %. The MAX17048 goes above 100 % when no LiPo is connected (it measures the charger) or before it has learnt a newly connected cell, so the charge shown comes from the cell voltage. The stream script restarts the gauge's estimate when it starts.",
+      "magnetic": "Magnetic field",
+      "noReading": "No reading",
+      "flow": {
+        "title": "Data flow from the sensors to this page",
+        "sensors": "Sensors",
+        "bus": "I²C bus",
+        "busPins": "GPIO2 SDA · GPIO3 SCL",
+        "answered_one": "{{count}}/5 answers",
+        "answered_other": "{{count}}/5 answer",
+        "chip": "ESP32-C5",
+        "usb": "USB serial",
+        "rate": "{{rate}} lines/s",
+        "lost_one": "{{count}} line lost",
+        "lost_other": "{{count}} lines lost",
+        "page": "This page",
+        "lines_one": "{{count}} line",
+        "lines_other": "{{count}} lines",
+        "feed": {
+          "waiting": "waiting",
+          "live": "live",
+          "stale": "stalled"
+        },
+        "sensorState": {
+          "ok": "answered",
+          "missing": "no reading",
+          "idle": "waiting"
+        }
+      },
+      "feed": {
+        "waiting": "Waiting for P4 lines: run p4_sensor_stream.py.",
+        "live": "Receiving board data.",
+        "stale": "No P4 lines are arriving: check that the script is still running."
+      }
+    },
     "examples": {
       "title": "MicroPython code editor",
       "intro": "Edit a Pulsar C5 example or open a .py file from your computer; run or save it on the board over serial.",

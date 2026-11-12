@@ -40,9 +40,10 @@ export function AppLayout() {
   const showCodePlatform = pathname === "/" || pathname === "/lessons" || platformRoute;
   const requestedPlatform = searchParams.get("variant");
   const selectedPlatform = platformRoute && isCodePlatform(requestedPlatform) ? requestedPlatform : codePlatform;
-  // S3-era lessons carry a notice until they are ported; the Pulsar C5 tracks do not.
-  const legacyLesson = lessonId !== undefined
-    && boardOfLesson(lessonId, platformRoute ? selectedPlatform : undefined) === "devkitc-s3";
+  // S3-era lessons carry a notice until they are ported; the Pulsar C5 tracks do not. W2 keeps
+  // its own variant switch, so its MicroPython variant is read from the address.
+  const variantKey = platformRoute ? selectedPlatform : requestedPlatform ?? undefined;
+  const legacyLesson = lessonId !== undefined && boardOfLesson(lessonId, variantKey) === "devkitc-s3";
   const wideWorkspace = pathname === "/" || pathname === "/lessons" || /^\/lessons\/[^/]+(?:\/code)?$/.test(pathname)
     || pathname === "/pinout" || pathname === "/flash" || pathname.startsWith("/datasheet")
     || pathname === "/log" || pathname === "/settings";

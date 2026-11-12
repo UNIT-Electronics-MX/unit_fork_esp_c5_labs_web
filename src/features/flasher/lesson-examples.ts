@@ -6,16 +6,19 @@ const LESSON_EXAMPLES: Readonly<Record<string, readonly string[]>> = {
   P2: ["rgb-mixer"],
   P3: ["adc"],
   // The scanner first, then one script per on-board sensor in address order.
-  P4: ["i2c-scan", "mmc5603-compass", "max17048-battery", "fht40-temp-humidity", "lps22hb-pressure", "vcnl4040-light-prox"],
+  P4: ["i2c-scan", "p4-sensor-stream", "mmc5603-compass", "max17048-battery", "fht40-temp-humidity", "lps22hb-pressure", "vcnl4040-light-prox"],
   P5: ["microsd"],
   P6: ["uart-loopback"],
-  D1: ["imu-bmi270", "imu-bmi270-motion"],
+  D1: ["imu-bmi270", "imu-bmi270-motion", "imu-bmi270-cube"],
   D2: ["oled-light"],
   D3: ["tmp235-temperature"],
   O1: ["oled"],
   O2: ["st7735-display"],
   O3: ["st7735-showcase"],
   I1: ["wifi-thingspeak"],
+  W1: ["wifi-w1-scan"],
+  W2: ["wifi-w2-display", "wifi-w2-basic", "wifi-w2-phone"],
+  W3: ["wifi-w3-basic", "wifi-w3-oracle"],
   I2: ["ble-touch"],
   B1: ["ble-b1-listen"],
   B2: ["ble-b2-beacon"],
@@ -28,6 +31,11 @@ const LESSON_EXAMPLES: Readonly<Record<string, readonly string[]>> = {
 };
 
 export const lessonExamples = (lessonId: string): readonly string[] => LESSON_EXAMPLES[lessonId] ?? [];
+
+/** Lessons whose workbench shows the live IMU cube beside the terminal (bmi270_cube.py). */
+const IMU_CUBE_LESSONS: ReadonlySet<string> = new Set(["D1"]);
+
+export const showsImuCube = (lessonId: string): boolean => IMU_CUBE_LESSONS.has(lessonId);
 
 /** The examples named by `ids`, in that order; ids the manifest lacks are skipped. */
 export function pickExamples<T extends { readonly id: string }>(examples: readonly T[], ids: readonly string[]): T[] {

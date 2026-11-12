@@ -58,7 +58,9 @@ export function LessonTabs({
   const { data: index } = useQuery({ ...firmwareIndexQuery(), enabled: !!env });
   const progress = useAllProgress();
   const sharedLanguage = followsCodePlatform(lesson);
-  const pythonOnly = !lesson.variants?.length && lessonExamples(lesson.id).length > 0;
+  // A lesson with only MicroPython examples, or W2's MicroPython variant next to its S3 ones.
+  const pythonOnly = lessonExamples(lesson.id).length > 0
+    && (!lesson.variants?.length || lesson.variantKey === "micropython");
   if (!env && !sharedLanguage && !pythonOnly) return null;
   const files = env ? index?.envs.find((e) => e.env === env)?.files ?? [] : [];
   const own = files.filter((f) => f.role === "lab");

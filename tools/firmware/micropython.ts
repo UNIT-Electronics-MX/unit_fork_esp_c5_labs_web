@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-/** Local MicroPython scripts and drivers used to supplement or correct the firmware checkout. */
+/** Local UART pin correction for older firmware checkouts. */
 const OWN_SCRIPTS = join(dirname(fileURLToPath(import.meta.url)), "micropython");
 
 export interface MicroPythonExample {
@@ -82,23 +82,7 @@ export function collectMicroPython(root: string): MicroPythonExamples | null {
     }
     return example;
   });
-  // Bundle the D1 motion follow-up and its driver alongside the ID check supplied by the firmware checkout.
-  const motionExampleId = "imu-bmi270-motion";
-  if (seen.has("imu-bmi270") && !seen.has(motionExampleId)) {
-    seen.add(motionExampleId);
-    examples.push({
-      id: motionExampleId,
-      title: "QWIIC · movimiento BMI270",
-      titleEn: "QWIIC · BMI270 motion",
-      file: "bmi270_motion.py",
-      description: "Lee aceleración y velocidad angular del BMI270 por QWIIC.",
-      descriptionEn: "Read BMI270 acceleration and angular velocity over QWIIC.",
-      requires: ["BMI270 en QWIIC", "bmi270.py guardado en la placa"],
-      requiresEn: ["BMI270 on QWIIC", "bmi270.py saved on the board"],
-      code: readFileSync(join(OWN_SCRIPTS, "bmi270_motion.py"), "utf8"),
-    });
-  }
-  // ST7735 display and showcase scripts come directly from the firmware manifest.
+  // BMI270 examples and their driver come from the firmware manifest, like the other sensors.
   const seenLibraries = new Set<string>();
   const libraries = ("libraries" in manifest && Array.isArray(manifest.libraries) ? manifest.libraries : []).map((item: unknown) => {
     if (!item || typeof item !== "object" || !("id" in item) || typeof item.id !== "string"
@@ -125,26 +109,7 @@ export function collectMicroPython(root: string): MicroPythonExamples | null {
       code: readFileSync(join(dir, "libraries", item.file), "utf8"),
     };
   });
-  if (seen.has(motionExampleId)) {
-    const bmi270Examples = ["imu-bmi270", motionExampleId];
-    const existing = libraries.findIndex((library) => library.id === "bmi270");
-    if (existing >= 0) {
-      libraries[existing] = {
-        ...libraries[existing],
-        examples: [...new Set([...libraries[existing].examples, ...bmi270Examples])],
-      };
-    } else {
-      libraries.push({
-        id: "bmi270",
-        file: "bmi270.py",
-        source: "https://github.com/UNIT-Electronics-MX/unit_devlab_micropython_libraries/blob/main/software/bmi270/bmi270.py",
-        license: "MIT",
-        examples: bmi270Examples,
-        code: readFileSync(join(OWN_SCRIPTS, "bmi270.py"), "utf8"),
-      });
-    }
-  }
-  const st7735Examples = ["st7735-display", "st7735-showcase"].filter((id) => seen.has(id));
+  const st7735Examples = ["st7735-display", "st7735-showcase", "wifi-w2-display"].filter((id) => seen.has(id));
   const st7735Path = join(dir, "libraries", "st7735.py");
   if (st7735Examples.length && existsSync(st7735Path)) {
     // The firmware checkout has this driver even when its license is not listed

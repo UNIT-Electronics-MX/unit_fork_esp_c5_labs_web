@@ -18,12 +18,16 @@ export interface SerialSnapshot {
 }
 
 const MAX_OUTPUT = 100_000;
+const STREAM_OUTPUT_INTERVAL_MS = 100;
 const BUSY = "Serial console is busy.";
 const NOT_CONNECTED = "Connect the serial console first.";
 
 export class SerialConnection {
   private snapshot: SerialSnapshot = { state: "ready", output: "", baudRate: 115200, operation: false, error: "" };
   private readonly listeners = new Set<() => void>();
+  private readonly textListeners = new Set<(text: string) => void>();
+  private pendingOutput = "";
+  private outputTimer: ReturnType<typeof setTimeout> | null = null;
   private session: SerialSession | null = null;
   private port: TerminalPort | null = null;
   private sending = false;
@@ -34,6 +38,15 @@ export class SerialConnection {
   };
 
   getSnapshot = (): SerialSnapshot => this.snapshot;
+
+  /**
+   * Text exactly as the board sends it, chunk by chunk, for live sensor views.
+   * The app's own notices and command echoes are not included.
+   */
+  subscribeText = (listener: (text: string) => void): (() => void) => {
+    this.textListeners.add(listener);
+    return () => this.textListeners.delete(listener);
+  };
 
   private set(patch: Partial<SerialSnapshot>) {
     this.snapshot = { ...this.snapshot, ...patch };
@@ -54,10 +67,33 @@ export class SerialConnection {
   }
 
   append(text: string) {
+    this.flushOutput();
     if (text) this.set({ output: (this.snapshot.output + text).slice(-MAX_OUTPUT) });
   }
 
+  private flushOutput = () => {
+    if (this.outputTimer !== null) clearTimeout(this.outputTimer);
+    this.outputTimer = null;
+    const text = this.pendingOutput;
+    this.pendingOutput = "";
+    if (text) this.set({ output: (this.snapshot.output + text).slice(-MAX_OUTPUT) });
+  };
+
+  private receive(text: string) {
+    for (const listener of this.textListeners) listener(text);
+    if (!this.textListeners.size) {
+      this.append(text);
+      return;
+    }
+    // Keep live sensor feeds immediate while updating the long terminal log at most 10 times/s.
+    this.pendingOutput = (this.pendingOutput + text).slice(-MAX_OUTPUT);
+    if (this.outputTimer === null) this.outputTimer = setTimeout(this.flushOutput, STREAM_OUTPUT_INTERVAL_MS);
+  }
+
   clearOutput() {
+    if (this.outputTimer !== null) clearTimeout(this.outputTimer);
+    this.outputTimer = null;
+    this.pendingOutput = "";
     this.set({ output: "" });
   }
 
@@ -73,7 +109,7 @@ export class SerialConnection {
     try {
       const port = await picking;
       this.port = port;
-      session = new SerialSession(port, (text) => this.append(text), (cause) => this.closed(session, cause));
+      session = new SerialSession(port, (text) => this.receive(text), (cause) => this.closed(session, cause));
       this.session = session;
       await session.open(this.snapshot.baudRate);
       if (stopPython) await session.stopPython();
@@ -95,6 +131,7 @@ export class SerialConnection {
 
   private closed(session: SerialSession | null, cause?: unknown) {
     if (!session || this.session !== session) return;
+    this.flushOutput();
     this.session = null;
     this.port = null;
     this.set({

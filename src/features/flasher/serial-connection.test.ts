@@ -50,4 +50,45 @@ describe("SerialConnection", () => {
     expect(await connection.takePort()).toBe(port);
     expect(connection.getSnapshot().state).toBe("disconnected");
   });
+
+  it("streams the board's text to text listeners without the app's own echoes", async () => {
+    const connection = new SerialConnection();
+    const { port, receive } = fakePort();
+    const chunks: string[] = [];
+    const unsubscribe = connection.subscribeText((text) => chunks.push(text));
+    await connection.connect(async () => port);
+    receive("IMU,1,2,3\n");
+    await vi.waitFor(() => expect(chunks).toEqual(["IMU,1,2,3\n"]));
+    await connection.send("z", "none");
+    expect(chunks).toEqual(["IMU,1,2,3\n"]);
+    expect(connection.getSnapshot().output).toContain("› z");
+    unsubscribe();
+    receive("ACK,z\n");
+    await vi.waitFor(() => expect(connection.getSnapshot().output).toContain("ACK,z"));
+    expect(chunks).toHaveLength(1);
+  });
+
+  it("delivers IMU chunks immediately while batching terminal output", async () => {
+    const connection = new SerialConnection();
+    const { port, receive } = fakePort();
+    const chunks: string[] = [];
+    const unsubscribe = connection.subscribeText((text) => chunks.push(text));
+    await connection.connect(async () => port);
+    vi.useFakeTimers();
+    try {
+      receive("IMU,1\n");
+      receive("IMU,2\n");
+      for (let i = 0; i < 8 && chunks.length < 2; i++) await Promise.resolve();
+      expect(chunks).toEqual(["IMU,1\n", "IMU,2\n"]);
+      expect(connection.getSnapshot().output).toBe("");
+      await vi.advanceTimersByTimeAsync(100);
+      expect(connection.getSnapshot().output).toBe("IMU,1\nIMU,2\n");
+      connection.clearOutput();
+      expect(connection.getSnapshot().output).toBe("");
+    } finally {
+      vi.useRealTimers();
+      unsubscribe();
+      await connection.disconnect();
+    }
+  });
 });

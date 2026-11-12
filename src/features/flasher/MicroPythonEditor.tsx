@@ -65,6 +65,9 @@ export function MicroPythonEditor({
   docked = false,
   blocked = false,
   lessonExampleIds = [],
+  onRun,
+  onOpenImuCube,
+  onOpenP4Sensors,
 }: {
   initialId?: string;
   terminalRef?: RefObject<SerialTerminalHandle | null>;
@@ -75,6 +78,10 @@ export function MicroPythonEditor({
   blocked?: boolean;
   /** In a lesson: only these examples, with a file list for larger sets. */
   lessonExampleIds?: readonly string[];
+  /** Opens a live sensor view after its script was sent to the board. */
+  onRun?: (exampleId: string) => void;
+  onOpenImuCube?: () => void;
+  onOpenP4Sensors?: () => void;
 }) {
   const { t, i18n } = useTranslation();
   const spanish = i18n.resolvedLanguage?.startsWith("es") ?? false;
@@ -119,7 +126,7 @@ export function MicroPythonEditor({
   const requiredLibraries = selected ? data?.libraries?.filter((library) => library.examples.includes(selected.id)) ?? [] : [];
   const code = selected ? drafts[selected.id] ?? selected.code : "";
   const edited = selected ? code !== selected.code : false;
-  const tftDraft = selected && (selected.id === "st7735-display" || selected.id === "st7735-showcase") && edited;
+  const tftDraft = selected && (selected.id === "st7735-display" || selected.id === "st7735-showcase" || selected.id === "wifi-w2-display") && edited;
   const outputName = selected ? filenames[selected.id] || selected.file : "script.py";
   const customLoaded = loadedFile || (selected ? Boolean(filenames[selected.id] && filenames[selected.id] !== selected.file) : false);
   const lineCount = code.split("\n").length;
@@ -264,6 +271,7 @@ export function MicroPythonEditor({
       if (action === "run") await terminalRef.current.runPython(code);
       else await terminalRef.current.savePython(outputName, code);
       setNotice(t(`flasher.examples.${action}Done`, { file: outputName }));
+      if (action === "run") onRun?.(selected.id);
       recordBrowserBenchAction(action === "run" ? {
         types: ["observe"], title: "MicroPython script run", where: "Browser editor",
         why: "Sent a script to the board's REPL.", result: "Script sent; its source and output were not saved here.",
@@ -312,6 +320,12 @@ export function MicroPythonEditor({
             )}
             <span className={styles.toolDivider} aria-hidden="true" />
             <button className={styles.run} type="button" disabled={!connected || !!operation || blocked} title="Ctrl+Enter" onClick={() => void boardAction("run")}><EditorActionIcon name="play" />{t("flasher.examples.run")}</button>
+            {onOpenImuCube && selected.id === "imu-bmi270-cube" ? (
+              <button type="button" onClick={onOpenImuCube} aria-haspopup="dialog">{t("flasher.imuCube.view")}</button>
+            ) : null}
+            {onOpenP4Sensors && selected.id === "p4-sensor-stream" ? (
+              <button type="button" onClick={onOpenP4Sensors} aria-haspopup="dialog">{t("flasher.p4Sensors.view")}</button>
+            ) : null}
             <button className={styles.stop} type="button" disabled={!connected || blocked} onClick={() => void boardAction("stop")}><EditorActionIcon name="stop" />{t("flasher.examples.stop")}</button>
             <button type="button" disabled={!connected || !!operation || blocked} title="Ctrl+S" onClick={() => void boardAction("save")}><EditorActionIcon name="save" />{t("flasher.examples.save")}</button>
             {requiredLibraries.map((library) => <button key={library.id} type="button" disabled={!connected || !!operation || blocked} onClick={() => void installLibrary(library)}><EditorActionIcon name="save" />{t("flasher.examples.installLibrary", { file: library.file })}</button>)}

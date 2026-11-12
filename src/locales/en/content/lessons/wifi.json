@@ -61,7 +61,53 @@
       "The status view opens by itself: clock, IP address, <code>bench.local</code>, signal chart. Try <code>ping bench.local</code> from your Mac, and type <code>ping</code> in the monitor to test the router from the board's side.",
       "Unplug and replug: it rejoins by itself. <code>forget</code> erases the saved network."
     ],
-    "note": "5 GHz networks never appear: the S3 radio is 2.4 GHz only. The monitor shows your neighbours' network names and what you type, including the password. Don't paste that part into anything shared."
+    "note": "5 GHz networks never appear: the S3 radio is 2.4 GHz only. The monitor shows your neighbours' network names and what you type, including the password. Don't paste that part into anything shared.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "PlatformIO lab and screen"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "pins": {
+          "0": {
+            "role": "BOOT"
+          },
+          "1": {
+            "role": "RGB"
+          }
+        },
+        "short": "Scanner script and serial commands",
+        "goal": "Scan the air and join your network from MicroPython's <code>network</code> module. <code>wifi_w1_scan.py</code> lists every network nearby, <b>2.4 and 5 GHz</b>, then joins yours: you pick it from the scan table and type the password once. It is kept in the chip's NVS, never in the script. A status view shows internet time, the IP address, <code>bench.local</code> and a live signal chart.",
+        "goalLine": "Find your network in the scan, join it without writing the password in code, and reach the board by name.",
+        "goalCheck": [
+          "The scan table lists networks with signal, channel, <b>band</b> and security, strongest first.",
+          "<code>join</code> plus your password on the next line joins it, and the LED turns green.",
+          "<code>status</code> shows the IP, <code>bench.local</code> and the time, and <code>ping bench.local</code> from your computer gets answers.",
+          "Run the script again: it rejoins by itself, with no password typed."
+        ],
+        "learn": [
+          "network.WLAN",
+          "dual-band scan",
+          "channels & dBm",
+          "security types",
+          "NVS storage",
+          "internet time (NTP)",
+          "mDNS"
+        ],
+        "steps": [
+          "Open <b>Code</b>, connect the serial REPL and press <b>Install wifi_kit.py</b> once: every Wi-Fi lab imports it.",
+          "Run <code>wifi_w1_scan.py</code>. <b>Checkpoint 1:</b> the first scan table, with a band column. The LED is blue while it scans.",
+          "Type <code>channels</code>: how crowded each 2.4 GHz channel is, and which 5 GHz channels are in use.",
+          "Find your network's number and type <code>join 3</code> (your number), then your password on the next line, or both at once: <code>join 3 yourpassword</code>. The number counts in the last table printed. Not in the table? <code>join Your Network</code>. The script never prints the password.",
+          "Not joining? Every 3 s the console says how it is going, and after a failure it says why: <i>wrong password?</i> or <i>network not found</i>. Check the name and password, then <code>join</code> again; <code>forget</code> clears a wrong one.",
+          "<b>Checkpoint 2:</b> <code>+ joined</code> and the status view: IP address, <code>bench.local</code>, channel and band. The LED turns green.",
+          "Type <code>tz -6</code> (your offset from UTC) for local time, and <code>signal</code> for the last minute as a chart. From your computer, try <code>ping bench.local</code>; from the board, <code>reach</code> tests the router.",
+          "Type <code>stop</code> (or press <b>Stop</b>) and run the script again: it rejoins by itself. <code>forget</code> erases the saved network; so does <code>FORGET_SAVED = True</code> at the top of the script, before it tries to join. BOOT: click = next view, double-click = scan now, long press = auto-scan on/off."
+        ],
+        "note": "The web terminal lists every line you send, including the password: don't share that screen. The network is saved in the NVS namespace <code>mpwifi</code>, apart from the Arduino labs' one. MicroPython has no ICMP ping, so <code>reach</code> times a TCP connection to port 80: a reply or a refusal both mean the host is there."
+      }
+    }
   },
   "W2": {
     "title": "Phone control",
@@ -155,6 +201,117 @@
           "Unplug the board and plug it back in: it rejoins Wi-Fi and dials in again by itself. <code>relay off</code> stops the link."
         ],
         "note": "Quick-tunnel addresses change every time you restart cloudflared: type the new one with <code>relay</code>, or use ngrok's free static domain once. Firmware updates stay on your Wi-Fi for now (variation 1). Stop the tunnel (Ctrl+C) when you're done and the public address stops working. Hosting the server instead: run the same app there (<code>pnpm build && pnpm start</code>, <code>ESP_MODE=relay</code>, <code>HOST=0.0.0.0</code>, <code>TRUST_PROXY=true</code>) and point <code>relay</code> at its address. Want to test without a tunnel first? Set <code>HOST=0.0.0.0</code> in .env and type <code>relay ws://&lt;your Mac's IP&gt;:8787</code>."
+      },
+      "micropython": {
+        "label": "MicroPython · Pulsar C5",
+        "pins": {
+          "0": {
+            "role": "VCC"
+          },
+          "1": {
+            "role": "SCL / SCK"
+          },
+          "2": {
+            "role": "CS"
+          },
+          "3": {
+            "role": "DC"
+          },
+          "4": {
+            "role": "RES"
+          },
+          "5": {
+            "role": "GND"
+          },
+          "6": {
+            "role": "SDA / MOSI"
+          },
+          "7": {
+            "role": "RGB"
+          }
+        },
+        "short": "Wi-Fi signal on TFT and LED control from a phone",
+        "wiring": {
+          "head": [
+            "ST7735 TFT",
+            "Pulsar C5",
+            "Purpose"
+          ],
+          "rows": [
+            [
+              "VCC",
+              "3V3",
+              "3.3 V power"
+            ],
+            [
+              "GND",
+              "GND",
+              "common ground"
+            ],
+            [
+              "SCL",
+              "D13 / GPIO27",
+              "SPI clock"
+            ],
+            [
+              "SDA",
+              "D11 / GPIO7",
+              "SPI data (MOSI)"
+            ],
+            [
+              "CS",
+              "D4 / GPIO9",
+              "chip select"
+            ],
+            [
+              "DC",
+              "A2 / GPIO4",
+              "data or command"
+            ],
+            [
+              "RES",
+              "A3 / GPIO5",
+              "display reset"
+            ],
+            [
+              "BLK",
+              "3V3",
+              "backlight; leave open if already connected"
+            ]
+          ]
+        },
+        "panels": {
+          "0": {
+            "title": "Connect the ST7735 screen"
+          },
+          "1": {
+            "title": "How the pieces talk"
+          }
+        },
+        "goal": "<code>wifi_w2_display.py</code> combines a live Wi-Fi signal display on an 80×160 ST7735 TFT with a local phone page for controlling the on-board RGB LED. The screen shows RSSI in dBm, bars, a 24-second trend and the board's IP. <code>wifi_w2_basic.py</code> works without a TFT; <code>wifi_w2_phone.py</code> adds nearby-network scans and remote control.",
+        "goalLine": "See live Wi-Fi signal on the TFT while controlling the RGB LED from your phone.",
+        "goalCheck": [
+          "The TFT shows RSSI, bars, a signal history and the board's IP without flicker.",
+          "The serial console prints <code>http://&lt;board IP&gt;</code>.",
+          "The phone page's colour buttons change the on-board RGB LED and its label on the TFT."
+        ],
+        "learn": [
+          "network.WLAN",
+          "RSSI in dBm",
+          "SPI",
+          "RGB565 framebuffer",
+          "HTTP GET",
+          "NeoPixel"
+        ],
+        "steps": [
+          "Unplug USB and wire the 80×160 ST7735 as in O2, with CS on D4/GPIO9. Its SDA/SCL labels mean SPI data/clock.",
+          "Open <b>Code</b>, select <code>wifi_w2_display.py</code> and connect the serial REPL. Install <code>st7735.py</code> if it is not already on the board.",
+          "Enter <code>WIFI_SSID</code> and <code>WIFI_PASSWORD</code> in the script, or connect with W1 first and keep Wi-Fi active.",
+          "Run the script. <b>Checkpoint 1:</b> the TFT shows RSSI, bars, a live trend and IP, while the console prints the board's <code>http://</code> address.",
+          "On a phone connected to the same Wi-Fi, open that address and tap Red, Green, Blue or Off. <b>Checkpoint 2:</b> the on-board LED and TFT colour label change.",
+          "Press <b>Stop</b> to close the server. Without a TFT, choose <code>wifi_w2_basic.py</code>. For REST, WebSocket and remote relay, choose <code>wifi_w2_phone.py</code> and install <code>wifi_kit.py</code> first."
+        ],
+        "note": "The phone page is local and has no login. Do not expose port 80 to the internet. The screen uses the green-tab 80×160 ST7735 offsets from O2; adjust xoffset/yoffset for a different module. Keep your Wi-Fi password out of a shared copy of the script."
       }
     }
   },
@@ -218,7 +375,45 @@
       "Ask it things: <code>ask should I bike to work?</code> or <code>ask what should I build next?</code>. It knows your weather and the board's state.",
       "Switch models without reflashing: <code>ai model oracle-fast</code>, or add any provider to <code>config.yaml</code> (OpenAI, Gemini, a local Ollama model) and pick its name. Compare the time and tokens under each answer."
     ],
-    "note": "Provider keys stay in the gateway's .env on your Mac. The board only stores the gateway's own key (NVS, never printed: the log shows its last 4 characters), and <code>ai key forget</code> erases it. On your Wi-Fi the board talks plain http to the gateway; for anywhere, put the gateway behind https (a tunnel or a server, as in W2 variation 2). Set a spend limit at each provider; the board asks at most once per 10 s and never by itself."
+    "note": "Provider keys stay in the gateway's .env on your Mac. The board only stores the gateway's own key (NVS, never printed: the log shows its last 4 characters), and <code>ai key forget</code> erases it. On your Wi-Fi the board talks plain http to the gateway; for anywhere, put the gateway behind https (a tunnel or a server, as in W2 variation 2). Set a spend limit at each provider; the board asks at most once per 10 s and never by itself.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "PlatformIO lab and screen"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "pins": {
+          "0": {
+            "role": "BOOT"
+          },
+          "1": {
+            "role": "RGB"
+          }
+        },
+        "short": "Current weather over HTTPS",
+        "goal": "<code>wifi_w3_basic.py</code> fetches current weather from Open-Meteo over HTTPS and prints the temperature, humidity and wind. Set your coordinates in the script; no account or API key is needed. The optional <code>wifi_w3_oracle.py</code> adds forecasts and an AI oracle.",
+        "goalLine": "Print the current weather for your coordinates in the serial console.",
+        "goalCheck": [
+          "The board joins Wi-Fi and prints its IP address.",
+          "The console prints current temperature, humidity and wind for the selected coordinates."
+        ],
+        "learn": [
+          "network.WLAN",
+          "HTTPS with requests",
+          "JSON",
+          "REST APIs"
+        ],
+        "steps": [
+          "Open <b>Code</b>, select <code>wifi_w3_basic.py</code> and connect the serial REPL. This basic script needs no extra library.",
+          "Set <code>LATITUDE</code>, <code>LONGITUDE</code> and <code>PLACE</code> for your location.",
+          "Enter <code>WIFI_SSID</code> and <code>WIFI_PASSWORD</code>, or connect with W1 first and keep Wi-Fi active.",
+          "Run the script. <b>Checkpoint:</b> the console prints temperature, humidity and wind, then the script ends.",
+          "For forecasts and the AI oracle, select the optional <code>wifi_w3_oracle.py</code>; install <code>wifi_kit.py</code> and save a network with W1 first."
+        ],
+        "note": "The basic script makes one weather request each time you run it. MicroPython's HTTPS support may not validate the server certificate on every firmware build. Keep your Wi-Fi password out of a shared copy of the script."
+      }
+    }
   },
   "I1": {
     "title": "Wi-Fi to the cloud",

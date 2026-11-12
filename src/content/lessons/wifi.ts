@@ -2,6 +2,7 @@
 // <b>, <i>, <code> and <span class="snd-parts|need|opt">.
 import type { LessonEntry } from "@/domain/lesson";
 import { c5WifiLesson } from "./c5-wireless";
+import { w2MicroPython, wifiVariants } from "./wifi-micropython";
 
 export const wifiLessons = [
   {
@@ -103,6 +104,7 @@ export const wifiLessons = [
     preview: {
       widget: "wifi",
     },
+    variants: wifiVariants.W1,
   },
   {
     kind: "lesson",
@@ -236,6 +238,7 @@ export const wifiLessons = [
         ],
         note: "Quick-tunnel addresses change every time you restart cloudflared: type the new one with <code>relay</code>, or use ngrok's free static domain once. Firmware updates stay on your Wi-Fi for now (variation 1). Stop the tunnel (Ctrl+C) when you're done and the public address stops working. Hosting the server instead: run the same app there (<code>pnpm build && pnpm start</code>, <code>ESP_MODE=relay</code>, <code>HOST=0.0.0.0</code>, <code>TRUST_PROXY=true</code>) and point <code>relay</code> at its address. Want to test without a tunnel first? Set <code>HOST=0.0.0.0</code> in .env and type <code>relay ws://&lt;your Mac's IP&gt;:8787</code>.",
       },
+      w2MicroPython,
     ],
   },
   {
@@ -334,6 +337,7 @@ export const wifiLessons = [
     preview: {
       widget: "weather",
     },
+    variants: wifiVariants.W3,
   },
   c5WifiLesson,
   {

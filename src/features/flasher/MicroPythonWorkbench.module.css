@@ -10,3 +10,65 @@
   .workbench > [data-workspace-guide] { grid-column: 1 / -1; }
   .workbench > [data-console-only] { grid-column: 1 / -1; }
 }
+.viewerDialog {
+  inline-size: min(1120px, calc(100vw - 20px));
+  block-size: min(820px, calc(100dvh - 20px));
+  max-inline-size: none;
+  max-block-size: none;
+  margin: auto;
+  padding: 14px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  color: var(--ink);
+  background: var(--surface);
+  box-shadow: 0 20px 60px -20px #0008;
+}
+.viewerDialog::backdrop { background: #0009; }
+.viewerDialog[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 10px; }
+.viewerDialogHead { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; }
+.viewerDialogHead > div:first-child { display: flex; align-items: baseline; gap: 12px; }
+.viewerDialogHead h2 { margin: 0; font: 750 20px var(--font-display); }
+.viewerDialogHead span { color: var(--muted); font: 650 12px var(--font-mono); }
+.viewerDialogHead span[data-connected="true"] { color: var(--ok); }
+.viewerDialogActions { display: flex; flex-wrap: wrap; gap: 6px; }
+.viewerDialogActions button {
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  color: var(--ink);
+  background: var(--bg);
+  cursor: pointer;
+  font: 650 12px var(--font-display);
+}
+.viewerDialogActions button:disabled { cursor: default; opacity: .5; }
+.viewerDialogActions button:focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
+.viewerDialogActions .viewerDialogClose { color: var(--surface); background: var(--ink); border-color: var(--ink); }
+.viewerDialogBody { min-height: 0; overflow: hidden; }
+.viewerDialogLog { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 8px; min-width: 0; }
+.viewerDialogLog > span { color: var(--muted); font: 650 11px var(--font-mono); }
+.viewerDialogLog pre {
+  min-width: 0;
+  max-height: 54px;
+  margin: 0;
+  padding: 6px 8px;
+  overflow: hidden;
+  border-radius: var(--radius-s);
+  color: var(--term-ink);
+  background: var(--term-bg);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 11px/1.3 var(--font-mono);
+}
+.viewerDialogLog p { grid-column: 1 / -1; margin: 0; color: var(--danger); font-size: 12px; }
+@media (max-width: 600px) {
+  .viewerDialog { padding: 8px; }
+  .viewerDialogHead h2 { font-size: 17px; }
+  .viewerDialogActions button { min-height: 30px; padding: 4px 7px; }
+  .viewerDialogLog { grid-template-columns: minmax(0, 1fr); gap: 3px; }
+}
+@media (max-height: 540px) {
+  .viewerDialogLog { display: none; }
+  .viewerDialog[open] { gap: 5px; }
+}

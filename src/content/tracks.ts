@@ -87,11 +87,12 @@ export const LANGUAGE_LESSON_IDS: ReadonlySet<string> = new Set([
   "O1",
   "D1", "D2", "D3",
   "I1", "I2",
+  "W1", "W3",
   "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8",
 ]);
 
 /** Lessons whose MicroPython variant already runs on the Pulsar C5 while the Arduino one is an S3 lab. */
-const C5_MICROPYTHON_PORTS: ReadonlySet<string> = new Set(["B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"]);
+const C5_MICROPYTHON_PORTS: ReadonlySet<string> = new Set(["W1", "W2", "W3", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8"]);
 
 export const DEFAULT_LESSON_ID = "00";
 

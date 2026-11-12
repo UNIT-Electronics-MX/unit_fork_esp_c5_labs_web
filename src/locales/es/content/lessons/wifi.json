@@ -61,7 +61,45 @@
       "La vista de estado se abre sola: reloj, dirección IP, <code>bench.local</code>, gráfico de señal. Prueba <code>ping bench.local</code> desde tu Mac y escribe <code>ping</code> en el monitor para probar el router desde el lado de la placa.",
       "Desconecta y vuelve a conectar: se reconecta sola. <code>forget</code> borra la red guardada."
     ],
-    "note": "Las redes de 5 GHz nunca aparecen: la radio del S3 es solo de 2,4 GHz. El monitor muestra los nombres de las redes de tus vecinos y lo que escribes, contraseña incluida. No pegues esa parte en nada que compartas."
+    "note": "Las redes de 5 GHz nunca aparecen: la radio del S3 es solo de 2,4 GHz. El monitor muestra los nombres de las redes de tus vecinos y lo que escribes, contraseña incluida. No pegues esa parte en nada que compartas.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Laboratorio PlatformIO y pantalla"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Script escáner y comandos serie",
+        "goal": "Escanea el aire y conéctate a tu red con el módulo <code>network</code> de MicroPython. <code>wifi_w1_scan.py</code> lista todas las redes cercanas, de <b>2,4 y 5 GHz</b>, y luego se une a la tuya: la eliges en la tabla del escaneo y escribes la contraseña una sola vez. Se guarda en la NVS del chip, nunca en el script. Una vista de estado muestra la hora de internet, la dirección IP, <code>bench.local</code> y un gráfico de señal en vivo.",
+        "goalLine": "Encuentra tu red en el escaneo, únete sin escribir la contraseña en el código y llega a la placa por su nombre.",
+        "goalCheck": [
+          "La tabla del escaneo lista las redes con señal, canal, <b>banda</b> y seguridad, la más fuerte primero.",
+          "<code>join</code> y tu contraseña en la línea siguiente te unen a ella, y el LED se pone verde.",
+          "<code>status</code> muestra la IP, <code>bench.local</code> y la hora, y <code>ping bench.local</code> desde tu ordenador recibe respuesta.",
+          "Vuelve a ejecutar el script: se reconecta solo, sin escribir la contraseña."
+        ],
+        "learn": [
+          "network.WLAN",
+          "escaneo de doble banda",
+          "canales y dBm",
+          "tipos de seguridad",
+          "almacenamiento NVS",
+          "hora de internet (NTP)",
+          "mDNS"
+        ],
+        "steps": [
+          "Abre <b>Código</b>, conecta el REPL serie y pulsa <b>Instalar wifi_kit.py</b> una vez: todos los laboratorios Wi-Fi lo importan.",
+          "Ejecuta <code>wifi_w1_scan.py</code>. <b>Punto de control 1:</b> la primera tabla del escaneo, con una columna de banda. El LED se pone azul mientras escanea.",
+          "Escribe <code>channels</code>: lo ocupado que está cada canal de 2,4 GHz y qué canales de 5 GHz se usan.",
+          "Busca el número de tu red y escribe <code>join 3</code> (tu número); luego tu contraseña en la línea siguiente, o las dos cosas a la vez: <code>join 3 tucontraseña</code>. El número se cuenta en la última tabla impresa. ¿No está en la tabla? <code>join Tu Red</code>. El script nunca imprime la contraseña.",
+          "¿No se conecta? Cada 3 s la consola dice cómo va y, si falla, dice por qué: <i>wrong password?</i> (contraseña incorrecta) o <i>network not found</i> (red no encontrada). Revisa el nombre y la contraseña y vuelve a usar <code>join</code>; <code>forget</code> borra una red mal guardada.",
+          "<b>Punto de control 2:</b> <code>+ joined</code> y la vista de estado: dirección IP, <code>bench.local</code>, canal y banda. El LED se pone verde.",
+          "Escribe <code>tz -6</code> (tu diferencia con UTC) para la hora local, y <code>signal</code> para ver el último minuto como gráfico. Desde tu ordenador prueba <code>ping bench.local</code>; desde la placa, <code>reach</code> prueba el router.",
+          "Escribe <code>stop</code> (o pulsa <b>Detener</b>) y ejecuta el script otra vez: se reconecta solo. <code>forget</code> borra la red guardada; también <code>FORGET_SAVED = True</code> al inicio del script, antes de intentar conectar. BOOT: clic = siguiente vista, doble clic = escanear ya, pulsación larga = escaneo automático sí/no."
+        ],
+        "note": "La terminal web muestra cada línea que envías, contraseña incluida: no compartas esa pantalla. La red se guarda en el espacio NVS <code>mpwifi</code>, aparte del de los laboratorios Arduino. MicroPython no tiene ping ICMP, así que <code>reach</code> mide una conexión TCP al puerto 80: tanto una respuesta como un rechazo significan que el equipo está ahí."
+      }
+    }
   },
   "W2": {
     "title": "Control desde el móvil",
@@ -155,6 +193,117 @@
           "Desconecta la placa y vuelve a conectarla: se reconecta al Wi-Fi y vuelve a llamar sola. <code>relay off</code> detiene el enlace."
         ],
         "note": "Las direcciones de los túneles rápidos cambian cada vez que reinicias cloudflared: escribe la nueva con <code>relay</code>, o usa una vez el dominio estático gratuito de ngrok. Las actualizaciones de firmware siguen siendo solo por tu Wi-Fi (variación 1). Detén el túnel (Ctrl+C) cuando termines y la dirección pública deja de funcionar. Si prefieres alojar el servidor: ejecuta allí la misma app (<code>pnpm build && pnpm start</code>, <code>ESP_MODE=relay</code>, <code>HOST=0.0.0.0</code>, <code>TRUST_PROXY=true</code>) y apunta <code>relay</code> a su dirección. ¿Quieres probar antes sin túnel? Pon <code>HOST=0.0.0.0</code> en .env y escribe <code>relay ws://&lt;your Mac's IP&gt;:8787</code>."
+      },
+      "micropython": {
+        "label": "MicroPython · Pulsar C5",
+        "short": "Señal Wi-Fi en TFT y control del LED desde el teléfono",
+        "goal": "<code>wifi_w2_display.py</code> combina un visor de señal Wi-Fi en vivo en una TFT ST7735 de 80×160 con una página local para controlar el LED RGB de la placa desde el teléfono. La pantalla muestra RSSI en dBm, barras, una gráfica de 24 segundos y la IP de la placa. <code>wifi_w2_basic.py</code> funciona sin TFT; <code>wifi_w2_phone.py</code> añade escaneo de redes cercanas y control remoto.",
+        "goalLine": "Mira la señal Wi-Fi en la TFT mientras controlas el LED RGB desde el teléfono.",
+        "goalCheck": [
+          "La TFT muestra RSSI, barras, historial de señal e IP sin parpadeo.",
+          "La consola serie muestra <code>http://&lt;IP de la placa&gt;</code>.",
+          "Los botones de color de la página cambian el LED RGB y su etiqueta en la TFT."
+        ],
+        "learn": [
+          "network.WLAN",
+          "RSSI en dBm",
+          "SPI",
+          "búfer RGB565",
+          "HTTP GET",
+          "NeoPixel"
+        ],
+        "panels": {
+          "0": {
+            "title": "Conecta la pantalla ST7735"
+          },
+          "1": {
+            "title": "Cómo hablan las piezas"
+          }
+        },
+        "steps": [
+          "Desconecta el USB y conecta la TFT ST7735 de 80×160 como en O2, con CS en D4/GPIO9. Sus etiquetas SDA/SCL indican datos y reloj SPI.",
+          "Abre <b>Código</b>, selecciona <code>wifi_w2_display.py</code> y conecta el REPL serie. Instala <code>st7735.py</code> si aún no está en la placa.",
+          "Escribe <code>WIFI_SSID</code> y <code>WIFI_PASSWORD</code> en el script, o conecta primero con W1 y conserva el Wi-Fi activo.",
+          "Ejecuta el script. <b>Punto de control 1:</b> la TFT muestra RSSI, barras, gráfica e IP, mientras la consola imprime la dirección <code>http://</code> de la placa.",
+          "En un teléfono conectado al mismo Wi-Fi, abre esa dirección y toca Red, Green, Blue u Off. <b>Punto de control 2:</b> el LED y la etiqueta de color de la TFT cambian.",
+          "Pulsa <b>Detener</b> para cerrar el servidor. Sin TFT, elige <code>wifi_w2_basic.py</code>. Para REST, WebSocket y relay remoto, elige <code>wifi_w2_phone.py</code> e instala antes <code>wifi_kit.py</code>."
+        ],
+        "note": "La página del teléfono es local y no tiene inicio de sesión. No expongas el puerto 80 a internet. La pantalla usa los desplazamientos de la ST7735 verde de 80×160 del ejemplo O2; ajusta xoffset/yoffset si tu módulo es distinto. No compartas una copia del script que contenga tu contraseña de Wi-Fi.",
+        "pins": {
+          "0": {
+            "role": "VCC"
+          },
+          "1": {
+            "role": "SCL / SCK"
+          },
+          "2": {
+            "role": "CS"
+          },
+          "3": {
+            "role": "DC"
+          },
+          "4": {
+            "role": "RES"
+          },
+          "5": {
+            "role": "GND"
+          },
+          "6": {
+            "role": "SDA / MOSI"
+          },
+          "7": {
+            "role": "RGB"
+          }
+        },
+        "wiring": {
+          "head": [
+            "TFT ST7735",
+            "Pulsar C5",
+            "Función"
+          ],
+          "rows": [
+            [
+              "VCC",
+              "3V3",
+              "alimentación de 3.3 V"
+            ],
+            [
+              "GND",
+              "GND",
+              "tierra común"
+            ],
+            [
+              "SCL",
+              "D13 / GPIO27",
+              "reloj SPI"
+            ],
+            [
+              "SDA",
+              "D11 / GPIO7",
+              "datos SPI (MOSI)"
+            ],
+            [
+              "CS",
+              "D4 / GPIO9",
+              "selección de chip"
+            ],
+            [
+              "DC",
+              "A2 / GPIO4",
+              "datos o comando"
+            ],
+            [
+              "RES",
+              "A3 / GPIO5",
+              "reinicio de la pantalla"
+            ],
+            [
+              "BLK",
+              "3V3",
+              "retroiluminación; deja libre si ya está conectada"
+            ]
+          ]
+        }
       }
     }
   },
@@ -218,7 +367,37 @@
       "Pregúntale cosas: <code>ask should I bike to work?</code> o <code>ask what should I build next?</code>. Conoce tu tiempo y el estado de la placa.",
       "Cambia de modelo sin reflashear: <code>ai model oracle-fast</code>, o añade cualquier proveedor a <code>config.yaml</code> (OpenAI, Gemini, un modelo local de Ollama) y elige su nombre. Compara el tiempo y los tokens bajo cada respuesta."
     ],
-    "note": "Las claves del proveedor se quedan en el .env de la pasarela, en tu Mac. La placa solo guarda la clave de la propia pasarela (NVS, nunca se imprime: el registro muestra sus últimos 4 caracteres), y <code>ai key forget</code> la borra. En tu Wi-Fi la placa habla http plano con la pasarela; para usarlo desde cualquier sitio, pon la pasarela detrás de https (un túnel o un servidor, como en W2 variación 2). Fija un límite de gasto en cada proveedor; la placa pregunta como mucho una vez cada 10 s y nunca por sí sola."
+    "note": "Las claves del proveedor se quedan en el .env de la pasarela, en tu Mac. La placa solo guarda la clave de la propia pasarela (NVS, nunca se imprime: el registro muestra sus últimos 4 caracteres), y <code>ai key forget</code> la borra. En tu Wi-Fi la placa habla http plano con la pasarela; para usarlo desde cualquier sitio, pon la pasarela detrás de https (un túnel o un servidor, como en W2 variación 2). Fija un límite de gasto en cada proveedor; la placa pregunta como mucho una vez cada 10 s y nunca por sí sola.",
+    "variants": {
+      "arduino": {
+        "label": "Arduino",
+        "short": "Laboratorio PlatformIO y pantalla"
+      },
+      "micropython": {
+        "label": "MicroPython",
+        "short": "Clima actual por HTTPS",
+        "goal": "<code>wifi_w3_basic.py</code> consulta el clima actual de Open-Meteo por HTTPS e imprime temperatura, humedad y viento. Configura tus coordenadas en el script; no necesitas cuenta ni clave de API. El archivo opcional <code>wifi_w3_oracle.py</code> añade pronósticos y un oráculo de IA.",
+        "goalLine": "Imprime el clima actual de tus coordenadas en la consola serie.",
+        "goalCheck": [
+          "La placa se conecta al Wi-Fi y muestra su dirección IP.",
+          "La consola muestra temperatura, humedad y viento actuales para las coordenadas elegidas."
+        ],
+        "learn": [
+          "network.WLAN",
+          "HTTPS con requests",
+          "JSON",
+          "APIs REST"
+        ],
+        "steps": [
+          "Abre <b>Código</b>, selecciona <code>wifi_w3_basic.py</code> y conecta el REPL serie. Este script básico no necesita otra biblioteca.",
+          "Configura <code>LATITUDE</code>, <code>LONGITUDE</code> y <code>PLACE</code> para tu ubicación.",
+          "Escribe <code>WIFI_SSID</code> y <code>WIFI_PASSWORD</code>, o conecta primero con W1 y conserva el Wi-Fi activo.",
+          "Ejecuta el script. <b>Punto de control:</b> la consola muestra temperatura, humedad y viento; después el script termina.",
+          "Para pronósticos y el oráculo de IA, selecciona el archivo opcional <code>wifi_w3_oracle.py</code>; instala <code>wifi_kit.py</code> y guarda antes una red con W1."
+        ],
+        "note": "El script básico hace una petición de clima cada vez que lo ejecutas. Es posible que HTTPS de MicroPython no valide el certificado del servidor en algunas compilaciones. No compartas una copia del script que contenga tu contraseña de Wi-Fi."
+      }
+    }
   },
   "W4": {
     "title": "Laboratorio de radio (extra)"

@@ -203,7 +203,7 @@
       },
       "micropython": {
         "short": "Escáner del bus y un script por sensor",
-        "goal": "Usa MicroPython para escanear el bus de sensores integrado de la Pulsar C5 y luego lee cada uno de los cinco sensores con su propio controlador.",
+        "goal": "Escanea el bus de sensores integrado de la Pulsar C5, lee cada sensor y mira los cinco en una vista en vivo del navegador.",
         "learn": [
           "machine.I2C",
           "scan()",
@@ -214,7 +214,8 @@
           "No hay nada que cablear: los cinco sensores y las resistencias pull-up están en la placa.",
           "Abre <b>Código</b>, conecta el REPL serie y ejecuta <code>i2c_scan.py</code>. Compara las direcciones con la tabla.",
           "Elige la pestaña de un sensor: <code>mmc5603_compass.py</code>, <code>max17048_battery.py</code>, <code>fht40_temp_humidity.py</code>, <code>lps22hb_pressure.py</code> o <code>vcnl4040_light_prox.py</code>.",
-          "Pulsa <b>Instalar</b> una vez para su controlador y luego <b>Ejecutar en la placa</b>. Echa el aliento sobre la placa, tapa el sensor de luz o acércala a un imán y mira cómo cambian los valores. Pulsa <b>Detener</b> al terminar."
+          "Pulsa <b>Instalar</b> una vez para su controlador y luego <b>Ejecutar en la placa</b>. Echa el aliento sobre la placa, tapa el sensor de luz o acércala a un imán y mira cómo cambian los valores. Pulsa <b>Detener</b> al terminar.",
+          "Para la vista en vivo del navegador, selecciona <code>p4_sensor_stream.py</code>, instala los cinco controladores y pulsa <b>Ejecutar en la placa</b>. La vista de sensores se abre automáticamente con la misma conexión serie; <b>Ver sensores</b> la abre de nuevo. Los cinco sensores pilotan un dron 3D: levanta la placa y sube (presión), gírala o acerca un imán y gira (campo magnético), tapa el sensor de luz y se encienden sus faros, acerca la mano y el radar se pone rojo, la batería enciende sus LED y la humedad espesa las nubes. La tira de arriba sigue cada línea desde los sensores por el bus I²C y el USB hasta la página, y cuenta las líneas perdidas. El sketch de <code>sketches/processing/p4_sensor_lab</code> queda como versión opcional de escritorio."
         ],
         "note": "Este bus integrado usa GPIO2/GPIO3. El conector QWIIC usa otro bus en GPIO1/GPIO6. El script de la batería necesita una celda LiPo conectada."
       }

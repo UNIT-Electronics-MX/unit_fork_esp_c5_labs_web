@@ -232,7 +232,7 @@
       "micropython": {
         "label": "MicroPython",
         "short": "Bus scanner and one script per sensor",
-        "goal": "Use MicroPython to scan the Pulsar C5's on-board sensor bus, then read each of the five sensors with its own driver.",
+        "goal": "Scan the Pulsar C5's on-board sensor bus, read each sensor, and see all five in a live browser viewer.",
         "learn": [
           "machine.I2C",
           "scan()",
@@ -243,7 +243,8 @@
           "Nothing to wire: the five sensors and pull-up resistors are on the board.",
           "Open <b>Code</b>, connect the serial REPL and run <code>i2c_scan.py</code>. Compare the addresses with the table.",
           "Pick a sensor tab: <code>mmc5603_compass.py</code>, <code>max17048_battery.py</code>, <code>fht40_temp_humidity.py</code>, <code>lps22hb_pressure.py</code> or <code>vcnl4040_light_prox.py</code>.",
-          "Press <b>Install</b> for its driver once, then <b>Run on board</b>. Breathe on the board, cover the light sensor or turn it near a magnet and watch the values change. Press <b>Stop</b> when finished."
+          "Press <b>Install</b> for its driver once, then <b>Run on board</b>. Breathe on the board, cover the light sensor or turn it near a magnet and watch the values change. Press <b>Stop</b> when finished.",
+          "For the live browser view, select <code>p4_sensor_stream.py</code>, install all five drivers and press <b>Run on board</b>. The sensor viewer opens automatically using the same serial connection; <b>View sensors</b> reopens it. All five sensors fly a 3D drone: lift the board and it climbs (pressure), turn it or bring a magnet near and it turns (magnetic field), cover the light sensor and its headlights come on, bring a hand close and the radar turns red, the battery lights its LEDs and humidity thickens the clouds. The strip above it follows each line from the sensors through the I²C bus and USB to the page, and counts lost lines. The Processing sketch in <code>sketches/processing/p4_sensor_lab</code> remains an optional desktop version."
         ],
         "note": "This on-board bus uses GPIO2/GPIO3. The QWIIC connector uses a separate bus on GPIO1/GPIO6. The battery script needs a LiPo cell connected."
       }

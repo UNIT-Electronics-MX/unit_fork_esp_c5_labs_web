@@ -67,7 +67,8 @@
           "Unplug USB and connect the BMI270 with a QWIIC cable, or with jumpers to the header pins in the table.",
           "Reconnect USB, open <b>Code</b>, connect the serial REPL and run <code>bmi270_id.py</code>.",
           "The terminal prints <code>found 0x68</code> (or <code>0x69</code>), then <code>chip ID 0x24 (BMI270)</code>.",
-          "Install <code>bmi270.py</code> from the code workspace, select <code>bmi270_motion.py</code> and run it. Move the sensor to change the acceleration and gyroscope readings."
+          "Install <code>bmi270.py</code> from the code workspace, select <code>bmi270_motion.py</code> and run it. Move the sensor to change the acceleration and gyroscope readings.",
+          "Run <code>bmi270_cube.py</code>: the <b>IMU cube</b> opens in a full-window viewer. Use <b>View cube</b> to reopen it. Lay the sensor still and press <b>Calibrate</b>; the same serial lines drive the Processing sketch <code>sketches/processing/imu_cube</code>."
         ],
         "note": "The ID check uses <code>readfrom_mem()</code> directly; only the motion example needs <code>bmi270.py</code>. The QWIIC connector has no pull-ups on the Pulsar C5, so the sensor board must carry them."
       }

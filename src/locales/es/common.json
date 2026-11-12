@@ -65,6 +65,111 @@
       "replInterruptFailed": "No se pudo detener el programa: la placa no respondió con >>> tras Ctrl+C. Revisa que tenga MicroPython y pulsa RESET antes de volver a conectar.",
       "state": {"ready": "Listo", "connecting": "Conectando…", "connected": "Conectado", "disconnecting": "Desconectando…", "disconnected": "Desconectado", "error": "Error"}
     },
+    "imuCube": {
+      "title": "Cubo IMU",
+      "view": "Ver cubo",
+      "backToCode": "Volver al código",
+      "loading": "Cargando cubo…",
+      "boardMessages": "Mensajes de la placa",
+      "noBoardMessages": "Sin otros mensajes.",
+      "intro": "Ejecuta bmi270_cube.py y el cubo gira con el BMI270, línea a línea desde el puerto serie. Calibra con el sensor quieto. El sketch de Processing en sketches/processing/imu_cube lee las mismas líneas.",
+      "label": "Un cubo 3D que gira con el sensor de movimiento BMI270",
+      "fallback": "Las lecturas de roll, pitch y yaw de abajo siguen actualizándose.",
+      "roll": "Roll (x)",
+      "pitch": "Pitch (y)",
+      "yaw": "Yaw (z)",
+      "rate": "Líneas por segundo",
+      "rateShort": "IMU Hz",
+      "calibrate": "Calibrar giroscopio (quieto)",
+      "calibrateShort": "Calibrar (quieto)",
+      "zeroYaw": "Poner el yaw a cero",
+      "zeroYawShort": "Yaw a cero",
+      "calibrated": "Giroscopio calibrado.",
+      "zeroed": "Yaw puesto a cero.",
+      "sendFailed": "No se pudo enviar el comando: {{detail}}",
+      "feed": {
+        "waiting": "Esperando líneas IMU: conecta el puerto serie y ejecuta bmi270_cube.py.",
+        "live": "Recibiendo datos del IMU.",
+        "stale": "No llegan líneas IMU: ¿sigue corriendo bmi270_cube.py?"
+      }
+    },
+    "p4Sensors": {
+      "title": "Sensores integrados P4",
+      "view": "Ver sensores",
+      "backToCode": "Volver al código",
+      "loading": "Cargando visualización…",
+      "boardMessages": "Mensajes de la placa",
+      "noBoardMessages": "Sin otros mensajes.",
+      "sceneLabel": "Un dron 3D pilotado por los cinco sensores integrados",
+      "sceneFallback": "Las lecturas de los cinco sensores siguen visibles.",
+      "sceneLegend": "La presión eleva el dron · el campo magnético lo gira · la luz mueve el sol y enciende los faros · una mano cerca pone el radar en rojo · la batería enciende los LED · la humedad espesa las nubes",
+      "effects": {
+        "climate": "Nubes y calor de motores",
+        "pressure": "Altitud",
+        "light": "Sol, faros y radar",
+        "battery": "LED de carga",
+        "magnetic": "Rumbo"
+      },
+      "north": "N",
+      "zeroAltitude": "Poner la altitud a cero aquí",
+      "altitude": "Altitud {{value}} m",
+      "climate": "Temperatura y humedad",
+      "humidity": "Humedad",
+      "pressure": "Presión",
+      "light": "Luz y proximidad",
+      "proximity": "Prox.",
+      "lightLevel": {
+        "dark": "Oscuro",
+        "dim": "Penumbra",
+        "indoor": "Interior",
+        "bright": "Luminoso",
+        "sun": "Sol"
+      },
+      "battery": "Batería LiPo",
+      "batteryState": {
+        "ok": "medidor correcto",
+        "low": "batería baja",
+        "overRange": "medidor {{gauge}} %, por voltaje",
+        "noCell": "Sin celda LiPo"
+      },
+      "batteryNote": "El medidor de batería marca {{gauge}} %. El MAX17048 pasa del 100 % cuando no hay LiPo conectada (mide el cargador) o antes de aprender una celda recién conectada, así que la carga mostrada sale del voltaje de la celda. El script reinicia la estimación del medidor al arrancar.",
+      "magnetic": "Campo magnético",
+      "noReading": "Sin lectura",
+      "flow": {
+        "title": "Flujo de datos de los sensores a esta página",
+        "sensors": "Sensores",
+        "bus": "Bus I²C",
+        "busPins": "GPIO2 SDA · GPIO3 SCL",
+        "answered_one": "{{count}}/5 responde",
+        "answered_many": "{{count}}/5 responden",
+        "answered_other": "{{count}}/5 responden",
+        "chip": "ESP32-C5",
+        "usb": "Serie USB",
+        "rate": "{{rate}} líneas/s",
+        "lost_one": "{{count}} línea perdida",
+        "lost_many": "{{count}} líneas perdidas",
+        "lost_other": "{{count}} líneas perdidas",
+        "page": "Esta página",
+        "lines_one": "{{count}} línea",
+        "lines_many": "{{count}} líneas",
+        "lines_other": "{{count}} líneas",
+        "feed": {
+          "waiting": "esperando",
+          "live": "en vivo",
+          "stale": "detenido"
+        },
+        "sensorState": {
+          "ok": "respondió",
+          "missing": "sin lectura",
+          "idle": "esperando"
+        }
+      },
+      "feed": {
+        "waiting": "Esperando líneas P4: ejecuta p4_sensor_stream.py.",
+        "live": "Recibiendo datos de la placa.",
+        "stale": "No llegan líneas P4: revisa que el script siga ejecutándose."
+      }
+    },
     "examples": {
       "title": "Editor de código MicroPython",
       "intro": "Edita un ejemplo de Pulsar C5 o abre un .py de tu computadora; ejecútalo o guárdalo en la placa por serial.",

@@ -2,29 +2,16 @@
 // PlatformIO firmware with a screen); MicroPython runs ble_b1_listen.py ... ble_b8_host.py from
 // esp-labs/examples/micropython/pulsar-c5 on the Pulsar C5, which has no screen: the views
 // become serial commands, BOOT is the button and the RGB LED shows the radio.
-import type { LessonVariant, PinUse } from "@/domain/lesson";
+import type { LessonVariant } from "@/domain/lesson";
+import { arduinoLab, c5Script } from "./c5-script-variant";
 
-const arduino = { key: "arduino", label: "Arduino", short: "PlatformIO lab and screen" } as const;
-
-/** BOOT and the RGB LED: every MicroPython lab uses them, nothing to wire. */
-const C5_PINS = [
-  { pin: "28", idx: 20, role: "BOOT", side: "R", kind: "btn" },
-  { pin: "0", idx: 19, role: "RGB", side: "R" },
-] as const satisfies readonly PinUse[];
+const arduino = arduinoLab;
 
 const SETUP =
   "Open <b>Code</b>, connect the serial REPL and press <b>Install ble_kit.py</b> once: every Bluetooth lab imports it.";
 
 /** What every MicroPython variant shares: no firmware command, no screen widgets. */
-const script = {
-  key: "micropython",
-  label: "MicroPython",
-  pins: C5_PINS,
-  usb: true,
-  cmd: "",
-  commands: [],
-  hideWidgets: ["bleScreens", "ble"],
-} as const;
+const script = { ...c5Script, hideWidgets: ["bleScreens", "ble"] } as const;
 
 export const bleVariants = {
   B1: [
