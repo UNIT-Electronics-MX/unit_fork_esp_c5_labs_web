@@ -38,6 +38,7 @@
 .explorerHeading { display: flex; align-items: center; gap: 7px; padding: 12px 11px 8px; color: var(--muted); font: 700 10px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
 .exampleProgress { margin-inline-start: auto; color: var(--ink); letter-spacing: 0; }
 .exampleList { display: grid; align-content: start; gap: 1px; padding: 0 5px 10px; }
+.editor[data-lesson="false"] .exampleList { max-height: clamp(240px, 42vw, 440px); overflow-y: auto; }
 .example { display: flex; align-items: center; gap: 7px; width: 100%; min-width: 0; padding: 7px 6px; border: 0; border-inline-start: 2px solid transparent; border-radius: 4px; color: var(--ink); background: transparent; text-align: start; cursor: pointer; font: 650 12px/1.2 var(--font-display); }
 .example:hover { background: var(--surface); }
 .example[data-active="true"] { border-inline-start-color: var(--ink); background: var(--surface); }
@@ -107,6 +108,7 @@
   .explorer { border-inline-end: 0; border-bottom: 1px solid var(--line); }
   .explorerHeading { padding: 8px 10px 3px; }
   .exampleList { display: flex; overflow-x: auto; padding: 3px 7px 8px; }
+  .editor[data-lesson="false"] .exampleList { max-height: none; overflow-y: hidden; }
   .example { flex: 0 0 auto; width: auto; max-width: 170px; padding: 6px 8px; }
   .example small { display: none; }
   .openFile { align-self: start; margin: 0 10px 9px; padding: 6px 9px; }

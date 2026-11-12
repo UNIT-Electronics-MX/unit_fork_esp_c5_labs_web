@@ -1,5 +1,6 @@
 {
   "flasher": {
+    "views": {"label": "Flash page sections", "editor": "Code editor", "firmware": "Flash firmware"},
     "eyebrow": "Pulsar C5 · Web Serial",
     "title": "Flash your ESP32-C5",
     "intro": "Choose a compiled .bin image from your computer, or use the bundled ESP32-C5 MicroPython image. The browser flashes the board directly over Web Serial.",

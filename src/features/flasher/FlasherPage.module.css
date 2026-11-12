@@ -1,4 +1,12 @@
-.page { display: grid; gap: 20px; }
+.page { display: grid; gap: 16px; min-width: 0; }
+.viewSwitcher { position: sticky; top: 8px; z-index: 5; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; width: min(100%, 420px); padding: 4px; border: 1px solid var(--line); border-radius: var(--radius-m); background: var(--surface); box-shadow: 0 7px 18px -15px var(--ink); }
+.viewSwitcher button { min-width: 0; min-height: 40px; padding: 8px 12px; border: 0; border-radius: var(--radius-s); color: var(--muted); background: transparent; cursor: pointer; font: 700 13px var(--font-display); }
+.viewSwitcher button[aria-pressed="true"] { color: var(--surface); background: var(--ink); }
+.viewSwitcher button:not(:disabled):not([aria-pressed="true"]):hover { color: var(--ink); background: var(--bg); }
+.viewSwitcher button:disabled { cursor: wait; opacity: .6; }
+.viewSwitcher button:focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
+.viewPanel { min-width: 0; }
+.viewPanel[hidden] { display: none; }
 .head { display: grid; gap: 6px; }
 .head h1 { margin: 0; font: 800 clamp(27px, 4vw, 38px) / 1.1 var(--font-display); }
 .head p { margin: 0; color: var(--muted); }

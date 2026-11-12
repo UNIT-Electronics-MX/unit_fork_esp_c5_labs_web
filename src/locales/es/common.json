@@ -1,5 +1,6 @@
 {
   "flasher": {
+    "views": {"label": "Secciones de Flash", "editor": "Editor de código", "firmware": "Cargar firmware"},
     "eyebrow": "Pulsar C5 · Web Serial",
     "title": "Carga firmware a tu ESP32-C5",
     "intro": "Elige un .bin de tu computadora o usa el MicroPython para ESP32-C5 incluido. El navegador programa la placa directamente por Web Serial.",
