@@ -3,15 +3,18 @@ import { useTranslation } from "react-i18next";
 import { LessonCodeGuide } from "@/features/code/LessonCodeGuide";
 import { ErrorBoundary } from "@/ui/ErrorBoundary";
 import { FirmwareFlasher } from "./FirmwareFlasher";
-import { lessonExamples, showsImuCube } from "./lesson-examples";
+import { isSoundLabMode, lessonExamples, showsImuCube, soundLabMode, type SoundLabMode } from "./lesson-examples";
 import { MicroPythonEditor } from "./MicroPythonEditor";
 import { SerialTerminal, type SerialTerminalHandle } from "./SerialTerminal";
 import { serialConnection, useSerialConnection } from "./serial-connection";
 import styles from "./MicroPythonWorkbench.module.css";
 
-// Load each three.js viewer only when its lesson opens it.
+// Load viewers only when their controls are opened.
 const ImuCube = lazy(() => import("./imu-cube/ImuCube").then((module) => ({ default: module.ImuCube })));
 const P4SensorViewer = lazy(() => import("./p4-sensors/P4SensorViewer").then((module) => ({ default: module.P4SensorViewer })));
+const ToneLabDialog = lazy(() => import("./tone-lab/ToneLabDialog").then((module) => ({ default: module.ToneLabDialog })));
+const AudioPlayerDialog = lazy(() => import("./audio-player/AudioPlayerDialog").then((module) => ({ default: module.AudioPlayerDialog })));
+const SoundLabDialog = lazy(() => import("./sound-lab/SoundLabDialog").then((module) => ({ default: module.SoundLabDialog })));
 
 /** One Web Serial connection shared by the Python editor and its live REPL. */
 export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
@@ -21,7 +24,7 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
   const [serialOperation, setSerialOperation] = useState(false);
   const [flashWorking, setFlashWorking] = useState(false);
   const [serialError, setSerialError] = useState("");
-  const [activeViewer, setActiveViewer] = useState<"imu" | "p4" | null>(null);
+  const [activeViewer, setActiveViewer] = useState<"imu" | "p4" | "tone" | "player" | SoundLabMode | null>(null);
   const exampleIds = lessonExamples(lessonId);
   const multiExample = exampleIds.length > 3;
   // Larger lessons show the guide before the scripts; smaller ones keep it after the editor.
@@ -55,9 +58,16 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
         docked={false}
         onOpenImuCube={showsImuCube(lessonId) ? () => setActiveViewer("imu") : undefined}
         onOpenP4Sensors={lessonId === "P4" ? () => setActiveViewer("p4") : undefined}
+        onOpenToneLab={lessonId === "S0B" ? () => setActiveViewer("tone") : undefined}
+        onOpenAudioPlayer={lessonId === "S0B" ? () => setActiveViewer("player") : undefined}
+        onOpenSoundLab={soundLabMode(exampleIds[0] ?? "") ? (exampleId) => setActiveViewer(soundLabMode(exampleId)) : undefined}
         onRun={(exampleId) => {
           if (exampleId === "imu-bmi270-cube") setActiveViewer("imu");
           if (exampleId === "p4-sensor-stream") setActiveViewer("p4");
+          if (exampleId === "es8311-tone-lab") setActiveViewer("tone");
+          if (exampleId === "es8311-play-serial") setActiveViewer("player");
+          const soundMode = soundLabMode(exampleId);
+          if (soundMode) setActiveViewer(soundMode);
         }}
       /> : null}
       <SerialTerminal
@@ -73,7 +83,13 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
         sidecar={lessonId !== "00"}
         stopPythonOnConnect
       />
-      {activeViewer ? (
+      {activeViewer === "tone" ? (
+        <Suspense fallback={null}><ToneLabDialog onClose={() => setActiveViewer(null)} onConnect={() => void terminalRef.current?.connect()} /></Suspense>
+      ) : activeViewer === "player" ? (
+        <Suspense fallback={null}><AudioPlayerDialog onClose={() => setActiveViewer(null)} onConnect={() => void terminalRef.current?.connect()} /></Suspense>
+      ) : activeViewer && isSoundLabMode(activeViewer) ? (
+        <Suspense fallback={null}><SoundLabDialog key={activeViewer} mode={activeViewer} onClose={() => setActiveViewer(null)} onConnect={() => void terminalRef.current?.connect()} /></Suspense>
+      ) : activeViewer ? (
         <SensorViewerDialog viewer={activeViewer} onClose={() => setActiveViewer(null)} onConnect={() => void terminalRef.current?.connect()} />
       ) : null}
       {lessonId === "00" || multiExample ? null : guide}

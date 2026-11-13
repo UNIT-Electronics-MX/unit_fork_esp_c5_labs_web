@@ -11,6 +11,9 @@
 @media (min-width: 650px) {
   .list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+/* A lone suggestion fills the row instead of leaving half of it empty. */
+.item:only-child { grid-column: 1 / -1; }
+.item:only-child p { max-width: 72ch; }
 .item {
   display: flex;
   flex-direction: column;

@@ -84,6 +84,33 @@ describe("SerialSession", () => {
     expect(close).toHaveBeenCalledTimes(1);
   });
 
+  it("sends a volume command after an in-flight music frame releases the serial writer", async () => {
+    let releaseFrame!: () => void;
+    const frameGate = new Promise<void>((resolve) => { releaseFrame = resolve; });
+    const written: string[] = [];
+    const readable = new ReadableStream<Uint8Array>();
+    const writable = new WritableStream<Uint8Array>({
+      async write(chunk) {
+        const command = new TextDecoder().decode(chunk);
+        written.push(command);
+        if (command === "Fmusic") await frameGate;
+      },
+    });
+    const session = new SerialSession({ readable, writable, open: async () => undefined, close: async () => undefined },
+      () => undefined, () => undefined);
+    await session.open(115200);
+
+    const frame = session.sendBytes(new TextEncoder().encode("Fmusic"));
+    await vi.waitFor(() => expect(writable.locked).toBe(true));
+    const volume = session.sendBytes(new TextEncoder().encode("V030"));
+    const both = Promise.all([frame, volume]);
+    expect(written).toEqual(["Fmusic"]);
+    releaseFrame();
+    await both;
+    expect(written).toEqual(["Fmusic", "V030"]);
+    await session.close();
+  });
+
   it("reports a failed port close so flashing can stop", async () => {
     const reason = new Error("port still open");
     const close = vi.fn(async () => { throw reason; });

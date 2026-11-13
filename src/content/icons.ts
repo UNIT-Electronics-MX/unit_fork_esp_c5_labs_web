@@ -56,13 +56,12 @@ export const LESSON_PART: Readonly<Record<string, PartName>> = {
   B7: "note",
   B8: "mouse",
   S0: "mic",
-  S1: "mic",
+  S0B: "speaker",
   S2: "meter",
   S3: "burst",
   S4: "cassette",
   S5: "equalizer",
   S6: "gamepad",
-  S7: "speaker",
   S8: "knob",
 };
 

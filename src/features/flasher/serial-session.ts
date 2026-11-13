@@ -35,6 +35,7 @@ export class SerialSession {
   private reader: ReadableStreamDefaultReader<Uint8Array> | null = null;
   private readTask: Promise<void> | null = null;
   private writeTasks = new Set<Promise<void>>();
+  private writeTail: Promise<void> = Promise.resolve();
   private finishTask: Promise<boolean> | null = null;
   private stopped = false;
   private opened = false;
@@ -236,16 +237,34 @@ export class SerialSession {
   }
 
   async send(text: string, ending: LineEnding): Promise<void> {
+    await this.write(new TextEncoder().encode(text + ENDINGS[ending]));
+  }
+
+  /** Raw bytes for binary protocols (audio playback frames). Same ordering as `send`. */
+  sendBytes(bytes: Uint8Array): Promise<void> {
+    return this.write(bytes);
+  }
+
+  /** Leave binary mode and keep the board's script running; later output is terminal text again. */
+  endRaw(): void {
+    this.rawReceiver = null;
+  }
+
+  private async write(data: Uint8Array): Promise<void> {
     const writable = this.port.writable;
     if (this.stopped || !this.opened || !writable) throw new Error("notWritable");
-    const task = (async () => {
+    // Music frames and live volume changes share this one Web Serial writer.
+    // Opening a second writer before the first releases its lock drops the command.
+    const task = this.writeTail.then(async () => {
+      if (this.stopped || !this.opened) throw new Error("notWritable");
       const writer = writable.getWriter();
       try {
-        await writer.write(new TextEncoder().encode(text + ENDINGS[ending]));
+        await writer.write(data);
       } finally {
         writer.releaseLock();
       }
-    })();
+    });
+    this.writeTail = task.catch(() => undefined);
     this.writeTasks.add(task);
     try {
       await task;

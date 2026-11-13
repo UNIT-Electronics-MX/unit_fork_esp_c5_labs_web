@@ -4,12 +4,15 @@ import { RichText } from "@/ui/RichText";
 import styles from "./tables.module.css";
 
 const GPIO = /^GPIO \d+$/;
+// One short upper-case word: a signal name such as BCLK, SDA or MCLK.
+const SIGNAL = /^[A-Z][A-Z0-9]{1,5}$/;
 
 /** Board-side pin names render as coloured chips, like the tags on the pinout. */
 function PinChip({ text }: { text: string }) {
   if (text === "GND") return <span className={`${styles.chip} ${styles.gnd}`}>GND</span>;
   if (text === "3V3") return <span className={`${styles.chip} ${styles.pwr}`}>3V3</span>;
   if (GPIO.test(text)) return <span className={styles.chip}>{text}</span>;
+  if (SIGNAL.test(text)) return <span className={`${styles.chip} ${styles.signal}`}>{text}</span>;
   return <RichText text={text} />;
 }
 

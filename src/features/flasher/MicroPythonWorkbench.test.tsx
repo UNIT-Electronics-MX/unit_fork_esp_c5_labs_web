@@ -10,17 +10,26 @@ vi.mock("./serial-connection", () => ({
   useSerialConnection: () => ({ output: "", state: "connected", operation: false }),
 }));
 vi.mock("./MicroPythonEditor", () => ({
-  MicroPythonEditor: ({ onRun, onOpenImuCube, onOpenP4Sensors }: { onRun: (id: string) => void; onOpenImuCube?: () => void; onOpenP4Sensors?: () => void }) => (
+  MicroPythonEditor: ({ onRun, onOpenImuCube, onOpenP4Sensors, onOpenToneLab, onOpenAudioPlayer, onOpenSoundLab }: { onRun: (id: string) => void; onOpenImuCube?: () => void; onOpenP4Sensors?: () => void; onOpenToneLab?: () => void; onOpenAudioPlayer?: () => void; onOpenSoundLab?: (id: string) => void }) => (
     <>
       <button type="button" onClick={() => onRun("imu-bmi270-cube")}>Run cube</button>
       <button type="button" onClick={onOpenImuCube}>View cube</button>
       <button type="button" onClick={() => onRun("p4-sensor-stream")}>Run sensors</button>
       <button type="button" onClick={onOpenP4Sensors}>View sensors</button>
+      <button type="button" onClick={() => onRun("es8311-tone-lab")}>Run tones</button>
+      <button type="button" onClick={onOpenToneLab}>View tones</button>
+      <button type="button" onClick={() => onRun("es8311-play-serial")}>Run player</button>
+      <button type="button" onClick={onOpenAudioPlayer}>View player</button>
+      <button type="button" onClick={() => onRun("es8311-sound-spectrum")}>Run spectrum</button>
+      <button type="button" onClick={() => onOpenSoundLab?.("es8311-sound-spectrum")}>View spectrum</button>
     </>
   ),
 }));
 vi.mock("./imu-cube/ImuCube", () => ({ ImuCube: () => <div>Live cube</div> }));
 vi.mock("./p4-sensors/P4SensorViewer", () => ({ P4SensorViewer: () => <div>Live sensors</div> }));
+vi.mock("./tone-lab/ToneLabDialog", () => ({ ToneLabDialog: ({ onClose }: { onClose: () => void }) => <div role="dialog" aria-label="Tone lab"><button type="button" onClick={onClose}>Close tones</button></div> }));
+vi.mock("./audio-player/AudioPlayerDialog", () => ({ AudioPlayerDialog: ({ onClose }: { onClose: () => void }) => <div role="dialog" aria-label="Audio player"><button type="button" onClick={onClose}>Close player</button></div> }));
+vi.mock("./sound-lab/SoundLabDialog", () => ({ SoundLabDialog: ({ mode, onClose }: { mode: string; onClose: () => void }) => <div role="dialog" aria-label={`Sound ${mode}`}><button type="button" onClick={onClose}>Close sound</button></div> }));
 
 describe("MicroPythonWorkbench IMU viewer", () => {
   it("opens after running the cube and can be reopened without scrolling", async () => {
@@ -51,5 +60,38 @@ describe("MicroPythonWorkbench P4 viewer", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "View sensors" }));
     expect(await screen.findByRole("dialog", { name: "P4 on-board sensors" })).toBeTruthy();
+  });
+});
+
+describe("MicroPythonWorkbench tone lab", () => {
+  it("opens after running the tone script in the codec practice and can be reopened", async () => {
+    render(<MicroPythonWorkbench lessonId="S0B" />);
+    fireEvent.click(screen.getByRole("button", { name: "Run tones" }));
+    expect(await screen.findByRole("dialog", { name: "Tone lab" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Close tones" }));
+    expect(screen.queryByRole("dialog", { name: "Tone lab" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "View tones" }));
+    expect(await screen.findByRole("dialog", { name: "Tone lab" })).toBeTruthy();
+  });
+
+  it("opens the player from the codec practice", async () => {
+    render(<MicroPythonWorkbench lessonId="S0B" />);
+    fireEvent.click(screen.getByRole("button", { name: "Run player" }));
+    expect(await screen.findByRole("dialog", { name: "Audio player" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Close player" }));
+    fireEvent.click(screen.getByRole("button", { name: "View player" }));
+    expect(await screen.findByRole("dialog", { name: "Audio player" })).toBeTruthy();
+  });
+});
+
+describe("MicroPythonWorkbench sound lab", () => {
+  it("opens the spectrum panel after running and lets the learner reopen it", async () => {
+    render(<MicroPythonWorkbench lessonId="S5" />);
+    fireEvent.click(screen.getByRole("button", { name: "Run spectrum" }));
+    expect(await screen.findByRole("dialog", { name: "Sound spectrum" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Close sound" }));
+    expect(screen.queryByRole("dialog", { name: "Sound spectrum" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "View spectrum" }));
+    expect(await screen.findByRole("dialog", { name: "Sound spectrum" })).toBeTruthy();
   });
 });

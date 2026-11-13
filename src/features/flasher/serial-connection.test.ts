@@ -35,6 +35,32 @@ describe("SerialConnection", () => {
     expect(connection.getSnapshot().rawMode).toBe(false);
   });
 
+  it("sends exact binary bytes in raw mode and leaves it without interrupting the script", async () => {
+    const connection = new SerialConnection();
+    const sent: number[][] = [];
+    let input!: ReadableStreamDefaultController<Uint8Array>;
+    const port: TerminalPort = {
+      readable: new ReadableStream<Uint8Array>({ start(controller) { input = controller; } }),
+      writable: new WritableStream<Uint8Array>({ write(chunk) { sent.push(Array.from(chunk)); } }),
+      open: vi.fn(async () => undefined),
+      close: vi.fn(async () => undefined),
+    };
+    await connection.connect(async () => port);
+    await expect(connection.sendBytes(new Uint8Array([1]))).rejects.toThrow("busy");
+    const received: number[][] = [];
+    connection.startRaw((chunk) => received.push(Array.from(chunk)));
+    await connection.sendBytes(new Uint8Array([0, 200, 255, 10, 13]));
+    expect(sent).toEqual([[0, 200, 255, 10, 13]]);
+
+    connection.endRaw();
+    expect(connection.getSnapshot().rawMode).toBe(false);
+    expect(sent).toEqual([[0, 200, 255, 10, 13]]);
+    input.enqueue(new TextEncoder().encode("PLAYER,READY\n"));
+    await vi.waitFor(() => expect(connection.getSnapshot().output).toContain("PLAYER,READY"));
+    expect(received).toEqual([]);
+    await connection.disconnect();
+  });
+
   it("stays connected and keeps its output while no view is subscribed", async () => {
     const connection = new SerialConnection();
     const { port, receive } = fakePort();

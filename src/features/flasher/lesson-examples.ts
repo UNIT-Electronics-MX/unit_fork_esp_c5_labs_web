@@ -1,6 +1,13 @@
 /** The MicroPython examples each lesson opens, first one selected. Lessons not listed show the full example list. */
 const LESSON_EXAMPLES: Readonly<Record<string, readonly string[]>> = {
   S0: ["ics43434-j20", "ics43434-usb-audio"],
+  S0B: ["es8311-mic-capture", "es8311-mic-usb-audio", "es8311-melody", "es8311-tone-lab", "es8311-play-serial", "es8311-mic-diagnose"],
+  S2: ["es8311-sound-loudness"],
+  S3: ["es8311-sound-clap"],
+  S4: ["es8311-sound-recorder"],
+  S5: ["es8311-sound-spectrum"],
+  S6: ["es8311-sound-game"],
+  S8: ["es8311-sound-voice-fx"],
   "01": ["neopixel"],
   "02": ["external-led"],
   P1: ["gpio"],
@@ -38,6 +45,32 @@ const LESSON_EXAMPLES: Readonly<Record<string, readonly string[]>> = {
   R7: ["rfid-r7-pn532"],
   R8: ["rfid-r8-pn532"],
 };
+
+/** Examples that stream the browser-audio protocol (RAW/AU frames), so the listening dialog applies. */
+const WEB_AUDIO_EXAMPLES: ReadonlySet<string> = new Set(["ics43434-usb-audio", "es8311-mic-usb-audio"]);
+
+export const streamsWebAudio = (exampleId: string): boolean => WEB_AUDIO_EXAMPLES.has(exampleId);
+
+export const SOUND_LAB_MODES = {
+  "es8311-sound-loudness": "loudness",
+  "es8311-sound-clap": "clap",
+  "es8311-sound-recorder": "recorder",
+  "es8311-sound-spectrum": "spectrum",
+  "es8311-sound-game": "game",
+  "es8311-sound-voice-fx": "voice_fx",
+} as const;
+
+export type SoundLabMode = (typeof SOUND_LAB_MODES)[keyof typeof SOUND_LAB_MODES];
+
+export function isSoundLabMode(value: string): value is SoundLabMode {
+  return Object.values(SOUND_LAB_MODES).some((mode) => mode === value);
+}
+
+export function soundLabMode(exampleId: string): SoundLabMode | null {
+  return Object.prototype.hasOwnProperty.call(SOUND_LAB_MODES, exampleId)
+    ? SOUND_LAB_MODES[exampleId as keyof typeof SOUND_LAB_MODES]
+    : null;
+}
 
 export const lessonExamples = (lessonId: string): readonly string[] => LESSON_EXAMPLES[lessonId] ?? [];
 

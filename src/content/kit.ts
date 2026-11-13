@@ -28,6 +28,7 @@ export const KIT_ITEMS = [
   { id: "ky037", part: "sensor" },
   { id: "inmp441", part: "mic" },
   { id: "ics43434", part: "mic" },
+  { id: "es8311", part: "speaker" },
   { id: "amp", part: "speaker" },
 ] as const satisfies readonly { id: string; part: PartName }[];
 
@@ -35,7 +36,6 @@ export type KitItemId = (typeof KIT_ITEMS)[number]["id"];
 
 const SCREEN = ["tft"] as const;
 const READER = [["pn532"], ["tags"]] as const;
-const MIC = ["ky037", "inmp441"] as const;
 
 export const LESSON_KIT: Readonly<Record<string, LessonKit<KitItemId>>> = {
   "00": { need: [] },
@@ -75,14 +75,13 @@ export const LESSON_KIT: Readonly<Record<string, LessonKit<KitItemId>>> = {
   B7: { need: [SCREEN], optional: ["button", "phone"] },
   B8: { need: [SCREEN, ["keyboard"]], optional: ["button"] },
   S0: { need: [["ics43434"]] },
-  S1: { need: [SCREEN, MIC] },
-  S2: { need: [SCREEN, MIC], optional: ["amp", "led"] },
-  S3: { need: [SCREEN, MIC], optional: ["amp", "led"] },
-  S4: { need: [SCREEN, MIC], optional: ["amp", "wifi"] },
-  S5: { need: [SCREEN, MIC], optional: ["amp"] },
-  S6: { need: [SCREEN, MIC], optional: ["amp", "led"] },
-  S7: { need: [SCREEN, ["amp"]] },
-  S8: { need: [SCREEN, ["inmp441"], ["amp"]] },
+  S0B: { need: [["es8311"]] },
+  S2: { need: [["es8311"]] },
+  S3: { need: [["es8311"]] },
+  S4: { need: [["es8311"]] },
+  S5: { need: [["es8311"]] },
+  S6: { need: [["es8311"]] },
+  S8: { need: [["es8311"]] },
 };
 
 const NOTHING: LessonKit<KitItemId> = { need: [] };

@@ -213,6 +213,19 @@ export class SerialConnection {
     await this.require().send(command, "none");
   }
 
+  /** Send protocol bytes (not text) while a binary stream is active. */
+  async sendBytes(bytes: Uint8Array): Promise<void> {
+    if (!this.snapshot.rawMode) throw new Error(BUSY);
+    await this.require().sendBytes(bytes);
+  }
+
+  /** Stop treating incoming bytes as binary without interrupting the board's script. */
+  endRaw(): void {
+    if (!this.snapshot.rawMode) return;
+    this.session?.endRaw();
+    this.set({ rawMode: false });
+  }
+
   async stopRawPython(): Promise<void> {
     if (!this.snapshot.rawMode) return;
     try {

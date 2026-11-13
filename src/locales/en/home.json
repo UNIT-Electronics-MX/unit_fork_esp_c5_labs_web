@@ -59,6 +59,7 @@
       "ky037": "KY-037 analog microphone",
       "inmp441": "INMP441 I²S microphone",
       "ics43434": "ICS-43434 I²S microphone",
+      "es8311": "ES8311 codec + microphone and speaker",
       "amp": "MAX98357A amp + speaker",
       "keyboard": "Bluetooth keyboard or mouse",
       "pot": "10 kΩ potentiometer",

@@ -7,7 +7,7 @@ import { fetchJson } from "@/lib/http";
 import type { SerialTerminalHandle } from "./SerialTerminal";
 import { REPL_INTERRUPT_FAILED, validPythonFilename } from "./serial-session";
 import { EditorActionIcon } from "./EditorActionIcon";
-import { pickExamples } from "./lesson-examples";
+import { pickExamples, soundLabMode, streamsWebAudio } from "./lesson-examples";
 import { I2sAudioDialog } from "./i2s-audio/I2sAudioDialog";
 import { useSerialConnection } from "./serial-connection";
 import { highlightPython } from "./python-highlight";
@@ -70,6 +70,9 @@ export function MicroPythonEditor({
   onRun,
   onOpenImuCube,
   onOpenP4Sensors,
+  onOpenToneLab,
+  onOpenAudioPlayer,
+  onOpenSoundLab,
 }: {
   initialId?: string;
   terminalRef?: RefObject<SerialTerminalHandle | null>;
@@ -84,6 +87,9 @@ export function MicroPythonEditor({
   onRun?: (exampleId: string) => void;
   onOpenImuCube?: () => void;
   onOpenP4Sensors?: () => void;
+  onOpenToneLab?: () => void;
+  onOpenAudioPlayer?: () => void;
+  onOpenSoundLab?: (exampleId: string) => void;
 }) {
   const { t, i18n } = useTranslation();
   const spanish = i18n.resolvedLanguage?.startsWith("es") ?? false;
@@ -279,7 +285,7 @@ export function MicroPythonEditor({
       setNotice(t(`flasher.examples.${action}Done`, { file: outputName }));
       if (action === "run") {
         onRun?.(selected.id);
-        if (selected.id === "ics43434-usb-audio" || selected.id === "ics43434-usb-audio-pads") setAudioOpen(true);
+        if (streamsWebAudio(selected.id)) setAudioOpen(true);
       }
       recordBrowserBenchAction(action === "run" ? {
         types: ["observe"], title: "MicroPython script run", where: "Browser editor",
@@ -329,7 +335,7 @@ export function MicroPythonEditor({
             )}
             <span className={styles.toolDivider} aria-hidden="true" />
             <button className={styles.run} type="button" disabled={!connected || !!operation || blocked || rawMode} title="Ctrl+Enter" onClick={() => void boardAction("run")}><EditorActionIcon name="play" />{t("flasher.examples.run")}</button>
-            {selected.id === "ics43434-usb-audio" || selected.id === "ics43434-usb-audio-pads" ? (
+            {streamsWebAudio(selected.id) ? (
               <button type="button" onClick={() => setAudioOpen(true)} aria-haspopup="dialog">{t("flasher.i2sAudio.view")}</button>
             ) : null}
             {onOpenImuCube && selected.id === "imu-bmi270-cube" ? (
@@ -337,6 +343,15 @@ export function MicroPythonEditor({
             ) : null}
             {onOpenP4Sensors && selected.id === "p4-sensor-stream" ? (
               <button type="button" onClick={onOpenP4Sensors} aria-haspopup="dialog">{t("flasher.p4Sensors.view")}</button>
+            ) : null}
+            {onOpenAudioPlayer && selected.id === "es8311-play-serial" ? (
+              <button type="button" onClick={onOpenAudioPlayer} aria-haspopup="dialog">{t("flasher.audioPlayer.view")}</button>
+            ) : null}
+            {onOpenToneLab && selected.id === "es8311-tone-lab" ? (
+              <button type="button" onClick={onOpenToneLab} aria-haspopup="dialog">{t("flasher.toneLab.view")}</button>
+            ) : null}
+            {onOpenSoundLab && soundLabMode(selected.id) ? (
+              <button type="button" onClick={() => onOpenSoundLab(selected.id)} aria-haspopup="dialog">{t("flasher.soundLab.view")}</button>
             ) : null}
             <button className={styles.stop} type="button" disabled={!connected || blocked} onClick={() => void boardAction("stop")}><EditorActionIcon name="stop" />{t("flasher.examples.stop")}</button>
             <button type="button" disabled={!connected || !!operation || blocked || rawMode} title="Ctrl+S" onClick={() => void boardAction("save")}><EditorActionIcon name="save" />{t("flasher.examples.save")}</button>

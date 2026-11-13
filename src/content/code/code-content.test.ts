@@ -51,8 +51,17 @@ describe("code content", () => {
       ...(l.variants ?? []).map((v) => v.cmd ?? ""),
     ]);
     const envs = commands.map(envOfCommand).filter((e): e is string => !!e);
-    expect(envs.length).toBeGreaterThan(15);
+    // The sound track now uses MicroPython examples instead of eight S3 firmware environments.
+    expect(envs.length).toBeGreaterThan(10);
     expect(envs.filter((e) => !byEnv.has(e))).toEqual([]);
+  });
+
+  it("packages every sound exercise's MicroPython examples", () => {
+    const bundle = collectMicroPython(resolve(process.cwd(), firmwareDir));
+    const bundled = new Set(bundle?.examples.map((example) => example.id));
+    for (const lesson of soundLessons) {
+      for (const id of lessonExamples(lesson.id)) expect(bundled.has(id), `${lesson.id}: ${id}`).toBe(true);
+    }
   });
 
   it("anchors every hand-written tour stop in the current code", () => {

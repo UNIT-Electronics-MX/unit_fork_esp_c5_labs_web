@@ -1,9 +1,31 @@
 import { describe, expect, it } from "vitest";
-import { canOpenLessonCode, lessonExamples, pickExamples, showsImuCube } from "./lesson-examples";
+import { canOpenLessonCode, lessonExamples, pickExamples, showsImuCube, streamsWebAudio } from "./lesson-examples";
 
 describe("lessonExamples", () => {
-  it("opens only the J20 microphone scripts in the Sound exercise", () => {
+  it("separates the listening-only microphone scripts from the codec's capture and playback scripts", () => {
     expect(lessonExamples("S0")).toEqual(["ics43434-j20", "ics43434-usb-audio"]);
+    expect(lessonExamples("S0B")).toEqual(["es8311-mic-capture", "es8311-mic-usb-audio", "es8311-melody", "es8311-tone-lab", "es8311-play-serial", "es8311-mic-diagnose"]);
+  });
+
+  it("opens the codec sound practices without duplicating listening or speaker", () => {
+    const expected = [
+      ["S2", "es8311-sound-loudness"],
+      ["S3", "es8311-sound-clap"], ["S4", "es8311-sound-recorder"],
+      ["S5", "es8311-sound-spectrum"], ["S6", "es8311-sound-game"],
+      ["S8", "es8311-sound-voice-fx"],
+    ];
+    for (const [lesson, example] of expected) {
+      expect(lessonExamples(lesson ?? "")[0]).toBe(example);
+      expect(canOpenLessonCode({ id: lesson ?? "" })).toBe(true);
+    }
+    expect(lessonExamples("S1")).toEqual([]);
+    expect(lessonExamples("S7")).toEqual([]);
+  });
+
+  it("opens the listening dialog only for scripts that stream browser audio", () => {
+    expect(streamsWebAudio("ics43434-usb-audio")).toBe(true);
+    expect(streamsWebAudio("es8311-mic-usb-audio")).toBe(true);
+    expect(streamsWebAudio("es8311-mic-capture")).toBe(false);
   });
 
   it("opens the scanner first and every on-board sensor in P4", () => {
@@ -38,13 +60,13 @@ describe("canOpenLessonCode", () => {
 
   it("opens only the selected exercise's MicroPython workspace", () => {
     expect(canOpenLessonCode({ id: "S0" })).toBe(true);
+    expect(canOpenLessonCode({ id: "S0B" })).toBe(true);
     expect(canOpenLessonCode({ id: "P5", variants: languages, variantKey: "micropython" })).toBe(true);
     expect(canOpenLessonCode({ id: "00", variants: languages, variantKey: "micropython" })).toBe(true);
   });
 
-  it("closes Arduino sketches, older C readers and the Arduino setup", () => {
+  it("closes Arduino sketches and the Arduino setup", () => {
     expect(canOpenLessonCode({ id: "P5", variants: languages, variantKey: "arduino" })).toBe(false);
-    expect(canOpenLessonCode({ id: "S1" })).toBe(false);
     expect(canOpenLessonCode({ id: "00", variants: languages, variantKey: "arduino" })).toBe(false);
   });
 });

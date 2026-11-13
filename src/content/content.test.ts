@@ -11,6 +11,7 @@ import { LESSON_KIT } from "./kit";
 import { trackLessonsQuery } from "./queries";
 import { boardOfLesson, LANGUAGE_LESSON_IDS, TRACKS } from "./tracks";
 import { followsCodePlatform, isActive, resolveLesson } from "@/domain/lesson";
+import { lessonExamples } from "@/features/flasher/lesson-examples";
 
 describe("content", () => {
   it.each(TRACKS.filter((t) => !t.planned))(
@@ -84,6 +85,7 @@ describe("content", () => {
     expect(boardOfLesson("I1")).toBe("pulsar-c5");
     expect(boardOfLesson("I2")).toBe("pulsar-c5");
     expect(boardOfLesson("S0")).toBe("pulsar-c5");
+    expect(boardOfLesson("S0B")).toBe("pulsar-c5");
     expect(boardOfLesson("W1")).toBe("devkitc-s3");
     expect(boardOfLesson("B1")).toBe("devkitc-s3");
     expect(boardOfLesson("B1", "arduino")).toBe("devkitc-s3");
@@ -94,6 +96,20 @@ describe("content", () => {
     expect(boardOfLesson("W2", "lan")).toBe("devkitc-s3");
     expect(boardOfLesson("R1")).toBe("pulsar-c5");
     expect(boardOfLesson("nope")).toBe("devkitc-s3");
+  });
+
+  it("uses one codec practice for listening and playback, plus focused sound labs", async () => {
+    const lessons = (await trackLessonsQuery("sound", "es").queryFn!({} as never)).filter(isActive);
+    expect(lessons).toHaveLength(8);
+    expect(lessons.map((lesson) => lesson.id)).toEqual(["S0", "S0B", "S2", "S3", "S4", "S5", "S6", "S8"]);
+    for (const lesson of lessons.filter((item) => /^S[1-8]$/.test(item.id))) {
+      expect(boardOfLesson(lesson.id)).toBe("pulsar-c5");
+      expect(lessonExamples(lesson.id)[0]).toMatch(/^es8311-/);
+      expect(lesson.wiring?.rows).toContainEqual(["D6 GPIO24", "DOUT", "Muestras digitales del micrófono hacia la placa"]);
+      expect(lesson.title).not.toContain("Pulsar C5");
+      expect(lesson.goal).not.toMatch(/INMP441|MAX98357A|ESP32-S3/);
+      expect(lesson.cmd).toBe("");
+    }
   });
 
   it("teaches R1–R8 with PN532 I2C on the Pulsar C5", async () => {

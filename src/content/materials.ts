@@ -25,7 +25,11 @@ export const MATERIAL_PRODUCTS = {
   },
   max98357: { url: "https://uelectronics.com/producto/max98357-amplificador-de-audio-mono-i2s-clase-d-3w/", link: "shop" },
   speaker: { url: "https://uelectronics.com/producto/bocinas-4-y-8-ohm/", link: "shop" },
-  es8311: { url: "https://wiki.uelectronics.com/wiki/unit_devlab_i2s_es8311_codec_with_amplifier_module", link: "docs" },
+  es8311: {
+    url: "https://wiki.uelectronics.com/wiki/unit_devlab_i2s_es8311_codec_with_amplifier_module",
+    editorUrl: "/lessons/S0B/code",
+    link: "docs",
+  },
 } as const;
 
 export type MaterialProductId = keyof typeof MATERIAL_PRODUCTS;
@@ -37,12 +41,9 @@ export interface MaterialSuggestion {
 
 const main = (product: MaterialProductId): MaterialSuggestion => ({ product, role: "main" });
 const extra = (product: MaterialProductId): MaterialSuggestion => ({ product, role: "extra" });
-const adapt = (product: MaterialProductId): MaterialSuggestion => ({ product, role: "adapt" });
 
 const RFID_TAGS = [extra("rfidCard"), extra("rfidFob")] as const;
 const RFID_LAB = [main("pn532"), ...RFID_TAGS] as const;
-const AUDIO_PLAYBACK = [main("max98357"), main("speaker")] as const;
-const AUDIO_OPTIONAL = [extra("max98357"), extra("speaker")] as const;
 
 /** One recommendation list per lesson; optional accessories never count as a kit requirement. */
 export const LESSON_MATERIALS: Readonly<Record<string, readonly MaterialSuggestion[]>> = {
@@ -63,14 +64,13 @@ export const LESSON_MATERIALS: Readonly<Record<string, readonly MaterialSuggesti
   R7: RFID_LAB,
   R8: RFID_LAB,
   S0: [main("ics43434")],
-  S1: [main("inmp441"), adapt("sph0645"), adapt("ics43434")],
-  S2: [main("inmp441"), ...AUDIO_OPTIONAL],
-  S3: [main("inmp441"), ...AUDIO_OPTIONAL],
-  S4: [main("inmp441"), ...AUDIO_OPTIONAL],
-  S5: [main("inmp441"), ...AUDIO_OPTIONAL],
-  S6: [main("inmp441"), ...AUDIO_OPTIONAL],
-  S7: [...AUDIO_PLAYBACK, adapt("es8311")],
-  S8: [main("inmp441"), ...AUDIO_PLAYBACK],
+  S0B: [main("es8311")],
+  S2: [main("es8311")],
+  S3: [main("es8311")],
+  S4: [main("es8311")],
+  S5: [main("es8311")],
+  S6: [main("es8311")],
+  S8: [main("es8311")],
 };
 
 export const lessonMaterials = (id: string): readonly MaterialSuggestion[] => LESSON_MATERIALS[id] ?? [];

@@ -261,27 +261,27 @@
       },
       "inmp441": {
         "name": "Micrófono I²S INMP441",
-        "why": "El micrófono digital compatible con los ejemplos actuales de sonido. S8 lo requiere y S2 lo usa para dB SPL."
+        "why": "Micrófono digital alternativo para otros proyectos I²S. S0 usa el ICS-43434; las prácticas del códec usan un micrófono analógico conectado al ES8311."
       },
       "sph0645": {
         "name": "Micrófono I²S SPH0645",
-        "why": "Para una adaptación futura: el firmware de sonido actual está configurado para INMP441 y no admite directamente este micrófono."
+        "why": "Micrófono digital alternativo para otro proyecto I²S. Las prácticas del códec leen la entrada del ES8311."
       },
       "ics43434": {
         "name": "Micrófono I²S ICS-43434 UNIT DevLab",
-        "why": "Extensión de S1 para Pulsar C5: abre el ejemplo de nivel en la consola serial web. Requiere un firmware MicroPython C5 compilado con machine.I2S; la imagen genérica incluida no lo habilita. El conector I²S de 6 pines no es QWIIC."
+        "why": "La práctica S0 de Pulsar C5 mide el nivel del micrófono y permite escucharlo en el navegador. Usa el firmware MicroPython de vista previa con machine.I2S y el conector J20 de seis pines."
       },
       "max98357": {
         "name": "Amplificador de audio I²S MAX98357",
-        "why": "El amplificador que usan los ejemplos actuales de reproducción; acompáñalo de una bocina adecuada."
+        "why": "Amplificador I²S alternativo para otros proyectos. Las prácticas del códec usan el amplificador ES8311."
       },
       "speaker": {
         "name": "Bocina de 4 Ω / 3 W",
-        "why": "Selecciona la variante de 4 Ω y 3 W para el amplificador MAX98357 de S7 y S8."
+        "why": "Usa un altavoz adecuado para el amplificador del módulo ES8311 en las prácticas de códec, grabadora, música y efectos de voz."
       },
       "es8311": {
         "name": "Guía del códec UNIT DevLab ES8311",
-        "why": "Documentación de otro códec de audio. S7/S8 usan MAX98357; ES8311 necesita otro cableado y firmware."
+        "why": "La práctica S0B usa el ES8311 para escuchar el micrófono, tocar tonos y reproducir música. Las demás prácticas del códec reutilizan sus conexiones I²S e I²C."
       }
     }
   }

@@ -63,6 +63,7 @@
       "ky037": "Micrófono analógico KY-037",
       "inmp441": "Micrófono I²S INMP441",
       "ics43434": "Micrófono I²S ICS-43434",
+      "es8311": "Códec ES8311 + micrófono y altavoz",
       "amp": "Amplificador MAX98357A + altavoz",
       "keyboard": "Teclado o ratón Bluetooth",
       "pot": "Potenciómetro de 10 kΩ",
