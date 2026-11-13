@@ -2,6 +2,10 @@ import { describe, expect, it } from "vitest";
 import { lessonExamples, pickExamples, showsImuCube } from "./lesson-examples";
 
 describe("lessonExamples", () => {
+  it("opens only the J20 microphone scripts in the Sound exercise", () => {
+    expect(lessonExamples("S0")).toEqual(["ics43434-j20", "ics43434-usb-audio"]);
+  });
+
   it("opens the scanner first and every on-board sensor in P4", () => {
     const ids = lessonExamples("P4");
     expect(ids[0]).toBe("i2c-scan");

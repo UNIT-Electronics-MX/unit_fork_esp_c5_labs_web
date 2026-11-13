@@ -8,6 +8,8 @@ import type { SerialTerminalHandle } from "./SerialTerminal";
 import { REPL_INTERRUPT_FAILED, validPythonFilename } from "./serial-session";
 import { EditorActionIcon } from "./EditorActionIcon";
 import { pickExamples } from "./lesson-examples";
+import { I2sAudioDialog } from "./i2s-audio/I2sAudioDialog";
+import { useSerialConnection } from "./serial-connection";
 import { highlightPython } from "./python-highlight";
 import styles from "./MicroPythonEditor.module.css";
 
@@ -93,6 +95,8 @@ export function MicroPythonEditor({
   const [operation, setOperation] = useState("");
   const [notice, setNotice] = useState("");
   const [loadedFile, setLoadedFile] = useState(false);
+  const [audioOpen, setAudioOpen] = useState(false);
+  const { rawMode } = useSerialConnection();
   const [cursor, setCursor] = useState({ line: 1, column: 1 });
   const sourceRef = useRef<HTMLPreElement>(null);
   const gutterRef = useRef<HTMLDivElement>(null);
@@ -273,7 +277,10 @@ export function MicroPythonEditor({
       if (action === "run") await terminalRef.current.runPython(code);
       else await terminalRef.current.savePython(outputName, code);
       setNotice(t(`flasher.examples.${action}Done`, { file: outputName }));
-      if (action === "run") onRun?.(selected.id);
+      if (action === "run") {
+        onRun?.(selected.id);
+        if (selected.id === "ics43434-usb-audio" || selected.id === "ics43434-usb-audio-pads") setAudioOpen(true);
+      }
       recordBrowserBenchAction(action === "run" ? {
         types: ["observe"], title: "MicroPython script run", where: "Browser editor",
         why: "Sent a script to the board's REPL.", result: "Script sent; its source and output were not saved here.",
@@ -321,7 +328,10 @@ export function MicroPythonEditor({
               <button type="button" onClick={() => { setNotice(""); void terminalRef.current?.disconnect(); }}><EditorActionIcon name="plug" />{t("flasher.serial.disconnect")}</button>
             )}
             <span className={styles.toolDivider} aria-hidden="true" />
-            <button className={styles.run} type="button" disabled={!connected || !!operation || blocked} title="Ctrl+Enter" onClick={() => void boardAction("run")}><EditorActionIcon name="play" />{t("flasher.examples.run")}</button>
+            <button className={styles.run} type="button" disabled={!connected || !!operation || blocked || rawMode} title="Ctrl+Enter" onClick={() => void boardAction("run")}><EditorActionIcon name="play" />{t("flasher.examples.run")}</button>
+            {selected.id === "ics43434-usb-audio" || selected.id === "ics43434-usb-audio-pads" ? (
+              <button type="button" onClick={() => setAudioOpen(true)} aria-haspopup="dialog">{t("flasher.i2sAudio.view")}</button>
+            ) : null}
             {onOpenImuCube && selected.id === "imu-bmi270-cube" ? (
               <button type="button" onClick={onOpenImuCube} aria-haspopup="dialog">{t("flasher.imuCube.view")}</button>
             ) : null}
@@ -329,8 +339,8 @@ export function MicroPythonEditor({
               <button type="button" onClick={onOpenP4Sensors} aria-haspopup="dialog">{t("flasher.p4Sensors.view")}</button>
             ) : null}
             <button className={styles.stop} type="button" disabled={!connected || blocked} onClick={() => void boardAction("stop")}><EditorActionIcon name="stop" />{t("flasher.examples.stop")}</button>
-            <button type="button" disabled={!connected || !!operation || blocked} title="Ctrl+S" onClick={() => void boardAction("save")}><EditorActionIcon name="save" />{t("flasher.examples.save")}</button>
-            {requiredLibraries.map((library) => <button key={library.id} type="button" disabled={!connected || !!operation || blocked} onClick={() => void installLibrary(library)}><EditorActionIcon name="save" />{t("flasher.examples.installLibrary", { file: library.file })}</button>)}
+            <button type="button" disabled={!connected || !!operation || blocked || rawMode} title="Ctrl+S" onClick={() => void boardAction("save")}><EditorActionIcon name="save" />{t("flasher.examples.save")}</button>
+            {requiredLibraries.map((library) => <button key={library.id} type="button" disabled={!connected || !!operation || blocked || rawMode} onClick={() => void installLibrary(library)}><EditorActionIcon name="save" />{t("flasher.examples.installLibrary", { file: library.file })}</button>)}
           </>
         ) : null}
       </div>
@@ -525,6 +535,7 @@ export function MicroPythonEditor({
           {inLesson ? details : null}
         </>
       ) : null}
+      {audioOpen ? <I2sAudioDialog onClose={() => setAudioOpen(false)} /> : null}
     </section>
   );
 }

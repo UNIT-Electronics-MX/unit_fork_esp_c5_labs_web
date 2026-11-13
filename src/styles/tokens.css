@@ -74,6 +74,11 @@
   --scope-blue: #5aa0ff;
   --scope-violet: #b082ff;
   --scope-pink: #ff80c8;
+  /* Holographic HUD (the I²S listening console): cyan light on the scope's night blue */
+  --hud-cyan: #4fd8ff;
+  --hud-cyan-soft: rgb(79 216 255 / 0.14);
+  --hud-cyan-line: rgb(79 216 255 / 0.32);
+  --hud-glow: rgb(79 216 255 / 0.55);
   --test-r: #ff0000;
   --test-g: #00ff00;
   --test-b: #0000ff;

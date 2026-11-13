@@ -51,7 +51,8 @@ export const TRACKS: readonly Track[] = [
     color: "--w-sda",
     lessonIds: ["W1", "W2", "W3", "I1", "W4", "W5"],
   },
-  // RFID runs on the C5 in MicroPython; Sound still uses the older S3 labs.
+  // RFID runs on the C5 in MicroPython. Sound starts with a C5 I²S exercise;
+  // its S1–S8 labs still use the older S3 hardware.
   {
     id: "rfid",
     title: "RFID & NFC",
@@ -65,7 +66,7 @@ export const TRACKS: readonly Track[] = [
     title: "Sound",
     blurb: "Hear, measure, clap, record, see pitch, play",
     color: "--sound",
-    lessonIds: ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"],
+    lessonIds: ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"],
   },
   {
     id: "zigbee",
@@ -101,7 +102,7 @@ export const findTrack = (id: string) => TRACKS.find((t) => t.id === id);
 
 /** The board a lesson (in that language variant) is wired on; the Wi-Fi and BLE tracks contain both boards. */
 export const boardOfLesson = (lessonId: string, variantKey?: string): BoardId =>
-  lessonId === "I1" || lessonId === "I2" || (variantKey === "micropython" && C5_MICROPYTHON_PORTS.has(lessonId))
+  lessonId === "I1" || lessonId === "I2" || lessonId === "S0" || (variantKey === "micropython" && C5_MICROPYTHON_PORTS.has(lessonId))
     ? "pulsar-c5"
     : TRACKS.find((t) => t.lessonIds.includes(lessonId))?.board ?? "devkitc-s3";
 

@@ -11,10 +11,30 @@ function fakePort() {
     open: vi.fn(async () => undefined),
     close: vi.fn(async () => undefined),
   };
-  return { port, written, receive: (text: string) => input.enqueue(new TextEncoder().encode(text)) };
+  return {
+    port, written,
+    receive: (text: string) => input.enqueue(new TextEncoder().encode(text)),
+    receiveBytes: (bytes: Uint8Array) => input.enqueue(bytes),
+  };
 }
 
 describe("SerialConnection", () => {
+  it("keeps raw audio out of terminal output and blocks normal commands", async () => {
+    const connection = new SerialConnection();
+    const { port, written, receiveBytes } = fakePort();
+    await connection.connect(async () => port);
+    const chunks: Uint8Array[] = [];
+    connection.startRaw((chunk) => chunks.push(chunk));
+    receiveBytes(new Uint8Array([65, 85, 0, 255]));
+    await vi.waitFor(() => expect(chunks).toHaveLength(1));
+    expect(connection.getSnapshot().output).toBe("");
+    await expect(connection.send("status")).rejects.toThrow("busy");
+    await connection.sendRawCommand("R");
+    expect(written).toEqual(["R"]);
+    await connection.disconnect();
+    expect(connection.getSnapshot().rawMode).toBe(false);
+  });
+
   it("stays connected and keeps its output while no view is subscribed", async () => {
     const connection = new SerialConnection();
     const { port, receive } = fakePort();

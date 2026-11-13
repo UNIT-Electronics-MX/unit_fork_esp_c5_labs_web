@@ -98,7 +98,7 @@ export function FirmwareFlasher({
       }
       const { ESPLoader, Transport: EspTransport } = await import("@/vendor/esptool-js/bundle.js");
       const fileArray = microPythonSetup && imageSource !== "local"
-        ? [{ data: await loadBundledFirmware(imageSource), address: 0x2000 }]
+        ? [{ data: await loadBundledFirmware(imageSource), address: bundledFirmware[imageSource].address }]
         : await Promise.all(plan.map(async ({ file, address }) => ({
           data: new Uint8Array(await file.arrayBuffer()), address,
         })));
@@ -210,24 +210,25 @@ export function FirmwareFlasher({
               <span>{t("flasher.firmwareSource")}</span>
               <select value={imageSource} disabled={working} onChange={(event) => {
                 const source = event.target.value;
-                if (source !== "pulsar" && source !== "sparkfun" && source !== "local") return;
+                if (source !== "pulsar" && source !== "generic" && source !== "sparkfun" && source !== "local") return;
                 setImageSource(source);
                 setPhase("ready");
                 setMessage("");
                 setProgress(0);
               }}>
                 <option value="pulsar">{t("flasher.bundledPulsar")}</option>
+                <option value="generic">{t("flasher.bundledGeneric")}</option>
                 <option value="sparkfun">{t("flasher.bundledSparkfun")}</option>
                 <option value="local">{t("flasher.localBinary")}</option>
               </select>
             </label>
             {selectedFirmware ? <p className={styles.bundledFile}>
               <strong>{selectedFirmware.filename}</strong>
-              <span>{t("flasher.bundledOffset")}</span>
+              <span>{t("flasher.bundledOffset", { address: `0x${selectedFirmware.address.toString(16).padStart(4, "0")}` })}</span>
               <a href={bundledFirmwareUrl(selectedFirmware.filename)} download>{t("flasher.downloadBundled")}</a>
             </p> : null}
             {imageSource === "sparkfun" ? <p className={styles.otherBoard}>{t("flasher.sparkfunOnly")}</p> : null}
-            <a className={styles.firmwareLink} href={selectedFirmware?.source ?? bundledFirmware.pulsar.source} target="_blank" rel="noopener noreferrer">{t("flasher.microPythonDownload")}</a>
+            {selectedFirmware?.source ? <a className={styles.firmwareLink} href={selectedFirmware.source} target="_blank" rel="noopener noreferrer">{t("flasher.microPythonDownload")}</a> : null}
           </> : null}
           {(!microPythonSetup || imageSource === "local") && images.map((image, index) => (
             <div className={styles.imageRow} key={image.id}>
@@ -240,18 +241,18 @@ export function FirmwareFlasher({
                   onChange={(event) => patchImage(image.id, { file: event.target.files?.[0] ?? null })}
                 />
               </label>
-              {!microPythonSetup ? <label className={styles.address}>
+              <label className={styles.address}>
                 <span>{t("flasher.address")}</span>
                 <input
                   type="text"
                   inputMode="text"
                   spellCheck={false}
-                  placeholder="0x0"
+                  placeholder={microPythonSetup ? "0x2000" : "0x0"}
                   value={image.address}
                   disabled={working}
                   onChange={(event) => patchImage(image.id, { address: event.target.value })}
                 />
-              </label> : null}
+              </label>
               {!microPythonSetup && images.length > 1 ? (
                 <button
                   className={styles.remove}

@@ -1,0 +1,127 @@
+.viewer { display: grid; align-content: start; gap: 14px; max-inline-size: 760px; min-inline-size: 0; margin-inline: auto; padding: 20px; }
+.intro, .note { margin: 0; color: var(--muted); line-height: 1.5; }
+.note { font-size: 12px; }
+.hint { margin: 0; padding: 8px 12px; border-inline-start: 3px solid var(--warn); color: var(--ink); background: var(--bg); font-size: 13px; }
+.error { margin: 0; color: var(--danger); overflow-wrap: anywhere; }
+
+/* ── The holographic console: night-blue glass, a faint grid, cyan light ── */
+.hud {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  min-inline-size: 0;
+  padding: 14px 16px 16px;
+  border: 1px solid var(--hud-cyan-line);
+  border-radius: var(--radius-m);
+  color: var(--scope-ink);
+  background:
+    radial-gradient(ellipse at 50% 38%, var(--hud-cyan-soft), transparent 62%),
+    linear-gradient(var(--scope-grid) 1px, transparent 1px) 0 0 / 100% 28px,
+    linear-gradient(90deg, var(--scope-grid) 1px, transparent 1px) 0 0 / 28px 100%,
+    var(--scope-paper);
+  box-shadow: inset 0 0 40px var(--hud-cyan-soft), 0 0 0 1px var(--scope-paper);
+  overflow: hidden;
+  isolation: isolate;
+}
+/* Corner brackets */
+.hud::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  z-index: -1;
+  pointer-events: none;
+  --c: var(--hud-cyan);
+  background:
+    linear-gradient(var(--c) 0 0) top left / 18px 2px, linear-gradient(var(--c) 0 0) top left / 2px 18px,
+    linear-gradient(var(--c) 0 0) top right / 18px 2px, linear-gradient(var(--c) 0 0) top right / 2px 18px,
+    linear-gradient(var(--c) 0 0) bottom left / 18px 2px, linear-gradient(var(--c) 0 0) bottom left / 2px 18px,
+    linear-gradient(var(--c) 0 0) bottom right / 18px 2px, linear-gradient(var(--c) 0 0) bottom right / 2px 18px;
+  background-repeat: no-repeat;
+  opacity: .8;
+}
+/* A slow scan line sweeping down while listening */
+.hud::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+  block-size: 30%;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(transparent, var(--hud-cyan-soft) 85%, var(--hud-cyan-line) 100%);
+  opacity: 0;
+  transform: translateY(-100%);
+}
+.hud[data-listening="true"]::after { opacity: 1; animation: scan 4s linear infinite; }
+@keyframes scan { to { transform: translateY(340%); } }
+
+.hudBar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-block-end: 10px; border-block-end: 1px solid var(--hud-cyan-line); }
+.feed { display: inline-flex; align-items: center; gap: 8px; min-inline-size: 0; margin: 0; color: var(--scope-muted); font: 650 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; line-height: 1.4; }
+.dot { flex: none; inline-size: 8px; block-size: 8px; border-radius: 50%; background: currentColor; }
+.hud[data-feed="live"] .feed { color: var(--hud-cyan); }
+.hud[data-feed="live"] .dot { box-shadow: 0 0 8px var(--hud-glow); animation: pulse 1.2s ease-in-out infinite; }
+.hud[data-feed="waiting"] .dot { animation: pulse 1.2s ease-in-out infinite; }
+.hud[data-feed="stale"] .feed { color: var(--scope-amber); }
+@keyframes pulse { 50% { opacity: .3; } }
+.clip { flex: none; padding: 2px 8px; border: 1px solid var(--scope-dim); color: var(--scope-muted); font: 700 10px var(--font-mono); letter-spacing: .12em; opacity: .6; }
+.clip[data-on="true"] { color: var(--scope-paper); background: var(--scope-coral); border-color: var(--scope-coral); box-shadow: 0 0 12px var(--scope-coral); opacity: 1; }
+
+/* Dial in the middle, readouts at its sides */
+.hudMain { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 300px) minmax(0, 1fr); align-items: center; gap: 12px; }
+.dial { position: relative; inline-size: 100%; aspect-ratio: 1; }
+.dialCanvas { display: block; inline-size: 100%; block-size: 100%; }
+.dialCore { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; }
+.dialValue { display: grid; justify-items: center; gap: 2px; direction: ltr; unicode-bidi: isolate; }
+.dialNumber { color: var(--hud-cyan); font: 700 38px var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -.02em; text-shadow: 0 0 14px var(--hud-glow); }
+.dialUnit { color: var(--scope-muted); font: 650 11px var(--font-mono); letter-spacing: .2em; }
+
+.readouts { display: grid; gap: 14px; margin: 0; }
+.readouts div { display: grid; gap: 2px; padding-block: 4px; padding-inline: 10px; border-inline-start: 2px solid var(--hud-cyan-line); }
+.readoutsEnd { text-align: end; }
+.readoutsEnd div { border-inline-start: 0; border-inline-end: 2px solid var(--hud-cyan-line); }
+.readouts dt { color: var(--scope-muted); font: 650 10px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; overflow-wrap: anywhere; }
+.readouts dd { margin: 0; color: var(--scope-ink); font: 700 20px var(--font-mono); font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; }
+
+.scope { display: block; inline-size: 100%; block-size: 64px; border-block: 1px solid var(--hud-cyan-line); }
+
+/* Listen / stop and the gain selector */
+.hudControls { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 16px; }
+.primary {
+  min-block-size: 44px;
+  min-inline-size: 170px;
+  padding: 8px 22px;
+  border: 1px solid var(--hud-cyan);
+  color: var(--scope-paper);
+  background: var(--hud-cyan);
+  box-shadow: 0 0 18px var(--hud-glow);
+  clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  cursor: pointer;
+  font: 700 13px var(--font-mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.primary[data-listening="true"] { color: var(--scope-coral); background: transparent; border-color: var(--scope-coral); box-shadow: inset 0 0 14px var(--scope-coral); }
+.primary:disabled { color: var(--scope-muted); background: transparent; border-color: var(--scope-dim); box-shadow: none; cursor: default; }
+.primary:focus-visible, .gainSteps button:focus-visible { outline: 2px solid var(--scope-ink); outline-offset: 3px; }
+
+.gain { display: grid; gap: 6px; min-inline-size: 0; margin: 0; padding: 0; border: 0; }
+.gain legend { padding: 0; margin-block-end: 6px; color: var(--scope-muted); font: 650 10px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+.gainSteps { display: flex; max-inline-size: 100%; gap: 4px; }
+.gainSteps button { min-block-size: 36px; min-inline-size: 46px; padding: 4px 8px; border: 1px solid var(--hud-cyan-line); color: var(--hud-cyan); background: transparent; cursor: pointer; font: 700 12px var(--font-mono); direction: ltr; unicode-bidi: isolate; }
+.gainSteps button:hover { background: var(--hud-cyan-soft); }
+.gainSteps button[aria-pressed="true"] { color: var(--scope-paper); background: var(--hud-cyan); border-color: var(--hud-cyan); box-shadow: 0 0 10px var(--hud-glow); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hud[data-listening="true"]::after { animation: none; opacity: 0; }
+  .hud .dot { animation: none !important; }
+}
+@media (max-width: 600px) {
+  .viewer { padding: 12px; }
+  .hud { padding: 12px; }
+  .hudMain { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "dial dial" "start end"; }
+  .dial { grid-area: dial; justify-self: center; max-inline-size: 300px; }
+  .readoutsStart { grid-area: start; }
+  .readoutsEnd { grid-area: end; }
+  .hudControls { flex-direction: column; align-items: stretch; }
+  .gainSteps button { flex: 1 1 0; min-inline-size: 0; }
+}

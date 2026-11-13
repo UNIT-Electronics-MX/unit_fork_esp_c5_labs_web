@@ -24,7 +24,7 @@
       "micropython": {
         "label": "MicroPython",
         "short": "Firmware and serial REPL",
-        "goal": "Find the Pulsar C5's USB serial port, install the official ESP32-C5 MicroPython firmware and check its REPL before opening the first script in lesson 01.",
+        "goal": "Find the Pulsar C5's USB serial port, install its MicroPython firmware and check its REPL before opening the first script in lesson 01.",
         "learn": [
           "MicroPython firmware",
           "USB-C data cable",
@@ -33,8 +33,8 @@
         ],
         "steps": [
           "Connect a <b>data</b> USB-C cable to the Pulsar C5 and find its new serial port (<code>/dev/ttyACM…</code>, <code>/dev/cu.usbmodem…</code> or <code>COM…</code>).",
-          "Open <b>Firmware & console</b> for this lesson. The <b>ESP32_GENERIC_C5</b> <code>.bin</code> is preselected for Pulsar C5. The selector also includes a <b>SparkFun Thing Plus ESP32-C5</b> image for that board, or you can choose your own full <code>.bin</code>.",
-          "At <code>0x2000</code>, keep <b>Erase entire flash</b> selected for a clean install and press <b>Erase and flash firmware</b>. If the console is connected, it will release its port automatically.",
+          "Open <b>Firmware & console</b> for this lesson. The <b>Pulsar C5 MicroPython</b> <code>.bin</code> is preselected at <code>0x0000</code>. The official <b>ESP32_GENERIC_C5</b> and <b>SparkFun Thing Plus ESP32-C5</b> images use <code>0x2000</code>; you can also choose your own full <code>.bin</code> and its offset.",
+          "Keep <b>Erase entire flash</b> selected for a clean install and press <b>Erase and flash firmware</b>. If the console is connected, it will release its port automatically.",
           "After the board resets, reconnect the console below at <code>115200</code> baud and send the REPL test. The first full script is in lesson 01."
         ],
         "note": "Erasing the entire flash removes old firmware, saved <code>.py</code> scripts and board data. A <code>.bin</code> installs MicroPython; a <code>.py</code> is a script. Confirm the REPL works before lesson 01."

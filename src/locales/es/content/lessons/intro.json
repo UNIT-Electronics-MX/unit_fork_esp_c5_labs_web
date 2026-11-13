@@ -24,7 +24,7 @@
       "micropython": {
         "label": "MicroPython",
         "short": "Firmware y consola REPL",
-        "goal": "Encuentra el puerto serie USB de la Pulsar C5, instala el firmware oficial de MicroPython para ESP32-C5 y comprueba su consola REPL antes de abrir el primer script en la lección 01.",
+        "goal": "Encuentra el puerto serie USB de la Pulsar C5, instala su firmware MicroPython y comprueba su consola REPL antes de abrir el primer script en la lección 01.",
         "learn": [
           "firmware MicroPython",
           "cable USB-C de datos",
@@ -33,8 +33,8 @@
         ],
         "steps": [
           "Conecta un cable USB-C de <b>datos</b> a la Pulsar C5 y encuentra el puerto serie nuevo (<code>/dev/ttyACM…</code>, <code>/dev/cu.usbmodem…</code> o <code>COM…</code>).",
-          "Abre <b>Firmware y consola</b> de esta lección. El <code>.bin</code> <b>ESP32_GENERIC_C5</b> viene seleccionado para Pulsar C5. El selector también incluye el de <b>SparkFun Thing Plus ESP32-C5</b> para esa placa, o puedes elegir tu propio <code>.bin</code> completo.",
-          "En <code>0x2000</code>, deja activo <b>Borrar toda la flash</b> para una instalación limpia y pulsa <b>Borrar y cargar firmware</b>. Si la consola está conectada, liberará el puerto automáticamente.",
+          "Abre <b>Firmware y consola</b> de esta lección. El <code>.bin</code> <b>MicroPython para Pulsar C5</b> viene seleccionado en <code>0x0000</code>. Los binarios <b>ESP32_GENERIC_C5</b> y <b>SparkFun Thing Plus ESP32-C5</b> usan <code>0x2000</code>; también puedes elegir un <code>.bin</code> propio y su offset.",
+          "Deja activo <b>Borrar toda la flash</b> para una instalación limpia y pulsa <b>Borrar y cargar firmware</b>. Si la consola está conectada, liberará el puerto automáticamente.",
           "Cuando la placa se reinicie, vuelve a conectar la consola de abajo a <code>115200</code> baudios y envía la prueba REPL. El primer script completo está en la lección 01."
         ],
         "note": "Borrar toda la flash elimina el firmware anterior, los scripts <code>.py</code> y los datos guardados en la placa. Un <code>.bin</code> instala MicroPython; un <code>.py</code> es un script. Comprueba el REPL antes de la lección 01."

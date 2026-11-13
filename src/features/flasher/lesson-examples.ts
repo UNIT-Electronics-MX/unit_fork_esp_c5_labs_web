@@ -1,5 +1,6 @@
 /** The MicroPython examples each lesson opens, first one selected. Lessons not listed show the full example list. */
 const LESSON_EXAMPLES: Readonly<Record<string, readonly string[]>> = {
+  S0: ["ics43434-j20", "ics43434-usb-audio"],
   "01": ["neopixel"],
   "02": ["external-led"],
   P1: ["gpio"],

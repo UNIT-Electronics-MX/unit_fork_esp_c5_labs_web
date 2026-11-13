@@ -13,6 +13,8 @@ export interface SerialSnapshot {
   readonly baudRate: number;
   /** A run, save or stop is talking to the REPL. */
   readonly operation: boolean;
+  /** The serial reader is carrying binary PCM instead of terminal text. */
+  readonly rawMode: boolean;
   /** Why the last connection failed or closed, as a raw message or error key. */
   readonly error: string;
 }
@@ -23,7 +25,7 @@ const BUSY = "Serial console is busy.";
 const NOT_CONNECTED = "Connect the serial console first.";
 
 export class SerialConnection {
-  private snapshot: SerialSnapshot = { state: "ready", output: "", baudRate: 115200, operation: false, error: "" };
+  private snapshot: SerialSnapshot = { state: "ready", output: "", baudRate: 115200, operation: false, rawMode: false, error: "" };
   private readonly listeners = new Set<() => void>();
   private readonly textListeners = new Set<(text: string) => void>();
   private pendingOutput = "";
@@ -137,6 +139,7 @@ export class SerialConnection {
     this.set({
       state: cause ? "error" : "disconnected",
       operation: false,
+      rawMode: false,
       error: cause ? (cause instanceof Error ? cause.message : String(cause)) : "",
     });
   }
@@ -168,7 +171,7 @@ export class SerialConnection {
 
   private async operate(task: (session: SerialSession) => Promise<void>): Promise<void> {
     const session = this.require();
-    if (this.snapshot.operation) throw new Error("A MicroPython action is already running.");
+    if (this.snapshot.operation || this.snapshot.rawMode) throw new Error("Serial console is busy.");
     this.set({ operation: true });
     try {
       await task(session);
@@ -193,12 +196,39 @@ export class SerialConnection {
   }
 
   stopPython(): Promise<void> {
+    if (this.snapshot.rawMode) return this.stopRawPython();
     return this.require().stopPython();
+  }
+
+  startRaw(receiver: (chunk: Uint8Array) => void): void {
+    const session = this.require();
+    if (this.snapshot.operation || this.snapshot.rawMode || this.sending) throw new Error(BUSY);
+    session.startRaw(receiver);
+    this.set({ rawMode: true });
+  }
+
+  /** Send one protocol byte without echoing it into the terminal. */
+  async sendRawCommand(command: "R" | "S"): Promise<void> {
+    if (!this.snapshot.rawMode) throw new Error(BUSY);
+    await this.require().send(command, "none");
+  }
+
+  async stopRawPython(): Promise<void> {
+    if (!this.snapshot.rawMode) return;
+    try {
+      await this.require().stopRawPython();
+    } catch (cause) {
+      // After a missing prompt, the board may still be sending PCM. Do not decode it as REPL text.
+      await this.disconnect();
+      throw cause;
+    } finally {
+      this.set({ rawMode: false });
+    }
   }
 
   async send(text: string, ending: LineEnding = "lf"): Promise<void> {
     const session = this.require();
-    if (this.sending || this.snapshot.operation) throw new Error(BUSY);
+    if (this.sending || this.snapshot.operation || this.snapshot.rawMode) throw new Error(BUSY);
     this.sending = true;
     try {
       await session.send(text, ending);

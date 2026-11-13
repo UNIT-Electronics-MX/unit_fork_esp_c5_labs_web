@@ -45,6 +45,7 @@ export class SerialSession {
   private promptWaiters = new Set<PromptWaiter>();
   /** While set, received text still answers prompt waiters but is not shown in the terminal. */
   private muted = false;
+  private rawReceiver: ((chunk: Uint8Array) => void) | null = null;
 
   constructor(
     port: TerminalPort,
@@ -79,7 +80,10 @@ export class SerialSession {
           while (!this.stopped) {
             const { value, done } = await reader.read();
             if (done) break;
-            if (value) this.receive(decoder.decode(value, { stream: true }));
+            if (value) {
+              if (this.rawReceiver) this.rawReceiver(value);
+              else this.receive(decoder.decode(value, { stream: true }));
+            }
           }
         } catch (cause) {
           readError = cause;
@@ -193,6 +197,42 @@ export class SerialSession {
 
   async stopPython(): Promise<void> {
     await this.friendlyPrompt();
+  }
+
+  /** Give a binary stream the same reader without decoding PCM into terminal text. */
+  startRaw(receiver: (chunk: Uint8Array) => void): void {
+    if (this.rawReceiver) throw new Error("Binary serial stream is already active.");
+    this.rawReceiver = receiver;
+  }
+
+  /** Stop the board's PCM loop and keep its trailing bytes out of the text terminal. */
+  async stopRawPython(): Promise<void> {
+    if (!this.rawReceiver) return;
+    const prompt = [62, 62, 62, 32]; // REPL prompt
+    let matched = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const ready = new Promise<void>((resolve, reject) => {
+      timer = setTimeout(() => reject(new Error(REPL_INTERRUPT_FAILED)), 5000);
+      this.rawReceiver = (chunk) => {
+        for (const byte of chunk) {
+          matched = byte === prompt[matched] ? matched + 1 : byte === prompt[0] ? 1 : 0;
+          if (matched === prompt.length) {
+            resolve();
+            return;
+          }
+        }
+      };
+    });
+    void ready.catch(() => {});
+    try {
+      await this.send("S", "none");
+      await this.send("\x03\x03\r", "none");
+      await ready;
+      this.receive("\n>>> ");
+    } finally {
+      if (timer) clearTimeout(timer);
+      this.rawReceiver = null;
+    }
   }
 
   async send(text: string, ending: LineEnding): Promise<void> {

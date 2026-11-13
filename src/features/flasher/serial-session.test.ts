@@ -2,6 +2,32 @@ import { describe, expect, it, vi } from "vitest";
 import { REPL_INTERRUPT_FAILED, SerialSession, validPythonFilename } from "./serial-session";
 
 describe("SerialSession", () => {
+  it("routes PCM bytes away from the text terminal and restores the REPL on stop", async () => {
+    let input!: ReadableStreamDefaultController<Uint8Array>;
+    const writes: string[] = [];
+    const output: string[] = [];
+    const raw: number[][] = [];
+    const readable = new ReadableStream<Uint8Array>({ start(controller) { input = controller; } });
+    const writable = new WritableStream<Uint8Array>({ write(chunk) {
+      const command = new TextDecoder().decode(chunk);
+      writes.push(command);
+      if (command.includes("\x03")) input.enqueue(new TextEncoder().encode("KeyboardInterrupt\r\n>>> "));
+    } });
+    const session = new SerialSession({ readable, writable, open: async () => undefined, close: async () => undefined },
+      (text) => output.push(text), () => undefined);
+    await session.open(115200);
+    session.startRaw((chunk) => raw.push(Array.from(chunk)));
+    input.enqueue(new Uint8Array([65, 85, 0, 255, 128]));
+    await vi.waitFor(() => expect(raw).toHaveLength(1));
+    expect(output).toEqual([]);
+    await session.stopRawPython();
+    expect(writes).toEqual(["S", "\x03\x03\r"]);
+    expect(output.join("")).toContain(">>> ");
+    input.enqueue(new TextEncoder().encode("hello"));
+    await vi.waitFor(() => expect(output.join("")).toContain("hello"));
+    await session.close();
+  });
+
   it("accepts Python filenames without allowing paths", () => {
     expect(validPythonFilename("external_led.py")).toBe(true);
     expect(validPythonFilename("main.py")).toBe(true);

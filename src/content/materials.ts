@@ -20,7 +20,7 @@ export const MATERIAL_PRODUCTS = {
   sph0645: { url: "https://uelectronics.com/producto/sph0645-microfono-digital-i2s-mems/", link: "shop" },
   ics43434: {
     url: "https://wiki.uelectronics.com/wiki/devlab-i2s-ics-43434-mems-microphone",
-    editorUrl: "/flash?view=editor&example=ics43434-mic",
+    editorUrl: "/lessons/S0/code",
     link: "docs",
   },
   max98357: { url: "https://uelectronics.com/producto/max98357-amplificador-de-audio-mono-i2s-clase-d-3w/", link: "shop" },
@@ -62,6 +62,7 @@ export const LESSON_MATERIALS: Readonly<Record<string, readonly MaterialSuggesti
   R6: RFID_LAB,
   R7: RFID_LAB,
   R8: RFID_LAB,
+  S0: [main("ics43434")],
   S1: [main("inmp441"), adapt("sph0645"), adapt("ics43434")],
   S2: [main("inmp441"), ...AUDIO_OPTIONAL],
   S3: [main("inmp441"), ...AUDIO_OPTIONAL],

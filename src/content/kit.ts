@@ -28,6 +28,7 @@ export const KIT_ITEMS = [
   { id: "tags", part: "cards" },
   { id: "ky037", part: "sensor" },
   { id: "inmp441", part: "mic" },
+  { id: "ics43434", part: "mic" },
   { id: "amp", part: "speaker" },
 ] as const satisfies readonly { id: string; part: PartName }[];
 
@@ -75,6 +76,7 @@ export const LESSON_KIT: Readonly<Record<string, LessonKit<KitItemId>>> = {
   B6: { need: [SCREEN, ["phone"]], optional: ["button"] },
   B7: { need: [SCREEN], optional: ["button", "phone"] },
   B8: { need: [SCREEN, ["keyboard"]], optional: ["button"] },
+  S0: { need: [["ics43434"]] },
   S1: { need: [SCREEN, MIC] },
   S2: { need: [SCREEN, MIC], optional: ["amp", "led"] },
   S3: { need: [SCREEN, MIC], optional: ["amp", "led"] },

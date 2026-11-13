@@ -45,6 +45,8 @@
 .viewerDialogActions button:disabled { cursor: default; opacity: .5; }
 .viewerDialogActions button:focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
 .viewerDialogActions .viewerDialogClose { color: var(--surface); background: var(--ink); border-color: var(--ink); }
+.viewerDialogHead > .viewerDialogClose { min-height: 34px; padding: 6px 10px; border: 1px solid var(--ink); border-radius: var(--radius-s); color: var(--surface); background: var(--ink); cursor: pointer; font: 650 12px var(--font-display); }
+.viewerDialogHead > .viewerDialogClose:focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
 .viewerDialogBody { min-height: 0; overflow: hidden; }
 .viewerDialogLog { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 8px; min-width: 0; }
 .viewerDialogLog > span { color: var(--muted); font: 650 11px var(--font-mono); }

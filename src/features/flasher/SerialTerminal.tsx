@@ -46,7 +46,7 @@ export function SerialTerminal({
   stopPythonOnConnect?: boolean;
 }) {
   const { t } = useTranslation();
-  const { state, output, baudRate, operation, error: connectionError } = useSerialConnection();
+  const { state, output, baudRate, operation, rawMode, error: connectionError } = useSerialConnection();
   const [ending, setEnding] = useState<LineEnding>(initialEnding);
   const [command, setCommand] = useState("");
   const [sendError, setSendError] = useState("");
@@ -196,7 +196,7 @@ export function SerialTerminal({
             id="serial-command"
             rows={2}
             value={command}
-            disabled={!connected || operation}
+            disabled={!connected || operation || rawMode}
             placeholder={t("flasher.serial.placeholder")}
             onChange={(event) => setCommand(event.target.value)}
             onKeyDown={(event) => {
@@ -206,7 +206,7 @@ export function SerialTerminal({
               }
             }}
           />
-          <button type="submit" disabled={!connected || operation || sending || !command.trim()}>{t("flasher.serial.send")}</button>
+          <button type="submit" disabled={!connected || operation || rawMode || sending || !command.trim()}>{t("flasher.serial.send")}</button>
         </div>
         <p>{t("flasher.serial.sendHint")}</p>
       </form>

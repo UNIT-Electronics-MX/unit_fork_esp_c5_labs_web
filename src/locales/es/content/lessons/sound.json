@@ -1,4 +1,41 @@
 {
+  "S0": {
+    "title": "Micrófono I²S en Pulsar C5",
+    "heading": "Lee y escucha el ICS-43434 conectado a J20",
+    "goal": "Conecta el ICS-43434 al conector J20 de seis pines de la Pulsar C5. Lee el pico I²S en la consola serial y luego transmite audio PCM por USB Serial/JTAG para escucharlo en el navegador. Los dos programas de MicroPython están en la pestaña Código de este ejercicio.",
+    "goalLine": "Comprueba el nivel del micrófono y luego escúchalo en el navegador usando el mismo conector J20.",
+    "goalCheck": [
+      "La consola muestra <code>Audio peak (24-bit):</code> con un valor que cambia cuando hablas.",
+      "El navegador recibe tramas PCM, cambia el estado de la señal y reproduce tu voz.",
+      "La ganancia de escucha cambia el volumen de reproducción, mientras que dBFS sigue mostrando las muestras originales."
+    ],
+    "learn": [
+      "Entrada I²S",
+      "Muestras de 24 bits del micrófono",
+      "PCM por USB Serial/JTAG",
+      "dBFS y ganancia de escucha"
+    ],
+    "wiring": {
+      "title": "Conecta J20 directamente al conector J1 del ICS-43434",
+      "head": ["Pulsar C5 J20", "ICS-43434 J1", "Señal"],
+      "rows": [
+        ["Pin 1 · GPIO27", "Pin 1 · SCK", "Reloj de bits I²S"],
+        ["Pin 2 · GPIO7", "Pin 2 · SD", "Datos del micrófono"],
+        ["Pin 3 · GPIO26", "Pin 3 · WS", "Reloj de palabra izquierda/derecha"],
+        ["Pin 4 · GPIO10", "Pin 4 · CH", "Conéctalo a nivel bajo para seleccionar el canal izquierdo"],
+        ["Pin 5 · 3V3", "Pin 5 · VSYS", "Alimentación de 3,3 V"],
+        ["Pin 6 · GND", "Pin 6 · GND", "Tierra común"]
+      ]
+    },
+    "steps": [
+      "Instala el firmware MicroPython de vista previa para Pulsar C5 incluido en <code>0x0000</code> desde <b>Cargar firmware</b>. Incluye <code>machine.I2S</code>.",
+      "Desconecta el USB y une los seis pines de J20 con los pines de J1 del ICS-43434 en el mismo orden. Vuelve a conectar el USB; J20 no es el conector Qwiic de cuatro pines.",
+      "Abre <b>Código</b>, conecta la consola serial y ejecuta <code>mic_ics43434_j20.py</code>. Habla cerca del micrófono y observa cómo cambia el pico.",
+      "Detén el programa, selecciona <code>mic_ics43434_usb_master.py</code> y ejecútalo. En el diálogo de audio, pulsa <b>Escuchar</b> para oír el micrófono en el navegador.",
+      "Ajusta la <b>Ganancia de escucha</b> si se oye bajo. Si distorsiona, reduce la ganancia. Pulsa <b>Detener escucha</b> antes de salir del ejercicio."
+    ],
+    "note": "El navegador detecta datos PCM válidos y nivel de señal, pero no puede identificar eléctricamente el micrófono. Un módulo desconectado y uno en silencio pueden verse igual. La ganancia de escucha no cambia el PCM entrante ni la lectura de dBFS."
+  },
   "S1": {
     "title": "Oír",
     "heading": "Oye lo que envían de verdad los micrófonos",

@@ -83,6 +83,7 @@ describe("content", () => {
     expect(boardOfLesson("O3")).toBe("pulsar-c5");
     expect(boardOfLesson("I1")).toBe("pulsar-c5");
     expect(boardOfLesson("I2")).toBe("pulsar-c5");
+    expect(boardOfLesson("S0")).toBe("pulsar-c5");
     expect(boardOfLesson("W1")).toBe("devkitc-s3");
     expect(boardOfLesson("B1")).toBe("devkitc-s3");
     expect(boardOfLesson("B1", "arduino")).toBe("devkitc-s3");
@@ -184,6 +185,7 @@ describe("content", () => {
     const setup = lessons.find((entry) => entry.id === "00");
     if (!setup || !isActive(setup)) return;
     const micropython = resolveLesson(setup, "micropython");
+    expect(micropython.steps.join(" ")).toContain("0x0000");
     expect(micropython.steps.join(" ")).toContain("0x2000");
     expect(micropython.steps.join(" ")).toContain("Firmware y consola");
     expect(micropython.steps.join(" ")).toContain("ESP32_GENERIC_C5");

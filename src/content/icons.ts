@@ -57,6 +57,7 @@ export const LESSON_PART: Readonly<Record<string, PartName>> = {
   B6: "keyboard",
   B7: "note",
   B8: "mouse",
+  S0: "mic",
   S1: "mic",
   S2: "meter",
   S3: "burst",
