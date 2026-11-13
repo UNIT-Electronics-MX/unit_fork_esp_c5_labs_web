@@ -19,7 +19,7 @@ const SOUND_LAB_MODES = [
   { mode: "game", title: "Juego de sonido", titleEn: "Sound game",
     description: "Gana puntos al dar palmadas al ritmo de veinte pulsos.", descriptionEn: "Score by clapping on twenty timed beats." },
   { mode: "voice_fx", title: "Efectos de voz", titleEn: "Voice effects",
-    description: "Graba voz y reproduce versiones robot, eco, aguda y grave.", descriptionEn: "Record speech and play robot, echo, high and low pitch versions." },
+    description: "Graba voz y reprodúcela con 14 efectos (robot, cueva, teléfono, 8 bits…) y filtros con corte ajustable.", descriptionEn: "Record speech and replay it through 14 effects (robot, cave, telephone, 8-bit…) and filters with an adjustable cutoff." },
 ] as const;
 
 /** Route ES8311 DOUT to the exposed D6/GPIO24 pin with the playback clock wiring. */

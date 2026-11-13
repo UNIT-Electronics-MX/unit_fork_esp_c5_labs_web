@@ -153,7 +153,7 @@
     "int32-t": {
       "short": "Eine ganze Zahl von etwa -2,1 Milliarden bis +2,1 Milliarden: vier Bytes, die negativ sein können.",
       "simple": "Dieselbe Kiste wie <code>int</code> auf diesem Chip, aber ihr Name verspricht die Größe auf jedem Chip.",
-      "deep": "Vorzeichenbehaftet, 32 Bit. Das INMP441-Mikrofon sendet 24-Bit-Samples in 32-Bit-I2S-Slots, die als <code>int32_t</code> gelesen und dann nach unten geschoben werden."
+      "deep": "Vorzeichenbehaftet, 32 Bit. Das ICS-43434-Mikrofon sendet 24-Bit-Samples in 32-Bit-I2S-Slots, die als <code>int32_t</code> gelesen und dann nach unten geschoben werden."
     },
     "int64-t": {
       "short": "Eine riesige ganze Zahl, die negativ sein kann: acht Bytes.",

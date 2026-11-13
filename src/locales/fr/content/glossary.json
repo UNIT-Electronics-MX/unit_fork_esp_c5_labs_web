@@ -153,7 +153,7 @@
     "int32-t": {
       "short": "Un nombre entier d'environ -2,1 milliards à +2,1 milliards : quatre octets qui peuvent être négatifs.",
       "simple": "La même boîte que <code>int</code> sur cette puce, mais son nom promet la taille sur toutes les puces.",
-      "deep": "Signé, 32 bits. Le microphone INMP441 envoie des échantillons de 24 bits dans des slots I2S de 32 bits, lus comme <code>int32_t</code> puis décalés vers le bas."
+      "deep": "Signé, 32 bits. Le microphone ICS-43434 envoie des échantillons de 24 bits dans des slots I2S de 32 bits, lus comme <code>int32_t</code> puis décalés vers le bas."
     },
     "int64-t": {
       "short": "Un énorme nombre entier qui peut être négatif : huit octets.",

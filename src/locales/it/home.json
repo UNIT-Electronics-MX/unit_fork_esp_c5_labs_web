@@ -58,9 +58,6 @@
       "tags": "Scheda MIFARE e portachiavi",
       "wifi": "Rete Wi-Fi a 2,4 GHz",
       "phone": "Smartphone (Bluetooth)",
-      "ky037": "Microfono analogico KY-037",
-      "inmp441": "Microfono I²S INMP441",
-      "amp": "Amplificatore MAX98357A + altoparlante",
       "keyboard": "Tastiera o mouse Bluetooth"
     }
   },

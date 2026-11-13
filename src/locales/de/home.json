@@ -54,9 +54,6 @@
       "tags": "MIFARE-Karte und Schlüsselanhänger",
       "wifi": "WLAN mit 2,4 GHz",
       "phone": "Smartphone (Bluetooth)",
-      "ky037": "Analoges Mikrofon KY-037",
-      "inmp441": "I²S-Mikrofon INMP441",
-      "amp": "Verstärker MAX98357A + Lautsprecher",
       "keyboard": "Bluetooth-Tastatur oder -Maus"
     }
   },

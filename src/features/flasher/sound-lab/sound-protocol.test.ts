@@ -11,7 +11,10 @@ describe("ES8311 sound lab serial protocol", () => {
     expect(parseSoundLine("SPECTRUM,LEVEL,-45.2,-31.7")).toEqual({ mode: "spectrum", phase: "level", rms: -45.2, peak: -31.7 });
     expect(parseSoundLine("GAME,HIT,4,3")).toEqual({ mode: "game", phase: "hit", round: 4, score: 3 });
     expect(parseSoundLine("GAME,END,13/20")).toEqual({ mode: "game", phase: "end", score: 13, rounds: 20 });
-    expect(parseSoundLine("FX,PLAY,chipmunk")).toEqual({ mode: "voice_fx", phase: "play", effect: "chipmunk" });
+    expect(parseSoundLine("FX,RENDER,cave")).toEqual({ mode: "voice_fx", phase: "render", effect: "cave" });
+    expect(parseSoundLine("FX,PLAY,chipmunk,21334")).toEqual({ mode: "voice_fx", phase: "play", effect: "chipmunk", samples: 21334 });
+    expect(parseSoundLine("FX,PLAY,chipmunk")).toBeNull();
+    expect(parseSoundLine("FX,RENDER,flanger")).toBeNull();
     expect(parseSoundLine("CLAP,LEVEL,-18.0,-30.0")).toEqual({ mode: "clap", phase: "level", peak: -18, threshold: -30 });
     expect(parseSoundLine("CLAP,SENS,65")).toEqual({ mode: "clap", phase: "sensitivity", value: 65 });
     expect(parseSoundLine("RECORDER,SAVED,32000")).toEqual({ mode: "recorder", phase: "saved", samples: 32000 });

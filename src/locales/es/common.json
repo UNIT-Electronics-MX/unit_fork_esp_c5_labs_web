@@ -1,6 +1,10 @@
 {
   "flasher": {
-    "views": {"label": "Secciones de Flash", "editor": "Editor de código", "firmware": "Cargar firmware"},
+    "views": {
+      "label": "Secciones de Flash",
+      "editor": "Editor de código",
+      "firmware": "Cargar firmware"
+    },
     "eyebrow": "Pulsar C5 · Web Serial",
     "title": "Carga firmware a tu ESP32-C5",
     "intro": "Elige un .bin de tu computadora o usa el MicroPython para ESP32-C5 incluido. El navegador programa la placa directamente por Web Serial.",
@@ -40,14 +44,26 @@
     "successManualReset": "Firmware escrito. Pulsa RESET en la placa para iniciarlo.",
     "log": "Registro de conexión",
     "logEmpty": "Aquí aparecerá el registro de conexión.",
-    "phase": {"ready": "Listo para conectar.", "connecting": "Conectando y comprobando el chip…", "erasing": "Borrando toda la flash…", "writing": "Escribiendo firmware…", "done": "Terminado.", "error": "Revisa el mensaje y vuelve a intentarlo."},
+    "phase": {
+      "ready": "Listo para conectar.",
+      "connecting": "Conectando y comprobando el chip…",
+      "erasing": "Borrando toda la flash…",
+      "writing": "Escribiendo firmware…",
+      "done": "Terminado.",
+      "error": "Revisa el mensaje y vuelve a intentarlo."
+    },
     "serial": {
       "title": "Editor y monitor serial",
       "intro": "Lee la salida de la placa y envía comandos después de cargar el firmware.",
       "dockedTitle": "TERMINAL / REPL",
       "baudRate": "Baudios",
       "lineEnding": "Fin de línea",
-      "ending": {"none": "Ninguno", "lf": "LF (\n)", "cr": "CR (\r)", "crlf": "CRLF (\r\n)"},
+      "ending": {
+        "none": "Ninguno",
+        "lf": "LF (\n)",
+        "cr": "CR (\r)",
+        "crlf": "CRLF (\r\n)"
+      },
       "connect": "Conectar serial",
       "disconnect": "Desconectar",
       "clear": "Limpiar salida",
@@ -65,7 +81,14 @@
       "noReadable": "El puerto seleccionado no tiene un flujo de lectura serial.",
       "notWritable": "El puerto seleccionado no puede recibir datos seriales.",
       "replInterruptFailed": "No se pudo detener el programa: la placa no respondió con >>> tras Ctrl+C. Revisa que tenga MicroPython y pulsa RESET antes de volver a conectar.",
-      "state": {"ready": "Listo", "connecting": "Conectando…", "connected": "Conectado", "disconnecting": "Desconectando…", "disconnected": "Desconectado", "error": "Error"}
+      "state": {
+        "ready": "Listo",
+        "connecting": "Conectando…",
+        "connected": "Conectado",
+        "disconnecting": "Desconectando…",
+        "disconnected": "Desconectado",
+        "error": "Error"
+      }
     },
     "soundLab": {
       "stale": "No llegan datos desde hace unos segundos. ¿Sigue ejecutándose el programa?",
@@ -74,17 +97,195 @@
       "go": "¡YA!",
       "on": "ENCENDIDO",
       "off": "APAGADO",
-      "live": "vista en vivo", "view": "Abrir visualización", "backToCode": "Volver al código",
-      "disconnected": "Conecta la placa para recibir datos", "waiting": "Esperando datos del ejemplo", "receiving": "Datos recibidos de la placa", "stopped": "Programa detenido",
-      "modes": {"loudness": "Nivel del micrófono", "clap": "Control por palmadas", "recorder": "Grabadora", "spectrum": "Espectro de ocho bandas", "game": "Juego de palmadas", "voice_fx": "Efectos de voz"},
-      "hints": {"loudness": "Habla o da una palmada cerca del micrófono. RMS indica el nivel promedio; pico muestra el instante más fuerte.", "clap": "Ajusta la sensibilidad hasta que las palmadas superen el umbral. El interruptor es virtual.", "recorder": "Pulsa Grabar, habla durante dos segundos y después pulsa Reproducir. El clip permanece en la memoria de la placa.", "spectrum": "Tararea y silba para ver qué bandas responden. Son ocho frecuencias de prueba, no un análisis FFT completo.", "game": "Elige la dificultad y pulsa Iniciar. Da una palmada cuando aparezca ¡YA!; la señal sonora sale del navegador.", "voice_fx": "Graba una toma y prueba varios efectos con eco y filtros. Se procesan después de capturar, por el altavoz del códec."},
-      "rms": "Nivel RMS", "peak": "Pico", "dbfs": "dBFS", "range": "−60 → 0 dBFS", "history": "Historial reciente", "claps": "Palmadas", "virtualSwitch": "Interruptor virtual", "waitingClap": "Esperando una palmada",
-      "capture": "Captura", "speaker": "Altavoz", "recording": "Grabando…", "playing": "Reproduciendo…", "twoSeconds": "2 segundos de voz", "playback": "Reproducción", "phaseProgress": "Progreso de la fase", "clips": "Clips reproducidos", "samples": "Muestras", "spectrum": "Nivel por frecuencia", "round": "Ronda", "rounds": "Resultados por ronda", "score": "Puntos", "finished": "Terminado", "hit": "Acierto", "miss": "Fallo", "take": "Toma",
-      "effects": {"normal": "Original", "robot": "Robot", "echo": "Eco", "chipmunk": "Voz aguda", "giant": "Voz grave"},
-      "commandError": "La placa rechazó la orden: {{code}}", "noReply": "La placa no respondió. Ejecuta el ejemplo desde Código y vuelve a intentarlo.", "sensitivity": "Sensibilidad", "micPeak": "Pico del micrófono", "threshold": "Umbral", "noMicSignal": "No se detecta señal del micrófono. Revisa ES8311 DOUT → GPIO24 y el micrófono en J2; ejecuta es8311_mic_diagnose.py si el nivel sigue cerca de −90 dBFS.",
-      "tape": "Cinta de audio", "clipReady": "Grabación lista", "noClip": "Sin grabación", "record": "● Grabar", "playClip": "▶ Reproducir", "deleteClip": "Borrar clip", "recordLevel": "Nivel durante la grabación", "speakerVolume": "Volumen del altavoz",
-      "difficulty": "Dificultad", "easy": "Fácil · 1,2 s", "normal": "Normal · 0,9 s", "hard": "Difícil · 0,6 s", "gameRounds": "Rondas", "browserCue": "Señal sonora en el navegador", "readyToPlay": "Preparado", "startGame": "Iniciar juego", "stopGame": "Detener ronda", "playAgain": "Jugar otra vez", "aborted": "Detenido",
-      "voiceClip": "Toma de voz", "chooseEffect": "Elige un efecto", "echoAmount": "Cantidad de eco", "filter": "Filtro", "filters": {"none": "Sin filtro", "low": "Suave · pasa bajos", "high": "Brillante · pasa altos"}, "playEffect": "▶ Reproducir efecto"
+      "live": "vista en vivo",
+      "view": "Abrir visualización",
+      "backToCode": "Volver al código",
+      "disconnected": "Conecta la placa para recibir datos",
+      "waiting": "Esperando datos del ejemplo",
+      "receiving": "Datos recibidos de la placa",
+      "stopped": "Programa detenido",
+      "modes": {
+        "loudness": "Nivel del micrófono",
+        "clap": "Control por palmadas",
+        "recorder": "Grabadora",
+        "spectrum": "Espectro de ocho bandas",
+        "game": "Juego de palmadas",
+        "voice_fx": "Efectos de voz"
+      },
+      "hints": {
+        "loudness": "Habla o da una palmada cerca del micrófono. RMS indica el nivel promedio; pico muestra el instante más fuerte.",
+        "clap": "Ajusta la sensibilidad hasta que las palmadas superen el umbral. El interruptor es virtual.",
+        "recorder": "Pulsa Grabar, habla durante dos segundos y después pulsa Reproducir. El clip permanece en la memoria de la placa.",
+        "spectrum": "Tararea y silba para ver qué bandas responden. Son ocho frecuencias de prueba, no un análisis FFT completo.",
+        "game": "Elige la dificultad y pulsa Iniciar. Da una palmada cuando aparezca ¡YA!; la señal sonora sale del navegador.",
+        "voice_fx": "Graba una toma y pruébala con cualquier efecto y filtro. La placa procesa primero la toma y luego la reproduce por el altavoz del códec; la curva muestra qué deja pasar el filtro."
+      },
+      "rms": "Nivel RMS",
+      "peak": "Pico",
+      "dbfs": "dBFS",
+      "range": "−60 → 0 dBFS",
+      "history": "Historial reciente",
+      "claps": "Palmadas",
+      "virtualSwitch": "Interruptor virtual",
+      "waitingClap": "Esperando una palmada",
+      "capture": "Captura",
+      "speaker": "Altavoz",
+      "recording": "Grabando…",
+      "playing": "Reproduciendo…",
+      "twoSeconds": "2 segundos de voz",
+      "playback": "Reproducción",
+      "phaseProgress": "Progreso de la fase",
+      "clips": "Clips reproducidos",
+      "samples": "Muestras",
+      "spectrum": "Nivel por frecuencia",
+      "round": "Ronda",
+      "rounds": "Resultados por ronda",
+      "score": "Puntos",
+      "finished": "Terminado",
+      "hit": "Acierto",
+      "miss": "Fallo",
+      "take": "Toma",
+      "commandError": "La placa rechazó la orden: {{code}}",
+      "noReply": "La placa no respondió. Ejecuta el ejemplo desde Código y vuelve a intentarlo.",
+      "sensitivity": "Sensibilidad",
+      "micPeak": "Pico del micrófono",
+      "threshold": "Umbral",
+      "noMicSignal": "No se detecta señal del micrófono. Revisa ES8311 DOUT → GPIO24 y el micrófono en J2; ejecuta es8311_mic_diagnose.py si el nivel sigue cerca de −90 dBFS.",
+      "tape": "Cinta de audio",
+      "clipReady": "Grabación lista",
+      "noClip": "Sin grabación",
+      "record": "● Grabar",
+      "playClip": "▶ Reproducir",
+      "deleteClip": "Borrar clip",
+      "recordLevel": "Nivel durante la grabación",
+      "speakerVolume": "Volumen del altavoz",
+      "difficulty": "Dificultad",
+      "easy": "Fácil · 1,2 s",
+      "normal": "Normal · 0,9 s",
+      "hard": "Difícil · 0,6 s",
+      "gameRounds": "Rondas",
+      "browserCue": "Señal sonora en el navegador",
+      "readyToPlay": "Preparado",
+      "startGame": "Iniciar juego",
+      "stopGame": "Detener ronda",
+      "playAgain": "Jugar otra vez",
+      "aborted": "Detenido",
+      "voiceClip": "Toma de voz",
+      "playEffect": "▶ Reproducir efecto",
+      "fx": {
+        "effectSection": "Efecto",
+        "filterSection": "Filtro",
+        "intensity": "Intensidad del efecto",
+        "noAmount": "Este efecto no tiene ajuste",
+        "cutoff": "Corte",
+        "center": "Centro",
+        "rendering": "La placa está procesando la grabación…",
+        "recordHint": "Pulsa Grabar y habla durante dos segundos.",
+        "readyHint": "Elige un efecto y un filtro y pulsa Reproducir efecto. La misma grabación sirve para todas las pruebas.",
+        "responseLabel": "Respuesta en frecuencia del filtro {{filter}} en {{cutoff}}",
+        "techniques": {
+          "none": "sin cambios",
+          "ring": "modulación en anillo",
+          "speed": "velocidad de lectura",
+          "lfo": "oscilador lento",
+          "delay": "línea de retardo",
+          "comb": "filtros peine",
+          "band": "pasa banda",
+          "crush": "reducción de bits",
+          "clip": "recorte suave",
+          "order": "muestras al revés"
+        },
+        "effects": {
+          "normal": {
+            "name": "Original",
+            "hint": "La grabación tal cual, solo normalizada para que suene fuerte y clara.",
+            "amount": ""
+          },
+          "robot": {
+            "name": "Robot",
+            "hint": "Multiplica tu voz por un tono grave (modulación en anillo) y hace más gruesas las muestras.",
+            "amount": "Tono portador"
+          },
+          "alien": {
+            "name": "Alienígena",
+            "hint": "Un tono agudo de modulación en anillo más una oscilación rápida: metálico y extraño.",
+            "amount": "Tono portador"
+          },
+          "chipmunk": {
+            "name": "Voz aguda",
+            "hint": "Reproduce las muestras más rápido: más aguda y más corta, como una ardilla.",
+            "amount": "Qué tan aguda"
+          },
+          "giant": {
+            "name": "Voz grave",
+            "hint": "Reproduce las muestras más lento: más grave y más larga, como un gigante.",
+            "amount": "Qué tan grave"
+          },
+          "vibrato": {
+            "name": "Vibrato",
+            "hint": "Un retardo que va y viene hace que el tono oscile.",
+            "amount": "Oscilación"
+          },
+          "tremolo": {
+            "name": "Trémolo",
+            "hint": "El volumen sube y baja varias veces por segundo.",
+            "amount": "Velocidad"
+          },
+          "echo": {
+            "name": "Eco",
+            "hint": "Repeticiones que bajan a la mitad cada vez, como en un cañón.",
+            "amount": "Retardo"
+          },
+          "cave": {
+            "name": "Cueva",
+            "hint": "Cuatro retardos cortos con realimentación se mezclan en una reverberación, de un cuarto pequeño a una cueva.",
+            "amount": "Tamaño"
+          },
+          "telephone": {
+            "name": "Teléfono",
+            "hint": "Solo pasa de 300 a 3400 Hz, con algo de distorsión: una llamada.",
+            "amount": "Distorsión"
+          },
+          "radio": {
+            "name": "Radio",
+            "hint": "Una banda estrecha, recorte fuerte y chasquidos: una emisora lejana.",
+            "amount": "Ruido"
+          },
+          "retro": {
+            "name": "Retro 8 bits",
+            "hint": "Mantiene cada muestra más tiempo y quita sus bits bajos, como una consola antigua.",
+            "amount": "Aspereza"
+          },
+          "overdrive": {
+            "name": "Saturación",
+            "hint": "Sube el nivel y redondea los picos: una voz áspera, como un amplificador de guitarra.",
+            "amount": "Ganancia"
+          },
+          "reverse": {
+            "name": "Al revés",
+            "hint": "Reproduce la grabación hacia atrás, de la última muestra a la primera.",
+            "amount": ""
+          }
+        },
+        "filters": {
+          "none": {
+            "name": "Ninguno",
+            "hint": "Sin filtro después del efecto."
+          },
+          "low": {
+            "name": "Pasa bajos",
+            "hint": "Deja lo que está por debajo del corte: más suave y apagado."
+          },
+          "high": {
+            "name": "Pasa altos",
+            "hint": "Deja lo que está por encima del corte: más delgado y brillante."
+          },
+          "band": {
+            "name": "Pasa banda",
+            "hint": "Deja una banda alrededor de la frecuencia central: nasal, como un megáfono."
+          }
+        }
+      }
     },
     "toneLab": {
       "title": "Laboratorio de tonos ES8311",
@@ -102,7 +303,12 @@
       "frequency": "Frecuencia",
       "level": "Nivel",
       "waveform": "Forma de onda",
-      "waves": {"sine": "Senoidal", "triangle": "Triangular", "square": "Cuadrada", "saw": "Diente de sierra"},
+      "waves": {
+        "sine": "Senoidal",
+        "triangle": "Triangular",
+        "square": "Cuadrada",
+        "saw": "Diente de sierra"
+      },
       "play": "Reproducir tono",
       "stopTone": "Silenciar",
       "notes": "Notas",
@@ -118,52 +324,61 @@
       "loadHigh": "La placa va justa: {{used}} ms de {{budget}} ms por bloque. El sonido se entrecorta y parece bajo."
     },
     "audioPlayer": {
-          "title": "Reproductor de audio",
-          "view": "Abrir reproductor",
-          "backToCode": "Volver al código",
-          "stage": "Canción",
-          "sounding": "Sonando",
-          "silent": "En silencio",
-          "bundledTitle": "Música incluida",
-          "bundledHint": "Elige una pista instrumental corta. No necesitas subir archivos.",
-          "tracks": {
-                "pulsoSolar": {"title": "Pulso solar", "style": "Melodía electrónica alegre"},
-                "circuitoAzul": {"title": "Circuito azul", "style": "Ritmo digital suave"},
-                "aurora": {"title": "Aurora", "style": "Melodía tranquila de campanas"}
-          },
-          "dropHint": "Suelta aquí un WAV o MP3, o haz clic para elegirlo",
-          "formats": "WAV, MP3, OGG, M4A y FLAC, de hasta 10 minutos.",
-          "choose": "Elegir archivo",
-          "another": "Otro archivo",
-          "converting": "Convirtiendo…",
-          "progress": "Progreso de la reproducción",
-          "play": "Reproducir en la placa",
-          "stop": "Detener",
-          "volume": "Volumen del altavoz",
-          "quality": "Calidad",
-          "normalize": "Subir los archivos bajos",
-          "qualities": {
-                "voice": "Voz · 16 kHz",
-                "standard": "Estándar · 22 kHz",
-                "high": "Alta · 32 kHz"
-          },
-          "streamNote": "El navegador convierte la canción a mono y envía unos {{kb}} kB/s por USB. La placa confirma cada bloque, así que el sonido nunca se adelanta.",
-          "status": {
-                "connectFirst": "Conecta la consola serial, instala es8311.py y ejecuta es8311_play_serial.py.",
-                "waiting": "Esperando a es8311_play_serial.py. Ejecuta el ejemplo en Código.",
-                "ready": "Placa lista. Elige música incluida o un archivo propio y pulsa Reproducir.",
-                "playing": "Enviando a la placa…"
-          },
-          "errors": {
-                "unreadable": "El navegador no pudo leer este archivo. Prueba con un WAV o MP3.",
-                "bundledUnavailable": "No se pudo cargar la pista incluida. Prueba otra pista o elige un archivo.",
-                "volumeFailed": "No se pudo cambiar el volumen del altavoz. Comprueba la conexión serial.",
-                "tooLong": "Este archivo dura más de 10 minutos.",
-                "rejected": "La placa rechazó esta frecuencia de muestreo.",
-                "noAnswer": "La placa no respondió. Ejecuta primero es8311_play_serial.py.",
+      "title": "Reproductor de audio",
+      "view": "Abrir reproductor",
+      "backToCode": "Volver al código",
+      "stage": "Canción",
+      "sounding": "Sonando",
+      "silent": "En silencio",
+      "bundledTitle": "Música incluida",
+      "bundledHint": "Elige una pista instrumental corta. No necesitas subir archivos.",
+      "tracks": {
+        "pulsoSolar": {
+          "title": "Pulso solar",
+          "style": "Melodía electrónica alegre"
+        },
+        "circuitoAzul": {
+          "title": "Circuito azul",
+          "style": "Ritmo digital suave"
+        },
+        "aurora": {
+          "title": "Aurora",
+          "style": "Melodía tranquila de campanas"
+        }
+      },
+      "dropHint": "Suelta aquí un WAV o MP3, o haz clic para elegirlo",
+      "formats": "WAV, MP3, OGG, M4A y FLAC, de hasta 10 minutos.",
+      "choose": "Elegir archivo",
+      "another": "Otro archivo",
+      "converting": "Convirtiendo…",
+      "progress": "Progreso de la reproducción",
+      "play": "Reproducir en la placa",
+      "stop": "Detener",
+      "volume": "Volumen del altavoz",
+      "quality": "Calidad",
+      "normalize": "Subir los archivos bajos",
+      "qualities": {
+        "voice": "Voz · 16 kHz",
+        "standard": "Estándar · 22 kHz",
+        "high": "Alta · 32 kHz"
+      },
+      "streamNote": "El navegador convierte la canción a mono y envía unos {{kb}} kB/s por USB. La placa confirma cada bloque, así que el sonido nunca se adelanta.",
+      "status": {
+        "connectFirst": "Conecta la consola serial, instala es8311.py y ejecuta es8311_play_serial.py.",
+        "waiting": "Esperando a es8311_play_serial.py. Ejecuta el ejemplo en Código.",
+        "ready": "Placa lista. Elige música incluida o un archivo propio y pulsa Reproducir.",
+        "playing": "Enviando a la placa…"
+      },
+      "errors": {
+        "unreadable": "El navegador no pudo leer este archivo. Prueba con un WAV o MP3.",
+        "bundledUnavailable": "No se pudo cargar la pista incluida. Prueba otra pista o elige un archivo.",
+        "volumeFailed": "No se pudo cambiar el volumen del altavoz. Comprueba la conexión serial.",
+        "tooLong": "Este archivo dura más de 10 minutos.",
+        "rejected": "La placa rechazó esta frecuencia de muestreo.",
+        "noAnswer": "La placa no respondió. Ejecuta primero es8311_play_serial.py.",
         "stalled": "La placa dejó de responder. Comprueba que es8311_play_serial.py sigue ejecutándose e inténtalo de nuevo."
-          },
-          "wiring": "Reproducción: BCLK GPIO27 · WS GPIO7 · DIN GPIO26 · MCLK GPIO10 · SDA GPIO1 · SCL GPIO6"
+      },
+      "wiring": "Reproducción: BCLK GPIO27 · WS GPIO7 · DIN GPIO26 · MCLK GPIO10 · SDA GPIO1 · SCL GPIO6"
     },
     "imuCube": {
       "title": "Cubo IMU",

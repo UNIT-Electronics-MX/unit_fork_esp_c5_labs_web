@@ -58,9 +58,6 @@
       "tags": "Carte MIFARE et badge",
       "wifi": "Réseau Wi-Fi 2,4 GHz",
       "phone": "Smartphone (Bluetooth)",
-      "ky037": "Micro analogique KY-037",
-      "inmp441": "Micro I²S INMP441",
-      "amp": "Ampli MAX98357A + haut-parleur",
       "keyboard": "Clavier ou souris Bluetooth"
     }
   },

@@ -62,93 +62,93 @@
       "Detén el programa, selecciona <code>mic_ics43434_usb_master.py</code> y ejecútalo. En el diálogo de audio, pulsa <b>Escuchar</b> para oír el micrófono en el navegador.",
       "Ajusta la <b>Ganancia de escucha</b> si se oye bajo. Si distorsiona, reduce la ganancia. Pulsa <b>Detener escucha</b> antes de salir del ejercicio."
     ],
-    "note": "No uses la microSD mientras escuchas el micrófono I²S de J20: ambos usan GPIO27, GPIO7 y GPIO26. La actividad SPI de la tarjeta puede interferir con I²S y causar los chasquidos que se escuchaban. El navegador detecta datos PCM válidos y nivel de señal, pero no puede identificar eléctricamente el micrófono. Un módulo desconectado y uno en silencio pueden verse igual. La ganancia de escucha no cambia el PCM entrante ni la lectura de dBFS."
+    "note": "No uses la microSD mientras escuchas el micrófono I²S de J20: ambos usan GPIO27, GPIO7 y GPIO26. La actividad SPI de la tarjeta puede interferir con I²S y causar los chasquidos que se escuchaban. El navegador detecta datos PCM válidos y nivel de señal, pero no puede identificar eléctricamente el micrófono. Un módulo desconectado y uno en silencio pueden verse igual. La ganancia de escucha no cambia el PCM entrante ni la lectura de dBFS.",
+    "panels": {
+      "0": {
+        "title": "Conecta el micrófono, cable por cable"
+      }
+    }
   },
-  "S0B": {
-    "title": "Códec I²S ES8311",
-    "heading": "Captura y reproduce sonido con el ES8311",
-    "goal": "Conecta el códec ES8311 a la placa. Su ADC captura el sonido de un micrófono analógico, mientras que su DAC y amplificador lo reproducen por un altavoz. Prueba ambos sentidos por separado con los ejemplos de MicroPython de la pestaña Código.",
-    "goalLine": "Escucha el micrófono del códec en el navegador y después reproduce una melodía y tonos interactivos por su altavoz.",
+  "S1": {
+    "title": "Micrófono ES8311",
+    "heading": "Escucha el micrófono del ES8311",
+    "goal": "Conecta el códec ES8311 y captura el micrófono analógico de su entrada J2 a través del ADC del códec. Revisa el nivel en la consola serial y luego transmite las muestras por USB para escucharlas en el navegador.",
+    "goalLine": "Observa un nivel de pico que cambia y luego escucha tu voz en el navegador.",
     "goalCheck": [
-      "El programa de captura muestra un nivel pico que cambia cuando hablas por el micrófono analógico.",
+      "El programa de captura muestra un nivel de pico que cambia cuando hablas al micrófono analógico.",
       "El navegador recibe el flujo PCM del códec y reproduce tu voz.",
-      "El programa de melodías reproduce notas por el altavoz conectado al módulo ES8311.",
-      "El laboratorio de tonos cambia el tono, la forma de onda y el nivel mientras el ES8311 suena por el altavoz.",
-      "El reproductor cambia el volumen del códec mientras suena una canción incluida."
+      "La ganancia de escucha cambia el volumen de reproducción, mientras que dBFS sigue mostrando las muestras originales."
     ],
     "learn": [
-      "Entrada y salida I²S",
+      "Entrada I²S",
       "Control del códec por I²C",
-      "ADC y DAC",
-      "Captura PCM y reproducción por altavoz",
-      "Frecuencia y forma de onda"
+      "ADC",
+      "PCM por USB Serial/JTAG",
+      "Ganancia de escucha"
     ],
     "wiring": {
-      "title": "Conecta el ES8311 una vez para capturar y reproducir",
+      "title": "Conexiones del ES8311 para todas las prácticas de sonido",
       "head": [
-        "Placa · modo",
-        "Módulo ES8311",
-        "Señal"
+        "Placa",
+        "Códec",
+        "Uso"
       ],
       "rows": [
         [
-          "Ambos · J20 GPIO27",
-          "BCLK",
-          "Reloj de bits I²S"
-        ],
-        [
-          "Ambos · J20 GPIO7",
-          "WS",
-          "Reloj de palabra izquierda/derecha I²S"
-        ],
-        [
-          "Ambos · J20 GPIO10",
-          "MCLK",
-          "Reloj maestro del códec (256 × frecuencia de muestreo)"
-        ],
-        [
-          "Ambos · J20 3V3",
-          "3V3",
-          "Alimentación de 3,3 V"
-        ],
-        [
-          "Ambos · J20 GND",
-          "GND",
-          "Tierra común"
-        ],
-        [
-          "Ambos · Qwiic GPIO1",
+          "Qwiic GPIO1",
           "SDA",
-          "Datos I²C"
+          "Control I²C"
         ],
         [
-          "Ambos · Qwiic GPIO6",
+          "Qwiic GPIO6",
           "SCL",
           "Reloj I²C"
         ],
         [
-          "Captura · D6 GPIO24",
-          "DOUT",
-          "Audio del micrófono del códec hacia la C5"
+          "J20 GPIO27",
+          "BCLK",
+          "Reloj de bits I²S"
         ],
         [
-          "Reproducción · J20 GPIO26",
+          "J20 GPIO7",
+          "WS",
+          "Reloj de palabra I²S"
+        ],
+        [
+          "J20 GPIO10",
+          "MCLK",
+          "Reloj maestro del códec"
+        ],
+        [
+          "D6 GPIO24",
+          "DOUT",
+          "Muestras del ADC del códec desde el micrófono analógico"
+        ],
+        [
+          "J20 GPIO26",
           "DIN",
-          "Audio de la C5 hacia el altavoz del códec"
+          "Muestras digitales hacia el altavoz"
+        ],
+        [
+          "3V3 / GND",
+          "3V3 / GND",
+          "Alimentación y tierra común"
         ]
       ]
     },
     "steps": [
-      "Instala el firmware MicroPython de vista previa  incluido en <code>0x0000</code> desde <b>Cargar firmware</b>. Incluye <code>machine.I2S</code>.",
-      "Desconecta el USB. Conecta las filas <b>Ambos</b>, <b>Captura</b> y <b>Reproducción</b> de la tabla. DOUT va al pin D6/GPIO24 del borde de la placa, fuera de J20. Conecta un micrófono analógico a la entrada J2 del códec y un altavoz a la salida de su amplificador; después reconecta el USB.",
+      "Instala el firmware MicroPython de vista previa incluido en <code>0x0000</code> desde <b>Flash firmware</b>. Incluye <code>machine.I2S</code>.",
+      "Desconecta el USB y cablea el códec como se muestra arriba. DOUT va al pad D6/GPIO24 expuesto, fuera de J20; deja DIN conectado también, lo usan las prácticas del altavoz. Conecta un micrófono analógico a la entrada J2 del códec y vuelve a conectar el USB.",
       "Abre <b>Código</b>, conecta la consola serial y usa <b>Instalar es8311.py</b> para guardar el controlador del códec en la placa.",
-      "Ejecuta <code>es8311_mic_capture.py</code> y habla cerca del micrófono. Observa los cuadros por segundo y el nivel pico en la consola; usa <code>es8311_mic_diagnose.py</code> si la entrada permanece en silencio.",
-      "Detén el programa de captura y ejecuta <code>es8311_mic_usb_audio.py</code>. Pulsa <b>Escuchar</b> en el diálogo de audio para oír el micrófono en el navegador. Ajusta la <b>Ganancia de escucha</b> si hace falta y luego pulsa <b>Detener escucha</b>.",
-      "Detén la transmisión y ejecuta <code>es8311_melody.py</code> para oír el altavoz. Los programas de captura y reproducción comparten los cables BCLK, WS y MCLK, así que puedes dejar el códec conectado.",
-      "Detén la melodía, selecciona <code>es8311_tone_lab.py</code> y ejecútalo. El panel de tonos se abre automáticamente. Mantén pulsada una nota o pulsa <b>Reproducir tono</b>; cambia la frecuencia, la forma de onda y el nivel, y luego pulsa <b>Silenciar</b>. Puedes volver a abrir el panel con <b>Abrir tonos</b>.",
-      "Detén los tonos, selecciona <code>es8311_play_serial.py</code> y ejecútalo. En el reproductor de audio elige una de las tres canciones incluidas o abre tu propio WAV o MP3, escoge la calidad y pulsa <b>Reproducir en la placa</b>. Sube o baja el <b>Volumen</b> mientras suena la canción. El navegador convierte la canción a mono y la envía por USB. Usa <b>Voz</b> o <b>Estándar</b> para que suene más fluida."
+      "Ejecuta <code>es8311_mic_capture.py</code> y habla cerca del micrófono. Observa las tramas por segundo y el nivel de pico en la consola; usa <code>es8311_mic_diagnose.py</code> si la entrada sigue en silencio.",
+      "Detén el programa de captura y ejecuta <code>es8311_mic_usb_audio.py</code>. Pulsa <b>Escuchar</b> en el diálogo de audio para escuchar el micrófono en el navegador. Ajusta <b>Ganancia de escucha</b> si hace falta y luego pulsa <b>Detener escucha</b>."
     ],
-    "note": "La captura usa DOUT en D6/GPIO24 y la reproducción usa DIN en J20/GPIO26. Ambas comparten BCLK/GPIO27, WS/GPIO7 y MCLK/GPIO10. La C5 tiene un solo periférico I²S: ejecuta la captura o la reproducción por separado sin cambiar cables. El ES8311 también necesita I²C para configurarse. Evita usar la microSD mientras J20 transporta audio I²S, porque los GPIO compartidos pueden causar interferencias."
+    "note": "La ruta del micrófono usa DOUT en D6/GPIO24, BCLK, WS y MCLK en J20, e I²C en QWIIC para la configuración. La ganancia de escucha solo cambia el altavoz del navegador; las muestras PCM y la lectura en dBFS no cambian. Evita usar la tarjeta microSD mientras J20 lleva audio I²S, porque los GPIO compartidos pueden causar interferencias.",
+    "panels": {
+      "0": {
+        "title": "Conecta el códec, cable por cable"
+      }
+    }
   },
   "S2": {
     "title": "Volumen",
@@ -201,7 +201,7 @@
         [
           "D6 GPIO24",
           "DOUT",
-          "Muestras digitales del micrófono hacia la placa"
+          "Muestras del ADC del códec desde el micrófono analógico"
         ],
         [
           "J20 GPIO26",
@@ -220,7 +220,12 @@
       "Ejecuta <code>es8311_sound_loudness.py</code> en Código. El panel de nivel se abre automáticamente; usa <b>Abrir visualización</b> para volver a verlo.",
       "Habla bajo, luego fuerte y después da una palmada. Compara ambas lecturas. Pulsa Ctrl+C para detenerlo."
     ],
-    "note": "Estos valores son dBFS respecto al máximo digital. No son mediciones de dB SPL calibradas para la habitación."
+    "note": "Estos valores son dBFS respecto al máximo digital. No son mediciones de dB SPL calibradas para la habitación.",
+    "panels": {
+      "0": {
+        "title": "Conecta el códec, cable por cable"
+      }
+    }
   },
   "S3": {
     "title": "Control con palmadas",
@@ -272,7 +277,7 @@
         [
           "D6 GPIO24",
           "DOUT",
-          "Muestras digitales del micrófono hacia la placa"
+          "Muestras del ADC del códec desde el micrófono analógico"
         ],
         [
           "J20 GPIO26",
@@ -291,7 +296,12 @@
       "Ejecuta <code>es8311_sound_clap.py</code>. En el panel, aumenta la sensibilidad si el pico no supera el umbral mostrado.",
       "Vuelve a dar una palmada después de una breve pausa. Observa cómo cambia el interruptor y aumenta el contador. Detén el programa al terminar."
     ],
-    "note": "El detector usa bloques de 16 ms. Algunos golpes o sonidos bruscos también pueden activarlo; el interruptor web no controla una carga física."
+    "note": "El detector usa bloques de 16 ms. Algunos golpes o sonidos bruscos también pueden activarlo; el interruptor web no controla una carga física.",
+    "panels": {
+      "0": {
+        "title": "Conecta el códec, cable por cable"
+      }
+    }
   },
   "S4": {
     "title": "Grabadora",
@@ -344,7 +354,7 @@
         [
           "D6 GPIO24",
           "DOUT",
-          "Muestras digitales del micrófono hacia la placa"
+          "Muestras del ADC del códec desde el micrófono analógico"
         ],
         [
           "J20 GPIO26",
@@ -363,7 +373,12 @@
       "Conecta un altavoz a la salida del amplificador del códec. Ejecuta <code>es8311_sound_recorder.py</code>; el panel de grabación se abre automáticamente.",
       "Pulsa <b>Grabar</b>, habla dos segundos y después pulsa <b>Reproducir</b>. Ajusta el volumen antes de repetir o borra el clip para comenzar de nuevo."
     ],
-    "note": "Los clips permanecen en RAM y desaparecen al detener el programa. La captura y la reproducción se ejecutan en secuencia porque comparten un solo periférico I²S."
+    "note": "Los clips permanecen en RAM y desaparecen al detener el programa. La captura y la reproducción se ejecutan en secuencia porque comparten un solo periférico I²S.",
+    "panels": {
+      "0": {
+        "title": "Conecta el códec, cable por cable"
+      }
+    }
   },
   "S5": {
     "title": "Espectro",
@@ -415,7 +430,7 @@
         [
           "D6 GPIO24",
           "DOUT",
-          "Muestras digitales del micrófono hacia la placa"
+          "Muestras del ADC del códec desde el micrófono analógico"
         ],
         [
           "J20 GPIO26",
@@ -434,7 +449,12 @@
       "Ejecuta <code>es8311_sound_spectrum.py</code>. El panel de ocho bandas se abre automáticamente; usa <b>Abrir visualización</b> para volver a verlo.",
       "Tararea una nota grave y luego silba una nota aguda. Compara las posiciones de las barras y el pico del micrófono. Pulsa Ctrl+C para detenerlo."
     ],
-    "note": "Este es un espectro didáctico de ocho bandas, no un analizador calibrado ni una FFT completa. Cada visualización usa las 256 muestras más recientes. Si el pico sigue cerca de −90 dBFS, revisa DOUT en GPIO24 y ejecuta es8311_mic_diagnose.py."
+    "note": "Este es un espectro didáctico de ocho bandas, no un analizador calibrado ni una FFT completa. Cada visualización usa las 256 muestras más recientes. Si el pico sigue cerca de −90 dBFS, revisa DOUT en GPIO24 y ejecuta es8311_mic_diagnose.py.",
+    "panels": {
+      "0": {
+        "title": "Conecta el códec, cable por cable"
+      }
+    }
   },
   "S6": {
     "title": "Juego de sonido",
@@ -486,7 +506,7 @@
         [
           "D6 GPIO24",
           "DOUT",
-          "Muestras digitales del micrófono hacia la placa"
+          "Muestras del ADC del códec desde el micrófono analógico"
         ],
         [
           "J20 GPIO26",
@@ -505,21 +525,108 @@
       "Ejecuta <code>es8311_sound_game.py</code>. El marcador se abre automáticamente; usa <b>Abrir visualización</b> para volver a verlo.",
       "Elige 5, 10 o 20 rondas y una dificultad; después pulsa <b>Iniciar juego</b>. Da una palmada cuando aparezca ¡YA!; la señal opcional suena en el navegador."
     ],
-    "note": "El juego usa el mismo detector ajustable que el control con palmadas. Fácil concede 1,2 segundos; normal 0,9; difícil 0,6. El retraso serial puede afectar el tiempo de respuesta."
+    "note": "El juego usa el mismo detector ajustable que el control con palmadas. Fácil concede 1,2 segundos; normal 0,9; difícil 0,6. El retraso serial puede afectar el tiempo de respuesta.",
+    "panels": {
+      "0": {
+        "title": "Conecta el códec, cable por cable"
+      }
+    }
+  },
+  "S7": {
+    "title": "Altavoz ES8311",
+    "heading": "Reproduce tonos y canciones con el ES8311",
+    "goal": "Controla el DAC y el amplificador del ES8311 desde MicroPython: toca una melodía, modifica un tono mientras suena y luego transmite una canción desde el navegador al altavoz.",
+    "goalLine": "Escucha una melodía, cambia un tono en vivo y luego reproduce una canción desde el navegador.",
+    "goalCheck": [
+      "El programa de melodía toca notas en el altavoz conectado al módulo ES8311.",
+      "El laboratorio de tonos cambia la frecuencia, la forma de onda y el nivel mientras el ES8311 suena por el altavoz.",
+      "El reproductor de música cambia el volumen del códec mientras suena una de las canciones incluidas."
+    ],
+    "learn": [
+      "Salida I²S",
+      "DAC y amplificador",
+      "Frecuencia y forma de onda",
+      "Audio transmitido por USB",
+      "Volumen de reproducción"
+    ],
+    "wiring": {
+      "title": "Conexiones del ES8311 para todas las prácticas de sonido",
+      "head": [
+        "Placa",
+        "Códec",
+        "Uso"
+      ],
+      "rows": [
+        [
+          "Qwiic GPIO1",
+          "SDA",
+          "Control I²C"
+        ],
+        [
+          "Qwiic GPIO6",
+          "SCL",
+          "Reloj I²C"
+        ],
+        [
+          "J20 GPIO27",
+          "BCLK",
+          "Reloj de bits I²S"
+        ],
+        [
+          "J20 GPIO7",
+          "WS",
+          "Reloj de palabra I²S"
+        ],
+        [
+          "J20 GPIO10",
+          "MCLK",
+          "Reloj maestro del códec"
+        ],
+        [
+          "D6 GPIO24",
+          "DOUT",
+          "Muestras del ADC del códec desde el micrófono analógico"
+        ],
+        [
+          "J20 GPIO26",
+          "DIN",
+          "Muestras digitales hacia el altavoz"
+        ],
+        [
+          "3V3 / GND",
+          "3V3 / GND",
+          "Alimentación y tierra común"
+        ]
+      ]
+    },
+    "steps": [
+      "Conecta un micrófono analógico a la entrada J2 del ES8311. Con el USB desconectado, conecta el códec como indica la tabla y después reconecta el USB. Instala el firmware MicroPython incluido desde Cargar firmware y guarda es8311.py en la placa desde Código.",
+      "Conecta un altavoz a la salida del amplificador del códec. Ejecuta <code>es8311_melody.py</code> para escuchar una melodía corta.",
+      "Detén la melodía, selecciona <code>es8311_tone_lab.py</code> y ejecútalo. El panel de tonos se abre automáticamente. Mantén pulsada una nota o pulsa <b>Reproducir tono</b>; cambia la frecuencia, la forma de onda y el nivel, y luego pulsa <b>Silenciar</b>. Puedes volver a abrir el panel con <b>Abrir tonos</b>.",
+      "Detén el laboratorio de tonos, selecciona <code>es8311_play_serial.py</code> y ejecútalo. En el reproductor de audio, elige una de las tres canciones incluidas o abre tu propio WAV o MP3, elige una calidad y pulsa <b>Reproducir en la placa</b>. Sube o baja <b>Volumen del altavoz</b> mientras suena la canción. El navegador convierte la canción a mono y la transmite por USB. Usa <b>Voz</b> o <b>Estándar</b> para el sonido más fluido."
+    ],
+    "note": "La reproducción usa DIN en J20/GPIO26 con los mismos cables BCLK, WS y MCLK que el micrófono. El C5 tiene un solo periférico I²S, así que ejecuta un programa a la vez. El volumen del reproductor cambia el volumen del códec; el laboratorio de tonos cambia el nivel de las muestras que genera.",
+    "panels": {
+      "0": {
+        "title": "Conecta el códec, cable por cable"
+      }
+    }
   },
   "S8": {
     "title": "Efectos de voz",
     "heading": "Escucha tu voz con efectos",
-    "goal": "Graba dos segundos de voz y elige un efecto, la cantidad de eco y un filtro antes de reproducir.",
-    "goalLine": "Reproduce una toma varias veces con distintos ajustes de eco y filtro.",
+    "goal": "Graba dos segundos de voz y reproduce la misma toma con catorce efectos y un filtro pasa bajos, pasa altos o pasa banda con corte ajustable.",
+    "goalLine": "Convierte una toma en un robot, una llamada telefónica, una cueva o una voz de 8 bits.",
     "goalCheck": [
       "Grabar guarda la toma en la memoria de la placa.",
-      "Reproducir efecto aplica los ajustes elegidos por el altavoz del códec."
+      "Cada efecto y su intensidad cambian cómo suena la toma por el altavoz.",
+      "Mover el corte cambia la curva del filtro y lo que escuchas."
     ],
     "learn": [
-      "Procesamiento de muestras",
-      "Eco",
-      "Filtros pasa bajos y pasa altos",
+      "Modulación en anillo",
+      "Retardo y reverberación",
+      "Filtros pasa bajos, pasa altos y pasa banda",
+      "Profundidad de bits y frecuencia de muestreo",
       "I²S secuencial"
     ],
     "wiring": {
@@ -558,7 +665,7 @@
         [
           "D6 GPIO24",
           "DOUT",
-          "Muestras digitales del micrófono hacia la placa"
+          "Muestras del ADC del códec desde el micrófono analógico"
         ],
         [
           "J20 GPIO26",
@@ -574,9 +681,14 @@
     },
     "steps": [
       "Conecta un micrófono analógico a la entrada J2 del ES8311. Con el USB desconectado, conecta el códec como indica la tabla y después reconecta el USB. Instala el firmware MicroPython incluido desde Cargar firmware y guarda es8311.py en la placa desde Código.",
-      "Conecta un altavoz a la salida del amplificador del códec. Ejecuta <code>es8311_sound_voice_fx.py</code>; la secuencia de efectos se abre automáticamente.",
-      "Pulsa <b>Grabar</b> y habla. Elige robot, eco o un efecto de tono; ajusta eco y el filtro pasa bajos o pasa altos, y pulsa <b>Reproducir efecto</b>. Prueba otro ajuste con la misma toma."
+      "Conecta un altavoz a la salida del amplificador del códec. Ejecuta <code>es8311_sound_voice_fx.py</code>; el panel de efectos se abre automáticamente.",
+      "Pulsa <b>Grabar</b> y habla. Elige un efecto, ajusta su intensidad, escoge un filtro y su corte, y pulsa <b>Reproducir efecto</b>. La placa procesa primero la toma y luego la reproduce. Prueba otros ajustes con la misma toma."
     ],
-    "note": "Los efectos se reproducen después de grabar, así que el micrófono no oye su propio altavoz. Cambiar la velocidad de reproducción cambia tanto el tono como la duración."
+    "note": "La placa calcula cada efecto en memoria antes de reproducirlo, así que los efectos pesados nunca se entrecortan; el procesamiento tarda un momento. El micrófono está apagado durante la reproducción, así que no oye su propio altavoz. Los efectos de velocidad cambian tanto el tono como la duración.",
+    "panels": {
+      "0": {
+        "title": "Conecta el códec, cable por cable"
+      }
+    }
   }
 }

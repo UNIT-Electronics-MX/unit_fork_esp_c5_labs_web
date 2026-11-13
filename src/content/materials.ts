@@ -16,18 +16,15 @@ export const MATERIAL_PRODUCTS = {
   pn532: { url: "https://uelectronics.com/producto/pn532-modulo-rfid-nfc-lectura-y-escritura-v3/", link: "shop" },
   rfidCard: { url: "https://uelectronics.com/producto/tarjeta-rfid-13-56-mhz/", link: "shop" },
   rfidFob: { url: "https://uelectronics.com/producto/llavero-tag-rfid-13-56-mhz-nfc/", link: "shop" },
-  inmp441: { url: "https://uelectronics.com/producto/inmp441-modulo-de-microfono-omnidireccional-i2s/", link: "shop" },
-  sph0645: { url: "https://uelectronics.com/producto/sph0645-microfono-digital-i2s-mems/", link: "shop" },
   ics43434: {
     url: "https://wiki.uelectronics.com/wiki/devlab-i2s-ics-43434-mems-microphone",
     editorUrl: "/lessons/S0/code",
     link: "docs",
   },
-  max98357: { url: "https://uelectronics.com/producto/max98357-amplificador-de-audio-mono-i2s-clase-d-3w/", link: "shop" },
   speaker: { url: "https://uelectronics.com/producto/bocinas-4-y-8-ohm/", link: "shop" },
   es8311: {
     url: "https://wiki.uelectronics.com/wiki/unit_devlab_i2s_es8311_codec_with_amplifier_module",
-    editorUrl: "/lessons/S0B/code",
+    editorUrl: "/lessons/S1/code",
     link: "docs",
   },
 } as const;
@@ -64,13 +61,14 @@ export const LESSON_MATERIALS: Readonly<Record<string, readonly MaterialSuggesti
   R7: RFID_LAB,
   R8: RFID_LAB,
   S0: [main("ics43434")],
-  S0B: [main("es8311")],
+  S1: [main("es8311")],
   S2: [main("es8311")],
   S3: [main("es8311")],
-  S4: [main("es8311")],
+  S4: [main("es8311"), extra("speaker")],
   S5: [main("es8311")],
   S6: [main("es8311")],
-  S8: [main("es8311")],
+  S7: [main("es8311"), extra("speaker")],
+  S8: [main("es8311"), extra("speaker")],
 };
 
 export const lessonMaterials = (id: string): readonly MaterialSuggestion[] => LESSON_MATERIALS[id] ?? [];

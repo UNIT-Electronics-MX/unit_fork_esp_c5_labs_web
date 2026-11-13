@@ -11,8 +11,8 @@ spectrum, game, or voice_fx.
 
 Browser commands are newline-delimited: SENS 0..100 for clap detection;
 REC, PLAY [volume], CLEAR for recorder; START rounds window sensitivity
-and STOP for the game; REC, PLAY effect echo filter volume, CLEAR for
-voice effects. Recordings remain in RAM and disappear when the script stops.
+and STOP for the game; REC, PLAY effect amount filter cutoff volume,
+CLEAR for voice effects. Recordings remain in RAM and disappear when the script stops.
 """
 
 import array
@@ -184,43 +184,273 @@ def record_clip(audio, seconds=2, report=None):
     return clip
 
 
-def effect_sample(clip, index, effect, echo_percent=0):
-    value = clip[index]
-    if effect == "robot":
-        value = (value // 4096) * 4096
-        if (index // 80) & 1:
-            value = -value
-    if echo_percent and index >= RATE // 5:
-        value += clip[index - RATE // 5] * echo_percent // 100
-    return max(-32768, min(32767, value))
-
-
-def play_clip(audio, clip, effect="normal", echo_percent=0, tone_filter="none", volume=65):
-    step = 1.5 if effect == "chipmunk" else 0.7 if effect == "giant" else 1.0
+def play_clip(audio, clip, volume=65):
+    """Play mono PCM through the codec speaker, then a short silence."""
     stereo = array.array("h", bytes(FRAMES * 4))
-    position = 0.0
-    smooth = 0
     audio.begin_tx(rate=RATE, volume=max(0, min(100, volume)) / 100)
     try:
-        while int(position) < len(clip):
-            frames = 0
-            while frames < FRAMES and int(position) < len(clip):
-                index = int(position)
-                value = effect_sample(clip, index, effect, echo_percent)
-                smooth += (value - smooth) // 4
-                if tone_filter == "low":
-                    value = smooth
-                elif tone_filter == "high":
-                    value -= smooth
-                stereo[2 * frames] = value
-                stereo[2 * frames + 1] = value
-                position += step
-                frames += 1
+        position = 0
+        while position < len(clip):
+            frames = min(FRAMES, len(clip) - position)
+            for i in range(frames):
+                value = clip[position + i]
+                stereo[2 * i] = value
+                stereo[2 * i + 1] = value
             audio.write(memoryview(stereo)[:frames * 2])
+            position += frames
         audio.write(bytes(2048))
         audio.write(bytes(2048))
     finally:
         audio.end()
+
+
+# ---- Voice effects -------------------------------------------------------
+# Each effect is rendered into a new buffer before playback, so heavy effects
+# never make the speaker stutter. Only integer maths runs per sample: small
+# MicroPython integers do not allocate, floats would.
+
+EFFECTS = ("normal", "robot", "alien", "chipmunk", "giant", "vibrato",
+           "tremolo", "echo", "cave", "telephone", "radio", "retro",
+           "overdrive", "reverse")
+FILTERS = ("none", "low", "high", "band")
+MIN_CUTOFF = 150
+MAX_CUTOFF = 6000
+# One sine period in 256 steps, Q14 (16384 = 1.0).
+SINE = array.array("h", [int(16384 * math.sin(2 * math.pi * i / 256)) for i in range(256)])
+
+
+def clamp16(value):
+    return -32768 if value < -32768 else 32767 if value > 32767 else value
+
+
+def phase_step(frequency):
+    """Phase increment per sample for SINE, in 1/65536 of a table step."""
+    return int(frequency * 256 * 65536 / RATE)
+
+
+def one_pole(cutoff):
+    """Q12 smoothing factor of a one-pole low pass at this cutoff."""
+    return max(1, min(4096, int(4096 * (1 - math.exp(-2 * math.pi * cutoff / RATE)))))
+
+
+def resample(clip, step):
+    """Change speed and pitch together; step is Q8 (256 = original speed)."""
+    count = (len(clip) - 1) * 256 // step + 1
+    out = array.array("h", bytes(count * 2))
+    position = 0
+    last = len(clip) - 1
+    for i in range(count):
+        index = position >> 8
+        value = clip[index]
+        if index < last:
+            value += (clip[index + 1] - value) * (position & 255) >> 8
+        out[i] = value
+        position += step
+    return out
+
+
+def ring(clip, frequency, dry):
+    """Multiply by a sine carrier: metallic robot and alien voices."""
+    out = array.array("h", bytes(len(clip) * 2))
+    phase = 0
+    step = phase_step(frequency)
+    wet = 100 - dry
+    for i in range(len(clip)):
+        value = clip[i]
+        modulated = value * SINE[(phase >> 16) & 255] >> 14
+        out[i] = (modulated * wet + value * dry) // 100
+        phase += step
+    return out
+
+
+def vibrato(clip, depth, frequency):
+    """Read through a delay that swings back and forth: the pitch wobbles."""
+    out = array.array("h", bytes(len(clip) * 2))
+    phase = 0
+    step = phase_step(frequency)
+    for i in range(len(clip)):
+        index = i - depth - (depth * SINE[(phase >> 16) & 255] >> 14)
+        out[i] = clip[index] if index >= 0 else 0
+        phase += step
+    return out
+
+
+def tremolo(clip, frequency):
+    """Fade the level up and down several times a second."""
+    out = array.array("h", bytes(len(clip) * 2))
+    phase = 0
+    step = phase_step(frequency)
+    for i in range(len(clip)):
+        gain = (16384 + SINE[(phase >> 16) & 255]) >> 1
+        out[i] = clip[i] * gain >> 14
+        phase += step
+    return out
+
+
+def with_tail(clip, extra):
+    out = array.array("h", bytes((len(clip) + extra) * 2))
+    out[:len(clip)] = clip
+    return out
+
+
+def echo(clip, delay, feedback):
+    """Repeats that fade by feedback percent each time."""
+    out = with_tail(clip, delay * 4)
+    for i in range(delay, len(out)):
+        out[i] = clamp16(out[i] + out[i - delay] * feedback // 100)
+    return out
+
+
+def cave(clip, size):
+    """Four feedback comb filters in parallel: a small room up to a cave."""
+    d1, d2, d3, d4 = 557, 593, 641, 677
+    feedback = 62 + size * 28 // 100
+    c1 = array.array("h", bytes(d1 * 2))
+    c2 = array.array("h", bytes(d2 * 2))
+    c3 = array.array("h", bytes(d3 * 2))
+    c4 = array.array("h", bytes(d4 * 2))
+    out = with_tail(clip, RATE * (3 + size // 25) // 10)
+    for i in range(len(out)):
+        dry = out[i]
+        t1 = i % d1
+        t2 = i % d2
+        t3 = i % d3
+        t4 = i % d4
+        y1 = c1[t1]
+        y2 = c2[t2]
+        y3 = c3[t3]
+        y4 = c4[t4]
+        c1[t1] = clamp16(dry + y1 * feedback // 100)
+        c2[t2] = clamp16(dry + y2 * feedback // 100)
+        c3[t3] = clamp16(dry + y3 * feedback // 100)
+        c4[t4] = clamp16(dry + y4 * feedback // 100)
+        out[i] = clamp16(dry * 2 // 3 + (y1 + y2 + y3 + y4) // 6)
+    return out
+
+
+def soft_clip(value, knee):
+    """Above the knee the level grows four times slower: a warm distortion."""
+    if value > knee:
+        return knee + (value - knee) // 4
+    if value < -knee:
+        return -knee + (value + knee) // 4
+    return value
+
+
+def drive(clip, gain, knee):
+    out = array.array("h", bytes(len(clip) * 2))
+    for i in range(len(clip)):
+        out[i] = clamp16(soft_clip(clip[i] * gain, knee))
+    return out
+
+
+def filtered(clip, kind, cutoff):
+    """Two cascaded one-pole stages (12 dB per octave) at the cutoff."""
+    if kind == "none":
+        return clip
+    if kind == "band":
+        return band(clip, cutoff * 2 // 3, cutoff * 3 // 2)
+    a = one_pole(cutoff)
+    out = array.array("h", bytes(len(clip) * 2))
+    first = 0
+    second = 0
+    for i in range(len(clip)):
+        value = clip[i]
+        first += (value - first) * a >> 12
+        if kind == "low":
+            second += (first - second) * a >> 12
+            out[i] = second
+        else:
+            high = value - first
+            second += (high - second) * a >> 12
+            out[i] = clamp16(high - second)
+    return out
+
+
+def band(clip, low, high):
+    """Keep only what lies between two cutoffs."""
+    return filtered(filtered(clip, "high", low), "low", high)
+
+
+def crush(clip, hold, bits):
+    """Keep each sample for several steps and drop its low bits: 8-bit sound."""
+    out = array.array("h", bytes(len(clip) * 2))
+    shift = 16 - bits
+    value = 0
+    for i in range(len(clip)):
+        if i % hold == 0:
+            value = (clip[i] >> shift) << shift
+        out[i] = value
+    return out
+
+
+def crackle(clip, amount):
+    """Sparse clicks from a 16-bit xorshift generator, like a weak station."""
+    out = array.array("h", bytes(len(clip) * 2))
+    seed = 0xACE1
+    level = 400 + amount * 30
+    for i in range(len(clip)):
+        seed ^= (seed << 7) & 0xFFFF
+        seed ^= seed >> 9
+        seed ^= (seed << 8) & 0xFFFF
+        noise = ((seed & 0xFF) - 128) * level >> 7 if (seed & 0x1F00) == 0 else 0
+        out[i] = clamp16(clip[i] + noise)
+    return out
+
+
+def normalized(clip, target=29000):
+    """Scale the loudest sample to target, boosting quiet takes at most 4x."""
+    peak = 1
+    for value in clip:
+        if value > peak:
+            peak = value
+        elif -value > peak:
+            peak = -value
+    scale = min(16384, target * 4096 // peak)
+    if scale == 4096:
+        return clip
+    for i in range(len(clip)):
+        clip[i] = clamp16(clip[i] * scale >> 12)
+    return clip
+
+
+def render_fx(clip, effect, amount=50, tone_filter="none", cutoff=1200):
+    """Return a new buffer with the effect, then the filter, then normalized."""
+    amount = max(0, min(100, amount))
+    if effect == "robot":
+        out = crush(ring(clip, 40 + amount * 120 // 100, 15), 1, 12)
+    elif effect == "alien":
+        out = vibrato(ring(clip, 300 + amount * 9, 25), 6, 7)
+    elif effect == "chipmunk":
+        out = resample(clip, 333 + amount * 179 // 100)
+    elif effect == "giant":
+        out = resample(clip, 205 - amount * 77 // 100)
+    elif effect == "vibrato":
+        out = vibrato(clip, 4 + amount * 40 // 100, 5 + amount // 25)
+    elif effect == "tremolo":
+        out = tremolo(clip, 2 + amount // 10)
+    elif effect == "echo":
+        out = echo(clip, RATE * (120 + amount * 3) // 1000, 55)
+    elif effect == "cave":
+        out = cave(clip, amount)
+    elif effect == "telephone":
+        # The classic telephone band, 300 to 3400 Hz, slightly overdriven.
+        out = band(drive(band(clip, 300, 3400), 1 + amount * 3 // 100, 14000), 300, 3400)
+    elif effect == "radio":
+        # A narrower band, harder clipping and crackle: a distant AM station.
+        out = band(crackle(drive(band(clip, 500, 2500), 2 + amount * 4 // 100, 9000), amount), 500, 2500)
+    elif effect == "retro":
+        out = crush(clip, 1 + amount * 7 // 100, 8 - amount * 4 // 100)
+    elif effect == "overdrive":
+        out = drive(clip, 1 + amount * 9 // 100, 12000)
+    elif effect == "reverse":
+        out = array.array("h", bytes(len(clip) * 2))
+        last = len(clip) - 1
+        for i in range(len(clip)):
+            out[i] = clip[last - i]
+    else:
+        out = array.array("h", clip)
+    return normalized(filtered(out, tone_filter, cutoff))
 
 
 def recorder(audio):
@@ -361,7 +591,7 @@ def play_game(audio, commands, rounds, window, sensitivity):
 def voice_fx(audio):
     commands = Commands()
     clip = None
-    print("FX,READY; send REC, PLAY effect echo filter volume, or CLEAR")
+    print("FX,READY; send REC, PLAY effect amount filter cutoff volume, or CLEAR")
     while True:
         command = commands.next()
         if not command:
@@ -374,19 +604,28 @@ def voice_fx(audio):
             print("FX,RECORD")
             clip = record_clip(audio, report="FX")
             print("FX,SAVED,%d" % len(clip))
-        elif command[0] == "PLAY" and len(command) == 5 and clip:
+        elif command[0] == "PLAY" and len(command) == 6:
+            if not clip:
+                print("FX,ERROR,noclip")
+                continue
             try:
                 effect = command[1]
-                echo = int(command[2])
+                amount = int(command[2])
                 tone_filter = command[3]
-                volume = int(command[4])
-                if effect not in ("normal", "robot", "echo", "chipmunk", "giant") or not 0 <= echo <= 80 or tone_filter not in ("none", "low", "high") or not 0 <= volume <= 100:
+                cutoff = int(command[4])
+                volume = int(command[5])
+                if (effect not in EFFECTS or tone_filter not in FILTERS or not 0 <= amount <= 100
+                        or not MIN_CUTOFF <= cutoff <= MAX_CUTOFF or not 0 <= volume <= 100):
                     raise ValueError("range")
-                print("FX,PLAY,%s" % effect)
-                play_clip(audio, clip, effect, echo, tone_filter, volume)
-                print("FX,DONE")
             except ValueError:
                 print("FX,ERROR,range")
+                continue
+            print("FX,RENDER,%s" % effect)
+            rendered = render_fx(clip, effect, amount, tone_filter, cutoff)
+            print("FX,PLAY,%s,%d" % (effect, len(rendered)))
+            play_clip(audio, rendered, volume=volume)
+            rendered = None
+            print("FX,DONE")
         elif command == ["CLEAR"]:
             clip = None
             print("FX,CLEARED")

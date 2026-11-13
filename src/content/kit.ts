@@ -25,11 +25,8 @@ export const KIT_ITEMS = [
   // Parts only the RFID and Sound themes use.
   { id: "pn532", part: "reader" },
   { id: "tags", part: "cards" },
-  { id: "ky037", part: "sensor" },
-  { id: "inmp441", part: "mic" },
   { id: "ics43434", part: "mic" },
   { id: "es8311", part: "speaker" },
-  { id: "amp", part: "speaker" },
 ] as const satisfies readonly { id: string; part: PartName }[];
 
 export type KitItemId = (typeof KIT_ITEMS)[number]["id"];
@@ -75,12 +72,13 @@ export const LESSON_KIT: Readonly<Record<string, LessonKit<KitItemId>>> = {
   B7: { need: [SCREEN], optional: ["button", "phone"] },
   B8: { need: [SCREEN, ["keyboard"]], optional: ["button"] },
   S0: { need: [["ics43434"]] },
-  S0B: { need: [["es8311"]] },
+  S1: { need: [["es8311"]] },
   S2: { need: [["es8311"]] },
   S3: { need: [["es8311"]] },
   S4: { need: [["es8311"]] },
   S5: { need: [["es8311"]] },
   S6: { need: [["es8311"]] },
+  S7: { need: [["es8311"]] },
   S8: { need: [["es8311"]] },
 };
 

@@ -54,9 +54,6 @@
       "tags": "MIFARE kart ve anahtarlık",
       "wifi": "2,4 GHz Wi-Fi ağı",
       "phone": "Akıllı telefon (Bluetooth)",
-      "ky037": "KY-037 analog mikrofon",
-      "inmp441": "INMP441 I²S mikrofon",
-      "amp": "MAX98357A amfi + hoparlör",
       "keyboard": "Bluetooth klavye veya fare"
     }
   },

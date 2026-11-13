@@ -153,7 +153,7 @@
     "int32-t": {
       "short": "Un número entero de unos -2100 millones a +2100 millones: cuatro bytes que pueden ser negativos.",
       "simple": "La misma caja que <code>int</code> en este chip, pero su nombre promete el tamaño en todos los chips.",
-      "deep": "Con signo, 32 bits. El micrófono INMP441 envía muestras de 24 bits dentro de ranuras I2S de 32 bits, que se leen como <code>int32_t</code> y luego se desplazan hacia abajo."
+      "deep": "Con signo, 32 bits. El micrófono ICS-43434 envía muestras de 24 bits dentro de ranuras I2S de 32 bits, que se leen como <code>int32_t</code> y luego se desplazan hacia abajo."
     },
     "int64-t": {
       "short": "Un número entero enorme que puede ser negativo: ocho bytes.",

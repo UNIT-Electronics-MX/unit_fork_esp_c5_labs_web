@@ -394,7 +394,7 @@ export const GLOSSARY: readonly GlossaryEntry[] = [
       "A whole number from about -2.1 billion to +2.1 billion: four bytes that can be negative.",
     simple:
       "The same box as <code>int</code> on this chip, but its name promises the size on every chip.",
-    deep: "Signed, 32 bits. The INMP441 microphone sends 24-bit samples inside 32-bit I2S slots, which are read as <code>int32_t</code> and then shifted down.",
+    deep: "Signed, 32 bits. The ICS-43434 microphone in S0 sends 24-bit samples inside 32-bit I2S slots, which are read as <code>int32_t</code> and then shifted down.",
     example: "const int32_t left = max<int32_t>(0, int32_t(s.modeUntil - now));",
   },
   {

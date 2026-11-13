@@ -1,0 +1,73 @@
+.wiring { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.modes,
+.controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.count { margin-inline-start: auto; color: var(--muted); font-family: var(--font-mono); font-size: 12px; }
+.scrollHint { display: none; margin: 0; color: var(--muted); font-size: 12px; }
+.footnote { margin: 0; color: var(--muted); font-size: 12px; }
+.stage {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background:
+    radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--line) 70%, transparent) 1px, transparent 0) 0 0 / 18px 18px,
+    var(--bg);
+}
+.stage svg { display: block; width: 100%; min-width: 520px; height: auto; font-family: var(--font-mono); }
+
+/* Board */
+.board { fill: var(--pcb); stroke: var(--pcb-edge); stroke-width: 2; }
+.boardName { fill: var(--silk); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; }
+.chip { fill: var(--part-glass); stroke: var(--pcb-edge); stroke-width: 1.5; }
+.chipText { fill: var(--silk-dim); font-size: 11px; font-weight: 700; }
+.usb { fill: none; stroke: var(--silk-dim); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.usbText { fill: var(--silk-dim); font-size: 9px; }
+.connector { fill: color-mix(in oklab, var(--pcb) 70%, var(--silk) 8%); stroke: var(--silk-dim); stroke-width: 1; }
+.groupTitle { fill: var(--silk); font-size: 10px; font-weight: 700; letter-spacing: 0.06em; }
+.padLabel { fill: var(--silk-dim); font-size: 10px; }
+.net,
+.netOn { font-size: 10.5px; font-weight: 600; }
+.net { fill: var(--silk-dim); }
+.netOn { fill: var(--silk); }
+.pad { fill: var(--pad); }
+.padOn { fill: var(--copper); stroke: var(--surface); stroke-width: 1.5; }
+.dim { opacity: 0.35; }
+
+/* Module */
+.module { fill: color-mix(in oklab, var(--part-blue) 82%, var(--pcb)); stroke: var(--pcb-edge); stroke-width: 2; }
+.moduleName { fill: var(--part-light); font-size: 13px; font-weight: 700; }
+.port { fill: var(--part-glass); stroke: var(--silk-dim); stroke-width: 2; }
+.pin,
+.pinOn { font-size: 11px; font-weight: 700; }
+.pin { fill: color-mix(in oklab, var(--part-light) 70%, transparent); }
+.pinOn { fill: var(--part-light); }
+
+/* Microphone and speaker on the codec */
+.peripheral { transition: opacity 200ms ease; }
+.peripheralOff { opacity: 0.25; }
+.lead { fill: none; stroke: var(--muted); stroke-width: 2; }
+.mic { fill: var(--part-glass); stroke: var(--muted); stroke-width: 2; }
+.speaker { fill: var(--part-glass); stroke: var(--muted); stroke-width: 2; stroke-linejoin: round; }
+.periphLabel { fill: var(--ink); font-size: 10.5px; font-weight: 600; }
+
+/* Wires draw themselves in; the one being explained is thicker. */
+.wire {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 600;
+  stroke-dashoffset: 0;
+  animation: draw 420ms ease-out;
+}
+.wire[data-current] { stroke-width: 6.5; }
+@keyframes draw {
+  from { stroke-dashoffset: 600; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wire { animation: none; }
+  .peripheral { transition: none; }
+}
+/* The phone crop is narrower, so it needs less room before it scrolls. */
+@media (max-width: 600px) {
+  .scrollHint { display: block; }
+  .stage svg { min-width: 420px; }
+}

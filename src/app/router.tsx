@@ -38,6 +38,9 @@ export const router = createHashRouter([
           { path: "lessons/03/code", loader: ({ request }) => redirect(`/lessons/O2/code${new URL(request.url).search}`) },
           { path: "lessons/03b", loader: ({ request }) => redirect(`/lessons/O3${new URL(request.url).search}`) },
           { path: "lessons/03b/code", loader: ({ request }) => redirect(`/lessons/O3/code${new URL(request.url).search}`) },
+          // S0B held both codec directions; its microphone half is now S1 (the speaker is S7).
+          { path: "lessons/S0B", loader: ({ request }) => redirect(`/lessons/S1${new URL(request.url).search}`) },
+          { path: "lessons/S0B/code", loader: ({ request }) => redirect(`/lessons/S1/code${new URL(request.url).search}`) },
           { path: "lessons/:lessonId", loader: lessonLoader(queryClient), Component: LessonRoute },
           {
             path: "pinout",

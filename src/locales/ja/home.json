@@ -50,9 +50,6 @@
       "tags": "MIFARE カードとキーホルダー",
       "wifi": "2.4 GHz Wi-Fi ネットワーク",
       "phone": "スマートフォン（Bluetooth）",
-      "ky037": "KY-037 アナログマイク",
-      "inmp441": "INMP441 I²S マイク",
-      "amp": "MAX98357A アンプ + スピーカー",
       "keyboard": "Bluetooth キーボードまたはマウス"
     }
   },

@@ -6,9 +6,9 @@ import { LineSplitter } from "../imu-cube/imu-protocol";
 import { serialConnection, useSerialConnection } from "../serial-connection";
 import { parseSoundLine, type SoundMessage } from "./sound-protocol";
 import styles from "./SoundLabDialog.module.css";
+import { VoiceFxPanel } from "./VoiceFxPanel";
 
 const BANDS = ["125", "250", "500", "750", "1k", "1.5k", "2.5k", "4k"];
-const EFFECTS = ["normal", "robot", "echo", "chipmunk", "giant"] as const;
 
 const meter = dbfsToPercent;
 /** A peak this close to 0 dBFS means the signal is clipping. */
@@ -64,10 +64,10 @@ export function SoundLabDialog({ mode, onClose, onConnect }: { mode: SoundLabMod
         setNow(at);
         setStopped(false);
         for (const item of parsed) {
-          if (item.phase === "record" || item.phase === "play" || item.phase === "start") setPhaseAt(at);
+          if (item.phase === "record" || item.phase === "render" || item.phase === "play" || item.phase === "start") setPhaseAt(at);
           if (item.mode === "loudness" && item.phase === "sample") setHeld(peakHold.update(item.peak, at));
           if (item.phase === "error") setControlError(t("flasher.soundLab.commandError", { code: item.code }));
-          if (["record", "play", "cleared", "start", "abort", "end", "error"].includes(item.phase)) setCommandPending(false);
+          if (["record", "render", "play", "cleared", "start", "abort", "end", "error"].includes(item.phase)) setCommandPending(false);
         }
       }
       const lastPrompt = lines.findLastIndex((line) => line.includes(">>> "));
@@ -137,7 +137,7 @@ export function SoundLabDialog({ mode, onClose, onConnect }: { mode: SoundLabMod
       {mode === "recorder" && <Recorder messages={modeMessages} phase={phase} elapsed={elapsed} canCommand={canCommand} send={sendCommand} />}
       {mode === "spectrum" && <Spectrum messages={modeMessages} />}
       {mode === "game" && <Game messages={modeMessages} canCommand={canCommand} send={sendCommand} />}
-      {mode === "voice_fx" && <VoiceFx messages={modeMessages} phase={phase} elapsed={elapsed} canCommand={canCommand} send={sendCommand} />}
+      {mode === "voice_fx" && <VoiceFxPanel messages={modeMessages} phase={phase} elapsed={elapsed} canCommand={canCommand} send={sendCommand} />}
       <p className={styles.hint}>{t(`flasher.soundLab.hints.${mode}`)}</p>
       {controlError && <p role="alert" className={styles.error}>{controlError}</p>}
     </div>
@@ -303,35 +303,5 @@ function Game({ messages, canCommand, send }: { messages: SoundMessage[]; canCom
       <label className={styles.check}><input type="checkbox" checked={soundCue} onChange={(event) => setSoundCue(event.target.checked)} />{t("flasher.soundLab.browserCue")}</label>
     </div>
     <div className={styles.transport}><button type="button" disabled={!canCommand || active} onClick={start}>{latest?.phase === "end" || latest?.phase === "abort" ? t("flasher.soundLab.playAgain") : t("flasher.soundLab.startGame")}</button><button type="button" disabled={!canCommand || !active} onClick={() => send("STOP")}>{t("flasher.soundLab.stopGame")}</button></div>
-  </div>;
-}
-
-function VoiceFx({ messages, phase, elapsed, canCommand, send }: { messages: SoundMessage[]; phase: string; elapsed: number; canCommand: boolean; send: (command: string) => void }) {
-  const { t } = useTranslation();
-  const [effect, setEffect] = useState<(typeof EFFECTS)[number]>("echo");
-  const [echo, setEcho] = useState(40);
-  const [toneFilter, setToneFilter] = useState<"none" | "low" | "high">("none");
-  const [volume, setVolume] = useState(65);
-  const plays = messages.filter((m): m is Extract<SoundMessage, { mode: "voice_fx"; phase: "play" }> => m.mode === "voice_fx" && m.phase === "play");
-  const latest = plays.at(-1);
-  let samples = 0;
-  for (const message of messages) if (message.mode === "voice_fx") {
-    if (message.phase === "record" || message.phase === "cleared") samples = 0;
-    if (message.phase === "saved") samples = message.samples;
-  }
-  const level = messages.findLast((m): m is Extract<SoundMessage, { mode: "voice_fx"; phase: "level" }> => m.mode === "voice_fx" && m.phase === "level");
-  const active = phase === "record" || phase === "play";
-  const duration = latest?.effect === "chipmunk" ? 1333 : latest?.effect === "giant" ? 2857 : 2000;
-  return <div className={styles.effects}>
-    <div className={styles.fxHero}><span>{t("flasher.soundLab.voiceClip")}</span><strong>{phase === "record" ? t("flasher.soundLab.recording") : phase === "play" && latest ? t(`flasher.soundLab.effects.${latest.effect}`) : samples ? t("flasher.soundLab.clipReady") : t("flasher.soundLab.noClip")}</strong><span>{phase === "play" ? t("flasher.soundLab.playing") : t("flasher.soundLab.capture")}</span></div>
-    <div className={styles.progress} role="progressbar" aria-label={t("flasher.soundLab.phaseProgress")} aria-valuemin={0} aria-valuemax={100} aria-valuenow={active ? Math.min(100, Math.round(elapsed * 100 / (phase === "record" ? 2000 : duration))) : 0}><span style={{ width: `${active ? Math.min(100, elapsed * 100 / (phase === "record" ? 2000 : duration)) : 0}%` }} /></div>
-    <div className={styles.clapMeter}><span>{t("flasher.soundLab.recordLevel")}</span><div className={styles.meter} role="meter" aria-label={t("flasher.soundLab.recordLevel")} aria-valuemin={-60} aria-valuemax={0} aria-valuenow={phase === "record" && level ? Math.max(-60, level.rms) : -60}><i style={{ width: `${phase === "record" && level ? meter(level.rms) : 0}%` }} /></div></div>
-    <div className={styles.effectList} role="group" aria-label={t("flasher.soundLab.chooseEffect")}>{EFFECTS.map((choice) => <button type="button" key={choice} aria-pressed={effect === choice} onClick={() => { setEffect(choice); if (choice === "normal") setEcho(0); else if (choice === "echo" && echo === 0) setEcho(40); }} disabled={active}><span>{String(EFFECTS.indexOf(choice) + 1).padStart(2, "0")}</span><strong>{t(`flasher.soundLab.effects.${choice}`)}</strong></button>)}</div>
-    <div className={styles.fxSettings}>
-      <label className={styles.slider}><span>{t("flasher.soundLab.echoAmount")} <b>{echo}%</b></span><input type="range" min="0" max="80" value={echo} aria-label={t("flasher.soundLab.echoAmount")} disabled={active} onChange={(event) => setEcho(Number(event.target.value))} /></label>
-      <label>{t("flasher.soundLab.filter")}<select value={toneFilter} disabled={active} onChange={(event) => setToneFilter(event.target.value as "none" | "low" | "high")}><option value="none">{t("flasher.soundLab.filters.none")}</option><option value="low">{t("flasher.soundLab.filters.low")}</option><option value="high">{t("flasher.soundLab.filters.high")}</option></select></label>
-      <label className={styles.slider}><span>{t("flasher.soundLab.speakerVolume")} <b>{volume}%</b></span><input type="range" min="0" max="100" value={volume} aria-label={t("flasher.soundLab.speakerVolume")} disabled={active} onChange={(event) => setVolume(Number(event.target.value))} /></label>
-    </div>
-    <div className={styles.transport}><button type="button" className={styles.recordButton} disabled={!canCommand || active} onClick={() => send("REC")}>{t("flasher.soundLab.record")}</button><button type="button" disabled={!canCommand || active || !samples} onClick={() => send(`PLAY ${effect} ${echo} ${toneFilter} ${volume}`)}>{t("flasher.soundLab.playEffect")}</button><button type="button" disabled={!canCommand || active || !samples} onClick={() => send("CLEAR")}>{t("flasher.soundLab.deleteClip")}</button></div>
   </div>;
 }

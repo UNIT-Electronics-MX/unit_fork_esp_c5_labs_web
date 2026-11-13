@@ -58,8 +58,8 @@ export function MicroPythonWorkbench({ lessonId }: { lessonId: string }) {
         docked={false}
         onOpenImuCube={showsImuCube(lessonId) ? () => setActiveViewer("imu") : undefined}
         onOpenP4Sensors={lessonId === "P4" ? () => setActiveViewer("p4") : undefined}
-        onOpenToneLab={lessonId === "S0B" ? () => setActiveViewer("tone") : undefined}
-        onOpenAudioPlayer={lessonId === "S0B" ? () => setActiveViewer("player") : undefined}
+        onOpenToneLab={lessonId === "S7" ? () => setActiveViewer("tone") : undefined}
+        onOpenAudioPlayer={lessonId === "S7" ? () => setActiveViewer("player") : undefined}
         onOpenSoundLab={soundLabMode(exampleIds[0] ?? "") ? (exampleId) => setActiveViewer(soundLabMode(exampleId)) : undefined}
         onRun={(exampleId) => {
           if (exampleId === "imu-bmi270-cube") setActiveViewer("imu");

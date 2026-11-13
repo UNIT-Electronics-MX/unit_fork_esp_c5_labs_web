@@ -1,7 +1,7 @@
 // What a lesson needs on the bench, and which lessons a given kit can build. Pure: the parts
 // themselves and each lesson's list live in src/content/kit.ts.
 
-/** One requirement: any one of these parts will do (KY-037 or INMP441). */
+/** One requirement: any one of the listed parts will do. */
 export type KitNeed<Id extends string = string> = readonly Id[];
 
 export interface LessonKit<Id extends string = string> {

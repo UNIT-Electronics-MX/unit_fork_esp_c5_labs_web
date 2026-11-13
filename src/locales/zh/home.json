@@ -50,9 +50,6 @@
       "tags": "MIFARE 卡和钥匙扣",
       "wifi": "2.4 GHz Wi-Fi 网络",
       "phone": "智能手机（蓝牙）",
-      "ky037": "KY-037 模拟麦克风",
-      "inmp441": "INMP441 I²S 麦克风",
-      "amp": "MAX98357A 功放 + 扬声器",
       "keyboard": "蓝牙键盘或鼠标"
     }
   },

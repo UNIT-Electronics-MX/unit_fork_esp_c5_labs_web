@@ -153,7 +153,7 @@
     "int32-t": {
       "short": "Yaklaşık -2,1 milyar ile +2,1 milyar arasında bir tam sayı: negatif olabilen dört bayt.",
       "simple": "Bu çipte <code>int</code> ile aynı kutu. Ama adı, her çipte boyutunun aynı olacağını söyler.",
-      "deep": "İşaretli, 32 bit. INMP441 mikrofonu 24 bitlik örnekleri 32 bitlik I2S yuvalarında gönderir. Bunlar <code>int32_t</code> olarak okunur, sonra aşağı kaydırılır."
+      "deep": "İşaretli, 32 bit. ICS-43434 mikrofonu 24 bitlik örnekleri 32 bitlik I2S yuvalarında gönderir. Bunlar <code>int32_t</code> olarak okunur, sonra aşağı kaydırılır."
     },
     "int64-t": {
       "short": "Negatif de olabilen çok büyük bir tam sayı: sekiz bayt.",

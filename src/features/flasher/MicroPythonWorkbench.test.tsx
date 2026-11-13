@@ -64,8 +64,8 @@ describe("MicroPythonWorkbench P4 viewer", () => {
 });
 
 describe("MicroPythonWorkbench tone lab", () => {
-  it("opens after running the tone script in the codec practice and can be reopened", async () => {
-    render(<MicroPythonWorkbench lessonId="S0B" />);
+  it("opens after running the tone script in the speaker practice and can be reopened", async () => {
+    render(<MicroPythonWorkbench lessonId="S7" />);
     fireEvent.click(screen.getByRole("button", { name: "Run tones" }));
     expect(await screen.findByRole("dialog", { name: "Tone lab" })).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Close tones" }));
@@ -74,8 +74,8 @@ describe("MicroPythonWorkbench tone lab", () => {
     expect(await screen.findByRole("dialog", { name: "Tone lab" })).toBeTruthy();
   });
 
-  it("opens the player from the codec practice", async () => {
-    render(<MicroPythonWorkbench lessonId="S0B" />);
+  it("opens the player from the speaker practice", async () => {
+    render(<MicroPythonWorkbench lessonId="S7" />);
     fireEvent.click(screen.getByRole("button", { name: "Run player" }));
     expect(await screen.findByRole("dialog", { name: "Audio player" })).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Close player" }));

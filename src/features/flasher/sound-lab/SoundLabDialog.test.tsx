@@ -89,17 +89,42 @@ describe("sound exercise web views", () => {
     await vi.waitFor(() => expect(channel.sent).toContain("STOP"));
   });
 
-  it("sends the chosen echo and filter for a saved voice take", async () => {
+  it("sends the chosen effect, intensity and filter for a saved voice take", async () => {
     render(<SoundLabDialog mode="voice_fx" {...controls} />);
     send("FX,READY\n");
+    expect(screen.getByRole("button", { name: "▶ Play effect" }).hasAttribute("disabled")).toBe(true);
     fireEvent.click(screen.getByRole("button", { name: "● Record" }));
     await vi.waitFor(() => expect(channel.sent).toContain("REC"));
     send("FX,RECORD\nFX,SAVED,32000\n");
-    fireEvent.click(screen.getByRole("button", { name: /Robot/ }));
-    fireEvent.change(screen.getByRole("slider", { name: "Echo amount" }), { target: { value: "55" } });
-    fireEvent.change(screen.getByLabelText("Filter"), { target: { value: "low" } });
+    fireEvent.click(screen.getByRole("button", { name: /Cave/ }));
+    expect(screen.getByText(/Four short feedback delays/)).toBeTruthy();
+    fireEvent.change(screen.getByRole("slider", { name: "Effect intensity" }), { target: { value: "55" } });
+    expect((screen.getByRole("slider", { name: "Cutoff" }) as HTMLInputElement).disabled).toBe(true);
+    fireEvent.click(screen.getByRole("button", { name: "Band pass" }));
+    fireEvent.change(screen.getByRole("slider", { name: "Cutoff" }), { target: { value: "50" } });
+    expect(screen.getByRole("img", { name: /Band pass filter at 949 Hz/ })).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "▶ Play effect" }));
-    await vi.waitFor(() => expect(channel.sent).toContain("PLAY robot 55 low 65"));
+    await vi.waitFor(() => expect(channel.sent).toContain("PLAY cave 55 band 949 65"));
+  });
+
+  it("locks the controls while the board renders and plays an effect", () => {
+    render(<SoundLabDialog mode="voice_fx" {...controls} />);
+    send("FX,READY\nFX,RECORD\nFX,SAVED,32000\nFX,RENDER,reverse\n");
+    expect(screen.getByText("The board is processing the take…")).toBeTruthy();
+    expect(screen.getByRole("button", { name: /Robot/ }).hasAttribute("disabled")).toBe(true);
+    send("FX,PLAY,reverse,32000\n");
+    expect(screen.getByRole("heading", { level: 3, name: "Effect" })).toBeTruthy();
+    expect(screen.getAllByText("Reverse").length).toBeGreaterThan(1);
+    send("FX,DONE\n");
+    expect(screen.getByRole("button", { name: /Robot/ }).hasAttribute("disabled")).toBe(false);
+  });
+
+  it("keeps intensity off for effects without a setting", () => {
+    render(<SoundLabDialog mode="voice_fx" {...controls} />);
+    send("FX,READY\n");
+    fireEvent.click(screen.getByRole("button", { name: /Reverse/ }));
+    expect((screen.getByRole("slider", { name: "Effect intensity" }) as HTMLInputElement).disabled).toBe(true);
+    expect(screen.getByText("This effect has no setting")).toBeTruthy();
   });
 
   it("disables recorder controls when the board returns to the REPL", () => {

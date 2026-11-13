@@ -65,7 +65,7 @@ export const TRACKS: readonly Track[] = [
     title: "Sound",
     blurb: "Hear, measure, clap, record, see pitch, play",
     color: "--sound",
-    lessonIds: ["S0", "S0B", "S2", "S3", "S4", "S5", "S6", "S8"],
+    lessonIds: ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"],
     board: "pulsar-c5",
   },
 ];

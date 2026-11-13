@@ -36,7 +36,8 @@ export function KitFinder({ tracks }: { tracks: readonly TrackContent[] }) {
   const searchId = useId();
   const [query, setQuery] = useState("");
   const [allNear, setAllNear] = useState(false);
-  const have = new Set(useStore(kitStore));
+  // Old saved kits can include parts from exercises that have since moved to the codec.
+  const have = new Set(useStore(kitStore).filter((id) => PART_OF.has(id)));
 
   const found: Found[] = tracks.flatMap(({ track, lessons }) =>
     (lessons ?? [])

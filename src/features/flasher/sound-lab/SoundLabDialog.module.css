@@ -31,9 +31,9 @@
 .hint { margin: auto 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
 .error { margin: 0; color: var(--danger); }
 .levelGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.levelCard, .history, .clapCount, .gameHero, .fxHero, .effectList > button, .tape { border: 1px solid var(--line); border-radius: var(--radius-m); background: var(--bg); }
+.levelCard, .history, .clapCount, .gameHero, .tape { border: 1px solid var(--line); border-radius: var(--radius-m); background: var(--bg); }
 .levelCard { display: grid; gap: 16px; padding: clamp(16px, 3vw, 28px); }
-.levelCard > span, .clapCount > span, .gameHero > span, .fxHero > span { color: var(--muted); font: 700 12px var(--font-mono); text-transform: uppercase; letter-spacing: .07em; }
+.levelCard > span, .clapCount > span, .gameHero > span { color: var(--muted); font: 700 12px var(--font-mono); text-transform: uppercase; letter-spacing: .07em; }
 .levelCard strong { font: 750 clamp(38px, 7vw, 68px)/1 var(--font-display); font-variant-numeric: tabular-nums; }
 .levelCard small { font: 650 15px var(--font-mono); color: var(--muted); }
 .meter, .progress { position: relative; height: 13px; border-radius: 999px; background: color-mix(in srgb, var(--ink), transparent 88%); overflow: hidden; }
@@ -77,7 +77,7 @@
 .transport { display: flex; flex-wrap: wrap; gap: 8px; }
 .transport button { min-height: 42px; padding: 8px 16px; border: 1px solid var(--line); border-radius: var(--radius-s); color: var(--ink); background: var(--bg); cursor: pointer; font: 700 13px var(--font-display); }
 .transport button:disabled { opacity: .45; cursor: default; }
-.transport button:focus-visible, .effectList button:focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
+.transport button:focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
 .transport .recordButton { color: white; background: var(--danger); border-color: var(--danger); }
 .deckBottom { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; align-items: center; }
 .stats { display: flex; justify-content: space-between; gap: 14px; color: var(--muted); font: 650 13px var(--font-mono); }
@@ -92,28 +92,21 @@
 .band > div span { display: block; width: 100%; min-height: 2px; border-radius: 4px 4px 1px 1px; background: linear-gradient(0deg, var(--copper), var(--ok)); transition: height .2s ease; }
 .band small { color: var(--muted); }
 .game { display: grid; gap: 18px; }
-.gameHero, .fxHero { display: grid; justify-items: center; gap: 10px; padding: 24px; text-align: center; }
-.gameHero strong, .fxHero strong { font: 800 clamp(42px, 9vw, 88px)/1 var(--font-display); }
+.gameHero { display: grid; justify-items: center; gap: 10px; padding: 24px; text-align: center; }
+.gameHero strong { font: 800 clamp(42px, 9vw, 88px)/1 var(--font-display); }
 .gameHero strong[data-go="true"] { color: var(--copper); }
-.gameOptions, .fxSettings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
-.gameOptions > label, .fxSettings > label { display: grid; gap: 7px; color: var(--muted); font: 650 12px var(--font-display); }
-.gameOptions select, .fxSettings select { min-height: 38px; padding: 7px 10px; border: 1px solid var(--line); border-radius: var(--radius-s); color: var(--ink); background: var(--bg); font: 650 13px var(--font-display); }
+.gameOptions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+.gameOptions > label { display: grid; gap: 7px; color: var(--muted); font: 650 12px var(--font-display); }
+.gameOptions select { min-height: 38px; padding: 7px 10px; border: 1px solid var(--line); border-radius: var(--radius-s); color: var(--ink); background: var(--bg); font: 650 13px var(--font-display); }
 .gameOptions .check { display: flex; align-items: center; gap: 8px; }
 .gameOptions .check input { accent-color: var(--copper); }
 .rounds { display: grid; grid-template-columns: repeat(10, 1fr); gap: 7px; }
 .rounds span { display: grid; place-items: center; min-height: 42px; border-radius: var(--radius-s); color: var(--muted); background: var(--bg); font: 700 13px var(--font-mono); }
 .rounds span[data-result="hit"] { color: white; background: var(--ok); }
 .rounds span[data-result="miss"] { color: white; background: var(--danger); }
-.effects { display: grid; gap: 17px; }
-.effectList { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
-.effectList > button { display: grid; gap: 12px; padding: 15px; color: var(--muted); text-align: start; cursor: pointer; }
-.effectList > button:disabled { cursor: default; opacity: .65; }
-.effectList > button[aria-pressed="true"] { color: var(--ink); border-color: var(--copper); box-shadow: inset 0 0 0 1px var(--copper); }
-.effectList span { font: 650 11px var(--font-mono); }
-.effectList strong { font: 750 15px var(--font-display); }
 @media (max-width: 650px) {
   .header, .content { padding: 14px; }
-  .levelGrid, .clapPanel, .deckBottom, .gameOptions, .fxSettings { grid-template-columns: 1fr; }
+  .levelGrid, .clapPanel, .deckBottom, .gameOptions { grid-template-columns: 1fr; }
   .clapPanel { min-height: 0; }
   .switch { min-height: 170px; }
   .clapCount { min-height: 130px; }
@@ -121,7 +114,6 @@
   .band { font-size: 10px; }
   .band > div { padding: 3px; }
   .rounds { grid-template-columns: repeat(5, 1fr); }
-  .effectList { grid-template-columns: repeat(2, 1fr); }
   .tape { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .tape[data-moving="true"] .reels span { animation: none; } }

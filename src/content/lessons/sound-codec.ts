@@ -9,15 +9,42 @@ const wiring = {
     ["J20 GPIO27", "BCLK", "I²S bit clock"],
     ["J20 GPIO7", "WS", "I²S word clock"],
     ["J20 GPIO10", "MCLK", "Codec master clock"],
-    ["D6 GPIO24", "DOUT", "Digital microphone samples into the board"],
+    ["D6 GPIO24", "DOUT", "Codec ADC samples from the analog microphone"],
     ["J20 GPIO26", "DIN", "Digital samples out to the speaker"],
     ["3V3 / GND", "3V3 / GND", "Power and common ground"],
   ],
 } as const;
 
+// The wiring panel opens on what each exercise uses: 0 capture + playback, 1 capture, 2 playback.
+const wiringPanel = (view: 0 | 1 | 2) => [{ title: "Connect the codec, wire by wire", widget: "soundCodecWiring", view }] as const;
+
+const FIRMWARE = "Install the included MicroPython preview firmware at <code>0x0000</code> from <b>Flash firmware</b>. It includes <code>machine.I2S</code>.";
+
 const setup = "Connect the analog microphone to the ES8311 J2 input. With USB unplugged, connect the codec as shown above, then reconnect USB. Install the included MicroPython firmware from Flash firmware and save es8311.py to the board from Code.";
 
 export const codecSoundLessons = [
+  {
+    kind: "lesson", id: "S1", track: "sound", title: "ES8311 microphone", status: "MicroPython",
+    heading: "Hear the ES8311 microphone",
+    goal: "Connect the ES8311 codec and capture the analog microphone on its J2 input through the codec ADC. Check the level in the serial console, then stream the samples over USB and listen in the browser.",
+    goalLine: "See a changing peak level, then hear your voice in the browser.",
+    goalCheck: [
+      "The capture script prints a changing peak level when you speak into the analog microphone.",
+      "The browser receives the codec's PCM stream and plays your voice.",
+      "The listening gain changes playback volume while dBFS keeps reporting the original samples.",
+    ],
+    learn: ["I²S input", "I²C codec control", "ADC", "PCM over USB Serial/JTAG", "listening gain"],
+    pins: [], usb: true, cmd: "", wiring,
+    steps: [
+      FIRMWARE,
+      "Unplug USB and wire the codec as shown above. DOUT goes to the exposed D6/GPIO24 pad, outside J20; leave DIN connected too, the speaker exercises use it. Connect an analog microphone to the codec's J2 input, then reconnect USB.",
+      "Open <b>Code</b>, connect the serial console and use <b>Install es8311.py</b> to save the codec driver on the board.",
+      "Run <code>es8311_mic_capture.py</code> and speak near the microphone. Watch the frames per second and peak level in the console; use <code>es8311_mic_diagnose.py</code> if the input stays silent.",
+      "Stop the capture script and run <code>es8311_mic_usb_audio.py</code>. Press <b>Listen</b> in the audio dialog to hear the microphone in the browser. Adjust <b>Listening gain</b> if needed, then press <b>Stop listening</b>.",
+    ],
+    note: "The microphone path uses DOUT on D6/GPIO24, BCLK, WS and MCLK on J20, and I²C on QWIIC for configuration. Listening gain changes the browser speaker only; the PCM samples and dBFS reading stay unchanged. Avoid using the microSD card while J20 carries I²S audio, because the shared GPIOs can cause interference.",
+    panels: wiringPanel(1),
+  },
   {
     kind: "lesson", id: "S2", track: "sound", title: "Loudness", status: "MicroPython",
     heading: "Measure microphone level",
@@ -30,7 +57,7 @@ export const codecSoundLessons = [
       "Run <code>es8311_sound_loudness.py</code> in Code. The level panel opens automatically; use <b>Open visualization</b> to reopen it.",
       "Speak softly, then loudly, then clap. Compare both readings. Press Ctrl+C to stop."],
     note: "These are dBFS values relative to digital full scale. They are not calibrated dB SPL readings for the room.",
-    panels: [],
+    panels: wiringPanel(1),
   },
   {
     kind: "lesson", id: "S3", track: "sound", title: "Clap control", status: "MicroPython",
@@ -44,7 +71,7 @@ export const codecSoundLessons = [
       "Run <code>es8311_sound_clap.py</code>. In the panel, raise sensitivity if the peak does not cross the displayed threshold.",
       "Clap again after a short pause. Watch the virtual switch change and the count increase. Stop the script when done."],
     note: "The detector uses 16 ms blocks. Some knocks or sharp sounds can also trigger it; the web switch does not control a physical load.",
-    panels: [],
+    panels: wiringPanel(1),
   },
   {
     kind: "lesson", id: "S4", track: "sound", title: "Recorder", status: "MicroPython",
@@ -58,7 +85,7 @@ export const codecSoundLessons = [
       "Connect a speaker to the codec amplifier output. Run <code>es8311_sound_recorder.py</code>; the recorder panel opens automatically.",
       "Press <b>Record</b>, speak for two seconds, then press <b>Play</b>. Adjust speaker volume before replaying or delete the clip to start over."],
     note: "Clips stay in RAM and disappear when the script stops. Capture and playback run in sequence because they share one I²S peripheral.",
-    panels: [],
+    panels: wiringPanel(0),
   },
   {
     kind: "lesson", id: "S5", track: "sound", title: "Spectrum", status: "MicroPython",
@@ -72,7 +99,7 @@ export const codecSoundLessons = [
       "Run <code>es8311_sound_spectrum.py</code>. The eight-band panel opens automatically; use <b>Open visualization</b> to reopen it.",
       "Hum a low note and then whistle a high one. Compare the bar positions and microphone peak. Press Ctrl+C to stop."],
     note: "This is an eight-bin teaching spectrum, not a calibrated analyser or a full FFT. Each display uses the most recent 256 samples. If the peak stays near −90 dBFS, check DOUT on GPIO24 and run es8311_mic_diagnose.py.",
-    panels: [],
+    panels: wiringPanel(1),
   },
   {
     kind: "lesson", id: "S6", track: "sound", title: "Sound game", status: "MicroPython",
@@ -86,20 +113,44 @@ export const codecSoundLessons = [
       "Run <code>es8311_sound_game.py</code>. The scoreboard opens automatically; use <b>Open visualization</b> to reopen it.",
       "Choose 5, 10 or 20 rounds and a difficulty, then press <b>Start game</b>. Clap when GO appears; the optional cue beep plays in the browser."],
     note: "The game uses the same adjustable transient detector as clap control. Easy gives a 1.2-second window; normal 0.9 seconds; hard 0.6 seconds. Serial delay can affect timing.",
-    panels: [],
+    panels: wiringPanel(1),
+  },
+  {
+    kind: "lesson", id: "S7", track: "sound", title: "ES8311 speaker", status: "MicroPython",
+    heading: "Play tones and songs through the ES8311",
+    goal: "Drive the ES8311 DAC and amplifier from MicroPython: play a melody, shape a tone while it sounds, then stream a song from the browser to the speaker.",
+    goalLine: "Hear a melody, change a tone live, then play a song from the browser.",
+    goalCheck: [
+      "The melody script plays notes through the speaker connected to the ES8311 module.",
+      "The tone lab changes pitch, waveform and level while the ES8311 plays through the speaker.",
+      "The music player changes codec volume while an included song is playing.",
+    ],
+    learn: ["I²S output", "DAC and amplifier", "frequency and waveform", "audio streaming over USB", "playback volume"],
+    pins: [], usb: true, cmd: "", wiring,
+    steps: [setup,
+      "Connect a speaker to the codec amplifier output. Run <code>es8311_melody.py</code> to hear a short melody.",
+      "Stop the melody, select <code>es8311_tone_lab.py</code> and run it. The tone panel opens automatically. Hold a note or press <b>Play tone</b>; change frequency, waveform and level, then press <b>Silence</b>. You can reopen the panel with <b>Open tone lab</b>.",
+      "Stop the tone lab, select <code>es8311_play_serial.py</code> and run it. In the audio player, choose one of the three included songs or open your own WAV or MP3, pick a quality and press <b>Play on the board</b>. Raise or lower <b>Volume</b> while the song plays. The browser converts the song to mono and streams it over USB. Use <b>Voice</b> or <b>Standard</b> for the smoothest sound.",
+    ],
+    note: "Playback uses DIN on J20/GPIO26 with the same BCLK, WS and MCLK wires as the microphone. The C5 has one I²S peripheral, so run one script at a time. The player's volume changes the codec volume; the tone lab changes the level of the samples it generates.",
+    panels: wiringPanel(2),
   },
   {
     kind: "lesson", id: "S8", track: "sound", title: "Voice FX", status: "MicroPython",
     heading: "Hear your voice with effects",
-    goal: "Record two seconds of speech and choose an effect, echo amount and tone filter before playback.",
-    goalLine: "Replay one take with different echo and filter settings.",
-    goalCheck: ["Record stores the take in board memory.", "Play effect applies the chosen settings through the codec speaker."],
-    learn: ["sample processing", "echo", "low and high pass filters", "sequential I²S"],
+    goal: "Record two seconds of speech, then replay the same take through fourteen effects and a low, high or band pass filter with an adjustable cutoff.",
+    goalLine: "Turn one take into a robot, a phone call, a cave or an 8-bit voice.",
+    goalCheck: [
+      "Record stores the take in board memory.",
+      "Each effect and its intensity change how the take sounds through the speaker.",
+      "Moving the cutoff changes the filter curve and what you hear.",
+    ],
+    learn: ["ring modulation", "delay and reverb", "low, high and band pass filters", "bit depth and sample rate", "sequential I²S"],
     pins: [], usb: true, cmd: "", wiring,
     steps: [setup,
-      "Connect a speaker to the codec amplifier output. Run <code>es8311_sound_voice_fx.py</code>; the effect sequence opens automatically.",
-      "Press <b>Record</b> and speak. Choose robot, echo or a pitch effect, adjust echo and the low or high pass filter, then press <b>Play effect</b>. Try another setting with the same take."],
-    note: "The effects play after recording, so the microphone does not hear its own speaker. Changing playback speed changes both pitch and duration.",
-    panels: [],
+      "Connect a speaker to the codec amplifier output. Run <code>es8311_sound_voice_fx.py</code>; the effects panel opens automatically.",
+      "Press <b>Record</b> and speak. Choose an effect, set its intensity, pick a filter and its cutoff, then press <b>Play effect</b>. The board processes the take first, then plays it. Try other settings with the same take."],
+    note: "The board renders each effect into memory before playing it, so heavy effects never stutter; processing takes a moment. The microphone is off during playback, so it does not hear its own speaker. Speed effects change both pitch and duration.",
+    panels: wiringPanel(0),
   },
 ] as const satisfies readonly LessonEntry[];

@@ -153,7 +153,7 @@
     "int32-t": {
       "short": "Liczba całkowita od około -2,1 miliarda do +2,1 miliarda: cztery bajty, które mogą być ujemne.",
       "simple": "To samo pudełko co <code>int</code> na tym układzie, ale jego nazwa obiecuje rozmiar na każdym układzie.",
-      "deep": "Ze znakiem, 32 bity. Mikrofon INMP441 wysyła próbki 24-bitowe w 32-bitowych slotach I2S, które odczytuje się jako <code>int32_t</code>, a potem przesuwa w dół."
+      "deep": "Ze znakiem, 32 bity. Mikrofon ICS-43434 wysyła próbki 24-bitowe w 32-bitowych slotach I2S, które odczytuje się jako <code>int32_t</code>, a potem przesuwa w dół."
     },
     "int64-t": {
       "short": "Ogromna liczba całkowita, która może być ujemna: osiem bajtów.",

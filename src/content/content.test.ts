@@ -85,7 +85,7 @@ describe("content", () => {
     expect(boardOfLesson("I1")).toBe("pulsar-c5");
     expect(boardOfLesson("I2")).toBe("pulsar-c5");
     expect(boardOfLesson("S0")).toBe("pulsar-c5");
-    expect(boardOfLesson("S0B")).toBe("pulsar-c5");
+    expect(boardOfLesson("S1")).toBe("pulsar-c5");
     expect(boardOfLesson("W1")).toBe("devkitc-s3");
     expect(boardOfLesson("B1")).toBe("devkitc-s3");
     expect(boardOfLesson("B1", "arduino")).toBe("devkitc-s3");
@@ -98,14 +98,14 @@ describe("content", () => {
     expect(boardOfLesson("nope")).toBe("devkitc-s3");
   });
 
-  it("uses one codec practice for listening and playback, plus focused sound labs", async () => {
+  it("splits the codec into a microphone and a speaker practice, plus focused sound labs", async () => {
     const lessons = (await trackLessonsQuery("sound", "es").queryFn!({} as never)).filter(isActive);
-    expect(lessons).toHaveLength(8);
-    expect(lessons.map((lesson) => lesson.id)).toEqual(["S0", "S0B", "S2", "S3", "S4", "S5", "S6", "S8"]);
+    expect(lessons).toHaveLength(9);
+    expect(lessons.map((lesson) => lesson.id)).toEqual(["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"]);
     for (const lesson of lessons.filter((item) => /^S[1-8]$/.test(item.id))) {
       expect(boardOfLesson(lesson.id)).toBe("pulsar-c5");
       expect(lessonExamples(lesson.id)[0]).toMatch(/^es8311-/);
-      expect(lesson.wiring?.rows).toContainEqual(["D6 GPIO24", "DOUT", "Muestras digitales del micrófono hacia la placa"]);
+      expect(lesson.wiring?.rows).toContainEqual(["D6 GPIO24", "DOUT", "Muestras del ADC del códec desde el micrófono analógico"]);
       expect(lesson.title).not.toContain("Pulsar C5");
       expect(lesson.goal).not.toMatch(/INMP441|MAX98357A|ESP32-S3/);
       expect(lesson.cmd).toBe("");

@@ -255,21 +255,9 @@
         "name": "13.56 MHz RFID/NFC key fob",
         "why": "An extra UID for inventory, door and card-friends exercises; the PN532 package already includes one."
       },
-      "inmp441": {
-        "name": "INMP441 I²S microphone",
-        "why": "An alternative digital microphone for other I²S projects. The S0 lesson uses the ICS-43434; the codec lessons use an analog microphone connected to the ES8311."
-      },
-      "sph0645": {
-        "name": "SPH0645 I²S microphone",
-        "why": "An alternative digital microphone for a separate I²S project. The codec lessons read the ES8311 input instead."
-      },
       "ics43434": {
         "name": "UNIT DevLab ICS-43434 I²S microphone",
         "why": "The Pulsar C5 S0 exercise measures the microphone level and lets you hear it in the browser. Use the MicroPython preview firmware with machine.I2S and the six-pin J20 connector."
-      },
-      "max98357": {
-        "name": "MAX98357 I²S audio amplifier",
-        "why": "An alternative I²S amplifier for other projects. The codec lessons use the ES8311 amplifier."
       },
       "speaker": {
         "name": "4 Ω / 3 W speaker",
@@ -277,7 +265,7 @@
       },
       "es8311": {
         "name": "UNIT DevLab ES8311 codec guide",
-        "why": "The S0B exercise uses the ES8311 for microphone listening, tones and music. The other codec sound exercises reuse its I²S and I²C wiring."
+        "why": "S1 uses the ES8311 microphone and S7 its speaker for tones and music. The other codec sound exercises reuse the same I²S and I²C wiring."
       }
     }
   }

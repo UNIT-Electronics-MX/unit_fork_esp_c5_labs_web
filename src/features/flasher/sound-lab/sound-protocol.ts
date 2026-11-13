@@ -1,4 +1,5 @@
 import type { SoundLabMode } from "../lesson-examples";
+import { isVoiceEffect, type VoiceEffect } from "./voice-fx";
 
 export type SoundMessage =
   | { mode: "loudness"; phase: "ready" }
@@ -22,7 +23,8 @@ export type SoundMessage =
   | { mode: "game"; phase: "end" | "abort"; score: number; rounds: number }
   | { mode: "game"; phase: "error"; code: string }
   | { mode: "voice_fx"; phase: "ready" | "record" }
-  | { mode: "voice_fx"; phase: "play"; effect: "normal" | "robot" | "echo" | "chipmunk" | "giant" }
+  | { mode: "voice_fx"; phase: "render"; effect: VoiceEffect }
+  | { mode: "voice_fx"; phase: "play"; effect: VoiceEffect; samples: number }
   | { mode: "voice_fx"; phase: "saved"; samples: number }
   | { mode: "voice_fx"; phase: "level"; rms: number; peak: number }
   | { mode: "voice_fx"; phase: "done" | "cleared" }
@@ -130,8 +132,10 @@ export function parseSoundLine(line: string): SoundMessage | null {
       const peak = db(fourth);
       if (rms !== null && peak !== null) return { mode, phase: "level", rms, peak };
     }
-    if (action === "PLAY" && fields.length === 3 && (third === "normal" || third === "robot" || third === "echo" || third === "chipmunk" || third === "giant")) {
-      return { mode, phase: "play", effect: third };
+    if (action === "RENDER" && fields.length === 3 && isVoiceEffect(third)) return { mode, phase: "render", effect: third };
+    const rendered = integer(fourth, 1, 1000000);
+    if (action === "PLAY" && fields.length === 4 && isVoiceEffect(third) && rendered !== null) {
+      return { mode, phase: "play", effect: third, samples: rendered };
     }
   }
   return null;

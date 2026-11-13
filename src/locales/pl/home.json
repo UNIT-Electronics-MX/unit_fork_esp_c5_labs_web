@@ -62,9 +62,6 @@
       "tags": "Karta MIFARE i brelok",
       "wifi": "Sieć Wi-Fi 2,4 GHz",
       "phone": "Smartfon (Bluetooth)",
-      "ky037": "Mikrofon analogowy KY-037",
-      "inmp441": "Mikrofon I²S INMP441",
-      "amp": "Wzmacniacz MAX98357A + głośnik",
       "keyboard": "Klawiatura lub mysz Bluetooth"
     }
   },

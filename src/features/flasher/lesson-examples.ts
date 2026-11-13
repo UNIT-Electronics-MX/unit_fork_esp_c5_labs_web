@@ -1,12 +1,13 @@
 /** The MicroPython examples each lesson opens, first one selected. Lessons not listed show the full example list. */
 const LESSON_EXAMPLES: Readonly<Record<string, readonly string[]>> = {
   S0: ["ics43434-j20", "ics43434-usb-audio"],
-  S0B: ["es8311-mic-capture", "es8311-mic-usb-audio", "es8311-melody", "es8311-tone-lab", "es8311-play-serial", "es8311-mic-diagnose"],
+  S1: ["es8311-mic-capture", "es8311-mic-usb-audio", "es8311-mic-diagnose"],
   S2: ["es8311-sound-loudness"],
   S3: ["es8311-sound-clap"],
   S4: ["es8311-sound-recorder"],
   S5: ["es8311-sound-spectrum"],
   S6: ["es8311-sound-game"],
+  S7: ["es8311-melody", "es8311-tone-lab", "es8311-play-serial"],
   S8: ["es8311-sound-voice-fx"],
   "01": ["neopixel"],
   "02": ["external-led"],

@@ -259,21 +259,9 @@
         "name": "Llavero RFID/NFC de 13,56 MHz",
         "why": "Otro UID para inventario, puerta y personajes; el paquete del PN532 ya incluye un llavero."
       },
-      "inmp441": {
-        "name": "Micrófono I²S INMP441",
-        "why": "Micrófono digital alternativo para otros proyectos I²S. S0 usa el ICS-43434; las prácticas del códec usan un micrófono analógico conectado al ES8311."
-      },
-      "sph0645": {
-        "name": "Micrófono I²S SPH0645",
-        "why": "Micrófono digital alternativo para otro proyecto I²S. Las prácticas del códec leen la entrada del ES8311."
-      },
       "ics43434": {
         "name": "Micrófono I²S ICS-43434 UNIT DevLab",
         "why": "La práctica S0 de Pulsar C5 mide el nivel del micrófono y permite escucharlo en el navegador. Usa el firmware MicroPython de vista previa con machine.I2S y el conector J20 de seis pines."
-      },
-      "max98357": {
-        "name": "Amplificador de audio I²S MAX98357",
-        "why": "Amplificador I²S alternativo para otros proyectos. Las prácticas del códec usan el amplificador ES8311."
       },
       "speaker": {
         "name": "Bocina de 4 Ω / 3 W",
@@ -281,7 +269,7 @@
       },
       "es8311": {
         "name": "Guía del códec UNIT DevLab ES8311",
-        "why": "La práctica S0B usa el ES8311 para escuchar el micrófono, tocar tonos y reproducir música. Las demás prácticas del códec reutilizan sus conexiones I²S e I²C."
+        "why": "S1 usa el micrófono del ES8311 y S7 su altavoz para tonos y música. Las demás prácticas del códec reutilizan las mismas conexiones I²S e I²C."
       }
     }
   }

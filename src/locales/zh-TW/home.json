@@ -50,9 +50,6 @@
       "tags": "MIFARE 卡和鑰匙圈",
       "wifi": "2.4 GHz Wi-Fi 網路",
       "phone": "智慧型手機（藍牙）",
-      "ky037": "KY-037 類比麥克風",
-      "inmp441": "INMP441 I²S 麥克風",
-      "amp": "MAX98357A 擴大機 + 喇叭",
       "keyboard": "藍牙鍵盤或滑鼠"
     }
   },

@@ -1,6 +1,10 @@
 {
   "flasher": {
-    "views": {"label": "Flash page sections", "editor": "Code editor", "firmware": "Flash firmware"},
+    "views": {
+      "label": "Flash page sections",
+      "editor": "Code editor",
+      "firmware": "Flash firmware"
+    },
     "eyebrow": "Pulsar C5 · Web Serial",
     "title": "Flash your ESP32-C5",
     "intro": "Choose a compiled .bin image from your computer, or use the bundled ESP32-C5 MicroPython image. The browser flashes the board directly over Web Serial.",
@@ -40,14 +44,26 @@
     "successManualReset": "Firmware written. Press RESET on the board to start it.",
     "log": "Connection log",
     "logEmpty": "The connection log will appear here.",
-    "phase": {"ready": "Ready to connect.", "connecting": "Connecting and checking the chip…", "erasing": "Erasing the entire flash…", "writing": "Writing firmware…", "done": "Complete.", "error": "Check the message and try again."},
+    "phase": {
+      "ready": "Ready to connect.",
+      "connecting": "Connecting and checking the chip…",
+      "erasing": "Erasing the entire flash…",
+      "writing": "Writing firmware…",
+      "done": "Complete.",
+      "error": "Check the message and try again."
+    },
     "serial": {
       "title": "Serial editor and monitor",
       "intro": "Read your board's output and send commands after flashing.",
       "dockedTitle": "TERMINAL / REPL",
       "baudRate": "Baud rate",
       "lineEnding": "Line ending",
-      "ending": {"none": "None", "lf": "LF (\n)", "cr": "CR (\r)", "crlf": "CRLF (\r\n)"},
+      "ending": {
+        "none": "None",
+        "lf": "LF (\n)",
+        "cr": "CR (\r)",
+        "crlf": "CRLF (\r\n)"
+      },
       "connect": "Connect serial",
       "disconnect": "Disconnect",
       "clear": "Clear output",
@@ -65,7 +81,14 @@
       "noReadable": "The selected port has no readable serial stream.",
       "notWritable": "The selected port cannot receive serial data.",
       "replInterruptFailed": "Could not stop the program: the board did not return to >>> after Ctrl+C. Check that MicroPython is installed and press RESET before reconnecting.",
-      "state": {"ready": "Ready", "connecting": "Connecting…", "connected": "Connected", "disconnecting": "Disconnecting…", "disconnected": "Disconnected", "error": "Error"}
+      "state": {
+        "ready": "Ready",
+        "connecting": "Connecting…",
+        "connected": "Connected",
+        "disconnecting": "Disconnecting…",
+        "disconnected": "Disconnected",
+        "error": "Error"
+      }
     },
     "soundLab": {
       "stale": "No data for a few seconds. Is the script still running?",
@@ -74,17 +97,195 @@
       "go": "GO!",
       "on": "ON",
       "off": "OFF",
-      "live": "live view", "view": "Open visualization", "backToCode": "Back to code",
-      "disconnected": "Connect the board to receive data", "waiting": "Waiting for example data", "receiving": "Board data received", "stopped": "Program stopped",
-      "modes": {"loudness": "Microphone level", "clap": "Clap control", "recorder": "Recorder", "spectrum": "Eight-band spectrum", "game": "Clap game", "voice_fx": "Voice effects"},
-      "hints": {"loudness": "Speak or clap near the microphone. RMS is the average level; peak shows the loudest instant.", "clap": "Adjust sensitivity until claps cross the threshold. The switch is virtual.", "recorder": "Press Record, speak for two seconds, then press Play. The clip stays in the board's memory.", "spectrum": "Hum and whistle to see which bands respond. These are eight test frequencies, not a full FFT.", "game": "Choose a difficulty and press Start. Clap when GO appears; the cue sound comes from your browser.", "voice_fx": "Record a take and try several effects with echo and filters. Processing happens after capture through the codec speaker."},
-      "rms": "RMS level", "peak": "Peak", "dbfs": "dBFS", "range": "−60 → 0 dBFS", "history": "Recent history", "claps": "Claps", "virtualSwitch": "Virtual switch", "waitingClap": "Waiting for a clap",
-      "capture": "Capture", "speaker": "Speaker", "recording": "Recording…", "playing": "Playing…", "twoSeconds": "2 seconds of voice", "playback": "Playback", "phaseProgress": "Phase progress", "clips": "Clips played", "samples": "Samples", "spectrum": "Level by frequency", "round": "Round", "rounds": "Results by round", "score": "Score", "finished": "Finished", "hit": "Hit", "miss": "Miss", "take": "Take",
-      "effects": {"normal": "Original", "robot": "Robot", "echo": "Echo", "chipmunk": "High pitch", "giant": "Low pitch"},
-      "commandError": "The board rejected the command: {{code}}", "noReply": "The board did not reply. Run the example from Code and try again.", "sensitivity": "Sensitivity", "micPeak": "Microphone peak", "threshold": "Threshold", "noMicSignal": "No microphone signal detected. Check ES8311 DOUT → GPIO24 and the microphone on J2; run es8311_mic_diagnose.py if the level stays near −90 dBFS.",
-      "tape": "Audio tape", "clipReady": "Recording ready", "noClip": "No recording", "record": "● Record", "playClip": "▶ Play", "deleteClip": "Delete clip", "recordLevel": "Level while recording", "speakerVolume": "Speaker volume",
-      "difficulty": "Difficulty", "easy": "Easy · 1.2 s", "normal": "Normal · 0.9 s", "hard": "Hard · 0.6 s", "gameRounds": "Rounds", "browserCue": "Cue sound in browser", "readyToPlay": "Ready", "startGame": "Start game", "stopGame": "Stop round", "playAgain": "Play again", "aborted": "Stopped",
-      "voiceClip": "Voice take", "chooseEffect": "Choose an effect", "echoAmount": "Echo amount", "filter": "Filter", "filters": {"none": "No filter", "low": "Soft · low pass", "high": "Bright · high pass"}, "playEffect": "▶ Play effect"
+      "live": "live view",
+      "view": "Open visualization",
+      "backToCode": "Back to code",
+      "disconnected": "Connect the board to receive data",
+      "waiting": "Waiting for example data",
+      "receiving": "Board data received",
+      "stopped": "Program stopped",
+      "modes": {
+        "loudness": "Microphone level",
+        "clap": "Clap control",
+        "recorder": "Recorder",
+        "spectrum": "Eight-band spectrum",
+        "game": "Clap game",
+        "voice_fx": "Voice effects"
+      },
+      "hints": {
+        "loudness": "Speak or clap near the microphone. RMS is the average level; peak shows the loudest instant.",
+        "clap": "Adjust sensitivity until claps cross the threshold. The switch is virtual.",
+        "recorder": "Press Record, speak for two seconds, then press Play. The clip stays in the board's memory.",
+        "spectrum": "Hum and whistle to see which bands respond. These are eight test frequencies, not a full FFT.",
+        "game": "Choose a difficulty and press Start. Clap when GO appears; the cue sound comes from your browser.",
+        "voice_fx": "Record a take, then try it through any effect and filter. The board processes the take first, then plays it through the codec speaker; the curve shows what the filter keeps."
+      },
+      "rms": "RMS level",
+      "peak": "Peak",
+      "dbfs": "dBFS",
+      "range": "−60 → 0 dBFS",
+      "history": "Recent history",
+      "claps": "Claps",
+      "virtualSwitch": "Virtual switch",
+      "waitingClap": "Waiting for a clap",
+      "capture": "Capture",
+      "speaker": "Speaker",
+      "recording": "Recording…",
+      "playing": "Playing…",
+      "twoSeconds": "2 seconds of voice",
+      "playback": "Playback",
+      "phaseProgress": "Phase progress",
+      "clips": "Clips played",
+      "samples": "Samples",
+      "spectrum": "Level by frequency",
+      "round": "Round",
+      "rounds": "Results by round",
+      "score": "Score",
+      "finished": "Finished",
+      "hit": "Hit",
+      "miss": "Miss",
+      "take": "Take",
+      "commandError": "The board rejected the command: {{code}}",
+      "noReply": "The board did not reply. Run the example from Code and try again.",
+      "sensitivity": "Sensitivity",
+      "micPeak": "Microphone peak",
+      "threshold": "Threshold",
+      "noMicSignal": "No microphone signal detected. Check ES8311 DOUT → GPIO24 and the microphone on J2; run es8311_mic_diagnose.py if the level stays near −90 dBFS.",
+      "tape": "Audio tape",
+      "clipReady": "Recording ready",
+      "noClip": "No recording",
+      "record": "● Record",
+      "playClip": "▶ Play",
+      "deleteClip": "Delete clip",
+      "recordLevel": "Level while recording",
+      "speakerVolume": "Speaker volume",
+      "difficulty": "Difficulty",
+      "easy": "Easy · 1.2 s",
+      "normal": "Normal · 0.9 s",
+      "hard": "Hard · 0.6 s",
+      "gameRounds": "Rounds",
+      "browserCue": "Cue sound in browser",
+      "readyToPlay": "Ready",
+      "startGame": "Start game",
+      "stopGame": "Stop round",
+      "playAgain": "Play again",
+      "aborted": "Stopped",
+      "voiceClip": "Voice take",
+      "playEffect": "▶ Play effect",
+      "fx": {
+        "effectSection": "Effect",
+        "filterSection": "Filter",
+        "intensity": "Effect intensity",
+        "noAmount": "This effect has no setting",
+        "cutoff": "Cutoff",
+        "center": "Centre",
+        "rendering": "The board is processing the take…",
+        "recordHint": "Press Record and speak for two seconds.",
+        "readyHint": "Pick an effect and a filter, then press Play effect. The same take works for every try.",
+        "responseLabel": "Frequency response of the {{filter}} filter at {{cutoff}}",
+        "techniques": {
+          "none": "untouched",
+          "ring": "ring modulation",
+          "speed": "playback speed",
+          "lfo": "slow oscillator",
+          "delay": "delay line",
+          "comb": "comb filters",
+          "band": "band-pass",
+          "crush": "bit crush",
+          "clip": "soft clipping",
+          "order": "reversed samples"
+        },
+        "effects": {
+          "normal": {
+            "name": "Original",
+            "hint": "The take as recorded, only normalised so it plays loud and clear.",
+            "amount": ""
+          },
+          "robot": {
+            "name": "Robot",
+            "hint": "Multiplies your voice by a low tone (ring modulation) and coarsens the samples.",
+            "amount": "Carrier tone"
+          },
+          "alien": {
+            "name": "Alien",
+            "hint": "A high ring-modulation tone plus a fast wobble: metallic and strange.",
+            "amount": "Carrier tone"
+          },
+          "chipmunk": {
+            "name": "High pitch",
+            "hint": "Plays the samples faster: higher and shorter, like a chipmunk.",
+            "amount": "How high"
+          },
+          "giant": {
+            "name": "Low pitch",
+            "hint": "Plays the samples slower: deeper and longer, like a giant.",
+            "amount": "How low"
+          },
+          "vibrato": {
+            "name": "Vibrato",
+            "hint": "A delay that swings back and forth makes the pitch wobble.",
+            "amount": "Wobble"
+          },
+          "tremolo": {
+            "name": "Tremolo",
+            "hint": "The level fades up and down several times a second.",
+            "amount": "Speed"
+          },
+          "echo": {
+            "name": "Echo",
+            "hint": "Repeats that fade by half each time, as in a canyon.",
+            "amount": "Delay"
+          },
+          "cave": {
+            "name": "Cave",
+            "hint": "Four short feedback delays blur into a reverb, from a small room to a cave.",
+            "amount": "Size"
+          },
+          "telephone": {
+            "name": "Telephone",
+            "hint": "Only 300 to 3400 Hz survives, slightly distorted: a phone call.",
+            "amount": "Distortion"
+          },
+          "radio": {
+            "name": "Radio",
+            "hint": "A narrow band, hard clipping and crackle: a distant station.",
+            "amount": "Noise"
+          },
+          "retro": {
+            "name": "Retro 8-bit",
+            "hint": "Holds each sample longer and drops its low bits, like an old console.",
+            "amount": "Crunch"
+          },
+          "overdrive": {
+            "name": "Overdrive",
+            "hint": "Boosts the level and rounds off the peaks: a rough, guitar-amp voice.",
+            "amount": "Drive"
+          },
+          "reverse": {
+            "name": "Reverse",
+            "hint": "Plays the take backwards, from the last sample to the first.",
+            "amount": ""
+          }
+        },
+        "filters": {
+          "none": {
+            "name": "None",
+            "hint": "No filter after the effect."
+          },
+          "low": {
+            "name": "Low pass",
+            "hint": "Keeps what is below the cutoff: softer and muffled."
+          },
+          "high": {
+            "name": "High pass",
+            "hint": "Keeps what is above the cutoff: thinner and brighter."
+          },
+          "band": {
+            "name": "Band pass",
+            "hint": "Keeps a band around the centre frequency: nasal, like a megaphone."
+          }
+        }
+      }
     },
     "toneLab": {
       "title": "ES8311 tone lab",
@@ -102,7 +303,12 @@
       "frequency": "Frequency",
       "level": "Level",
       "waveform": "Waveform",
-      "waves": {"sine": "Sine", "triangle": "Triangle", "square": "Square", "saw": "Sawtooth"},
+      "waves": {
+        "sine": "Sine",
+        "triangle": "Triangle",
+        "square": "Square",
+        "saw": "Sawtooth"
+      },
       "play": "Play tone",
       "stopTone": "Silence",
       "notes": "Notes",
@@ -118,52 +324,61 @@
       "loadHigh": "Board too slow: {{used}} ms of {{budget}} ms per block. The sound will stutter and seem quiet."
     },
     "audioPlayer": {
-          "title": "Audio player",
-          "view": "Open audio player",
-          "backToCode": "Back to code",
-          "stage": "Song",
-          "sounding": "Playing",
-          "silent": "Silent",
-          "bundledTitle": "Music included",
-          "bundledHint": "Choose a short instrumental track. No upload needed.",
-          "tracks": {
-                "pulsoSolar": {"title": "Solar Pulse", "style": "Bright electronic melody"},
-                "circuitoAzul": {"title": "Blue Circuit", "style": "Soft digital groove"},
-                "aurora": {"title": "Aurora", "style": "Calm bell melody"}
-          },
-          "dropHint": "Drop a WAV or MP3 here, or click to choose one",
-          "formats": "WAV, MP3, OGG, M4A and FLAC, up to 10 minutes.",
-          "choose": "Choose a file",
-          "another": "Another file",
-          "converting": "Converting…",
-          "progress": "Playback progress",
-          "play": "Play on the board",
-          "stop": "Stop",
-          "volume": "Speaker volume",
-          "quality": "Quality",
-          "normalize": "Raise quiet files",
-          "qualities": {
-                "voice": "Voice · 16 kHz",
-                "standard": "Standard · 22 kHz",
-                "high": "High · 32 kHz"
-          },
-          "streamNote": "The browser converts the song to mono and streams about {{kb}} kB/s over USB. The board confirms every block so the sound never runs ahead.",
-          "status": {
-                "connectFirst": "Connect the serial console, install es8311.py, and run es8311_play_serial.py.",
-                "waiting": "Waiting for es8311_play_serial.py. Run the example in Code.",
-                "ready": "Board ready. Choose included music or your own file, then press Play.",
-                "playing": "Streaming to the board…"
-          },
-          "errors": {
-                "unreadable": "The browser could not read this file. Try a WAV or MP3.",
-                "bundledUnavailable": "The included track could not be loaded. Try another track or choose a file.",
-                "volumeFailed": "Could not change the speaker volume. Check the serial connection.",
-                "tooLong": "This file is longer than 10 minutes.",
-                "rejected": "The board rejected this sample rate.",
-                "noAnswer": "The board did not answer. Run es8311_play_serial.py first.",
+      "title": "Audio player",
+      "view": "Open audio player",
+      "backToCode": "Back to code",
+      "stage": "Song",
+      "sounding": "Playing",
+      "silent": "Silent",
+      "bundledTitle": "Music included",
+      "bundledHint": "Choose a short instrumental track. No upload needed.",
+      "tracks": {
+        "pulsoSolar": {
+          "title": "Solar Pulse",
+          "style": "Bright electronic melody"
+        },
+        "circuitoAzul": {
+          "title": "Blue Circuit",
+          "style": "Soft digital groove"
+        },
+        "aurora": {
+          "title": "Aurora",
+          "style": "Calm bell melody"
+        }
+      },
+      "dropHint": "Drop a WAV or MP3 here, or click to choose one",
+      "formats": "WAV, MP3, OGG, M4A and FLAC, up to 10 minutes.",
+      "choose": "Choose a file",
+      "another": "Another file",
+      "converting": "Converting…",
+      "progress": "Playback progress",
+      "play": "Play on the board",
+      "stop": "Stop",
+      "volume": "Speaker volume",
+      "quality": "Quality",
+      "normalize": "Raise quiet files",
+      "qualities": {
+        "voice": "Voice · 16 kHz",
+        "standard": "Standard · 22 kHz",
+        "high": "High · 32 kHz"
+      },
+      "streamNote": "The browser converts the song to mono and streams about {{kb}} kB/s over USB. The board confirms every block so the sound never runs ahead.",
+      "status": {
+        "connectFirst": "Connect the serial console, install es8311.py, and run es8311_play_serial.py.",
+        "waiting": "Waiting for es8311_play_serial.py. Run the example in Code.",
+        "ready": "Board ready. Choose included music or your own file, then press Play.",
+        "playing": "Streaming to the board…"
+      },
+      "errors": {
+        "unreadable": "The browser could not read this file. Try a WAV or MP3.",
+        "bundledUnavailable": "The included track could not be loaded. Try another track or choose a file.",
+        "volumeFailed": "Could not change the speaker volume. Check the serial connection.",
+        "tooLong": "This file is longer than 10 minutes.",
+        "rejected": "The board rejected this sample rate.",
+        "noAnswer": "The board did not answer. Run es8311_play_serial.py first.",
         "stalled": "The board stopped answering. Check that es8311_play_serial.py is still running, then try again."
-          },
-          "wiring": "Playback: BCLK GPIO27 · WS GPIO7 · DIN GPIO26 · MCLK GPIO10 · SDA GPIO1 · SCL GPIO6"
+      },
+      "wiring": "Playback: BCLK GPIO27 · WS GPIO7 · DIN GPIO26 · MCLK GPIO10 · SDA GPIO1 · SCL GPIO6"
     },
     "imuCube": {
       "title": "IMU cube",
