@@ -22,7 +22,6 @@ export const KIT_ITEMS = [
   { id: "st7735", part: "tft" },
   { id: "tmp235", part: "sensor" },
   { id: "keyboard", part: "keyboard" },
-  { id: "pulsar2", part: "module" },
   // Parts only the RFID and Sound themes use.
   { id: "pn532", part: "reader" },
   { id: "tags", part: "cards" },
@@ -56,7 +55,6 @@ export const LESSON_KIT: Readonly<Record<string, LessonKit<KitItemId>>> = {
   D3: { need: [["tmp235"]] },
   I1: { need: [["wifi"], ["dht11"]] },
   I2: { need: [["phone"], ["ttp223"]] },
-  Z1: { need: [["pulsar2"]] },
   W1: { need: [SCREEN, ["wifi"]], optional: ["button"] },
   W2: { need: [SCREEN, ["wifi"], ["phone"]], optional: ["button"] },
   W3: { need: [SCREEN, ["wifi"]], optional: ["button"] },

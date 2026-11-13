@@ -68,14 +68,6 @@ export const TRACKS: readonly Track[] = [
     color: "--sound",
     lessonIds: ["S0", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"],
   },
-  {
-    id: "zigbee",
-    title: "Zigbee",
-    blurb: "An 802.15.4 network between two boards",
-    color: "--part-teal",
-    lessonIds: ["Z1"],
-    board: "pulsar-c5",
-  },
 ];
 
 /**

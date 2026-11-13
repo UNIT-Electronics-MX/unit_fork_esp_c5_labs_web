@@ -2,7 +2,7 @@
   "hero": {
     "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
     "title": "Pulsar <part>C5 Labs</part>",
-    "legacyNotice": "Introducción (00–02), Hardware, prácticas de Pantalla para C5, Sensores, Wi-Fi y BLE en la C5 y Zigbee están escritos para esta placa. Otras prácticas aún se están migrando: revisa sus conexiones antes de montar.",
+    "legacyNotice": "Introducción (00–02), Hardware, prácticas de Pantalla para C5, Sensores, Wi-Fi y BLE en la C5 están escritos para esta placa. Otras prácticas aún se están migrando: revisa sus conexiones antes de montar.",
     "motto": {
       "wire": "Cablea",
       "flash": "Flashea",
@@ -72,8 +72,7 @@
       "temt6000": "Sensor de luz TEMT6000 (DevLab ATOM)",
       "tmp235": "Sensor de temperatura analógico TMP235",
       "dht11": "Sensor DHT11 KY-015",
-      "ttp223": "Sensor táctil TTP223B",
-      "pulsar2": "Una segunda Pulsar C5"
+      "ttp223": "Sensor táctil TTP223B"
     }
   },
   "board": {

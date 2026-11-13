@@ -2,8 +2,9 @@ import { type CSSProperties, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { lessonPart } from "@/content/icons";
-import type { LessonEntry } from "@/domain/lesson";
+import { resolveLesson, type LessonEntry } from "@/domain/lesson";
 import { lessonState } from "@/domain/progress";
+import { canOpenLessonCode } from "@/features/flasher/lesson-examples";
 import { StateGlyph } from "@/features/progress/LessonState";
 import { useTicks } from "@/features/progress/progress-store";
 import { PartIcon } from "@/ui/parts/PartIcon";
@@ -24,7 +25,7 @@ export function LessonStepper({
   currentId: string;
   /** The track's colour token, e.g. "--rfid". */
   color: `--${string}`;
-  /** Which tab the pads open: reading the code stays reading the code. */
+  /** Keep code navigation for exercises with MicroPython; open the lab for the others. */
   view?: "lab" | "code";
   variantKey?: string;
 }) {
@@ -44,6 +45,10 @@ export function LessonStepper({
       <ol>
         {lessons.map((l, i) => {
           const state = lessonState(l, ticks);
+          const lessonVariant = variantKey && l.kind === "lesson" && l.variants?.some((variant) => variant.key === variantKey)
+            ? variantKey : undefined;
+          const codeView = l.kind === "lesson" && view === "code"
+            && canOpenLessonCode(resolveLesson(l, lessonVariant));
           const body = (
             <>
               <span className={styles.pad}>
@@ -68,7 +73,7 @@ export function LessonStepper({
               ) : (
                 <Link
                   ref={l.id === currentId ? currentRef : undefined}
-                  to={`/lessons/${l.id}${view === "code" ? "/code" : ""}${variantKey && l.variants?.some((variant) => variant.key === variantKey) ? `?variant=${encodeURIComponent(variantKey)}` : ""}`}
+                  to={`/lessons/${l.id}${codeView ? "/code" : ""}${lessonVariant ? `?variant=${encodeURIComponent(lessonVariant)}` : ""}`}
                   preventScrollReset
                   className={styles.step}
                   aria-current={l.id === currentId ? "page" : undefined}

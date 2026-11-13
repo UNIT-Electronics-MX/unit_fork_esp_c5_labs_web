@@ -236,7 +236,7 @@
       "Ejecuta el comando. El monitor imprime el tamaño de la tarjeta y el archivo.",
       "Pulsa <b>RST</b> varias veces: cada vez aparece otra línea <code>boot at … ms</code>."
     ],
-    "note": "SCK comparte GPIO27 con el LED de usuario, así que el LED parpadea mientras la tarjeta trabaja. Es lo esperado.",
+    "note": "SCK comparte GPIO27 con el LED de usuario, así que el LED parpadea mientras la tarjeta trabaja. Es lo esperado. La microSD también comparte GPIO27/7/26 con el micrófono I²S de J20; no uses ambos a la vez porque el audio puede presentar chasquidos.",
     "variants": {
       "arduino": {
         "short": "Sketch con biblioteca SD"
@@ -256,7 +256,7 @@
           "Ejecuta <code>microsd.py</code>. El script usa SPI en GPIO27/7/26/23 y monta la tarjeta en <code>/sd</code>.",
           "Ejecuta el script otra vez: <code>/sd/pulsar.txt</code> debe conservar la primera línea y agregar otra."
         ],
-        "note": "Este ejemplo MicroPython importa <code>sdcard.py</code> de la memoria de la placa. Instálalo una vez desde el workspace de código antes de ejecutar. GPIO27 se comparte con el LED de usuario, que puede parpadear al acceder a la tarjeta."
+        "note": "Este ejemplo MicroPython importa <code>sdcard.py</code> de la memoria de la placa. Instálalo una vez desde el workspace de código antes de ejecutar. GPIO27 se comparte con el LED de usuario, que puede parpadear al acceder a la tarjeta. La microSD también comparte GPIO27/7/26 con el micrófono I²S de J20; no uses ambos a la vez porque el audio puede presentar chasquidos."
       }
     },
     "panels": {

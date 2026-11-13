@@ -34,7 +34,7 @@
       "Detén el programa, selecciona <code>mic_ics43434_usb_master.py</code> y ejecútalo. En el diálogo de audio, pulsa <b>Escuchar</b> para oír el micrófono en el navegador.",
       "Ajusta la <b>Ganancia de escucha</b> si se oye bajo. Si distorsiona, reduce la ganancia. Pulsa <b>Detener escucha</b> antes de salir del ejercicio."
     ],
-    "note": "El navegador detecta datos PCM válidos y nivel de señal, pero no puede identificar eléctricamente el micrófono. Un módulo desconectado y uno en silencio pueden verse igual. La ganancia de escucha no cambia el PCM entrante ni la lectura de dBFS."
+    "note": "No uses la microSD mientras escuchas el micrófono I²S de J20: ambos usan GPIO27, GPIO7 y GPIO26. La actividad SPI de la tarjeta puede interferir con I²S y causar los chasquidos que se escuchaban. El navegador detecta datos PCM válidos y nivel de señal, pero no puede identificar eléctricamente el micrófono. Un módulo desconectado y uno en silencio pueden verse igual. La ganancia de escucha no cambia el PCM entrante ni la lectura de dBFS."
   },
   "S1": {
     "title": "Oír",

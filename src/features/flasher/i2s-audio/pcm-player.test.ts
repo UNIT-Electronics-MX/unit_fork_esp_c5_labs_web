@@ -5,111 +5,77 @@ class FakeGain {
   gain = {
     value: 1,
     setTargetAtTime: vi.fn((value: number) => { this.gain.value = value; }),
-    setValueAtTime: vi.fn(),
-    linearRampToValueAtTime: vi.fn(),
-    cancelScheduledValues: vi.fn(),
   };
   connect = vi.fn();
   disconnect = vi.fn();
 }
 
-class FakeSource {
-  buffer: FakeBuffer | null = null;
-  onended: (() => void) | null = null;
-  connect = vi.fn();
-  disconnect = vi.fn();
-  start = vi.fn();
-  stop = vi.fn();
+class FakePort {
+  onmessage: ((event: MessageEvent<{ type: string }>) => void) | null = null;
+  postMessage = vi.fn();
+  close = vi.fn();
+  emit(type: string) { this.onmessage?.({ data: { type } } as MessageEvent<{ type: string }>); }
 }
 
-class FakeBuffer {
-  data: Float32Array;
-  constructor(length: number) { this.data = new Float32Array(length); }
-  getChannelData() { return this.data; }
+class FakeNode {
+  port = new FakePort();
+  onprocessorerror: (() => void) | null = null;
+  connect = vi.fn();
+  disconnect = vi.fn();
 }
 
 class FakeAudioContext {
-  state = "running";
   currentTime = 0;
   destination = {};
+  audioWorklet = { addModule: vi.fn(async () => {}) };
   gain = new FakeGain();
-  sources: FakeSource[] = [];
-  envelopes: FakeGain[] = [];
-  buffer: FakeBuffer | null = null;
-  createGain() {
-    if (!this.envelopes.length) {
-      this.envelopes.push(this.gain);
-      return this.gain;
-    }
-    const envelope = new FakeGain();
-    this.envelopes.push(envelope);
-    return envelope;
-  }
-  createBuffer(_channels: number, length: number) {
-    this.buffer = new FakeBuffer(length);
-    return this.buffer;
-  }
-  createBufferSource() {
-    const source = new FakeSource();
-    this.sources.push(source);
-    return source;
-  }
-  async resume() { /* Already running. */ }
-  async close() { this.state = "closed"; }
+  createGain() { return this.gain; }
+  resume = vi.fn(async () => {});
+  close = vi.fn(async () => {});
 }
 
 afterEach(() => vi.unstubAllGlobals());
 
 describe("PcmPlayer", () => {
-  it("raises browser playback gain without modifying the decoded PCM samples", async () => {
+  it("passes PCM to a dedicated worklet queue without changing the original samples", async () => {
     const context = new FakeAudioContext();
+    const node = new FakeNode();
+    const rebuffer = vi.fn();
     vi.stubGlobal("AudioContext", class { constructor() { return context; } });
-    const player = new PcmPlayer();
+    vi.stubGlobal("AudioWorkletNode", class { constructor() { return node; } });
+    const player = new PcmPlayer(rebuffer);
     const samples = new Int16Array([8192, -8192]);
 
     player.setGain(4);
     await player.start();
     player.enqueue(samples);
     player.setGain(8);
+    node.port.emit("rebuffer");
 
-    expect(context.sources[0]?.connect).toHaveBeenCalledWith(context.envelopes[1]);
-    expect(context.envelopes[1]?.connect).toHaveBeenCalledWith(context.gain);
-    expect(context.gain.gain.setTargetAtTime).toHaveBeenCalledWith(8, 0, 0.01);
-    expect(context.buffer?.data).toEqual(new Float32Array([0.25, -0.25]));
+    expect(context.audioWorklet.addModule).toHaveBeenCalledWith(expect.stringContaining("pcm-worklet.js"));
+    expect(context.resume.mock.invocationCallOrder[0] ?? Infinity).toBeLessThan(
+      context.audioWorklet.addModule.mock.invocationCallOrder[0] ?? 0,
+    );
+    expect(node.port.postMessage).toHaveBeenCalledWith({ type: "pcm", samples });
     expect(samples).toEqual(new Int16Array([8192, -8192]));
+    expect(node.connect).toHaveBeenCalledWith(context.gain);
+    expect(context.gain.gain.setTargetAtTime).toHaveBeenCalledWith(8, 0, 0.01);
+    expect(rebuffer).toHaveBeenCalledOnce();
+
     await player.stop();
+    expect(node.port.close).toHaveBeenCalledOnce();
+    expect(context.close).toHaveBeenCalledOnce();
   });
 
-  it("buffers late serial frames without stopping a playing source mid-sample", async () => {
+  it("closes the audio context if the worklet module cannot load", async () => {
     const context = new FakeAudioContext();
+    context.audioWorklet.addModule.mockRejectedValueOnce(new Error("module failed"));
     vi.stubGlobal("AudioContext", class { constructor() { return context; } });
     const player = new PcmPlayer();
-    await player.start();
 
-    expect(player.enqueue(new Int16Array(512).fill(1600))).toBe(false);
-    expect(context.sources[0]?.start).toHaveBeenCalledWith(0.12);
-    context.currentTime = 0.2;
-    expect(player.enqueue(new Int16Array(512).fill(1600))).toBe(true);
-    expect(context.sources[0]?.stop).not.toHaveBeenCalled();
-    expect(context.sources[1]?.start).toHaveBeenCalledWith(0.36);
-    expect(context.envelopes[2]?.gain.setValueAtTime).toHaveBeenCalledWith(0, 0.36);
-    context.currentTime = 0.5;
-    expect(player.enqueue(new Int16Array(512).fill(1600))).toBe(true);
-    expect(context.sources[2]?.start).toHaveBeenCalledWith(0.7);
+    await expect(player.start()).rejects.toThrow("module failed");
     await player.stop();
-  });
 
-  it("keeps consecutive frames joined without a fade at every packet boundary", async () => {
-    const context = new FakeAudioContext();
-    vi.stubGlobal("AudioContext", class { constructor() { return context; } });
-    const player = new PcmPlayer();
-    await player.start();
-
-    player.enqueue(new Int16Array(512));
-    player.enqueue(new Int16Array(512));
-
-    expect(context.envelopes[1]?.gain.cancelScheduledValues).toHaveBeenCalledOnce();
-    expect(context.envelopes[2]?.gain.setValueAtTime).toHaveBeenCalledWith(1, 0.12 + 512 / 48_000);
-    await player.stop();
+    expect(context.close).toHaveBeenCalledOnce();
   });
 });

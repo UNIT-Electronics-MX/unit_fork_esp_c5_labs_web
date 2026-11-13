@@ -14,7 +14,6 @@ export const TRACK_PART: Record<TrackId, PartName> = {
   sensors: "sensor",
   ble: "bluetooth",
   sound: "speaker",
-  zigbee: "antenna",
 };
 
 export const LESSON_PART: Readonly<Record<string, PartName>> = {
@@ -35,7 +34,6 @@ export const LESSON_PART: Readonly<Record<string, PartName>> = {
   D3: "meter",
   I1: "cloud",
   I2: "phone-ble",
-  Z1: "antenna",
   W1: "router",
   W2: "phone-wifi",
   W3: "cloud",

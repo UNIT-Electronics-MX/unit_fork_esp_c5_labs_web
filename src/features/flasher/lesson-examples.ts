@@ -41,6 +41,17 @@ const LESSON_EXAMPLES: Readonly<Record<string, readonly string[]>> = {
 
 export const lessonExamples = (lessonId: string): readonly string[] => LESSON_EXAMPLES[lessonId] ?? [];
 
+/** Only the MicroPython workspace belonging to the selected exercise is open. */
+export function canOpenLessonCode(lesson: {
+  readonly id: string;
+  readonly variantKey?: string;
+  readonly variants?: readonly { readonly key: string }[];
+}): boolean {
+  if (lesson.id === "00") return lesson.variantKey === "micropython";
+  return lessonExamples(lesson.id).length > 0
+    && (!lesson.variants?.length || lesson.variantKey === "micropython");
+}
+
 /** Lessons whose workbench shows the live IMU cube beside the terminal (bmi270_cube.py). */
 const IMU_CUBE_LESSONS: ReadonlySet<string> = new Set(["D1"]);
 

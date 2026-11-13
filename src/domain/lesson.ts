@@ -10,7 +10,6 @@ export type TrackId =
   | "wifi"
   | "rfid"
   | "sensors"
-  | "zigbee"
   | "ble"
   | "sound";
 

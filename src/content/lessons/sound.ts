@@ -41,7 +41,7 @@ export const soundLessons = [
       "Stop the script, select <code>mic_ics43434_usb_master.py</code> and run it. In the listening dialog, press <b>Listen</b> to hear the microphone in the browser.",
       "Adjust <b>Listening gain</b> if playback is quiet. If it distorts, lower the gain. Press <b>Stop listening</b> before leaving the exercise.",
     ],
-    note: "The listener detects valid PCM and signal level, not the microphone's electrical identity. A silent or disconnected module may look the same. Listening gain does not change the incoming PCM or dBFS reading.",
+    note: "Do not use the microSD card while listening to the J20 I²S microphone: both use GPIO27, GPIO7 and GPIO26. SPI card activity can interfere with I²S and cause audible clicks. The listener detects valid PCM and signal level, not the microphone's electrical identity. A silent or disconnected module may look the same. Listening gain does not change the incoming PCM or dBFS reading.",
     panels: [],
   },
   {

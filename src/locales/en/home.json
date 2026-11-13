@@ -2,7 +2,7 @@
   "hero": {
     "kicker": "UNIT DevLab · ESP32-C5HR8 · UE0134",
     "title": "Pulsar <part>C5 Labs</part>",
-    "legacyNotice": "Intro (00–02), On-board hardware, C5 Display lessons, Sensors, Wi-Fi & BLE on the C5 and Zigbee are written for this board. Other lessons are still being ported: check their wiring before you build.",
+    "legacyNotice": "Intro (00–02), On-board hardware, C5 Display lessons, Sensors, Wi-Fi and BLE on the C5 are written for this board. Other lessons are still being ported: check their wiring before you build.",
     "motto": {
       "wire": "Wire",
       "flash": "Flash",
@@ -68,8 +68,7 @@
       "temt6000": "TEMT6000 light sensor (DevLab ATOM)",
       "tmp235": "TMP235 analog temperature sensor",
       "dht11": "DHT11 KY-015 sensor",
-      "ttp223": "TTP223B touch pad",
-      "pulsar2": "A second Pulsar C5"
+      "ttp223": "TTP223B touch pad"
     }
   },
   "board": {

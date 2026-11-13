@@ -42,6 +42,7 @@ export function I2sAudioViewer() {
   const lastPaintRef = useRef(0);
   const readyRef = useRef(false);
   const stoppingRef = useRef(false);
+  const startingRef = useRef(false);
 
   function clearWatch() {
     if (retryRef.current) clearInterval(retryRef.current);
@@ -82,20 +83,27 @@ export function I2sAudioViewer() {
   }
 
   async function start() {
+    if (startingRef.current) return;
+    startingRef.current = true;
     setError("");
     resetReadouts();
-    const player = new PcmPlayer();
+    const player = new PcmPlayer(
+      () => setRebuffers((count) => count + 1),
+      () => setError(t("flasher.i2sAudio.workletError")),
+    );
+    playerRef.current = player;
     try {
       // A user click creates and resumes AudioContext before any serial awaits.
       player.setGain(GAIN_STEPS[gainStep] ?? 1);
       await player.start();
+      if (playerRef.current !== player) return;
       const parser = new PcmProtocol();
       serialConnection.startRaw((chunk) => {
         const packet = parser.push(chunk);
         if (packet.ready) readyRef.current = true;
         if (packet.resyncs) setResyncs((count) => count + packet.resyncs);
         for (const frame of packet.frames) {
-          if (player.enqueue(frame)) setRebuffers((count) => count + 1);
+          player.enqueue(frame);
           ring.push(frame);
           const now = performance.now();
           const level = pcmLevel(frame);
@@ -113,7 +121,6 @@ export function I2sAudioViewer() {
           }
         }
       });
-      playerRef.current = player;
       readyRef.current = false;
       startedRef.current = performance.now();
       lastFrameRef.current = startedRef.current;
@@ -139,7 +146,12 @@ export function I2sAudioViewer() {
     } catch (cause) {
       setError(message(cause));
       if (serialConnection.getSnapshot().rawMode) await stop();
-      else await player.stop();
+      else {
+        if (playerRef.current === player) playerRef.current = null;
+        await player.stop();
+      }
+    } finally {
+      startingRef.current = false;
     }
   }
 

@@ -2,13 +2,13 @@ import type { CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { lessonPart } from "@/content/icons";
-import type { ActiveLesson } from "@/domain/lesson";
+import { followsCodePlatform, resolveLesson, type ActiveLesson } from "@/domain/lesson";
 import type { LessonState } from "@/domain/progress";
 import type { Track } from "@/domain/track";
-import { envOfCommand } from "@/features/code/queries";
-import { lessonExamples } from "@/features/flasher/lesson-examples";
+import { canOpenLessonCode } from "@/features/flasher/lesson-examples";
 import { useTrackText } from "@/features/navigation/use-track-text";
 import { StateBadge } from "@/features/progress/LessonState";
+import { useCodePlatform, useVariants } from "@/features/progress/progress-store";
 import { Icon } from "@/ui/Icon";
 import { PartIcon } from "@/ui/parts/PartIcon";
 import styles from "./ContinueCard.module.css";
@@ -27,8 +27,10 @@ export function ContinueCard({
   resumed: boolean;
 }) {
   const style = { "--track": `var(${track.color})` } as CSSProperties;
-  const hasCode = lesson.track === "intro" || lesson.track === "pulsar"
-    || lessonExamples(lesson.id).length > 0 || Boolean(envOfCommand(lesson.cmd ?? ""));
+  const codePlatform = useCodePlatform();
+  const variants = useVariants();
+  const selectedVariant = followsCodePlatform(lesson) ? codePlatform : variants[lesson.id];
+  const hasCode = canOpenLessonCode(resolveLesson(lesson, selectedVariant));
   const { t } = useTranslation("home");
   const trackText = useTrackText();
   return (

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { lessonExamples, pickExamples, showsImuCube } from "./lesson-examples";
+import { canOpenLessonCode, lessonExamples, pickExamples, showsImuCube } from "./lesson-examples";
 
 describe("lessonExamples", () => {
   it("opens only the J20 microphone scripts in the Sound exercise", () => {
@@ -30,6 +30,22 @@ describe("pickExamples", () => {
   it("keeps the lesson order and skips ids the manifest lacks", () => {
     const examples = [{ id: "a" }, { id: "b" }, { id: "c" }];
     expect(pickExamples(examples, ["c", "missing", "a"]).map((example) => example.id)).toEqual(["c", "a"]);
+  });
+});
+
+describe("canOpenLessonCode", () => {
+  const languages = [{ key: "arduino" }, { key: "micropython" }];
+
+  it("opens only the selected exercise's MicroPython workspace", () => {
+    expect(canOpenLessonCode({ id: "S0" })).toBe(true);
+    expect(canOpenLessonCode({ id: "P5", variants: languages, variantKey: "micropython" })).toBe(true);
+    expect(canOpenLessonCode({ id: "00", variants: languages, variantKey: "micropython" })).toBe(true);
+  });
+
+  it("closes Arduino sketches, older C readers and the Arduino setup", () => {
+    expect(canOpenLessonCode({ id: "P5", variants: languages, variantKey: "arduino" })).toBe(false);
+    expect(canOpenLessonCode({ id: "S1" })).toBe(false);
+    expect(canOpenLessonCode({ id: "00", variants: languages, variantKey: "arduino" })).toBe(false);
   });
 });
 

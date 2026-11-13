@@ -184,7 +184,7 @@
       "peak": "PCM peak",
       "lost": "Audio gaps",
       "gapBreakdown": "Invalid PCM packets: {{packets}} · Playback buffer resets: {{playback}}",
-      "gapNote": "If Audio gaps increases, PCM frames are arriving late or losing sync. Gain changes volume only; check the USB cable and close other serial monitors.",
+      "gapNote": "Do not use the microSD card while listening to I²S: both share GPIO27/7/26, and card activity can cause clicks. If Audio gaps still increases, check the USB cable and close other serial monitors. Gain changes volume only.",
       "signalNote": "Signal is inferred from valid PCM samples. I²S cannot electrically identify the microphone; a connected but silent module may show no signal.",
       "feed": {
         "idle": "Listening stopped.",
@@ -194,6 +194,7 @@
         "stale": "No audio frames are arriving. Check the script, I²S firmware and USB connection."
       },
       "connectFirst": "Connect the board in the Serial panel first, then press Listen.",
+      "workletError": "The browser audio processor failed. Stop listening and try again.",
       "scope": "Live waveform of the microphone",
       "clip": "CLIP",
       "levelValue": "{{db}} dBFS",
@@ -273,7 +274,7 @@
     "loading": "Loading",
     "brand": "Pulsar <part>C5 Labs</part>",
     "sections": "Sections",
-    "codePlatform": "Code examples: Arduino or MicroPython",
+    "codePlatform": "Exercise variant: Arduino or MicroPython",
     "nav": {
       "labs": "Labs",
       "flasher": "Flash",
@@ -531,10 +532,6 @@
     "pulsar": {
       "title": "On-board hardware",
       "blurb": "Arduino experiments with BOOT, RGB controls, ADC, I²C sensors, microSD and UART"
-    },
-    "zigbee": {
-      "title": "Zigbee",
-      "blurb": "An 802.15.4 network between two boards"
     }
   },
   "states": {

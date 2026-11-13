@@ -1,12 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { type CSSProperties, type ReactNode, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router";
 import { findTrack } from "@/content/tracks";
-import { followsCodePlatform, type ResolvedLesson } from "@/domain/lesson";
-import { lessonExamples } from "@/features/flasher/lesson-examples";
-import { useAllProgress } from "@/features/code/code-progress";
-import { envOfCommand, firmwareIndexQuery } from "@/features/code/queries";
+import type { ResolvedLesson } from "@/domain/lesson";
+import { canOpenLessonCode } from "@/features/flasher/lesson-examples";
 import { useScrollChrome } from "@/lib/use-scroll-chrome";
 import { Icon } from "@/ui/Icon";
 import styles from "./LessonTabs.module.css";
@@ -16,11 +13,9 @@ import styles from "./LessonTabs.module.css";
 const STICK_TOP = 8;
 
 /**
- * The lesson's dock, sticky while you scroll: two ways into a lesson (do it on the bench, or read
- * the code that runs on the board; same lesson, same variant), then whatever the page adds
- * (the lab page puts its section nav here). At the top both ways show with a line about each;
- * once you scroll, only the other one stays, small. A thin line along its bottom shows how far you
- * read.
+ * The lesson's sticky dock links to code only when this exercise has an open MicroPython
+ * workspace. The lab page also puts its section navigation here. A thin line along the bottom
+ * shows how far the reader has scrolled.
  */
 export function LessonTabs({
   lesson,
@@ -54,27 +49,12 @@ export function LessonTabs({
     return () => keep.disconnect();
   }, []);
 
-  const env = envOfCommand(lesson.cmd);
-  const { data: index } = useQuery({ ...firmwareIndexQuery(), enabled: !!env });
-  const progress = useAllProgress();
-  const sharedLanguage = followsCodePlatform(lesson);
-  // A lesson with only MicroPython examples, or W2's MicroPython variant next to its S3 ones.
-  const pythonOnly = lessonExamples(lesson.id).length > 0
-    && (!lesson.variants?.length || lesson.variantKey === "micropython");
-  if (!env && !sharedLanguage && !pythonOnly) return null;
-  const files = env ? index?.envs.find((e) => e.env === env)?.files ?? [] : [];
-  const own = files.filter((f) => f.role === "lab");
-  const lines = own.reduce((n, f) => n + f.lines, 0);
-  const read = env ? progress[env]?.stops.length ?? 0 : 0;
+  const codeAvailable = canOpenLessonCode(lesson);
+  if (!codeAvailable && !children) return null;
   const variant = params.get("variant");
   const consoleSetup = lesson.id === "00" && lesson.variantKey === "micropython";
-  const arduinoSetup = lesson.id === "00" && lesson.variantKey === "arduino";
   const search = variant ? `?variant=${encodeURIComponent(variant)}` : "";
-  const firstSketchSearch = new URLSearchParams(params);
-  firstSketchSearch.set("variant", "arduino");
-  const codeHref = arduinoSetup
-    ? `/lessons/01/code?${firstSketchSearch}`
-    : `/lessons/${lesson.id}/code${search}`;
+  const codeHref = `/lessons/${lesson.id}/code${search}`;
   const track = findTrack(lesson.track);
   const style = { "--track": `var(${track?.color ?? "--copper"})` } as CSSProperties;
 
@@ -89,7 +69,7 @@ export function LessonTabs({
       data-hidden={(hideOnScroll && hidden) || undefined}
       data-extras={children ? "" : undefined}
     >
-      <nav className={styles.tabs} aria-label={t("tabs.label")}>
+      {codeAvailable ? <nav className={styles.tabs} aria-label={t("tabs.label")}>
         <Link
           to={`/lessons/${lesson.id}${search}`}
           viewTransition
@@ -111,25 +91,12 @@ export function LessonTabs({
           <span className={styles.label}>
             <Icon name="code" size={16} />
             {t(consoleSetup ? "tabs.console" : "tabs.code")}{" "}
-            {read ? (
-              <span className={styles.badge}>{t("tabs.stopsRead", { count: read })}</span>
-            ) : null}
           </span>
           <span className={styles.sub}>
-            {own.length
-              ? t("tabs.codeSub", { count: own.length, lines })
-              : consoleSetup
-                ? t("tabs.consoleSub")
-              : lesson.id === "00"
-                ? t("tabs.codeSubSetup")
-                : (sharedLanguage && lesson.variantKey === "micropython") || pythonOnly
-                ? t("tabs.codeSubMicroPython")
-                : sharedLanguage
-                ? t("tabs.codeSubArduino")
-                : t("tabs.codeSubEmpty")}
+            {consoleSetup ? t("tabs.consoleSub") : t("tabs.codeSubMicroPython")}
           </span>
         </Link>
-      </nav>
+      </nav> : null}
       {children}
       <span className={styles.progress} aria-hidden="true" />
     </div>

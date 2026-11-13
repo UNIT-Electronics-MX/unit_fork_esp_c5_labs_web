@@ -16,11 +16,8 @@ import { useTracks } from "./use-tracks";
  */
 export function TrackNav({
   activeTrack,
-  view = "lab",
 }: {
   activeTrack: TrackId;
-  /** Which tab a theme opens on: reading the code stays reading the code. */
-  view?: "lab" | "code";
 }) {
   const ticks = useTicks();
   const tracks = useTracks();
@@ -69,7 +66,7 @@ export function TrackNav({
                 </span>
               ) : (
                 <Link
-                  to={`/tracks/${track.id}${view === "code" ? "?view=code" : ""}`}
+                  to={`/tracks/${track.id}`}
                   preventScrollReset
                   className={styles.track}
                   style={style}

@@ -1,107 +1,25 @@
-import { Suspense, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { findTrack } from "@/content/tracks";
 import { neighbours } from "@/domain/progress";
-import { CodeReader, ReaderSkeleton } from "@/features/code/reader/CodeReader";
-import { ArduinoSketchEditor } from "@/features/code/ArduinoSketchEditor";
-import { LessonCodeGuide } from "@/features/code/LessonCodeGuide";
-import { envOfCommand } from "@/features/code/queries";
-import { useLabCode } from "@/features/code/use-lab-code";
-import { followsCodePlatform } from "@/domain/lesson";
-import { lessonExamples } from "@/features/flasher/lesson-examples";
 import { MicroPythonWorkbench } from "@/features/flasher/MicroPythonWorkbench";
-import { SerialTerminal, type SerialTerminalHandle } from "@/features/flasher/SerialTerminal";
-import { LabSourceLink } from "@/features/lesson/LabSourceLink";
 import { LessonTabs } from "@/features/lesson/LessonTabs";
-import { VariantSwitch } from "@/features/lesson/VariantSwitch";
 import { LessonStepper } from "@/features/navigation/LessonStepper";
 import { TrackNav } from "@/features/navigation/TrackNav";
-import { ErrorBoundary } from "@/ui/ErrorBoundary";
 import styles from "./code-route.module.css";
 import { useRouteLesson } from "./lesson-route";
-import blinkSource from "../../../sketches/pulsar-c5/p1-blink/p1-blink.ino?raw";
-import helloSource from "../../../sketches/pulsar-c5/intro-hello/intro-hello.ino?raw";
-import ledSource from "../../../sketches/pulsar-c5/intro-led/intro-led.ino?raw";
-import rgbSource from "../../../sketches/pulsar-c5/p2-neopixel/p2-neopixel.ino?raw";
-import analogSource from "../../../sketches/pulsar-c5/p3-analog/p3-analog.ino?raw";
-import sensorsSource from "../../../sketches/pulsar-c5/p4-i2c-scan/p4-i2c-scan.ino?raw";
-import microsdSource from "../../../sketches/pulsar-c5/p5-microsd/p5-microsd.ino?raw";
-import uartSource from "../../../sketches/pulsar-c5/p6-uart/p6-uart.ino?raw";
-import imuSource from "../../../sketches/pulsar-c5/d1-bmi270/d1-bmi270.ino?raw";
-import tmp235Source from "../../../sketches/pulsar-c5/d3-tmp235/d3-tmp235.ino?raw";
-import oledLightSource from "../../../sketches/pulsar-c5/d2-oled-light/d2-oled-light.ino?raw";
-import oledOnlySource from "../../../sketches/pulsar-c5/o1-oled/o1-oled.ino?raw";
-import wifiCloudSource from "../../../sketches/pulsar-c5/i1-wifi-http/i1-wifi-http.ino?raw";
-import bleTouchSource from "../../../sketches/pulsar-c5/i2-ble-touch/i2-ble-touch.ino?raw";
 
-// "/lessons/:lessonId/code": an editable workspace for C5 sketches and a guided reader for older labs.
-// The code screen loads only when a lesson opens it.
-
-function LabReader({ env, lessonHref }: { env: string; lessonHref: string }) {
-  return <CodeReader lab={useLabCode(env)} lessonHref={lessonHref} />;
-}
-
-const ignoreActive = () => undefined;
-
-const ARDUINO_SKETCHES: Readonly<Record<string, { filename: string; source: string }>> = {
-  "01": { filename: "intro-hello.ino", source: helloSource },
-  "02": { filename: "intro-led.ino", source: ledSource },
-  P1: { filename: "p1-blink.ino", source: blinkSource },
-  P2: { filename: "p2-neopixel.ino", source: rgbSource },
-  P3: { filename: "p3-analog.ino", source: analogSource },
-  P4: { filename: "p4-i2c-scan.ino", source: sensorsSource },
-  P5: { filename: "p5-microsd.ino", source: microsdSource },
-  P6: { filename: "p6-uart.ino", source: uartSource },
-  D1: { filename: "d1-bmi270.ino", source: imuSource },
-  D2: { filename: "d2-oled-light.ino", source: oledLightSource },
-  D3: { filename: "d3-tmp235.ino", source: tmp235Source },
-  O1: { filename: "o1-oled.ino", source: oledOnlySource },
-  I1: { filename: "i1-wifi-http.ino", source: wifiCloudSource },
-  I2: { filename: "i2-ble-touch.ino", source: bleTouchSource },
-};
-
-function ArduinoLessonWorkspace({ lessonId, filename, source }: { lessonId: string; filename: string; source: string }) {
-  const terminalRef = useRef<SerialTerminalHandle>(null);
-  const [connected, setConnected] = useState(false);
-  return (
-    <div className={styles.workspace}>
-      <ArduinoSketchEditor filename={filename} source={source} />
-      <SerialTerminal
-        ref={terminalRef}
-        blocked={false}
-        onActiveChange={ignoreActive}
-        onConnectedChange={setConnected}
-        flashHint={false}
-        sidecar
-      />
-      <LessonCodeGuide
-        lessonId={lessonId}
-        variant="arduino"
-        connected={connected}
-        onCommand={(command) => terminalRef.current?.sendCommand(command) ?? Promise.reject(new Error("Serial console unavailable."))}
-      />
-    </div>
-  );
-}
-
+/** The executable MicroPython examples attached to one exercise. */
 export function Component() {
-  const { lesson, lessons, trackId, chooseVariant } = useRouteLesson();
-  const env = envOfCommand(lesson.cmd);
-  const isIntro = lesson.track === "intro";
-  // Every lesson with a Pulsar C5 sketch or MicroPython example gets the editor and console.
-  const hasWorkspace = isIntro || lesson.id in ARDUINO_SKETCHES || lessonExamples(lesson.id).length > 0;
-  const arduinoSketch = ARDUINO_SKETCHES[lesson.id];
-  const pythonWorkspace = lesson.variantKey === "micropython"
-    || (!lesson.variants?.length && !arduinoSketch && lessonExamples(lesson.id).length > 0);
-  const nextId = neighbours(lessons, lesson.id).next?.id ?? (lesson.id === "02" ? "P1" : undefined);
+  const { lesson, lessons, trackId } = useRouteLesson();
   const { t } = useTranslation();
+  const nextId = neighbours(lessons, lesson.id).next?.id;
   const lessonHref = `/lessons/${lesson.id}${lesson.variantKey ? `?variant=${encodeURIComponent(lesson.variantKey)}` : ""}`;
+
   return (
     <>
       <title>{t("titles.code", { id: lesson.id, title: lesson.title })}</title>
-      {/* The same way around the labs as on the lab page, but every pad opens that lab's code. */}
-      <TrackNav activeTrack={trackId} view="code" />
+      <TrackNav activeTrack={trackId} />
       <LessonStepper
         lessons={lessons}
         currentId={lesson.id}
@@ -109,49 +27,20 @@ export function Component() {
         view="code"
         variantKey={lesson.variantKey}
       />
-      <LessonTabs lesson={lesson} current="code" hideOnScroll={!hasWorkspace} />
+      <LessonTabs lesson={lesson} current="code" />
       <div className={styles.bar}>
         <p className={styles.heading}>
           <span className={styles.id}>{lesson.id}</span> {lesson.heading}
         </p>
-        <div className={styles.actions}>
-          {lesson.variants && !followsCodePlatform(lesson) ? (
-            <VariantSwitch
-              variants={lesson.variants}
-              current={lesson.variantKey}
-              onChange={chooseVariant}
-              compact
-            />
-          ) : null}
-          <LabSourceLink cmd={lesson.cmd} />
-        </div>
       </div>
-      {hasWorkspace ? (
-        <section className={styles.setup} aria-label={t("codeRoute.setup.title")}>
-          {pythonWorkspace ? (
-            <MicroPythonWorkbench key={lesson.id} lessonId={lesson.id} />
-          ) : arduinoSketch ? (
-            <ArduinoLessonWorkspace key={lesson.id} lessonId={lesson.id} {...arduinoSketch} />
-          ) : (
-            <p className={styles.none}>{t("codeRoute.none")}</p>
-          )}
-          <nav className={styles.footer} aria-label={t("codeRoute.setup.actions")}>
-            <Link to={lessonHref}>{t("codeRoute.setup.back")}</Link>
-            {pythonWorkspace && lesson.id !== "00" ? <Link to="/flash?profile=micropython">{t("codeRoute.setup.flashFirmware")}</Link> : null}
-            {nextId ? <Link to={`/lessons/${nextId}${hasWorkspace && lesson.variantKey ? `?variant=${encodeURIComponent(lesson.variantKey)}` : ""}`}>{t("codeRoute.setup.nextLesson", { id: nextId })}</Link> : null}
-          </nav>
-        </section>
-      ) : env ? (
-        <ErrorBoundary name={`code ${env}`} resetKey={env}>
-          <Suspense fallback={<ReaderSkeleton />}>
-            <LabReader key={env} env={env} lessonHref={lessonHref} />
-          </Suspense>
-        </ErrorBoundary>
-      ) : (
-        <p className={styles.none}>
-          {t("codeRoute.none")}
-        </p>
-      )}
+      <section className={styles.setup} aria-label={t("codeRoute.setup.title")}>
+        <MicroPythonWorkbench key={lesson.id} lessonId={lesson.id} />
+        <nav className={styles.footer} aria-label={t("codeRoute.setup.actions")}>
+          <Link to={lessonHref}>{t("codeRoute.setup.back")}</Link>
+          {lesson.id !== "00" ? <Link to="/flash?profile=micropython">{t("codeRoute.setup.flashFirmware")}</Link> : null}
+          {nextId ? <Link to={`/lessons/${nextId}`}>{t("codeRoute.setup.nextLesson", { id: nextId })}</Link> : null}
+        </nav>
+      </section>
     </>
   );
 }

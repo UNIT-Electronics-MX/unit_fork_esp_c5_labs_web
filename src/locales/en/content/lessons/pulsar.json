@@ -279,7 +279,7 @@
       "Run the command. The monitor prints the card size and the file.",
       "Press <b>RST</b> a few times: one more <code>boot at … ms</code> line each time."
     ],
-    "note": "SCK shares GPIO27 with the user LED, so the LED flickers while the card is busy. That is expected.",
+    "note": "SCK shares GPIO27 with the user LED, so the LED flickers while the card is busy. That is expected. The microSD card also shares GPIO27/7/26 with the J20 I²S microphone; do not use both at the same time or the audio may click.",
     "variants": {
       "arduino": {
         "label": "Arduino",
@@ -301,7 +301,7 @@
           "Run <code>microsd.py</code>. The script uses SPI on GPIO27/7/26/23 and mounts the card at <code>/sd</code>.",
           "Run the script again: <code>/sd/pulsar.txt</code> should contain one more line while retaining the first."
         ],
-        "note": "This MicroPython example imports UNIT's <code>sdcard.py</code> from the board filesystem. Install it once from the code workspace before running. GPIO27 is shared with the user LED, which may flicker during card access."
+        "note": "This MicroPython example imports UNIT's <code>sdcard.py</code> from the board filesystem. Install it once from the code workspace before running. GPIO27 is shared with the user LED, which may flicker during card access. The microSD card also shares GPIO27/7/26 with the J20 I²S microphone; do not use both at the same time or the audio may click."
       }
     },
     "panels": {

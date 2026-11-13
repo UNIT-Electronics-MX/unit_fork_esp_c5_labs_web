@@ -14,6 +14,7 @@ import { lessonSections } from "@/domain/lesson-sections";
 import { entryLesson, stepsTicked } from "@/domain/progress";
 import { BoardSignalsProvider } from "@/features/board/board-signals";
 import { LessonPage } from "@/features/lesson/LessonPage";
+import { canOpenLessonCode } from "@/features/flasher/lesson-examples";
 import { LessonTabs } from "@/features/lesson/LessonTabs";
 import { SectionNav } from "@/features/lesson/SectionNav";
 import { LessonStepper } from "@/features/navigation/LessonStepper";
@@ -21,7 +22,7 @@ import { TrackNav } from "@/features/navigation/TrackNav";
 import { currentLocale } from "@/i18n/i18n";
 import { useLocale } from "@/i18n/use-locale";
 import { useTranslation } from "react-i18next";
-import { DEFAULT_CODE_PLATFORM, isCodePlatform, progress, useCodePlatform, useTicks, useVariants } from "@/features/progress/progress-store";
+import { isCodePlatform, progress, useCodePlatform, useTicks, useVariants } from "@/features/progress/progress-store";
 import { useActiveSection } from "@/lib/active-section";
 import type { RouteErrorReason } from "../route-errors";
 
@@ -73,20 +74,19 @@ export const lessonLoader =
 /** Arduino's setup lesson has no sketch; its Code tab opens the first sketch in lesson 01. */
 export const codeLoader =
   (queryClient: QueryClient) =>
-  (args: LoaderFunctionArgs) => {
-    if (args.params.lessonId === "00") {
-      const search = new URL(args.request.url).searchParams;
-      const requestedPlatform = search.get("variant");
-      const savedPlatform = progress.codePlatform.get();
-      const platform = isCodePlatform(requestedPlatform)
-        ? requestedPlatform
-        : isCodePlatform(savedPlatform) ? savedPlatform : DEFAULT_CODE_PLATFORM;
-      if (platform === "arduino") {
-        search.set("variant", "arduino");
-        return redirect(`/lessons/01/code?${search}`);
-      }
+  async (args: LoaderFunctionArgs) => {
+    const loaded = await lessonLoader(queryClient)(args);
+    const lessons = await queryClient.query(trackLessonsQuery(loaded.trackId, currentLocale()));
+    const base = lessons.find((lesson) => lesson.id === loaded.lessonId);
+    if (!base || !isActive(base)) return redirect(`/lessons/${loaded.lessonId}`);
+    const requested = new URL(args.request.url).searchParams.get("variant");
+    const variant = followsCodePlatform(base)
+      ? (isCodePlatform(requested) ? requested : progress.codePlatform.get())
+      : requested ?? progress.variants.get()[loaded.lessonId];
+    if (!canOpenLessonCode(resolveLesson(base, variant))) {
+      return redirect(`/lessons/${loaded.lessonId}${new URL(args.request.url).search}`);
     }
-    return lessonLoader(queryClient)(args);
+    return loaded;
   };
 
 /** The lesson of the current route, with its variant applied (URL first, then your last choice). */

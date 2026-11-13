@@ -187,7 +187,7 @@
       "peak": "Pico PCM",
       "lost": "Cortes de audio",
       "gapBreakdown": "Tramas PCM inválidas: {{packets}} · Reajustes del búfer de reproducción: {{playback}}",
-      "gapNote": "Si aumentan los cortes de audio, las tramas PCM llegan tarde o pierden sincronía. La ganancia solo cambia el volumen; revisa el cable USB y cierra otros monitores seriales.",
+      "gapNote": "No uses la microSD mientras escuchas I²S: comparten GPIO27/7/26 y la actividad de la tarjeta puede causar chasquidos. Si aún aumentan los cortes de audio, revisa el cable USB y cierra otros monitores seriales. La ganancia solo cambia el volumen.",
       "signalNote": "La señal se infiere de muestras PCM válidas. I²S no identifica eléctricamente el micrófono; un módulo conectado pero en silencio puede aparecer sin señal.",
       "feed": {
         "idle": "Escucha detenida.",
@@ -197,6 +197,7 @@
         "stale": "No llegan tramas de audio. Revisa el script, el firmware I²S y la conexión USB."
       },
       "connectFirst": "Primero conecta la placa en el panel Serie y luego pulsa Escuchar.",
+      "workletError": "Falló el procesador de audio del navegador. Detén la escucha y vuelve a intentarlo.",
       "scope": "Forma de onda del micrófono en vivo",
       "clip": "SATURA",
       "levelValue": "{{db}} dBFS",
@@ -276,7 +277,7 @@
     "loading": "Cargando",
     "brand": "Pulsar <part>C5 Labs</part>",
     "sections": "Secciones",
-    "codePlatform": "Ejemplos de código: Arduino o MicroPython",
+    "codePlatform": "Variante del ejercicio: Arduino o MicroPython",
     "nav": {
       "labs": "Laboratorios",
       "flasher": "Cargar firmware",
@@ -534,10 +535,6 @@
     "pulsar": {
       "title": "Hardware de la Pulsar C5",
       "blurb": "Experimentos Arduino con BOOT, control RGB, ADC, sensores I²C, microSD y UART"
-    },
-    "zigbee": {
-      "title": "Zigbee",
-      "blurb": "Una red 802.15.4 entre dos placas"
     }
   },
   "states": {
